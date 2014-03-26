@@ -1,0 +1,31 @@
+Name: patchmanager
+Summary: patchmanager
+Version: 0.1
+Release: 1
+Group: Qt/Qt
+URL: http://github.com/SfietKonstantin/patchmanager
+License: TODO
+Sources:
+- '%{name}-%{version}.tar.bz2'
+Description: |
+  patchmanager allows managing system patch
+  on your SailfishOS device easily.
+Configure: none
+Builder: qtc5
+PkgConfigBR:
+- Qt5Core
+- Qt5DBus
+- Qt5Qml
+- Qt5Quick
+- sailfishapp >= 0.0.10
+Requires:
+- sailfishsilica-qt5 >= 0.10.9
+Files:
+- '%{_bindir}'
+- '%{_sbindir}'
+- '%{_datadir}/%{name}'
+- '%{_datadir}/applications/%{name}.desktop'
+- '%{_datadir}/icons/hicolor/86x86/apps/%{name}.png'
+- '%{_datadir}/dbus-1/'
+- /var/lib/patchmanager
+- /etc/dbus-1/system.d/

@@ -1,0 +1,21 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+    <interface name="org.SfietKonstantin.patchmanager">
+        <method name="listPatches">
+            <arg name="result" type="as" direction="out" />
+        </method>
+        <method name="isPatchApplied">
+            <arg name="patch" type="s" direction="in" />
+            <arg name="result" type="b" direction="out" />
+        </method>
+        <method name="applyPatch">
+            <arg name="patch" type="s" direction="in" />
+            <arg name="hasError" type="b" direction="out" />
+        </method>
+        <method name="unapplyPatch">
+            <arg name="patch" type="s" direction="in" />
+            <arg name="hasError" type="b" direction="out" />
+        </method>
+        <method name="quit" />
+    </interface>
+</node>

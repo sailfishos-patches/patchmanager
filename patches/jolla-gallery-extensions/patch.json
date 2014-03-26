@@ -1,0 +1,14 @@
+{
+    "name": "Jolla Gallery extensions",
+    "description": "Patches the default behaviour of Gallery video player, for a smoother seek experience",
+    "patches": [
+        {
+            "dir": "/usr/lib/qt5/qml/Sailfish/Gallery",
+            "patch": "patchvideoposter.patch"
+        },
+        {
+            "dir": "/usr/share/jolla-gallery/pages",
+            "patch": "patchimageview.patch"
+        }
+    ]
+}
