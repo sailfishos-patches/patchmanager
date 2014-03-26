@@ -6,15 +6,15 @@
         </method>
         <method name="isPatchApplied">
             <arg name="patch" type="s" direction="in" />
-            <arg name="result" type="b" direction="out" />
+            <arg name="applied" type="b" direction="out" />
         </method>
         <method name="applyPatch">
             <arg name="patch" type="s" direction="in" />
-            <arg name="hasError" type="b" direction="out" />
+            <arg name="ok" type="b" direction="out" />
         </method>
         <method name="unapplyPatch">
             <arg name="patch" type="s" direction="in" />
-            <arg name="hasError" type="b" direction="out" />
+            <arg name="ok" type="b" direction="out" />
         </method>
         <method name="quit" />
     </interface>

@@ -21,6 +21,7 @@ URL:        http://github.com/SfietKonstantin/patchmanager
 Source0:    %{name}-%{version}.tar.bz2
 Source100:  patchmanager.yaml
 Requires:   sailfishsilica-qt5 >= 0.10.9
+Requires:   nemo-qml-plugin-dbus-qt5
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Qml)

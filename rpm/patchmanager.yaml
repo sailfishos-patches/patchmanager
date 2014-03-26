@@ -20,6 +20,7 @@ PkgConfigBR:
 - sailfishapp >= 0.0.10
 Requires:
 - sailfishsilica-qt5 >= 0.10.9
+- nemo-qml-plugin-dbus-qt5
 Files:
 - '%{_bindir}'
 - '%{_sbindir}'
