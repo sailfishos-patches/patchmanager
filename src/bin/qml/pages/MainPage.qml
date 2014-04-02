@@ -136,6 +136,15 @@ Page {
                 }
                 onClicked: pageStack.push(Qt.resolvedUrl("LipstickPandoraPage.qml"))
             }
+
+            MenuItem {
+                id: lipstickRestartMenu
+                text: "Restart lipstick"
+                Component.onCompleted: {
+                    lipstickRestartMenu.enabled = lipstickPandora.isEnabled()
+                }
+                onClicked: lipstickPandora.restartLipstick()
+            }
         }
     }
 }

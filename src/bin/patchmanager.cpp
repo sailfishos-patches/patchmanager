@@ -37,6 +37,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QSettings>
 #include <QtCore/QProcess>
+#include <QtQml/qqml.h>
 
 class LipstickPandora: public QObject
 {
