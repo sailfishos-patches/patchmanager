@@ -20,13 +20,13 @@ License:    TODO
 URL:        http://github.com/SfietKonstantin/patchmanager
 Source0:    %{name}-%{version}.tar.bz2
 Source100:  patchmanager.yaml
-Requires:   sailfishsilica-qt5 >= 0.10.9
 Requires:   nemo-qml-plugin-dbus-qt5
-BuildRequires:  pkgconfig(Qt5Core)
-BuildRequires:  pkgconfig(Qt5DBus)
-BuildRequires:  pkgconfig(Qt5Qml)
-BuildRequires:  pkgconfig(Qt5Quick)
+Requires:   sailfishsilica-qt5 >= 0.10.9
 BuildRequires:  pkgconfig(sailfishapp) >= 0.0.10
+BuildRequires:  pkgconfig(Qt5Quick)
+BuildRequires:  pkgconfig(Qt5Qml)
+BuildRequires:  pkgconfig(Qt5DBus)
+BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  desktop-file-utils
 
 %description
@@ -71,13 +71,13 @@ desktop-file-install --delete-original       \
 
 %files
 %defattr(-,root,root,-)
-%{_bindir}
-%{_sbindir}
-%{_datadir}/%{name}
-%{_datadir}/applications/%{name}.desktop
-%{_datadir}/icons/hicolor/86x86/apps/%{name}.png
-%{_datadir}/dbus-1/
-/var/lib/patchmanager
 /etc/dbus-1/system.d/
+/var/lib/patchmanager
+%{_datadir}/dbus-1/
+%{_datadir}/icons/hicolor/86x86/apps/%{name}.png
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/%{name}
+%{_sbindir}
+%{_bindir}
 # >> files
 # << files

@@ -33,19 +33,81 @@
 #endif
 
 #include <sailfishapp.h>
+#include <QtCore/QFile>
+#include <QtCore/QDir>
+#include <QtCore/QSettings>
+#include <QtCore/QProcess>
 
+class LipstickPandora: public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(bool dumpEnabled READ dumpEnabled WRITE setDumpEnabled NOTIFY dumpEnabledChanged)
+public:
+    explicit LipstickPandora(QObject *parent = 0);
+    Q_INVOKABLE bool isEnabled() const;
+    Q_INVOKABLE bool hasDump() const;
+    Q_INVOKABLE bool hasInstalled() const;
+    bool dumpEnabled() const;
+    void setDumpEnabled(bool dumpEnabled);
+public slots:
+    void restartLipstick();
+signals:
+    void dumpEnabledChanged();
+private:
+    bool m_dumpEnabled;
+};
+
+LipstickPandora::LipstickPandora(QObject *parent)
+    : QObject(parent)
+{
+    QSettings settings ("SfietKonstantin", "lipstick-pandora");
+    m_dumpEnabled = settings.value("dump/enable", false).toBool();
+}
+
+bool LipstickPandora::isEnabled() const
+{
+    QFile file ("/opt/lipstick-pandora/lipstick-pandora");
+    return file.exists();
+}
+
+bool LipstickPandora::hasDump() const
+{
+    QDir dir ("/home/nemo/lipstick-pandora");
+    return dir.exists();
+}
+
+bool LipstickPandora::hasInstalled() const
+{
+    QDir dir ("/opt/lipstick-pandora/qml");
+    return dir.exists();
+}
+
+bool LipstickPandora::dumpEnabled() const
+{
+    return m_dumpEnabled;
+}
+
+void LipstickPandora::setDumpEnabled(bool dumpEnabled)
+{
+    if (m_dumpEnabled != dumpEnabled) {
+        QSettings settings ("SfietKonstantin", "lipstick-pandora");
+        settings.setValue("dump/enable", dumpEnabled);
+        m_dumpEnabled = dumpEnabled;
+        emit dumpEnabledChanged();
+    }
+}
+
+void LipstickPandora::restartLipstick()
+{
+    QStringList arguments;
+    arguments << "--user" << "restart" << "lipstick.service";
+    QProcess::startDetached("systemctl", arguments);
+}
 
 int main(int argc, char *argv[])
 {
-    // SailfishApp::main() will display "qml/template.qml", if you need more
-    // control over initialization, you can use:
-    //
-    //   - SailfishApp::application(int, char *[]) to get the QGuiApplication *
-    //   - SailfishApp::createView() to get a new QQuickView * instance
-    //   - SailfishApp::pathTo(QString) to get a QUrl to a resource file
-    //
-    // To display the view, call "show()" (will show fullscreen on device).
-
+    qmlRegisterType<LipstickPandora>("org.SfietKonstantin.patchmanager", 1, 0, "LipstickPandora");
     return SailfishApp::main(argc, argv);
 }
 
+#include "patchmanager.moc"

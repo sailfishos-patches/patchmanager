@@ -16,6 +16,9 @@
             <arg name="patch" type="s" direction="in" />
             <arg name="ok" type="b" direction="out" />
         </method>
+        <method name="unapplyAllPatches" />
+        <method name="installLipstickPandora" />
+        <method name="uninstallLipstickPandora" />
         <method name="quit" />
     </interface>
 </node>

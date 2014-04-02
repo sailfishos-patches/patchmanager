@@ -31,6 +31,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import org.nemomobile.dbus 1.0
+import org.SfietKonstantin.patchmanager 1.0
 
 Page {
     id: container
@@ -53,6 +54,10 @@ Page {
         Component.onDestruction: {
             dbusInterface.call("quit", [])
         }
+    }
+
+    LipstickPandora {
+        id: lipstickPandora
     }
 
     SilicaListView {
@@ -119,6 +124,17 @@ Page {
                 anchors.verticalCenter: parent.verticalCenter
                 text: model.name
                 color: background.down ? Theme.highlightColor: Theme.primaryColor
+            }
+        }
+
+        PullDownMenu {
+            MenuItem {
+                id: lipstickPandoraMenu
+                text: "Manage lipstick-pandora"
+                Component.onCompleted: {
+                    lipstickPandoraMenu.enabled = lipstickPandora.isEnabled()
+                }
+                onClicked: pageStack.push(Qt.resolvedUrl("LipstickPandoraPage.qml"))
             }
         }
     }

@@ -50,6 +50,8 @@ public slots:
     bool applyPatch(const QString &patch);
     bool unapplyPatch(const QString &patch);
     void unapplyAllPatches();
+    void installLipstickPandora();
+    void uninstallLipstickPandora();
     void quit();
 protected:
     bool event(QEvent *e);

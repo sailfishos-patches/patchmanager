@@ -289,6 +289,17 @@ void PatchManagerObject::unapplyAllPatches()
     }
 }
 
+void PatchManagerObject::installLipstickPandora()
+{
+    QProcess::execute("mv /home/nemo/lipstick-pandora/:qml /opt/lipstick-pandora/qml");
+    QProcess::execute("rm -r /home/nemo/lipstick-pandora");
+}
+
+void PatchManagerObject::uninstallLipstickPandora()
+{
+    QProcess::execute("rm -r /opt/lipstick-pandora/qml");
+}
+
 void PatchManagerObject::quit()
 {
     QCoreApplication::postEvent(this, new QEvent(QEvent::User));
