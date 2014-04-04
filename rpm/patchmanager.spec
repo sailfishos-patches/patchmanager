@@ -28,6 +28,8 @@ BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(sailfishapp) >= 0.0.10
+BuildRequires:  pkgconfig(nemonotifications-qt5)
+BuildRequires:  nemo-qml-plugin-notifications-qt5-devel
 BuildRequires:  desktop-file-utils
 
 %description
@@ -67,8 +69,23 @@ desktop-file-install --delete-original       \
 
 %preun
 # >> preun
+dbus-send --system --type=method_call \
+--dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager \
+org.SfietKonstantin.patchmanager.quit
 /usr/sbin/patchmanager-daemon --unapply-all
 # << preun
+
+%post
+# >> post
+dbus-send --system --type=method_call \
+--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+# << post
+
+%postun
+# >> postun
+dbus-send --system --type=method_call \
+--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+# << postun
 
 %files
 %defattr(-,root,root,-)
@@ -78,7 +95,6 @@ desktop-file-install --delete-original       \
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/86x86/apps/%{name}.png
 %{_datadir}/dbus-1/
-/var/lib/patchmanager
 /etc/dbus-1/system.d/
 # >> files
 # << files

@@ -2,11 +2,20 @@
 <node>
     <interface name="org.SfietKonstantin.patchmanager">
         <method name="listPatches">
-            <arg name="result" type="as" direction="out" />
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QList&lt;Patch&gt;"/>
+            <arg name="result" type="a(ssssba{sv})" direction="out" />
         </method>
         <method name="isPatchApplied">
             <arg name="patch" type="s" direction="in" />
             <arg name="applied" type="b" direction="out" />
+        </method>
+        <method name="canApplyPatch">
+            <arg name="patch" type="s" direction="in" />
+            <arg name="canApply" type="b" direction="out" />
+        </method>
+        <method name="canUnapplyPatch">
+            <arg name="patch" type="s" direction="in" />
+            <arg name="canUnapply" type="b" direction="out" />
         </method>
         <method name="applyPatch">
             <arg name="patch" type="s" direction="in" />
@@ -17,6 +26,7 @@
             <arg name="ok" type="b" direction="out" />
         </method>
         <method name="unapplyAllPatches" />
+        <method name="checkPatches" />
         <method name="installLipstickPandora" />
         <method name="uninstallLipstickPandora" />
         <method name="quit" />

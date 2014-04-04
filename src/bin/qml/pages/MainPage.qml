@@ -44,8 +44,13 @@ Page {
         busType: DBusInterface.SystemBus
         function listPatches() {
             typedCallWithReturn("listPatches", [], function (patches) {
+                var available = []
                 for (var i = 0; i < patches.length; i++) {
-                    model.append({"name": patches[i]})
+                    patchModel.append({"patch": patches[i][0],
+                                  "name": patches[i][1],
+                                  "description": patches[i][2],
+                                  "category": patches[i][3],
+                                  "available": patches[i][4]})
                 }
             })
         }
@@ -61,51 +66,95 @@ Page {
     }
 
     SilicaListView {
+        id: view
         anchors.fill: parent
         header: PageHeader {
             title: "PatchManager"
         }
         model: ListModel {
-            id: model
+            id: patchModel
         }
+        section.criteria: ViewSection.FullString
+        section.delegate: SectionHeader {
+            text: section
+        }
+        section.property: "category"
+
         delegate: BackgroundItem {
             id: background
             enabled: false
             property bool applied: false
+            property bool canApply: true
             function doPatch() {
                 background.enabled = false
                 appliedSwitch.busy = true
-                if (background.applied) {
-                    dbusInterface.typedCallWithReturn("unapplyPatch",
-                                                      [{"type": "s", "value": model.name}],
-                    function (ok) {
-                        if (ok) {
-                            background.applied = false
-                        }
-                        background.enabled = true
-                        appliedSwitch.busy = false
-                    })
-                } else {
+                if (!background.applied) {
                     dbusInterface.typedCallWithReturn("applyPatch",
-                                                      [{"type": "s", "value": model.name}],
+                                                      [{"type": "s", "value": model.patch}],
                     function (ok) {
                         if (ok) {
                             background.applied = true
                         }
-                        background.enabled = true
                         appliedSwitch.busy = false
+                        checkApplicability()
+                    })
+                } else {
+                    dbusInterface.typedCallWithReturn("unapplyPatch",
+                                                      [{"type": "s", "value": model.patch}],
+                    function (ok) {
+                        if (ok) {
+                            background.applied = false
+                        }
+                        appliedSwitch.busy = false
+                        if (!model.available) {
+                            patchModel.remove(model.index)
+                        } else {
+                            checkApplicability()
+                        }
                     })
                 }
             }
 
             onClicked: doPatch()
 
+            function checkPandora(canApply) {
+                if (model.category.toLowerCase() == "pandora") {
+                    if (lipstickPandora.hasInstalled()) {
+                        return canApply
+                    } else {
+                        return false
+                    }
+                }
+                return canApply
+            }
+
+            function checkApplicability() {
+                if (!background.applied) {
+                    dbusInterface.typedCallWithReturn("canApplyPatch",
+                                                      [{"type": "s", "value": model.patch}],
+                    function (canApply) {
+                        background.canApply = canApply
+                        console.debug("Can apply: " + canApply)
+                        background.enabled = checkPandora(background.canApply)
+                    })
+                } else {
+                    dbusInterface.typedCallWithReturn("canUnapplyPatch",
+                                                      [{"type": "s", "value": model.patch}],
+                    function (canUnapply) {
+                        background.canApply = canUnapply
+                        console.debug("Can unapply: " + canUnapply)
+                        background.enabled = checkPandora(background.canApply)
+                    })
+                }
+            }
+
             Component.onCompleted: {
                 dbusInterface.typedCallWithReturn("isPatchApplied",
-                                                  [{"type": "s", "value": model.name}],
+                                                  [{"type": "s", "value": model.patch}],
                 function (applied) {
+                    console.debug("Applied: " + applied)
                     background.applied = applied
-                    background.enabled = true
+                    checkApplicability()
                 })
             }
 
@@ -123,11 +172,22 @@ Page {
                 anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
                 anchors.verticalCenter: parent.verticalCenter
                 text: model.name
-                color: background.down ? Theme.highlightColor: Theme.primaryColor
+                color: background.canApply ? (background.down ? Theme.highlightColor
+                                                              : Theme.primaryColor)
+                                           : Theme.secondaryColor
             }
         }
 
         PullDownMenu {
+            MenuItem {
+                text: "Verify patch application"
+                onClicked: {
+                    patchModel.clear()
+                    dbusInterface.call("checkPatches", [])
+                    dbusInterface.listPatches()
+                }
+            }
+
             MenuItem {
                 id: lipstickPandoraMenu
                 text: "Manage lipstick-pandora"

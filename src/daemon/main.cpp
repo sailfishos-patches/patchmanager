@@ -36,6 +36,7 @@
 
 #include <QtCore/QCoreApplication>
 #include "patchmanagerobject.h"
+#include "adaptor.h"
 #include <iostream>
 
 void help()
@@ -58,6 +59,7 @@ int main(int argc, char **argv)
 
     QCoreApplication app (argc, argv);
     PatchManagerObject patchManager;
+    new PatchmanagerAdaptor(&patchManager);
 
     QStringList arguments = app.arguments();
 

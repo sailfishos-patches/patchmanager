@@ -35,7 +35,29 @@
 #include <QtCore/QObject>
 #include <QtCore/QSet>
 #include <QtCore/QStringList>
+#include <QtCore/QVariantMap>
 
+struct PatchInfo
+{
+    QString workingDirectory;
+    QString patchFile;
+};
+
+struct Patch
+{
+    QString patch;
+    QString name;
+    QString description;
+    QString category;
+    bool available;
+    QVariantMap infos;
+    QList<PatchInfo> patchInfos;
+};
+
+Q_DECLARE_METATYPE(Patch)
+Q_DECLARE_METATYPE(QList<Patch>)
+
+class QDBusInterface;
 class PatchManagerObject : public QObject
 {
     Q_OBJECT
@@ -45,19 +67,27 @@ public:
     virtual ~PatchManagerObject();
     void registerDBus();
 public slots:
-    QStringList listPatches() const;
+    QList<Patch> listPatches();
     bool isPatchApplied(const QString &patch);
+    bool canApplyPatch(const QString &patch);
+    bool canUnapplyPatch(const QString &patch);
     bool applyPatch(const QString &patch);
     bool unapplyPatch(const QString &patch);
     void unapplyAllPatches();
+    void checkPatches();
     void installLipstickPandora();
     void uninstallLipstickPandora();
     void quit();
 protected:
     bool event(QEvent *e);
 private:
+    void refreshPatchList();
     bool m_dbusRegistered;
+    QMap<QString, Patch> m_cachedPatches;
+    QMap<QString, Patch> m_cachedAppliedPatches;
     QSet<QString> m_appliedPatches;
+    QList<Patch> m_patches;
 };
 
 #endif // PATCHMANAGEROBJECT_H
+
