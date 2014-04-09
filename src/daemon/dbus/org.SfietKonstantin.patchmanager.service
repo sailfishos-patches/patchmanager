@@ -1,4 +1,4 @@
 [D-BUS Service]
 Name=org.SfietKonstantin.patchmanager
-Exec=/usr/sbin/patchmanager-daemon
+Exec=/usr/sbin/patchmanager
 User=root

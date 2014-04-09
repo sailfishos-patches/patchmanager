@@ -12,7 +12,7 @@ Name:       patchmanager
 %{!?qtc_qmake5:%define qtc_qmake5 %qmake5}
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
-Summary:    patchmanager
+Summary:    patchmanager allows you to manage Sailfish OS patches
 Version:    0.1
 Release:    1
 Group:      Qt/Qt
@@ -20,21 +20,39 @@ License:    TODO
 URL:        http://github.com/SfietKonstantin/patchmanager
 Source0:    %{name}-%{version}.tar.bz2
 Source100:  patchmanager.yaml
-Requires:   sailfishsilica-qt5 >= 0.10.9
-Requires:   nemo-qml-plugin-dbus-qt5
-Requires:   patch
+Requires:   ausmt
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(sailfishapp) >= 0.0.10
-BuildRequires:  pkgconfig(nemonotifications-qt5)
-BuildRequires:  nemo-qml-plugin-notifications-qt5-devel
-BuildRequires:  desktop-file-utils
 
 %description
 patchmanager allows managing system patch
-on your SailfishOS device easily.
+on your SailfishOS device easily. This package
+contains the system daemon.
+
+
+%package ui
+Summary:    GUI for patchmanager
+Group:      Qt/Qt
+Requires:   %{name} = %{version}-%{release}
+
+%description ui
+patchmanager allows managing system patch
+on your SailfishOS device easily. This package
+contains the GUI.
+
+
+%package patches
+Summary:    A set of patches for patchmanager
+Group:      Qt/Qt
+Requires:   %{name} = %{version}-%{release}
+
+%description patches
+patchmanager allows managing system patch
+on your SailfishOS device easily. This package
+contains a set of patches.
 
 
 %prep
@@ -63,16 +81,11 @@ rm -rf %{buildroot}
 # >> install post
 # << install post
 
-desktop-file-install --delete-original       \
-  --dir %{buildroot}%{_datadir}/applications             \
-   %{buildroot}%{_datadir}/applications/*.desktop
-
 %preun
 # >> preun
 dbus-send --system --type=method_call \
 --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager \
 org.SfietKonstantin.patchmanager.quit
-/usr/sbin/patchmanager-daemon --unapply-all
 # << preun
 
 %post
@@ -89,12 +102,24 @@ dbus-send --system --type=method_call \
 
 %files
 %defattr(-,root,root,-)
-%{_bindir}
-%{_sbindir}
-%{_datadir}/%{name}
-%{_datadir}/applications/%{name}.desktop
-%{_datadir}/icons/hicolor/86x86/apps/%{name}.png
+%{_sbindir}/%{name}
+%{_datadir}/%{name}/tools
 %{_datadir}/dbus-1/
-/etc/dbus-1/system.d/
+%{_sysconfdir}/dbus-1/system.d/
 # >> files
 # << files
+
+%files ui
+%defattr(-,root,root,-)
+%{_bindir}/%{name}-ui
+%{_datadir}/%{name}/qml
+%{_datadir}/applications/
+%{_datadir}/icons/
+# >> files ui
+# << files ui
+
+%files patches
+%defattr(-,root,root,-)
+%{_datadir}/%{name}/patches
+# >> files patches
+# << files patches

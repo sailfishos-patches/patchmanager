@@ -9,14 +9,6 @@
             <arg name="patch" type="s" direction="in" />
             <arg name="applied" type="b" direction="out" />
         </method>
-        <method name="canApplyPatch">
-            <arg name="patch" type="s" direction="in" />
-            <arg name="canApply" type="b" direction="out" />
-        </method>
-        <method name="canUnapplyPatch">
-            <arg name="patch" type="s" direction="in" />
-            <arg name="canUnapply" type="b" direction="out" />
-        </method>
         <method name="applyPatch">
             <arg name="patch" type="s" direction="in" />
             <arg name="ok" type="b" direction="out" />
@@ -26,7 +18,6 @@
             <arg name="ok" type="b" direction="out" />
         </method>
         <method name="unapplyAllPatches" />
-        <method name="checkPatches" />
         <method name="installLipstickPandora" />
         <method name="uninstallLipstickPandora" />
         <method name="quit" />

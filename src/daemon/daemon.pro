@@ -1,10 +1,7 @@
 TEMPLATE = app
-TARGET = patchmanager-daemon
+TARGET = patchmanager
 
 QT = core dbus
-
-CONFIG += link_pkgconfig plugin
-PKGCONFIG += nemonotifications-qt5
 
 # DBus
 system(qdbusxml2cpp dbus/org.SfietKonstantin.patchmanager.xml -i patchmanagerobject.h -a adaptor)
@@ -20,9 +17,7 @@ SOURCES += \
 
 OTHER_FILES += dbus/org.SfietKonstantin.patchmanager.xml \
     dbus/org.SfietKonstantin.patchmanager.service \
-    dbus/org.SfietKonstantin.patchmanager.conf \
-    config/applied_patches.json
-
+    dbus/org.SfietKonstantin.patchmanager.conf
 
 target.path = /usr/sbin
 INSTALLS += target
@@ -41,3 +36,8 @@ INSTALLS += dbusInterface
 dbusConf.files = dbus/org.SfietKonstantin.patchmanager.conf
 dbusConf.path = /etc/dbus-1/system.d/
 INSTALLS += dbusConf
+
+# Tools
+tools.files = pandora-md5sum.sh
+tools.path = /usr/share/patchmanager/tools
+INSTALLS += tools

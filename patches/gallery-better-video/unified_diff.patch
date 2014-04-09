@@ -1,5 +1,23 @@
---- original/VideoPoster.qml	2014-03-24 21:38:59.000000000 +0100
-+++ patched/VideoPoster.qml	2014-03-25 12:44:56.500985466 +0100
+--- original/usr/share/jolla-gallery/pages/FlickableImageView.qml	2014-03-25 11:29:15.000000000 +0100
++++ patched/usr/share/jolla-gallery/pages/FlickableImageView.qml	2014-03-25 12:43:29.344398797 +0100
+@@ -161,11 +161,11 @@
+                 duration: model.duration
+ 
+                 onClicked: {
+-                   if (mediaPlayer.playbackState == MediaPlayer.PlayingState) {
+-                       mediaPlayer.pause()
+-                   } else {
++                   //if (mediaPlayer.playbackState == MediaPlayer.PlayingState) {
++                   //    mediaPlayer.pause()
++                   //} else {
+                        view.clicked()
+-                   }
++                   //}
+                }
+             }
+         }
+--- original/usr/lib/qt5/qml/Sailfish/Gallery/VideoPoster.qml    2014-03-24 21:38:59.000000000 +0100
++++ patched/usr/lib/qt5/qml/Sailfish/Gallery/VideoPoster.qml 2014-03-25 12:44:56.500985466 +0100
 @@ -3,7 +3,7 @@
  import QtMultimedia 5.0
  import org.nemomobile.thumbnailer 1.0

@@ -1,5 +1,5 @@
 Name: patchmanager
-Summary: patchmanager
+Summary: patchmanager allows you to manage Sailfish OS patches
 Version: 0.1
 Release: 1
 Group: Qt/Qt
@@ -9,7 +9,8 @@ Sources:
 - '%{name}-%{version}.tar.bz2'
 Description: |
   patchmanager allows managing system patch
-  on your SailfishOS device easily.
+  on your SailfishOS device easily. This package
+  contains the system daemon.
 Configure: none
 Builder: qtc5
 PkgConfigBR:
@@ -18,18 +19,33 @@ PkgConfigBR:
 - Qt5Qml
 - Qt5Quick
 - sailfishapp >= 0.0.10
-- nemonotifications-qt5
-PkgBR:
-- nemo-qml-plugin-notifications-qt5-devel
+PkgBR: []
 Requires:
-- sailfishsilica-qt5 >= 0.10.9
-- nemo-qml-plugin-dbus-qt5
-- patch
+- ausmt
 Files:
-- '%{_bindir}'
-- '%{_sbindir}'
-- '%{_datadir}/%{name}'
-- '%{_datadir}/applications/%{name}.desktop'
-- '%{_datadir}/icons/hicolor/86x86/apps/%{name}.png'
+- '%{_sbindir}/%{name}'
+- '%{_datadir}/%{name}/tools'
 - '%{_datadir}/dbus-1/'
-- /etc/dbus-1/system.d/
+- '%{_sysconfdir}/dbus-1/system.d/'
+SubPackages:
+- Name: ui
+  Summary: GUI for patchmanager
+  Description: |
+    patchmanager allows managing system patch
+    on your SailfishOS device easily. This package
+    contains the GUI.
+  Group: Qt/Qt
+  Files:
+  - '%{_bindir}/%{name}-ui'
+  - '%{_datadir}/%{name}/qml'
+  - '%{_datadir}/applications/'
+  - '%{_datadir}/icons/'
+- Name: patches
+  Summary: A set of patches for patchmanager
+  Description: |
+    patchmanager allows managing system patch
+    on your SailfishOS device easily. This package
+    contains a set of patches.
+  Group: Qt/Qt
+  Files:
+  - '%{_datadir}/%{name}/patches'

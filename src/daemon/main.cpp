@@ -69,7 +69,7 @@ int main(int argc, char **argv)
         return app.exec();
     } else if (arguments.count() == 2) {
         if (arguments.at(1) == "--unapply-all") {
-            patchManager.unapplyAllPatches();
+//            patchManager.unapplyAllPatches();
             return 0;
         }
     } else if (arguments.count() == 3) {

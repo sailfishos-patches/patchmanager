@@ -129,23 +129,7 @@ Page {
             }
 
             function checkApplicability() {
-                if (!background.applied) {
-                    dbusInterface.typedCallWithReturn("canApplyPatch",
-                                                      [{"type": "s", "value": model.patch}],
-                    function (canApply) {
-                        background.canApply = canApply
-                        console.debug("Can apply: " + canApply)
-                        background.enabled = checkPandora(background.canApply)
-                    })
-                } else {
-                    dbusInterface.typedCallWithReturn("canUnapplyPatch",
-                                                      [{"type": "s", "value": model.patch}],
-                    function (canUnapply) {
-                        background.canApply = canUnapply
-                        console.debug("Can unapply: " + canUnapply)
-                        background.enabled = checkPandora(background.canApply)
-                    })
-                }
+                background.enabled = checkPandora(background.canApply)
             }
 
             Component.onCompleted: {
@@ -179,15 +163,6 @@ Page {
         }
 
         PullDownMenu {
-            MenuItem {
-                text: "Verify patch application"
-                onClicked: {
-                    patchModel.clear()
-                    dbusInterface.call("checkPatches", [])
-                    dbusInterface.listPatches()
-                }
-            }
-
             MenuItem {
                 id: lipstickPandoraMenu
                 text: "Manage lipstick-pandora"

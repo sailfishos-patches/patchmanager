@@ -3,5 +3,5 @@ Type=Application
 X-Nemo-Application-Type=silica-qt5
 Name=patchmanager
 Icon=patchmanager
-Exec=patchmanager
+Exec=patchmanager-ui
 

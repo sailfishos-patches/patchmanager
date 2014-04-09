@@ -38,6 +38,8 @@
 #include <QtCore/QSettings>
 #include <QtCore/QProcess>
 #include <QtQml/qqml.h>
+#include <QtGui/QGuiApplication>
+#include <QtQuick/QQuickView>
 
 class LipstickPandora: public QObject
 {
@@ -108,7 +110,11 @@ void LipstickPandora::restartLipstick()
 int main(int argc, char *argv[])
 {
     qmlRegisterType<LipstickPandora>("org.SfietKonstantin.patchmanager", 1, 0, "LipstickPandora");
-    return SailfishApp::main(argc, argv);
+    QGuiApplication *app = SailfishApp::application(argc, argv);
+    QQuickView *view = SailfishApp::createView();
+    view->setSource(QUrl("/usr/share/patchmanager/qml/main.qml"));
+    view->show();
+    return app->exec();
 }
 
-#include "patchmanager.moc"
+#include "main.moc"
