@@ -29,56 +29,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
  */
 
-#ifndef PATCHMANAGEROBJECT_H
-#define PATCHMANAGEROBJECT_H
 
-#include <QtCore/QObject>
-#include <QtCore/QSet>
-#include <QtCore/QStringList>
-#include <QtCore/QVariantMap>
+import QtQuick 2.0
+import Sailfish.Silica 1.0
 
-class QTimer;
-struct Patch
-{
-    QString patch;
-    QString name;
-    QString description;
-    QString category;
-    bool available;
-    QVariantMap infos;
-};
-
-Q_DECLARE_METATYPE(Patch)
-Q_DECLARE_METATYPE(QList<Patch>)
-
-class QDBusInterface;
-class PatchManagerObject : public QObject
-{
-    Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "org.SfietKonstantin.patchmanager")
-public:
-    explicit PatchManagerObject(QObject *parent = 0);
-    virtual ~PatchManagerObject();
-    void registerDBus();
-public slots:
-    QList<Patch> listPatches();
-    bool isPatchApplied(const QString &patch);
-    bool applyPatch(const QString &patch);
-    bool unapplyPatch(const QString &patch);
-//    void unapplyAllPatches();
-//    void checkPatches();
-    void installLipstickPandora();
-    void uninstallLipstickPandora();
-    void quit();
-protected:
-    bool event(QEvent *e);
-private:
-    void refreshPatchList();
-    bool m_dbusRegistered;
-    QSet<QString> m_appliedPatches;
-    QList<Patch> m_patches;
-    QTimer *m_timer;
-};
-
-#endif // PATCHMANAGEROBJECT_H
-
+CoverBackground {
+    CoverPlaceholder {
+        icon.source: "../../data/patchmanager.png"
+        text: "PM"
+    }
+}

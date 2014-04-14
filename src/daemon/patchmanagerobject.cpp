@@ -42,6 +42,7 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonValue>
 #include <QtCore/QProcess>
+#include <QtCore/QTimer>
 #include <QtDBus/QDBusArgument>
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusInterface>
@@ -165,7 +166,13 @@ static inline QList<Patch> listPatchesFromDir(const QString &dir)
 PatchManagerObject::PatchManagerObject(QObject *parent) :
     QObject(parent), m_dbusRegistered(false)
 {
-    qDebug() << AUSMT_INSTALLED_LIST_FILE;
+    m_timer = new QTimer(this);
+    connect(m_timer, &QTimer::timeout, this, &PatchManagerObject::quit);
+    m_timer->setSingleShot(true);
+    m_timer->setTimerType(Qt::VeryCoarseTimer);
+    m_timer->setInterval(15000);  // Quit after 15s timeout
+    m_timer->start();
+
     QFile file (AUSMT_INSTALLED_LIST_FILE);
     if (file.open(QIODevice::ReadOnly)) {
         while (!file.atEnd()) {
@@ -213,16 +220,19 @@ void PatchManagerObject::registerDBus()
 
 QList<Patch> PatchManagerObject::listPatches()
 {
+    m_timer->start();
     return m_patches;
 }
 
 bool PatchManagerObject::isPatchApplied(const QString &patch)
 {
+    m_timer->start();
     return m_appliedPatches.contains(patch);
 }
 
 bool PatchManagerObject::applyPatch(const QString &patch)
 {
+    m_timer->stop();
     QProcess process;
     process.setProgram(AUSMT_INSTALL);
 
@@ -238,11 +248,13 @@ bool PatchManagerObject::applyPatch(const QString &patch)
         m_appliedPatches.insert(patch);
     }
 
+    m_timer->start();
     return ok;
 }
 
 bool PatchManagerObject::unapplyPatch(const QString &patch)
 {
+    m_timer->stop();
     QProcess process;
     process.setProgram(AUSMT_REMOVE);
 
@@ -258,6 +270,7 @@ bool PatchManagerObject::unapplyPatch(const QString &patch)
         m_appliedPatches.remove(patch);
     }
 
+    m_timer->start();
     return ok;
 }
 
@@ -312,14 +325,18 @@ bool PatchManagerObject::unapplyPatch(const QString &patch)
 
 void PatchManagerObject::installLipstickPandora()
 {
+    m_timer->stop();
     QProcess::execute("mv /home/nemo/lipstick-pandora/:qml /opt/lipstick-pandora/qml");
     QProcess::execute("/usr/share/patchmanager/tools/pandora-md5sum.sh");
     QProcess::execute("rm -r /home/nemo/lipstick-pandora");
+    m_timer->start();
 }
 
 void PatchManagerObject::uninstallLipstickPandora()
 {
+    m_timer->stop();
     QProcess::execute("rm -r /opt/lipstick-pandora/qml");
+    m_timer->start();
 }
 
 void PatchManagerObject::quit()

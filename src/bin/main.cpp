@@ -39,7 +39,12 @@
 #include <QtCore/QProcess>
 #include <QtQml/qqml.h>
 #include <QtGui/QGuiApplication>
+#include <QtQml/QQmlContext>
+#include <QtQml/QQmlEngine>
 #include <QtQuick/QQuickView>
+
+static const char *PAYPAL_DONATE = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&"
+                                   "hosted_button_id=R6AJV4U2G33XG";
 
 class LipstickPandora: public QObject
 {
@@ -112,6 +117,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<LipstickPandora>("org.SfietKonstantin.patchmanager", 1, 0, "LipstickPandora");
     QGuiApplication *app = SailfishApp::application(argc, argv);
     QQuickView *view = SailfishApp::createView();
+    view->engine()->rootContext()->setContextProperty("PAYPAL_DONATE", PAYPAL_DONATE);
     view->setSource(QUrl("/usr/share/patchmanager/qml/main.qml"));
     view->show();
     return app->exec();

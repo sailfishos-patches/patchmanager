@@ -113,6 +113,7 @@ dbus-send --system --type=method_call \
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-ui
 %{_datadir}/%{name}/qml
+%{_datadir}/%{name}/data
 %{_datadir}/applications/
 %{_datadir}/icons/
 # >> files ui
