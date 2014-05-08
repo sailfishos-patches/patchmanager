@@ -1,9 +1,18 @@
 TEMPLATE = aux
 
-OTHER_FILES = gallery-better-video/patch.json \
+BETTER_VIDEO = gallery-better-video/patch.json \
     gallery-better-video/unified_diff.patch
 
-patches.files = $${OTHER_FILES}
-patches.path = /usr/share/patchmanager/patches/gallery-better-video
+VOICECALL_VIBRATE = voicecall-vibrate/patch.json \
+    voicecall-vibrate/unified_diff.patch
 
-INSTALLS += patches
+OTHER_FILES = $${BETTER_VIDEO} \
+    $${VOICECALL_VIBRATE}
+
+betterVideo.files = $${BETTER_VIDEO}
+betterVideo.path = /usr/share/patchmanager/patches/gallery-better-video
+
+voicecallVibrate.files = $${VOICECALL_VIBRATE}
+voicecallVibrate.path = /usr/share/patchmanager/patches/voicecall-vibrate
+
+INSTALLS += betterVideo voicecallVibrate

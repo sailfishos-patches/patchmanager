@@ -1,0 +1,25 @@
+diff -ur original/usr/share/voicecall-ui-jolla/qml/pages/calling/InCallView.qml patched/usr/share/voicecall-ui-jolla/qml/pages/calling/InCallView.qml
+--- original/usr/share/voicecall-ui-jolla/qml/pages/calling/InCallView.qml	2014-05-08 22:46:35.589311512 +0200
++++ patched/usr/share/voicecall-ui-jolla/qml/pages/calling/InCallView.qml	2014-05-08 22:43:34.000000000 +0200
+@@ -1,4 +1,5 @@
+ import QtQuick 2.0
++import QtFeedback 5.0
+ import Sailfish.Silica 1.0
+ import Sailfish.Bluetooth 1.0
+ import "../../common/CallLog.js" as CallLog
+@@ -23,6 +24,15 @@
+         if (callState == 'null' || callState == 'disconnected') {
+             inCallKeypad.fade()
+         }
++        if (callState == 'active') {
++            activeEffect.start()
++        }
++    }
++    
++    HapticsEffect {
++        id: activeEffect
++        duration: 100
++        intensity: 0.5
+     }
+ 
+     anchors.fill: parent

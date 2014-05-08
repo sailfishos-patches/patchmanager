@@ -10,6 +10,7 @@ SOURCES += main.cpp
 
 OTHER_FILES += qml/main.qml \
     qml/pages/MainPage.qml \
+    qml/pages/PatchPage.qml \
     qml/pages/MainCover.qml \
     qml/pages/LipstickPandoraPage.qml \
     qml/pages/AboutPage.qml \

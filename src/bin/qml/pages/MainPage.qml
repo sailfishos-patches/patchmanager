@@ -80,11 +80,11 @@ Page {
 
         delegate: BackgroundItem {
             id: background
-            enabled: false
             property bool applied: false
             property bool canApply: true
+            property bool applying: !appliedSwitch.enabled
             function doPatch() {
-                background.enabled = false
+                appliedSwitch.enabled = false
                 appliedSwitch.busy = true
                 if (!background.applied) {
                     dbusInterface.typedCallWithReturn("applyPatch",
@@ -113,7 +113,11 @@ Page {
                 }
             }
 
-            onClicked: doPatch()
+            onClicked: {
+                pageStack.push(Qt.resolvedUrl("PatchPage.qml"),
+                               {"name": model.name, "description": model.description,
+                                "delegate": background})
+            }
 
             function checkPandora(canApply) {
                 if (model.category.toLowerCase() == "pandora") {
@@ -127,7 +131,7 @@ Page {
             }
 
             function checkApplicability() {
-                background.enabled = checkPandora(background.canApply)
+                appliedSwitch.enabled = checkPandora(background.canApply)
             }
 
             Component.onCompleted: {
@@ -146,7 +150,7 @@ Page {
                 automaticCheck: false
                 checked: background.applied
                 onClicked: background.doPatch()
-                enabled: background.enabled
+                enabled: false
             }
 
             Label {
@@ -154,9 +158,7 @@ Page {
                 anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
                 anchors.verticalCenter: parent.verticalCenter
                 text: model.name
-                color: background.enabled ? (background.down ? Theme.highlightColor
-                                                              : Theme.primaryColor)
-                                           : Theme.secondaryColor
+                color: background.down ? Theme.highlightColor : Theme.primaryColor
             }
         }
 
