@@ -3,7 +3,7 @@ Summary: patchmanager allows you to manage Sailfish OS patches
 Version: 0.1
 Release: 1
 Group: Qt/Qt
-URL: http://github.com/SfietKonstantin/patchmanager
+URL: https://github.com/sailfishos-patches/patchmanager
 License: TODO
 Sources:
 - '%{name}-%{version}.tar.bz2'
@@ -41,12 +41,3 @@ SubPackages:
   - '%{_datadir}/%{name}/data'
   - '%{_datadir}/applications/'
   - '%{_datadir}/icons/'
-- Name: patches
-  Summary: A set of patches for patchmanager
-  Description: |
-    patchmanager allows managing system patch
-    on your SailfishOS device easily. This package
-    contains a set of patches.
-  Group: Qt/Qt
-  Files:
-  - '%{_datadir}/%{name}/patches'

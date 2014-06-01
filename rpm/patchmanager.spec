@@ -17,7 +17,7 @@ Version:    0.1
 Release:    1
 Group:      Qt/Qt
 License:    TODO
-URL:        http://github.com/SfietKonstantin/patchmanager
+URL:        https://github.com/sailfishos-patches/patchmanager
 Source0:    %{name}-%{version}.tar.bz2
 Source100:  patchmanager.yaml
 Requires:   ausmt
@@ -42,17 +42,6 @@ Requires:   %{name} = %{version}-%{release}
 patchmanager allows managing system patch
 on your SailfishOS device easily. This package
 contains the GUI.
-
-
-%package patches
-Summary:    A set of patches for patchmanager
-Group:      Qt/Qt
-Requires:   %{name} = %{version}-%{release}
-
-%description patches
-patchmanager allows managing system patch
-on your SailfishOS device easily. This package
-contains a set of patches.
 
 
 %prep
@@ -118,9 +107,3 @@ dbus-send --system --type=method_call \
 %{_datadir}/icons/
 # >> files ui
 # << files ui
-
-%files patches
-%defattr(-,root,root,-)
-%{_datadir}/%{name}/patches
-# >> files patches
-# << files patches

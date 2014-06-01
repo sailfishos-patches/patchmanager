@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
-SUBDIRS = src patches
+SUBDIRS = src
 
 OTHER_FILES += rpm/patchmanager.yaml \
     rpm/patchmanager.spec

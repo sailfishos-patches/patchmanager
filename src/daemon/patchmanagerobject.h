@@ -44,6 +44,7 @@ struct Patch
     QString name;
     QString description;
     QString category;
+    QString categoryCode;
     bool available;
     QVariantMap infos;
 };

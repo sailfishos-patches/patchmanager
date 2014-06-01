@@ -3,7 +3,7 @@
     <interface name="org.SfietKonstantin.patchmanager">
         <method name="listPatches">
             <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QList&lt;Patch&gt;"/>
-            <arg name="result" type="a(ssssba{sv})" direction="out" />
+            <arg name="result" type="a(sssssba{sv})" direction="out" />
         </method>
         <method name="isPatchApplied">
             <arg name="patch" type="s" direction="in" />

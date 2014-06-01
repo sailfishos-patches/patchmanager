@@ -43,59 +43,86 @@
 #include <QtQml/QQmlEngine>
 #include <QtQuick/QQuickView>
 
+static const char *HOMESCREEN_CODE = "homescreen";
+static const char *MESSAGES_CODE = "messages";
+static const char *PHONE_CODE = "phone";
+static const char *SILICA_CODE = "silica";
+
 static const char *PAYPAL_DONATE = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&"
                                    "hosted_button_id=R6AJV4U2G33XG";
 
-class LipstickPandora: public QObject
+static void toggleSet(QSet<QString> &set, const QString &entry)
+{
+    if (set.contains(entry)) {
+        set.remove(entry);
+    } else {
+        set.insert(entry);
+    }
+}
+
+class Helper: public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool dumpEnabled READ dumpEnabled WRITE setDumpEnabled NOTIFY dumpEnabledChanged)
+    Q_PROPERTY(bool appsNeedRestart READ isAppsNeedRestart NOTIFY appsNeedRestartChanged)
+    Q_PROPERTY(bool homescreenNeedRestart READ isHomescreenNeedRestart NOTIFY homescreenNeedRestartChanged)
 public:
-    explicit LipstickPandora(QObject *parent = 0);
+    explicit Helper(QObject *parent = 0);
     Q_INVOKABLE bool isEnabled() const;
     Q_INVOKABLE bool hasDump() const;
     Q_INVOKABLE bool hasInstalled() const;
     bool dumpEnabled() const;
     void setDumpEnabled(bool dumpEnabled);
+    bool isAppsNeedRestart() const;
+    bool isHomescreenNeedRestart() const;
 public slots:
+    void patchToggleService(const QString &patch, const QString &code);
+    void restartServices();
     void restartLipstick();
 signals:
     void dumpEnabledChanged();
+    void appsNeedRestartChanged();
+    void homescreenNeedRestartChanged();
 private:
     bool m_dumpEnabled;
+    QSet<QString> m_homescreenPatches;
+    QSet<QString> m_voiceCallPatches;
+    QSet<QString> m_messagesPatches;
+    bool m_appsNeedRestart;
+    bool m_homescreenNeedRestart;
 };
 
-LipstickPandora::LipstickPandora(QObject *parent)
-    : QObject(parent)
+Helper::Helper(QObject *parent)
+    : QObject(parent), m_appsNeedRestart(false), m_homescreenNeedRestart(false)
 {
     QSettings settings ("SfietKonstantin", "lipstick-pandora");
     m_dumpEnabled = settings.value("dump/enable", false).toBool();
 }
 
-bool LipstickPandora::isEnabled() const
+bool Helper::isEnabled() const
 {
     QFile file ("/opt/lipstick-pandora/lipstick-pandora");
     return file.exists();
 }
 
-bool LipstickPandora::hasDump() const
+bool Helper::hasDump() const
 {
     QDir dir ("/home/nemo/lipstick-pandora");
     return dir.exists();
 }
 
-bool LipstickPandora::hasInstalled() const
+bool Helper::hasInstalled() const
 {
     QDir dir ("/opt/lipstick-pandora/qml");
     return dir.exists();
 }
 
-bool LipstickPandora::dumpEnabled() const
+bool Helper::dumpEnabled() const
 {
     return m_dumpEnabled;
 }
 
-void LipstickPandora::setDumpEnabled(bool dumpEnabled)
+void Helper::setDumpEnabled(bool dumpEnabled)
 {
     if (m_dumpEnabled != dumpEnabled) {
         QSettings settings ("SfietKonstantin", "lipstick-pandora");
@@ -105,7 +132,74 @@ void LipstickPandora::setDumpEnabled(bool dumpEnabled)
     }
 }
 
-void LipstickPandora::restartLipstick()
+bool Helper::isAppsNeedRestart() const
+{
+    return m_appsNeedRestart;
+}
+
+bool Helper::isHomescreenNeedRestart() const
+{
+    return m_homescreenNeedRestart;
+}
+
+void Helper::patchToggleService(const QString &patch, const QString &code)
+{
+    if (code == HOMESCREEN_CODE || code == SILICA_CODE) {
+        toggleSet(m_homescreenPatches, patch);
+    } else if (code == MESSAGES_CODE) {
+        toggleSet(m_messagesPatches, patch);
+    } else if (code == PHONE_CODE) {
+        toggleSet(m_voiceCallPatches, patch);
+    }
+
+    bool newAppsNeedRestart = (!m_messagesPatches.isEmpty() || !m_voiceCallPatches.isEmpty());
+    bool newHomescreenNeedRestart = !m_homescreenPatches.isEmpty();
+
+    if (m_appsNeedRestart != newAppsNeedRestart) {
+        m_appsNeedRestart = newAppsNeedRestart;
+        emit appsNeedRestartChanged();
+    }
+
+    if (m_homescreenNeedRestart != newHomescreenNeedRestart) {
+        m_homescreenNeedRestart = newHomescreenNeedRestart;
+        emit homescreenNeedRestartChanged();
+    }
+}
+
+void Helper::restartServices()
+{
+    if (!m_messagesPatches.isEmpty()) {
+        QStringList arguments;
+        arguments << "jolla-messages";
+        QProcess::execute("killall", arguments);
+        m_messagesPatches.clear();
+    }
+
+    if (!m_voiceCallPatches.isEmpty()) {
+        QStringList arguments;
+        arguments << "voicecall-ui";
+        QProcess::execute("killall", arguments);
+        m_voiceCallPatches.clear();
+    }
+
+    if (m_appsNeedRestart) {
+        m_appsNeedRestart = false;
+        emit appsNeedRestartChanged();
+    }
+
+    if (m_homescreenNeedRestart) {
+        QStringList arguments;
+        arguments << "--user" << "restart" << "lipstick.service";
+        QProcess::startDetached("systemctl", arguments);
+    }
+
+    if (m_homescreenNeedRestart) {
+        m_homescreenNeedRestart = false;
+        emit homescreenNeedRestartChanged();
+    }
+}
+
+void Helper::restartLipstick()
 {
     QStringList arguments;
     arguments << "--user" << "restart" << "lipstick.service";
@@ -114,7 +208,7 @@ void LipstickPandora::restartLipstick()
 
 int main(int argc, char *argv[])
 {
-    qmlRegisterType<LipstickPandora>("org.SfietKonstantin.patchmanager", 1, 0, "LipstickPandora");
+    qmlRegisterType<Helper>("org.SfietKonstantin.patchmanager", 1, 0, "Helper");
     QGuiApplication *app = SailfishApp::application(argc, argv);
     QQuickView *view = SailfishApp::createView();
     view->engine()->rootContext()->setContextProperty("PAYPAL_DONATE", PAYPAL_DONATE);

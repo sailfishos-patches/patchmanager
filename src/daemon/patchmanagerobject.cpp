@@ -52,6 +52,7 @@
 static const char *SERVICE = "org.SfietKonstantin.patchmanager";
 static const char *PATH = "/org/SfietKonstantin/patchmanager";
 static const char *PATCHES_DIR = "/usr/share/patchmanager/patches";
+static const char *PATCHES_ADDITIONAL_DIR = "/var/lib/patchmanager/ausmt/patches";
 static const char *PATCH_FILE = "patch.json";
 
 static const char *NAME_KEY = "name";
@@ -63,7 +64,53 @@ static const char *AUSMT_INSTALLED_LIST_FILE = "/var/lib/patchmanager/ausmt/pack
 static const char *AUSMT_INSTALL = "/opt/ausmt/ausmt-install";
 static const char *AUSMT_REMOVE = "/opt/ausmt/ausmt-remove";
 
-bool patchSort(const Patch &patch1, const Patch &patch2)
+static const char *BROWSER_CODE = "browser";
+static const char *CAMERA_CODE = "camera";
+static const char *CALENDAR_CODE = "calendar";
+static const char *CLOCK_CODE = "clock";
+static const char *CONTACTS_CODE = "contacts";
+static const char *EMAIL_CODE = "email";
+static const char *GALLERY_CODE = "gallery";
+static const char *HOMESCREEN_CODE = "homescreen";
+static const char *MEDIA_CODE = "media";
+static const char *MESSAGES_CODE = "messages";
+static const char *PHONE_CODE = "phone";
+static const char *SILICA_CODE = "silica";
+static const char *SETTINGS_CODE = "settings";
+
+static QString categoryFromCode(const QString &code)
+{
+    if (code == BROWSER_CODE) {
+        return QObject::tr("Browser");
+    } else if (code == CAMERA_CODE) {
+        return QObject::tr("Camera");
+    } else if (code == CALENDAR_CODE) {
+        return QObject::tr("Calendar");
+    } else if (code == CLOCK_CODE) {
+        return QObject::tr("Clock");
+    } else if (code == CONTACTS_CODE) {
+        return QObject::tr("Contacts");
+    } else if (code == EMAIL_CODE) {
+        return QObject::tr("Email");
+    } else if (code == GALLERY_CODE) {
+        return QObject::tr("Gallery");
+    } else if (code == HOMESCREEN_CODE) {
+        return QObject::tr("Homescreen");
+    } else if (code == MEDIA_CODE) {
+        return QObject::tr("Media");
+    } else if (code == MESSAGES_CODE) {
+        return QObject::tr("Messages");
+    } else if (code == PHONE_CODE) {
+        return QObject::tr("Phone");
+    } else if (code == SILICA_CODE) {
+        return QObject::tr("Silica");
+    } else if (code == SETTINGS_CODE) {
+        return QObject::tr("Settings");
+    }
+    return QObject::tr("Other");
+}
+
+static bool patchSort(const Patch &patch1, const Patch &patch2)
 {
     if (patch1.category == patch2.category) {
         return patch1.name < patch2.name;
@@ -75,7 +122,8 @@ bool patchSort(const Patch &patch1, const Patch &patch2)
 QDBusArgument &operator<<(QDBusArgument &argument, const Patch &patch)
 {
     argument.beginStructure();
-    argument << patch.patch << patch.name << patch.description << patch.category << patch.available;
+    argument << patch.patch << patch.name << patch.description << patch.category
+             << patch.categoryCode << patch.available;
     argument.beginMap(qMetaTypeId<QString>(), qMetaTypeId<QDBusVariant>());
     foreach (const QString &key, patch.infos.keys()) {
         argument.beginMapEntry();
@@ -90,7 +138,8 @@ QDBusArgument &operator<<(QDBusArgument &argument, const Patch &patch)
 const QDBusArgument &operator>>(const QDBusArgument &argument, Patch &patch)
 {
     argument.beginStructure();
-    argument >> patch.patch >> patch.name >> patch.description >> patch.category >> patch.available;
+    argument >> patch.patch >> patch.name >> patch.description >> patch.category
+             >> patch.categoryCode >> patch.available;
     patch.infos.clear();
     argument.beginMap();
     while (!argument.atEnd()) {
@@ -129,16 +178,17 @@ static inline bool makePatch(const QDir &root, const QString &patchPath, Patch *
     const QJsonObject &object = document.object();
     QString name = object.value(NAME_KEY).toString().trimmed();
     QString description = object.value(DESCRIPTION_KEY).toString().trimmed();
-    QString category = object.value(CATEGORY_KEY).toString().trimmed();
+    QString categoryCode = object.value(CATEGORY_KEY).toString().trimmed();
 
-    if (name.isEmpty() || description.isEmpty() || category.isEmpty()) {
+    if (name.isEmpty() || description.isEmpty() || categoryCode.isEmpty()) {
         return false;
     }
 
     patch->patch = patchPath;
     patch->name = name;
     patch->description = description;
-    patch->category = category;
+    patch->category = categoryFromCode(categoryCode);
+    patch->categoryCode = categoryCode;
     patch->available = available;
     patch->infos.clear();
     QJsonObject infos = object.value(INFOS_KEY).toObject();
@@ -149,15 +199,19 @@ static inline bool makePatch(const QDir &root, const QString &patchPath, Patch *
     return true;
 }
 
-static inline QList<Patch> listPatchesFromDir(const QString &dir)
+static inline QList<Patch> listPatchesFromDir(const QString &dir, QSet<QString> &existingPatches,
+                                              bool existing = true)
 {
     QList<Patch> patches;
     QDir root (dir);
     foreach (const QString &patchPath, root.entryList(QDir::AllDirs | QDir::NoDotAndDotDot)) {
-        Patch patch;
-        bool ok = makePatch(root, patchPath, &patch, true);
-        if (ok) {
-            patches.append(patch);
+        if (!existingPatches.contains(patchPath)) {
+            Patch patch;
+            bool ok = makePatch(root, patchPath, &patch, existing);
+            if (ok) {
+                patches.append(patch);
+                existingPatches.insert(patchPath);
+            }
         }
     }
     return patches;
@@ -356,6 +410,8 @@ bool PatchManagerObject::event(QEvent *e)
 
 void PatchManagerObject::refreshPatchList()
 {
-    m_patches = listPatchesFromDir(PATCHES_DIR);
+    QSet<QString> existingPatches;
+    m_patches = listPatchesFromDir(PATCHES_DIR, existingPatches);
+    m_patches.append(listPatchesFromDir(PATCHES_ADDITIONAL_DIR, existingPatches, false));
     std::sort(m_patches.begin(), m_patches.end(), patchSort);
 }

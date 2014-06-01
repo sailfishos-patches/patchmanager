@@ -45,13 +45,13 @@ Page {
         busType: DBusInterface.SystemBus
         function listPatches() {
             typedCallWithReturn("listPatches", [], function (patches) {
-                var available = []
                 for (var i = 0; i < patches.length; i++) {
                     patchModel.append({"patch": patches[i][0],
                                   "name": patches[i][1],
                                   "description": patches[i][2],
                                   "category": patches[i][3],
-                                  "available": patches[i][4]})
+                                  "categoryCode": patches[i][4],
+                                  "available": patches[i][5]})
                 }
             })
         }
@@ -59,15 +59,15 @@ Page {
         Component.onCompleted: listPatches()
     }
 
-    LipstickPandora {
-        id: lipstickPandora
+    Helper {
+        id: helper
     }
 
     SilicaListView {
         id: view
         anchors.fill: parent
         header: PageHeader {
-            title: "PatchManager"
+            title: "patchmanager"
         }
         model: ListModel {
             id: patchModel
@@ -94,6 +94,7 @@ Page {
                             background.applied = true
                         }
                         appliedSwitch.busy = false
+                        helper.patchToggleService(model.patch, model.categoryCode)
                         checkApplicability()
                     })
                 } else {
@@ -104,6 +105,7 @@ Page {
                             background.applied = false
                         }
                         appliedSwitch.busy = false
+                        helper.patchToggleService(model.patch, model.categoryCode)
                         if (!model.available) {
                             patchModel.remove(model.index)
                         } else {
@@ -116,12 +118,12 @@ Page {
             onClicked: {
                 pageStack.push(Qt.resolvedUrl("PatchPage.qml"),
                                {"name": model.name, "description": model.description,
-                                "delegate": background})
+                                "available": model.available, "delegate": background})
             }
 
             function checkPandora(canApply) {
-                if (model.category.toLowerCase() == "pandora") {
-                    if (lipstickPandora.hasInstalled()) {
+                if (model.categoryCode == "homescreen") {
+                    if (helper.hasInstalled()) {
                         return canApply
                     } else {
                         return false
@@ -159,6 +161,7 @@ Page {
                 anchors.verticalCenter: parent.verticalCenter
                 text: model.name
                 color: background.down ? Theme.highlightColor : Theme.primaryColor
+                truncationMode: TruncationMode.Fade
             }
         }
 
@@ -172,18 +175,16 @@ Page {
                 id: lipstickPandoraMenu
                 text: "Manage lipstick-pandora"
                 Component.onCompleted: {
-                    lipstickPandoraMenu.enabled = lipstickPandora.isEnabled()
+                    lipstickPandoraMenu.enabled = helper.isEnabled()
                 }
                 onClicked: pageStack.push(Qt.resolvedUrl("LipstickPandoraPage.qml"))
             }
 
             MenuItem {
-                id: lipstickRestartMenu
-                text: "Restart lipstick"
-                Component.onCompleted: {
-                    lipstickRestartMenu.enabled = lipstickPandora.isEnabled()
-                }
-                onClicked: lipstickPandora.restartLipstick()
+                text: "Restart preloaded services"
+                enabled: helper.appsNeedRestart || helper.homescreenNeedRestart
+                onClicked: pageStack.push(Qt.resolvedUrl("RestartServicesDialog.qml"),
+                                                         {"helper": helper})
             }
         }
 

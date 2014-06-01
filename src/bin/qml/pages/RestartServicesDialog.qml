@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
+ * Copyright (C) 2014 Lucien XU <sfietkonstantin@free.fr>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -31,67 +31,40 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import org.SfietKonstantin.patchmanager 1.0
 
-Page {
+
+Dialog {
     id: container
-    property alias name: name.text
-    property alias description: description.text
-    property QtObject delegate
-    property bool available
-    signal doPatch
+    property Helper helper
+    onAccepted: helper.restartServices()
 
     SilicaFlickable {
-        id: view
         anchors.fill: parent
-
         Column {
-            width: view.width
             spacing: Theme.paddingMedium
-
-            PageHeader {
-                title: "Patch information"
+            anchors.left: parent.left; anchors.right: parent.right
+            DialogHeader {
+                acceptText: "Restart services"
             }
 
             Label {
-                visible: !container.available
-                color: Theme.primaryColor
-                anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
-                anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
-                wrapMode: Text.WordWrap
-                font.pixelSize: Theme.fontSizeLarge
-                text: "This patch is no available anymore. You won't be able to reinstall it."
-            }
-
-            Label {
-                id: name
-                color: Theme.highlightColor
-                anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
-                anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
-                wrapMode: Text.WordWrap
-                font.pixelSize: Theme.fontSizeLarge
-            }
-
-
-            Label {
-                id: description
-                color: Theme.highlightColor
-                anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
-                anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
-                wrapMode: Text.WordWrap
-            }
-        }
-
-        PullDownMenu {
-            enabled: !container.delegate.applying || active
-            MenuItem {
-                text: container.delegate.applying ? "Patch being applied" : (container.delegate.applied ? "Unapply patch" : "Apply patch")
-                enabled: !container.delegate.applying
-                onClicked: {
-                    container.delegate.doPatch()
-                    if (!container.available) {
-                        pageStack.pop()
+                function getText() {
+                    if (helper.appsNeedRestart && helper.homescreenNeedRestart) {
+                        return "Both preloaded services (dialer, messages) and the homescreen will now be restarted. Your device might be unusable for a short moment."
+                    } else if (helper.appsNeedRestart) {
+                        return "Preloaded services (dialer, messages) will now be restarted. These application might take time to load for a short moment."
+                    } else if (helper.homescreenNeedRestart) {
+                        return "The homescreen will now be restarted. Your device might be unusable for a short moment."
                     }
+                    return ""
                 }
+
+                anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
+                anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
+                wrapMode: Text.WordWrap
+                color: Theme.highlightColor
+                text: getText()
             }
         }
     }

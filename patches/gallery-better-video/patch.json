@@ -1,6 +1,0 @@
-{
-    "name": "Better video controls",
-    "description": "Patches the default behaviour of Gallery video player, for a smoother seek experience",
-    "category": "Gallery",
-    "infos": {}
-}

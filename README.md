@@ -56,6 +56,7 @@ The category entry must be in the following list
 - messages
 - phone
 - settings
+- silica
 - others
 
 Some of these entries allow specific actions to be triggered, such as relaunching the homescreen

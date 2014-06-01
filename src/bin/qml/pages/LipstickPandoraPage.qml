@@ -37,8 +37,8 @@ import org.SfietKonstantin.patchmanager 1.0
 Page {
     id: container
 
-    LipstickPandora {
-        id: lipstickPandora
+    Helper {
+        id: helper
     }
 
     DBusInterface {
@@ -71,8 +71,8 @@ Page {
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
                 function getText() {
-                    if (!lipstickPandora.hasInstalled()) {
-                        if (lipstickPandora.hasDump()) {
+                    if (!helper.hasInstalled()) {
+                        if (helper.hasDump()) {
                             return "Install lipstick-pandora"
                         } else {
                             return "Perform QML dump"
@@ -83,19 +83,19 @@ Page {
                 }
                 text: getText()
                 onClicked: {
-                    if (!lipstickPandora.hasInstalled()) {
-                        if (lipstickPandora.hasDump()) {
-                            lipstickPandora.dumpEnabled = false
+                    if (!helper.hasInstalled()) {
+                        if (helper.hasDump()) {
+                            helper.dumpEnabled = false
                             dbusInterface.call("installLipstickPandora", [])
-                            lipstickPandora.restartLipstick()
+                            helper.restartLipstick()
 
                         } else {
-                            lipstickPandora.dumpEnabled = true
-                            lipstickPandora.restartLipstick()
+                            helper.dumpEnabled = true
+                            helper.restartLipstick()
                         }
                     } else {
                         dbusInterface.call("uninstallLipstickPandora", [])
-                        lipstickPandora.restartLipstick()
+                        helper.restartLipstick()
                     }
                 }
             }
