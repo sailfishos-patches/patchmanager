@@ -155,6 +155,22 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, Patch &patch)
     return argument;
 }
 
+QDBusArgument &operator<<(QDBusArgument &argument, const PackageBackupStatus &status)
+{
+    argument.beginStructure();
+    argument << status.isBackupOk << status.alteredOriginalFiles << status.alteredBackupFiles;
+    argument.endStructure();
+    return argument;
+}
+
+const QDBusArgument &operator>>(const QDBusArgument &argument, PackageBackupStatus &status)
+{
+    argument.beginStructure();
+    argument >> status.isBackupOk >> status.alteredOriginalFiles >> status.alteredBackupFiles;
+    argument.endStructure();
+    return argument;
+}
+
 static inline bool makePatch(const QDir &root, const QString &patchPath, Patch *patch, bool available)
 {
     QDir patchDir (root);
@@ -256,6 +272,7 @@ void PatchManagerObject::registerDBus()
     if (!m_dbusRegistered) {
         qDBusRegisterMetaType<Patch>();
         qDBusRegisterMetaType<QList<Patch> >();
+        qDBusRegisterMetaType<PackageBackupStatus>();
 
         // DBus
         QDBusConnection connection = QDBusConnection::systemBus();
@@ -377,20 +394,43 @@ bool PatchManagerObject::unapplyPatch(const QString &patch)
 //    refreshPatchList();
 //}
 
-void PatchManagerObject::installLipstickPandora()
+PackageBackupStatus PatchManagerObject::checkLipstick()
 {
     m_timer->stop();
-    QProcess::execute("mv /home/nemo/lipstick-pandora/:qml /opt/lipstick-pandora/qml");
-    QProcess::execute("/usr/share/patchmanager/tools/pandora-md5sum.sh");
-    QProcess::execute("rm -r /home/nemo/lipstick-pandora");
-    m_timer->start();
-}
+    PackageBackupStatus status;
 
-void PatchManagerObject::uninstallLipstickPandora()
-{
-    m_timer->stop();
-    QProcess::execute("rm -r /opt/lipstick-pandora/qml");
+    QStringList args;
+    args.append("lipstick-jolla-home-qt5");
+    int returnCode = QProcess::execute("/usr/share/patchmanager/tools/check-package.sh", args);
+    if (!returnCode) {
+        status.isBackupOk = true;
+        m_timer->start();
+        return status;
+    }
+
+    status.isBackupOk = false;
+    QFile original ("/var/lib/patchmanager/check-package-lipstick-jolla-home-qt5-original.log");
+    if (original.exists()) {
+        if (original.open(QIODevice::ReadOnly)) {
+            while (!original.atEnd()) {
+                status.alteredOriginalFiles.append(QString::fromLocal8Bit(original.readLine()));
+            }
+            original.close();
+        }
+    }
+
+    QFile backup ("/var/lib/patchmanager/check-package-lipstick-jolla-home-qt5-backup.log");
+    if (backup.exists()) {
+        if (backup.open(QIODevice::ReadOnly)) {
+            while (!backup.atEnd()) {
+                status.alteredBackupFiles.append(QString::fromLocal8Bit(backup.readLine()));
+            }
+            backup.close();
+        }
+    }
+
     m_timer->start();
+    return status;
 }
 
 void PatchManagerObject::quit()

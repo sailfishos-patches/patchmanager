@@ -37,8 +37,15 @@ import org.SfietKonstantin.patchmanager 1.0
 Page {
     id: container
 
+    onStatusChanged: {
+        if (status == PageStatus.Active && container.state == "") {
+            listPatchDbusInterface.listPatches()
+            checkLipstickDBus.checkLipstick()
+        }
+    }
+
     DBusInterface {
-        id: dbusInterface
+        id: listPatchDbusInterface
         destination: "org.SfietKonstantin.patchmanager"
         path: "/org/SfietKonstantin/patchmanager"
         iface: "org.SfietKonstantin.patchmanager"
@@ -55,16 +62,53 @@ Page {
                 }
             })
         }
+    }
 
-        Component.onCompleted: listPatches()
+    DBusInterface {
+        id: checkLipstickDBus
+        destination: "org.SfietKonstantin.patchmanager"
+        path: "/org/SfietKonstantin/patchmanager"
+        iface: "org.SfietKonstantin.patchmanager"
+        busType: DBusInterface.SystemBus
+        function checkLipstick() {
+            typedCallWithReturn("checkLipstick", [], function (status) {
+                var isOk = status[0]
+                var alteredOriginalFiles = status[1]
+                var alteredBackupFiles = status[2]
+
+                if (!isOk) {
+                    var page = pageStack.push(Qt.resolvedUrl("LipstickWarningDialog.qml"))
+                    for (var i = 0; i < alteredOriginalFiles.length; i++) {
+                        page.model.append({"section": "Altered original files",
+                                           "file": alteredOriginalFiles[i]})
+                    }
+
+                    for (i = 0; i < alteredBackupFiles.length; i++) {
+                        page.model.append({"section": "Altered backup files",
+                                           "file": alteredBackupFiles[i]})
+                    }
+                }
+                container.state = "ready"
+            })
+        }
     }
 
     Helper {
         id: helper
     }
 
+
+    BusyIndicator {
+        id: indicator
+        running: visible
+        anchors.centerIn: parent
+        size: BusyIndicatorSize.Large
+    }
+
+
     SilicaListView {
         id: view
+        visible: false
         anchors.fill: parent
         header: PageHeader {
             title: "patchmanager"
@@ -87,7 +131,7 @@ Page {
                 appliedSwitch.enabled = false
                 appliedSwitch.busy = true
                 if (!background.applied) {
-                    dbusInterface.typedCallWithReturn("applyPatch",
+                    listPatchDbusInterface.typedCallWithReturn("applyPatch",
                                                       [{"type": "s", "value": model.patch}],
                     function (ok) {
                         if (ok) {
@@ -98,7 +142,7 @@ Page {
                         checkApplicability()
                     })
                 } else {
-                    dbusInterface.typedCallWithReturn("unapplyPatch",
+                    listPatchDbusInterface.typedCallWithReturn("unapplyPatch",
                                                       [{"type": "s", "value": model.patch}],
                     function (ok) {
                         if (ok) {
@@ -121,23 +165,12 @@ Page {
                                 "available": model.available, "delegate": background})
             }
 
-            function checkPandora(canApply) {
-                if (model.categoryCode == "homescreen") {
-                    if (helper.hasInstalled()) {
-                        return canApply
-                    } else {
-                        return false
-                    }
-                }
-                return canApply
-            }
-
             function checkApplicability() {
-                appliedSwitch.enabled = checkPandora(background.canApply)
+                appliedSwitch.enabled = background.canApply
             }
 
             Component.onCompleted: {
-                dbusInterface.typedCallWithReturn("isPatchApplied",
+                listPatchDbusInterface.typedCallWithReturn("isPatchApplied",
                                                   [{"type": "s", "value": model.patch}],
                 function (applied) {
                     background.applied = applied
@@ -172,15 +205,6 @@ Page {
             }
 
             MenuItem {
-                id: lipstickPandoraMenu
-                text: "Manage lipstick-pandora"
-                Component.onCompleted: {
-                    lipstickPandoraMenu.enabled = helper.isEnabled()
-                }
-                onClicked: pageStack.push(Qt.resolvedUrl("LipstickPandoraPage.qml"))
-            }
-
-            MenuItem {
                 text: "Restart preloaded services"
                 enabled: helper.appsNeedRestart || helper.homescreenNeedRestart
                 onClicked: pageStack.push(Qt.resolvedUrl("RestartServicesDialog.qml"),
@@ -190,6 +214,20 @@ Page {
 
         VerticalScrollDecorator {}
     }
+
+    states: [
+        State {
+            name: "ready"
+            PropertyChanges {
+                target: indicator
+                visible: false
+            }
+            PropertyChanges {
+                target: view
+                visible: true
+            }
+        }
+    ]
 }
 
 

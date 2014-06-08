@@ -32,72 +32,49 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import org.nemomobile.dbus 1.0
-import org.SfietKonstantin.patchmanager 1.0
 
-Page {
+Dialog {
     id: container
+    property alias model: model
 
-    Helper {
-        id: helper
+    ListModel {
+        id: model
     }
 
-    DBusInterface {
-        id: dbusInterface
-        destination: "org.SfietKonstantin.patchmanager"
-        path: "/org/SfietKonstantin/patchmanager"
-        iface: "org.SfietKonstantin.patchmanager"
-        busType: DBusInterface.SystemBus
-    }
-
-    SilicaFlickable {
+    SilicaListView {
         id: view
         anchors.fill: parent
-        contentHeight: column.height
-        Column {
-            id: column
+        model: model
+        header: Column {
             width: view.width
-            spacing: Theme.paddingMedium
-            PageHeader {
-                title: "Manage lipstick-pandora"
+            DialogHeader {
+                title: "Homescreen backup"
             }
 
             Label {
                 anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
                 anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
-                text: "Note: Changing lipstick-pandora settings will restart the homescreen."
                 wrapMode: Text.WordWrap
+                text: "Warning ! The backup copy of homescreen QML files are corrupted, and this cannot be fixed. Please be sure to restore homescreen by running zypper in -f lipstick-jolla-home-qt5 before rebooting, or you risk bricking your device without being able to recover it."
+                color: Theme.highlightColor
+
             }
+        }
 
-            Button {
-                anchors.horizontalCenter: parent.horizontalCenter
-                function getText() {
-                    if (!helper.hasInstalled()) {
-                        if (helper.hasDump()) {
-                            return "Install lipstick-pandora"
-                        } else {
-                            return "Perform QML dump"
-                        }
-                    } else {
-                        return "Disable lipstick-pandora"
-                    }
-                }
-                text: getText()
-                onClicked: {
-                    if (!helper.hasInstalled()) {
-                        if (helper.hasDump()) {
-                            helper.dumpEnabled = false
-                            dbusInterface.call("installLipstickPandora", [])
-                            helper.restartLipstick()
+        section.property: "section"
+        section.delegate: SectionHeader {
+            text: section
+        }
 
-                        } else {
-                            helper.dumpEnabled = true
-                            helper.restartLipstick()
-                        }
-                    } else {
-                        dbusInterface.call("uninstallLipstickPandora", [])
-                        helper.restartLipstick()
-                    }
-                }
+        delegate: Item {
+            width: view.width
+            height: childrenRect.height
+            Label {
+                anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
+                anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
+                color: Theme.secondaryHighlightColor
+                text: model.file
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             }
         }
     }

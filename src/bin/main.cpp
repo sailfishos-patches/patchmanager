@@ -63,16 +63,10 @@ static void toggleSet(QSet<QString> &set, const QString &entry)
 class Helper: public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(bool dumpEnabled READ dumpEnabled WRITE setDumpEnabled NOTIFY dumpEnabledChanged)
     Q_PROPERTY(bool appsNeedRestart READ isAppsNeedRestart NOTIFY appsNeedRestartChanged)
     Q_PROPERTY(bool homescreenNeedRestart READ isHomescreenNeedRestart NOTIFY homescreenNeedRestartChanged)
 public:
     explicit Helper(QObject *parent = 0);
-    Q_INVOKABLE bool isEnabled() const;
-    Q_INVOKABLE bool hasDump() const;
-    Q_INVOKABLE bool hasInstalled() const;
-    bool dumpEnabled() const;
-    void setDumpEnabled(bool dumpEnabled);
     bool isAppsNeedRestart() const;
     bool isHomescreenNeedRestart() const;
 public slots:
@@ -80,11 +74,9 @@ public slots:
     void restartServices();
     void restartLipstick();
 signals:
-    void dumpEnabledChanged();
     void appsNeedRestartChanged();
     void homescreenNeedRestartChanged();
 private:
-    bool m_dumpEnabled;
     QSet<QString> m_homescreenPatches;
     QSet<QString> m_voiceCallPatches;
     QSet<QString> m_messagesPatches;
@@ -95,41 +87,6 @@ private:
 Helper::Helper(QObject *parent)
     : QObject(parent), m_appsNeedRestart(false), m_homescreenNeedRestart(false)
 {
-    QSettings settings ("SfietKonstantin", "lipstick-pandora");
-    m_dumpEnabled = settings.value("dump/enable", false).toBool();
-}
-
-bool Helper::isEnabled() const
-{
-    QFile file ("/opt/lipstick-pandora/lipstick-pandora");
-    return file.exists();
-}
-
-bool Helper::hasDump() const
-{
-    QDir dir ("/home/nemo/lipstick-pandora");
-    return dir.exists();
-}
-
-bool Helper::hasInstalled() const
-{
-    QDir dir ("/opt/lipstick-pandora/qml");
-    return dir.exists();
-}
-
-bool Helper::dumpEnabled() const
-{
-    return m_dumpEnabled;
-}
-
-void Helper::setDumpEnabled(bool dumpEnabled)
-{
-    if (m_dumpEnabled != dumpEnabled) {
-        QSettings settings ("SfietKonstantin", "lipstick-pandora");
-        settings.setValue("dump/enable", dumpEnabled);
-        m_dumpEnabled = dumpEnabled;
-        emit dumpEnabledChanged();
-    }
 }
 
 bool Helper::isAppsNeedRestart() const

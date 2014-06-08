@@ -38,6 +38,6 @@ dbusConf.path = /etc/dbus-1/system.d/
 INSTALLS += dbusConf
 
 # Tools
-tools.files = pandora-md5sum.sh
+tools.files = check-package.sh
 tools.path = /usr/share/patchmanager/tools
 INSTALLS += tools

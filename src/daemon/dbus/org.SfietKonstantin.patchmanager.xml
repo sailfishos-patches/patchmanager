@@ -17,9 +17,11 @@
             <arg name="patch" type="s" direction="in" />
             <arg name="ok" type="b" direction="out" />
         </method>
+        <method name="checkLipstick">
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="PackageBackupStatus"/>
+            <arg name="packageStatus" type="(basas)" direction="out" />
+        </method>
         <method name="unapplyAllPatches" />
-        <method name="installLipstickPandora" />
-        <method name="uninstallLipstickPandora" />
         <method name="quit" />
     </interface>
 </node>

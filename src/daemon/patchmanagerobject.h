@@ -52,6 +52,15 @@ struct Patch
 Q_DECLARE_METATYPE(Patch)
 Q_DECLARE_METATYPE(QList<Patch>)
 
+struct PackageBackupStatus
+{
+    bool isBackupOk;
+    QStringList alteredOriginalFiles;
+    QStringList alteredBackupFiles;
+};
+
+Q_DECLARE_METATYPE(PackageBackupStatus)
+
 class QDBusInterface;
 class PatchManagerObject : public QObject
 {
@@ -67,9 +76,7 @@ public slots:
     bool applyPatch(const QString &patch);
     bool unapplyPatch(const QString &patch);
 //    void unapplyAllPatches();
-//    void checkPatches();
-    void installLipstickPandora();
-    void uninstallLipstickPandora();
+    PackageBackupStatus checkLipstick();
     void quit();
 protected:
     bool event(QEvent *e);

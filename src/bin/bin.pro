@@ -11,10 +11,10 @@ SOURCES += main.cpp
 OTHER_FILES += qml/main.qml \
     qml/pages/MainPage.qml \
     qml/pages/PatchPage.qml \
-    qml/pages/MainCover.qml \
-    qml/pages/LipstickPandoraPage.qml \
+    qml/pages/LipstickWarningDialog.qml \
     qml/pages/AboutPage.qml \
     qml/pages/DevelopersPage.qml \
+    qml/cover/MainCover.qml \
     data/patchmanager.png \
     data/patchmanager-big.png \
     data/sfiet_konstantin.png \
