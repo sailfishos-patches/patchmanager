@@ -36,8 +36,8 @@ import org.SfietKonstantin.patchmanager 1.0
 
 Dialog {
     id: container
-    property Helper helper
-    onAccepted: helper.restartServices()
+    property PatchManager patchManager
+    onAccepted: patchManager.restartServices()
 
     SilicaFlickable {
         anchors.fill: parent
@@ -50,11 +50,11 @@ Dialog {
 
             Label {
                 function getText() {
-                    if (helper.appsNeedRestart && helper.homescreenNeedRestart) {
+                    if (patchManager.appsNeedRestart && patchManager.homescreenNeedRestart) {
                         return "Both preloaded services (dialer, messages) and the homescreen will now be restarted. Your device might be unusable for a short moment."
-                    } else if (helper.appsNeedRestart) {
+                    } else if (patchManager.appsNeedRestart) {
                         return "Preloaded services (dialer, messages) will now be restarted. These application might take time to load for a short moment."
-                    } else if (helper.homescreenNeedRestart) {
+                    } else if (patchManager.homescreenNeedRestart) {
                         return "The homescreen will now be restarted. Your device might be unusable for a short moment."
                     }
                     return ""

@@ -1,2 +1,2 @@
 TEMPLATE = subdirs
-SUBDIRS = bin daemon
+SUBDIRS = bin qml share plugin

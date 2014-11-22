@@ -33,15 +33,26 @@ on your SailfishOS device easily. This package
 contains the system daemon.
 
 
-%package ui
-Summary:    GUI for patchmanager
+%package partnerspace-launcher
+Summary:    partnerspace launcher for patchmanager
 Group:      Qt/Qt
 Requires:   %{name} = %{version}-%{release}
 
-%description ui
+%description partnerspace-launcher
+partnerspace launcher allows launching QML
+applications as partnerspace application.
+
+
+%package -n jolla-settings-%{name}
+Summary:    Jolla settings plugin for patchmanager
+Group:      Qt/Qt
+Requires:   %{name} = %{version}-%{release}
+Conflicts:  patchmanager-ui
+
+%description -n jolla-settings-%{name}
 patchmanager allows managing system patch
 on your SailfishOS device easily. This package
-contains the GUI.
+contains the Jolla settings plugin.
 
 
 %prep
@@ -98,12 +109,18 @@ dbus-send --system --type=method_call \
 # >> files
 # << files
 
-%files ui
+%files partnerspace-launcher
 %defattr(-,root,root,-)
-%{_bindir}/%{name}-ui
-%{_datadir}/%{name}/qml
+%{_bindir}/%{name}-partnerspace-launcher
+# >> files partnerspace-launcher
+# << files partnerspace-launcher
+
+%files -n jolla-settings-%{name}
+%defattr(-,root,root,-)
+%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}
 %{_datadir}/%{name}/data
-%{_datadir}/applications/
-%{_datadir}/icons/
-# >> files ui
-# << files ui
+%{_datadir}/jolla-settings/pages/%{name}
+%{_datadir}/jolla-settings/entries/%{name}.json
+%{_datadir}/%{name}/icons/icon-m-patchmanager.png
+# >> files -n jolla-settings-%{name}
+# << files -n jolla-settings-%{name}

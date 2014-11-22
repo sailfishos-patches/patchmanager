@@ -1,1 +1,3 @@
-src/daemon/adaptor.*
+build/
+*.pro.*
+src/bin/patchmanager-daemon/adaptor.*

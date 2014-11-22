@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  *
@@ -38,7 +37,7 @@ Page {
     ListModel {
         id: model
         ListElement {
-            icon: "../../data/webosinternals.png"
+            icon: "/usr/share/patchmanager/data/webosinternals.png"
             category: "AUSMT"
             name: "webOS Internals"
             nickname: ""
@@ -47,7 +46,7 @@ Page {
             website: "http://www.webos-internals.org/wiki/Main_Page"
         }
         ListElement {
-            icon: "../../data/sfiet_konstantin.jpg"
+            icon: "/usr/share/patchmanager/data/sfiet_konstantin.jpg"
             category: "Patchmanager"
             name: "Lucien Xu"
             nickname: "Sfiet_Konstantin"
@@ -56,7 +55,7 @@ Page {
             website: "https://github.com/SfietKonstantin"
         }
         ListElement {
-            icon: "../../data/morpog.jpeg"
+            icon: "/usr/share/patchmanager/data/morpog.jpeg"
             category: "Thanks to"
             name: "Stephan Beyerle"
             nickname: "Morpog"

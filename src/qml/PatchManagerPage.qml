@@ -93,8 +93,8 @@ Page {
         }
     }
 
-    Helper {
-        id: helper
+    PatchManager {
+        id: patchManager
     }
 
 
@@ -138,7 +138,7 @@ Page {
                             background.applied = true
                         }
                         appliedSwitch.busy = false
-                        helper.patchToggleService(model.patch, model.categoryCode)
+                        patchManager.patchToggleService(model.patch, model.categoryCode)
                         checkApplicability()
                     })
                 } else {
@@ -149,7 +149,7 @@ Page {
                             background.applied = false
                         }
                         appliedSwitch.busy = false
-                        helper.patchToggleService(model.patch, model.categoryCode)
+                        patchManager.patchToggleService(model.patch, model.categoryCode)
                         if (!model.available) {
                             patchModel.remove(model.index)
                         } else {
@@ -206,9 +206,9 @@ Page {
 
             MenuItem {
                 text: "Restart preloaded services"
-                enabled: helper.appsNeedRestart || helper.homescreenNeedRestart
+                enabled: patchManager.appsNeedRestart || patchManager.homescreenNeedRestart
                 onClicked: pageStack.push(Qt.resolvedUrl("RestartServicesDialog.qml"),
-                                                         {"helper": helper})
+                                                         {"helper": patchManager})
             }
         }
 

@@ -47,7 +47,7 @@ Page {
 
             Image {
                 anchors.horizontalCenter: parent.horizontalCenter
-                source: "../../data/patchmanager-big.png"
+                source: "/usr/share/patchmanager/data/patchmanager-big.png"
             }
 
             Column {
@@ -72,7 +72,7 @@ Page {
                 wrapMode: Text.WordWrap
                 anchors.left: parent.left; anchors.right: parent.right
                 font.pixelSize: Theme.fontSizeSmall
-                text: "patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations. patchmanager integrates with lipstick-pandora, that enables homescreen modifications."
+                text: "patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations."
             }
         }
 
