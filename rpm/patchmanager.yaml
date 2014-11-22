@@ -44,14 +44,14 @@ SubPackages:
   - '%{_datadir}/applications/'
   - '%{_datadir}/icons/'
   - '%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}'
-- Name: partnerspace-launcher
-  Summary: partnerspace launcher for patchmanager
+- Name: -n partnerspacemanager-launcher
+  Summary: partnerspace launcher for partnerspacemanager
   Description: |
     partnerspace launcher allows launching QML
     applications as partnerspace application.
   Group: Qt/Qt
   Files:
-  - '%{_bindir}/%{name}-partnerspace-launcher'
+  - '%{_bindir}/partnerspacemanager-launcher'
 - Name: -n jolla-settings-%{name}
   Summary: Jolla settings plugin for patchmanager
   Description: |

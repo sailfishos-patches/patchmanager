@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = patchmanager-partnerspace-launcher
+TARGET = partnerspacemanager-launcher
 
 CONFIG += sailfishapp
 QT += gui-private

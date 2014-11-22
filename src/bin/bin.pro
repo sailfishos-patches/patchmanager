@@ -1,4 +1,4 @@
 TEMPLATE = subdirs
 SUBDIRS = patchmanager-daemon \
-#    patchmanager-ui \
-    partnerspace-launcher
+    patchmanager-ui \
+    partnerspacemanager-launcher
