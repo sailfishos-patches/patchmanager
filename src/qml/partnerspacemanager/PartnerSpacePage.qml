@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Lucien XU <sfietkonstantin@free.fr>
+ * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -29,36 +29,52 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
  */
 
-#include <sailfishapp/sailfishapp.h>
-#include <QtCore/QScopedPointer>
-#include <QtCore/QDebug>
-#include <QtGui/QGuiApplication>
-#include <QtGui/qpa/qplatformnativeinterface.h>
-#include <QtQuick/QQuickView>
-#include <mlite5/MGConfItem>
+import QtQuick 2.0
+import Sailfish.Silica 1.0
 
-static const char *PARTNERSPACEMANAGER_QML_DCONF = "/desktop/SfietKonstantin/partnerspacemanager/qmlLauncher";
+Page {
+    id: container
+    property alias name: name.text
+    property alias description: description.text
 
-int main(int argc, char *argv[])
-{
-    QScopedPointer<QGuiApplication> app (SailfishApp::application(argc, argv));
-    QScopedPointer<QQuickView> view (SailfishApp::createView());
+    SilicaFlickable {
+        id: view
+        anchors.fill: parent
 
-    MGConfItem partnerSpaceQml (PARTNERSPACEMANAGER_QML_DCONF);
-    QString qmlFile = partnerSpaceQml.value(QString()).toString();
-    if (qmlFile.isEmpty()) {
-        return 1;
+        Column {
+            width: view.width
+            spacing: Theme.paddingMedium
+
+            PageHeader {
+                title: "Partner-space information"
+            }
+
+            Label {
+                id: name
+                color: Theme.highlightColor
+                anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
+                anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
+                wrapMode: Text.WordWrap
+                font.pixelSize: Theme.fontSizeLarge
+            }
+
+
+            Label {
+                id: description
+                color: Theme.highlightColor
+                anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
+                anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
+                wrapMode: Text.WordWrap
+            }
+        }
+
+        PullDownMenu {
+            MenuItem {
+                text: container.delegate.applied ? "Disable partner-space" : "Enable partner-space"
+                onClicked: {
+                    container.delegate.toggle()
+                }
+            }
+        }
     }
-    qDebug() << "Running partner-space launcher with" << qmlFile;
-
-    view->setSource(QUrl(qmlFile));
-
-    // The view is a partner window
-    view->create();
-    QPlatformNativeInterface *native = QGuiApplication::platformNativeInterface();
-    native->setWindowProperty(view->handle(), QLatin1String("CATEGORY"), QString(QLatin1String("partner")));
-    view->show();
-
-    return app->exec();
 }
-

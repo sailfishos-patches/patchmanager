@@ -29,36 +29,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
  */
 
-#include <sailfishapp/sailfishapp.h>
-#include <QtCore/QScopedPointer>
-#include <QtCore/QDebug>
-#include <QtGui/QGuiApplication>
-#include <QtGui/qpa/qplatformnativeinterface.h>
-#include <QtQuick/QQuickView>
-#include <mlite5/MGConfItem>
+#ifndef PARTNERSPACEINFORMATION_H
+#define PARTNERSPACEINFORMATION_H
 
-static const char *PARTNERSPACEMANAGER_QML_DCONF = "/desktop/SfietKonstantin/partnerspacemanager/qmlLauncher";
+#include <QtCore/QObject>
 
-int main(int argc, char *argv[])
+class PartnerSpaceInformation : public QObject
 {
-    QScopedPointer<QGuiApplication> app (SailfishApp::application(argc, argv));
-    QScopedPointer<QQuickView> view (SailfishApp::createView());
+    Q_OBJECT
+    Q_PROPERTY(QString name READ name CONSTANT)
+    Q_PROPERTY(QString description READ description CONSTANT)
+public:
+    explicit PartnerSpaceInformation(QObject *parent = 0);
+    static PartnerSpaceInformation * create(const QString &name, const QString &description, QObject *parent = 0);
+    QString name() const;
+    QString description() const;
+private:
+    QString m_name;
+    QString m_description;
+};
 
-    MGConfItem partnerSpaceQml (PARTNERSPACEMANAGER_QML_DCONF);
-    QString qmlFile = partnerSpaceQml.value(QString()).toString();
-    if (qmlFile.isEmpty()) {
-        return 1;
-    }
-    qDebug() << "Running partner-space launcher with" << qmlFile;
-
-    view->setSource(QUrl(qmlFile));
-
-    // The view is a partner window
-    view->create();
-    QPlatformNativeInterface *native = QGuiApplication::platformNativeInterface();
-    native->setWindowProperty(view->handle(), QLatin1String("CATEGORY"), QString(QLatin1String("partner")));
-    view->show();
-
-    return app->exec();
-}
-
+#endif // PARTNERSPACEINFORMATION_H

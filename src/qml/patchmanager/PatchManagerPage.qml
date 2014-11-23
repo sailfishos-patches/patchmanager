@@ -208,8 +208,13 @@ Page {
                 text: "Restart preloaded services"
                 enabled: patchManager.appsNeedRestart || patchManager.homescreenNeedRestart
                 onClicked: pageStack.push(Qt.resolvedUrl("RestartServicesDialog.qml"),
-                                                         {"helper": patchManager})
+                                                         {"patchManager": patchManager})
             }
+        }
+
+        ViewPlaceholder {
+            enabled: patchModel.count == 0
+            text: qsTr("No patch available")
         }
 
         VerticalScrollDecorator {}

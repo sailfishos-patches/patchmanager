@@ -29,36 +29,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
  */
 
-#include <sailfishapp/sailfishapp.h>
-#include <QtCore/QScopedPointer>
-#include <QtCore/QDebug>
-#include <QtGui/QGuiApplication>
-#include <QtGui/qpa/qplatformnativeinterface.h>
-#include <QtQuick/QQuickView>
-#include <mlite5/MGConfItem>
+#include "partnerspaceinformation.h"
 
-static const char *PARTNERSPACEMANAGER_QML_DCONF = "/desktop/SfietKonstantin/partnerspacemanager/qmlLauncher";
-
-int main(int argc, char *argv[])
+PartnerSpaceInformation::PartnerSpaceInformation(QObject *parent) :
+    QObject(parent)
 {
-    QScopedPointer<QGuiApplication> app (SailfishApp::application(argc, argv));
-    QScopedPointer<QQuickView> view (SailfishApp::createView());
-
-    MGConfItem partnerSpaceQml (PARTNERSPACEMANAGER_QML_DCONF);
-    QString qmlFile = partnerSpaceQml.value(QString()).toString();
-    if (qmlFile.isEmpty()) {
-        return 1;
-    }
-    qDebug() << "Running partner-space launcher with" << qmlFile;
-
-    view->setSource(QUrl(qmlFile));
-
-    // The view is a partner window
-    view->create();
-    QPlatformNativeInterface *native = QGuiApplication::platformNativeInterface();
-    native->setWindowProperty(view->handle(), QLatin1String("CATEGORY"), QString(QLatin1String("partner")));
-    view->show();
-
-    return app->exec();
 }
 
+PartnerSpaceInformation * PartnerSpaceInformation::create(const QString &name, const QString &description, QObject *parent)
+{
+    PartnerSpaceInformation *information = new PartnerSpaceInformation(parent);
+    information->m_name = name;
+    information->m_description = description;
+    return information;
+}
+
+QString PartnerSpaceInformation::name() const
+{
+    return m_name;
+}
+
+QString PartnerSpaceInformation::description() const
+{
+    return m_description;
+}

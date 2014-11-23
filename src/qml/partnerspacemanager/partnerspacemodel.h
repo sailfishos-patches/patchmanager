@@ -29,36 +29,37 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
  */
 
-#include <sailfishapp/sailfishapp.h>
-#include <QtCore/QScopedPointer>
-#include <QtCore/QDebug>
-#include <QtGui/QGuiApplication>
-#include <QtGui/qpa/qplatformnativeinterface.h>
-#include <QtQuick/QQuickView>
-#include <mlite5/MGConfItem>
+#ifndef PARTNERSPACEMODEL_H
+#define PARTNERSPACEMODEL_H
 
-static const char *PARTNERSPACEMANAGER_QML_DCONF = "/desktop/SfietKonstantin/partnerspacemanager/qmlLauncher";
+#include <QtCore/QAbstractListModel>
 
-int main(int argc, char *argv[])
+class QDir;
+class PartnerSpaceModelData;
+class PartnerSpaceModel : public QAbstractListModel
 {
-    QScopedPointer<QGuiApplication> app (SailfishApp::application(argc, argv));
-    QScopedPointer<QQuickView> view (SailfishApp::createView());
+    Q_OBJECT
+    Q_PROPERTY(int count READ count NOTIFY countChanged)
+public:
+    enum Roles {
+        InfoRole,
+        AppliedRole
+    };
+    explicit PartnerSpaceModel(QObject *parent = 0);
+    virtual ~PartnerSpaceModel();
+    QHash<int, QByteArray> roleNames() const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    QVariant data(const QModelIndex &index, int role) const;
+    int count() const;
+signals:
+    void countChanged();
+public slots:
+    void toggle(int row);
+private:
+    void load();
+    PartnerSpaceModelData * makePartnerSpaceModelData(const QDir &root, const QString &id);
+    QList<PartnerSpaceModelData *> m_data;
+    QString m_currentPartnerSpace;
+};
 
-    MGConfItem partnerSpaceQml (PARTNERSPACEMANAGER_QML_DCONF);
-    QString qmlFile = partnerSpaceQml.value(QString()).toString();
-    if (qmlFile.isEmpty()) {
-        return 1;
-    }
-    qDebug() << "Running partner-space launcher with" << qmlFile;
-
-    view->setSource(QUrl(qmlFile));
-
-    // The view is a partner window
-    view->create();
-    QPlatformNativeInterface *native = QGuiApplication::platformNativeInterface();
-    native->setWindowProperty(view->handle(), QLatin1String("CATEGORY"), QString(QLatin1String("partner")));
-    view->show();
-
-    return app->exec();
-}
-
+#endif // PARTNERSPACEMODEL_H

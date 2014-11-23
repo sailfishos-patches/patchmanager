@@ -4,7 +4,7 @@
         {
             "path": "system_settings/look_and_feel/patchmanager",
             "type": "page",
-            "title": "Patchmanager",
+            "title": "patchmanager",
             "translation_id": "settings-patchmanager-patchmanager",
             "icon": "/usr/share/patchmanager/icons/icon-m-patchmanager.png",
             "order": 2000,

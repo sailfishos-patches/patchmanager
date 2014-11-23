@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Lucien XU <sfietkonstantin@free.fr>
+ * Copyright (C) 2013 Jolla Ltd. <chris.adams@jollamobile.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -12,9 +12,9 @@
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
  *     distribution.
- *   * The names of its contributors may not be used to endorse or promote
- *     products derived from this software without specific prior written
- *     permission.
+ *   * Neither the name of Nemo Mobile nor the names of its contributors
+ *     may be used to endorse or promote products derived from this
+ *     software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,36 +29,36 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
  */
 
-#include <sailfishapp/sailfishapp.h>
-#include <QtCore/QScopedPointer>
-#include <QtCore/QDebug>
-#include <QtGui/QGuiApplication>
-#include <QtGui/qpa/qplatformnativeinterface.h>
-#include <QtQuick/QQuickView>
-#include <mlite5/MGConfItem>
+# include <QtQml/qqml.h>
+# include <QtQml/QQmlExtensionPlugin>
+# include <QtQml/QQmlContext>
+# include <QtQml/QQmlEngine>
+#include "partnerspacemodel.h"
+#include "partnerspaceinformation.h"
 
-static const char *PARTNERSPACEMANAGER_QML_DCONF = "/desktop/SfietKonstantin/partnerspacemanager/qmlLauncher";
+static const char *PAYPAL_DONATE = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&"
+                                   "hosted_button_id=R6AJV4U2G33XG";
 
-int main(int argc, char *argv[])
+
+class NemoSocialPlugin : public QQmlExtensionPlugin
 {
-    QScopedPointer<QGuiApplication> app (SailfishApp::application(argc, argv));
-    QScopedPointer<QQuickView> view (SailfishApp::createView());
-
-    MGConfItem partnerSpaceQml (PARTNERSPACEMANAGER_QML_DCONF);
-    QString qmlFile = partnerSpaceQml.value(QString()).toString();
-    if (qmlFile.isEmpty()) {
-        return 1;
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.SfietKonstantin.partnerspacemanager")
+public:
+    void initializeEngine(QQmlEngine *engine, const char *uri)
+    {
+        Q_ASSERT(uri == QLatin1String("org.SfietKonstantin.partnerspacemanager"));
+        engine->rootContext()->setContextProperty("PAYPAL_DONATE", PAYPAL_DONATE);
+        Q_UNUSED(uri)
     }
-    qDebug() << "Running partner-space launcher with" << qmlFile;
 
-    view->setSource(QUrl(qmlFile));
+    void registerTypes(const char *uri)
+    {
+        Q_ASSERT(uri == QLatin1String("org.SfietKonstantin.partnerspacemanager"));
+        qmlRegisterType<PartnerSpaceModel>(uri, 1, 0, "PartnerSpaceModel");
+        qmlRegisterType<PartnerSpaceInformation>(uri, 1, 0, "PartnerSpaceInformation");
 
-    // The view is a partner window
-    view->create();
-    QPlatformNativeInterface *native = QGuiApplication::platformNativeInterface();
-    native->setWindowProperty(view->handle(), QLatin1String("CATEGORY"), QString(QLatin1String("partner")));
-    view->show();
+    }
+};
 
-    return app->exec();
-}
-
+#include "plugin.moc"

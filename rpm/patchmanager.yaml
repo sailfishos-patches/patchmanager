@@ -18,6 +18,7 @@ PkgConfigBR:
 - Qt5DBus
 - Qt5Qml
 - Qt5Quick
+- mlite5
 - sailfishapp >= 0.0.10
 PkgBR: []
 Requires:
@@ -60,10 +61,21 @@ SubPackages:
     contains the Jolla settings plugin.
   Group: Qt/Qt
   Conflicts:
-  - patchmanager-ui
+  - '%{name}-ui'
   Files:
   - '%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}'
   - '%{_datadir}/%{name}/data'
   - '%{_datadir}/jolla-settings/pages/%{name}'
   - '%{_datadir}/jolla-settings/entries/%{name}.json'
   - '%{_datadir}/%{name}/icons/icon-m-patchmanager.png'
+
+- Name: -n jolla-settings-partnerspacemanager
+  Summary: Jolla settings plugin for partnerspacemanager
+  Description: |
+    Partner-space manager allows managing the partner-space
+    easily. This package contains the Jolla settings plugin.
+  Group: Qt/Qt
+  Files:
+  - '%{_libdir}/qt5/qml/org/SfietKonstantin/partnerspacemanager'
+  - '%{_datadir}/jolla-settings/pages/partnerspacemanager'
+  - '%{_datadir}/jolla-settings/entries/partnerspacemanager.json'

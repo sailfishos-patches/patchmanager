@@ -25,6 +25,7 @@ BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
+BuildRequires:  pkgconfig(mlite5)
 BuildRequires:  pkgconfig(sailfishapp) >= 0.0.10
 
 %description
@@ -33,12 +34,24 @@ on your SailfishOS device easily. This package
 contains the system daemon.
 
 
-%package partnerspace-launcher
-Summary:    partnerspace launcher for patchmanager
+%package ui
+Summary:    GUI for patchmanager
+Group:      Qt/Qt
+Requires:   %{name} = %{version}-%{release}
+Conflicts:  jolla-settings-%{name}
+
+%description ui
+patchmanager allows managing system patch
+on your SailfishOS device easily. This package
+contains the GUI.
+
+
+%package -n partnerspacemanager-launcher
+Summary:    partnerspace launcher for partnerspacemanager
 Group:      Qt/Qt
 Requires:   %{name} = %{version}-%{release}
 
-%description partnerspace-launcher
+%description -n partnerspacemanager-launcher
 partnerspace launcher allows launching QML
 applications as partnerspace application.
 
@@ -47,12 +60,22 @@ applications as partnerspace application.
 Summary:    Jolla settings plugin for patchmanager
 Group:      Qt/Qt
 Requires:   %{name} = %{version}-%{release}
-Conflicts:  patchmanager-ui
+Conflicts:  %{name}-ui
 
 %description -n jolla-settings-%{name}
 patchmanager allows managing system patch
 on your SailfishOS device easily. This package
 contains the Jolla settings plugin.
+
+
+%package -n jolla-settings-partnerspacemanager
+Summary:    Jolla settings plugin for partnerspacemanager
+Group:      Qt/Qt
+Requires:   %{name} = %{version}-%{release}
+
+%description -n jolla-settings-partnerspacemanager
+Partner-space manager allows managing the partner-space
+easily. This package contains the Jolla settings plugin.
 
 
 %prep
@@ -109,11 +132,22 @@ dbus-send --system --type=method_call \
 # >> files
 # << files
 
-%files partnerspace-launcher
+%files ui
 %defattr(-,root,root,-)
-%{_bindir}/%{name}-partnerspace-launcher
-# >> files partnerspace-launcher
-# << files partnerspace-launcher
+%{_bindir}/%{name}-ui
+%{_datadir}/%{name}/qml
+%{_datadir}/%{name}/data
+%{_datadir}/applications/
+%{_datadir}/icons/
+%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}
+# >> files ui
+# << files ui
+
+%files -n partnerspacemanager-launcher
+%defattr(-,root,root,-)
+%{_bindir}/partnerspacemanager-launcher
+# >> files -n partnerspacemanager-launcher
+# << files -n partnerspacemanager-launcher
 
 %files -n jolla-settings-%{name}
 %defattr(-,root,root,-)
@@ -124,3 +158,11 @@ dbus-send --system --type=method_call \
 %{_datadir}/%{name}/icons/icon-m-patchmanager.png
 # >> files -n jolla-settings-%{name}
 # << files -n jolla-settings-%{name}
+
+%files -n jolla-settings-partnerspacemanager
+%defattr(-,root,root,-)
+%{_libdir}/qt5/qml/org/SfietKonstantin/partnerspacemanager
+%{_datadir}/jolla-settings/pages/partnerspacemanager
+%{_datadir}/jolla-settings/entries/partnerspacemanager.json
+# >> files -n jolla-settings-partnerspacemanager
+# << files -n jolla-settings-partnerspacemanager
