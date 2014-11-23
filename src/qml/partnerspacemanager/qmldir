@@ -1,4 +1,0 @@
-module org.SfietKonstantin.partnerspacemanager
-plugin partnerspacemanager
-PartnerSpaceManagerPage 1.0 PartnerSpaceManagerPage.qml
-PartnerSpacePage 1.0 PartnerSpacePage.qml

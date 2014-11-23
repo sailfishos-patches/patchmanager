@@ -23,6 +23,7 @@ PkgConfigBR:
 PkgBR: []
 Requires:
 - ausmt
+- '%{name}-gui'
 Files:
 - '%{_sbindir}/%{name}'
 - '%{_datadir}/%{name}/tools'
@@ -36,6 +37,8 @@ SubPackages:
     on your SailfishOS device easily. This package
     contains the GUI.
   Group: Qt/Qt
+  Provides:
+  - '%{name}-gui'
   Conflicts:
   - jolla-settings-%{name}
   Files:
@@ -45,14 +48,6 @@ SubPackages:
   - '%{_datadir}/applications/'
   - '%{_datadir}/icons/'
   - '%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}'
-- Name: -n partnerspacemanager-launcher
-  Summary: partnerspace launcher for partnerspacemanager
-  Description: |
-    partnerspace launcher allows launching QML
-    applications as partnerspace application.
-  Group: Qt/Qt
-  Files:
-  - '%{_bindir}/partnerspacemanager-launcher'
 - Name: -n jolla-settings-%{name}
   Summary: Jolla settings plugin for patchmanager
   Description: |
@@ -60,6 +55,8 @@ SubPackages:
     on your SailfishOS device easily. This package
     contains the Jolla settings plugin.
   Group: Qt/Qt
+  Provides:
+  - '%{name}-gui'
   Conflicts:
   - '%{name}-ui'
   Files:
@@ -68,14 +65,3 @@ SubPackages:
   - '%{_datadir}/jolla-settings/pages/%{name}'
   - '%{_datadir}/jolla-settings/entries/%{name}.json'
   - '%{_datadir}/%{name}/icons/icon-m-patchmanager.png'
-
-- Name: -n jolla-settings-partnerspacemanager
-  Summary: Jolla settings plugin for partnerspacemanager
-  Description: |
-    Partner-space manager allows managing the partner-space
-    easily. This package contains the Jolla settings plugin.
-  Group: Qt/Qt
-  Files:
-  - '%{_libdir}/qt5/qml/org/SfietKonstantin/partnerspacemanager'
-  - '%{_datadir}/jolla-settings/pages/partnerspacemanager'
-  - '%{_datadir}/jolla-settings/entries/partnerspacemanager.json'
