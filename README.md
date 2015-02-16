@@ -3,6 +3,10 @@
 Patchmanager is a tool that can be used to modify the Sailfish OS user experience.
 It is based on AUSMT, a set of scripts that emables system file patching.
 
+## Wiki and list of existing patches
+
+https://github.com/sailfishos-patches/patchmanager/wiki/Patches-list
+
 ## For developers
 
 To write a patch, you need to provide two files. A patch file, and the JSON metadata.
