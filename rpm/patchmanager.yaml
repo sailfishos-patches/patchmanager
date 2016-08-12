@@ -65,3 +65,14 @@ SubPackages:
   - '%{_datadir}/jolla-settings/pages/%{name}'
   - '%{_datadir}/jolla-settings/entries/%{name}.json'
   - '%{_datadir}/%{name}/icons/icon-m-patchmanager.png'
+- Name: -n sailfishos-%{name}-unapplyall
+  BuildArch: noarch
+  Summary: Unapply all patches on system upgrade
+  Description: |
+    patchmanager patch for unapplying all applied
+    patches when starting system upgrade process.
+  Group: Qt/Qt
+  Files:
+  - '%{_datadir}/%{name}/data'
+  - '%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/patch.json'
+  - '%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/unified_diff.patch'

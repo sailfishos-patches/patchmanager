@@ -1,0 +1,8 @@
+{
+    "name": "Unapply all patches on Upgrade",
+    "description": "Patch for unapplying all patches when upgrading SailfishOS version",
+    "category": "settings",
+    "infos": {
+        "maintainer": "coderus"
+    }
+}

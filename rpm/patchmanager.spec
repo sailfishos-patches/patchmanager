@@ -61,6 +61,17 @@ on your SailfishOS device easily. This package
 contains the Jolla settings plugin.
 
 
+%package -n sailfishos-%{name}-unapplyall
+Summary:    Unapply all patches on system upgrade
+Group:      Qt/Qt
+BuildArch:  noarch
+Requires:   %{name} = %{version}-%{release}
+
+%description -n sailfishos-%{name}-unapplyall
+patchmanager patch for unapplying all applied
+patches when starting system upgrade process.
+
+
 %prep
 %setup -q -n %{name}-%{version}
 
@@ -135,3 +146,11 @@ dbus-send --system --type=method_call \
 %{_datadir}/%{name}/icons/icon-m-patchmanager.png
 # >> files -n jolla-settings-%{name}
 # << files -n jolla-settings-%{name}
+
+%files -n sailfishos-%{name}-unapplyall
+%defattr(-,root,root,-)
+%{_datadir}/%{name}/data
+%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/patch.json
+%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/unified_diff.patch
+# >> files -n sailfishos-%{name}-unapplyall
+# << files -n sailfishos-%{name}-unapplyall
