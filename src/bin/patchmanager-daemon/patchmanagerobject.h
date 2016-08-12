@@ -75,7 +75,7 @@ public slots:
     bool isPatchApplied(const QString &patch);
     bool applyPatch(const QString &patch);
     bool unapplyPatch(const QString &patch);
-//    void unapplyAllPatches();
+    bool unapplyAllPatches();
     PackageBackupStatus checkLipstick();
     void quit();
 protected:

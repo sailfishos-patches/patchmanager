@@ -112,6 +112,8 @@ dbus-send --system --type=method_call \
 %{_datadir}/%{name}/tools
 %{_datadir}/dbus-1/
 %{_sysconfdir}/dbus-1/system.d/
+%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/patch.json
+%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/unified_diff.patch
 # >> files
 # << files
 

@@ -345,16 +345,17 @@ bool PatchManagerObject::unapplyPatch(const QString &patch)
     return ok;
 }
 
-//void PatchManagerObject::unapplyAllPatches()
-//{
+bool PatchManagerObject::unapplyAllPatches()
+{
 //    checkPatches();
-
-//    QStringList appliedPatches = m_appliedPatches.toList();
-//    foreach (const QString &patch, appliedPatches) {
-//        unapplyPatch(patch);
-//    }
+    bool ok = true;
+    QStringList appliedPatches = m_appliedPatches.toList();
+    foreach (const QString &patch, appliedPatches) {
+        ok &= unapplyPatch(patch);
+    }
+    return ok;
 //    quit();
-//}
+}
 
 //void PatchManagerObject::checkPatches()
 //{
