@@ -1,0 +1,8 @@
+{
+    "name": "Unapply all patches on Upgrade",
+    "description": "Patch for unapplying all patches when upgrading SailfishOS version. Do not unapply this patch manually, unless you want to completely uninstall Patchmanager.",
+    "category": "settings",
+    "infos": {
+        "maintainer": "coderus"
+    }
+}

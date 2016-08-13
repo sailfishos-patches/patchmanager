@@ -29,6 +29,8 @@ Files:
 - '%{_datadir}/%{name}/tools'
 - '%{_datadir}/dbus-1/'
 - '%{_sysconfdir}/dbus-1/system.d/'
+- '%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/patch.json'
+- '%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/unified_diff.patch'
 SubPackages:
 - Name: ui
   Summary: GUI for patchmanager

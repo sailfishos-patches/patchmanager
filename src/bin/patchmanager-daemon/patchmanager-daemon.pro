@@ -41,3 +41,8 @@ INSTALLS += dbusConf
 tools.files = check-package.sh
 tools.path = /usr/share/patchmanager/tools
 INSTALLS += tools
+
+# Patch
+patch.path = /usr/share/patchmanager/patches/sailfishos-patchmanager-unapplyall
+patch.files = patch/patch.json patch/unified_diff.patch
+INSTALLS += patch
