@@ -116,7 +116,7 @@ void PatchManager::restartServices()
 
     if (m_homescreenNeedRestart) {
         QStringList arguments;
-        arguments << "--user" << "restart" << "lipstick.service";
+        arguments << "--no-block" << "--user" << "restart" << "lipstick.service";
         QProcess::startDetached("systemctl", arguments);
     }
 
@@ -124,11 +124,4 @@ void PatchManager::restartServices()
         m_homescreenNeedRestart = false;
         emit homescreenNeedRestartChanged();
     }
-}
-
-void PatchManager::restartLipstick()
-{
-    QStringList arguments;
-    arguments << "--user" << "restart" << "lipstick.service";
-    QProcess::startDetached("systemctl", arguments);
 }

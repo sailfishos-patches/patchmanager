@@ -47,7 +47,6 @@ public:
 public slots:
     void patchToggleService(const QString &patch, const QString &code);
     void restartServices();
-    void restartLipstick();
 signals:
     void appsNeedRestartChanged();
     void homescreenNeedRestartChanged();

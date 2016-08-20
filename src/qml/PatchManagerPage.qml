@@ -31,7 +31,7 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import org.nemomobile.dbus 1.0
+import org.nemomobile.dbus 2.0
 import org.SfietKonstantin.patchmanager 1.0
 
 Page {
@@ -39,19 +39,19 @@ Page {
 
     onStatusChanged: {
         if (status == PageStatus.Active && container.state == "") {
-            listPatchDbusInterface.listPatches()
-            checkLipstickDBus.checkLipstick()
+            patchmanagerDbusInterface.listPatches()
+            patchmanagerDbusInterface.checkLipstick()
         }
     }
 
     DBusInterface {
-        id: listPatchDbusInterface
-        destination: "org.SfietKonstantin.patchmanager"
+        id: patchmanagerDbusInterface
+        service: "org.SfietKonstantin.patchmanager"
         path: "/org/SfietKonstantin/patchmanager"
         iface: "org.SfietKonstantin.patchmanager"
-        busType: DBusInterface.SystemBus
+        bus: DBus.SystemBus
         function listPatches() {
-            typedCallWithReturn("listPatches", [], function (patches) {
+            typedCall("listPatches", [], function (patches) {
                 for (var i = 0; i < patches.length; i++) {
                     patchModel.append({"patch": patches[i][0],
                                   "name": patches[i][1],
@@ -62,16 +62,8 @@ Page {
                 }
             })
         }
-    }
-
-    DBusInterface {
-        id: checkLipstickDBus
-        destination: "org.SfietKonstantin.patchmanager"
-        path: "/org/SfietKonstantin/patchmanager"
-        iface: "org.SfietKonstantin.patchmanager"
-        busType: DBusInterface.SystemBus
         function checkLipstick() {
-            typedCallWithReturn("checkLipstick", [], function (status) {
+            typedCall("checkLipstick", [], function (status) {
                 var isOk = status[0]
                 var alteredOriginalFiles = status[1]
                 var alteredBackupFiles = status[2]
@@ -122,6 +114,9 @@ Page {
         }
         section.property: "category"
 
+        signal unapplyAllStarted
+        signal unapplyAllComplete
+
         delegate: BackgroundItem {
             id: background
             property bool applied: false
@@ -131,7 +126,7 @@ Page {
                 appliedSwitch.enabled = false
                 appliedSwitch.busy = true
                 if (!background.applied) {
-                    listPatchDbusInterface.typedCallWithReturn("applyPatch",
+                    patchmanagerDbusInterface.typedCall("applyPatch",
                                                       [{"type": "s", "value": model.patch}],
                     function (ok) {
                         if (ok) {
@@ -142,7 +137,7 @@ Page {
                         checkApplicability()
                     })
                 } else {
-                    listPatchDbusInterface.typedCallWithReturn("unapplyPatch",
+                    patchmanagerDbusInterface.typedCall("unapplyPatch",
                                                       [{"type": "s", "value": model.patch}],
                     function (ok) {
                         if (ok) {
@@ -150,12 +145,22 @@ Page {
                         }
                         appliedSwitch.busy = false
                         patchManager.patchToggleService(model.patch, model.categoryCode)
-                        if (!model.available) {
-                            patchModel.remove(model.index)
-                        } else {
-                            checkApplicability()
-                        }
+                        checkApplicability()
                     })
+                }
+            }
+
+            Connections {
+                target: view
+                onUnapplyAllStarted: {
+                    appliedSwitch.enabled = false
+                    if (background.applied) {
+                        appliedSwitch.busy = true
+                    }
+                }
+                onUnapplyAllComplete: {
+                    appliedSwitch.busy = false
+                    checkApplied()
                 }
             }
 
@@ -166,16 +171,24 @@ Page {
             }
 
             function checkApplicability() {
-                appliedSwitch.enabled = background.canApply
+                if (!model.available) {
+                    patchModel.remove(model.index)
+                } else {
+                    appliedSwitch.enabled = background.canApply
+                }
             }
 
-            Component.onCompleted: {
-                listPatchDbusInterface.typedCallWithReturn("isPatchApplied",
+            function checkApplied() {
+                patchmanagerDbusInterface.typedCall("isPatchApplied",
                                                   [{"type": "s", "value": model.patch}],
                 function (applied) {
                     background.applied = applied
                     checkApplicability()
                 })
+            }
+
+            Component.onCompleted: {
+                checkApplied()
             }
 
             Switch {
@@ -209,6 +222,17 @@ Page {
                 enabled: patchManager.appsNeedRestart || patchManager.homescreenNeedRestart
                 onClicked: pageStack.push(Qt.resolvedUrl("RestartServicesDialog.qml"),
                                                          {"patchManager": patchManager})
+            }
+
+            MenuItem {
+                text: "Unapply all patches"
+                onClicked: {
+                    view.unapplyAllStarted()
+                    patchmanagerDbusInterface.typedCall("unapplyAllPatches", [],
+                    function () {
+                        view.unapplyAllComplete()
+                    })
+                }
             }
         }
 

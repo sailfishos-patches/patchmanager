@@ -35,19 +35,6 @@ on your SailfishOS device easily. This package
 contains the system daemon.
 
 
-%package ui
-Summary:    GUI for patchmanager
-Group:      Qt/Qt
-Requires:   %{name} = %{version}-%{release}
-Provides:   %{name}-gui
-Conflicts:  jolla-settings-%{name}
-
-%description ui
-patchmanager allows managing system patch
-on your SailfishOS device easily. This package
-contains the GUI.
-
-
 %package -n jolla-settings-%{name}
 Summary:    Jolla settings plugin for patchmanager
 Group:      Qt/Qt
@@ -116,17 +103,6 @@ dbus-send --system --type=method_call \
 %{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/unified_diff.patch
 # >> files
 # << files
-
-%files ui
-%defattr(-,root,root,-)
-%{_bindir}/%{name}-ui
-%{_datadir}/%{name}/qml
-%{_datadir}/%{name}/data
-%{_datadir}/applications/
-%{_datadir}/icons/
-%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}
-# >> files ui
-# << files ui
 
 %files -n jolla-settings-%{name}
 %defattr(-,root,root,-)
