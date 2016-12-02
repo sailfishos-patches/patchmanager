@@ -37,24 +37,12 @@ import org.SfietKonstantin.patchmanager 2.0
 Page {
     id: container
 
-    Component.onCompleted: {
-        patchmanagerDbusInterface.listPatches()
-    }
-
     DBusInterface {
         id: patchmanagerDbusInterface
         service: "org.SfietKonstantin.patchmanager"
         path: "/org/SfietKonstantin/patchmanager"
         iface: "org.SfietKonstantin.patchmanager"
         bus: DBus.SystemBus
-        function listPatches() {
-            typedCall("listPatches", [], function (patches) {
-                for (var i = 0; i < patches.length; i++) {
-                    patchModel.append(patches[i])
-                }
-                indicator.visible = false
-            })
-        }
     }
 
     SilicaListView {
@@ -68,8 +56,8 @@ Page {
             }
 
             MenuItem {
-                text: qsTr("Web catalog")
-                onClicked: pageStack.replace(Qt.resolvedUrl("WebCatalogPage.qml"))
+                text: qsTr("Installed patches")
+                onClicked: pageStack.replace(Qt.resolvedUrl("PatchManagerPage.qml"))
             }
 
             MenuItem {
@@ -80,84 +68,62 @@ Page {
         }
 
         header: PageHeader {
-            title: qsTr("Installed patches")
+            title: qsTr("Web catalog")
         }
-        model: ListModel {
+        model: WebPatchesModel {
             id: patchModel
         }
         section.criteria: ViewSection.FullString
         section.delegate: SectionHeader {
-            text: section
+            text: qsTr(section[0].toUpperCase() + section.substr(1))
         }
         section.property: "category"
 
         delegate: BackgroundItem {
             id: background
-            property bool applied: model.patched
-            property bool canApply: true
-            property bool applying: !appliedSwitch.enabled
-            function doPatch() {
-                appliedSwitch.enabled = false
-                appliedSwitch.busy = true
-                if (!background.applied) {
-                    patchmanagerDbusInterface.typedCall("applyPatch",
-                                                      [{"type": "s", "value": model.patch}],
-                    function (ok) {
-                        if (ok) {
-                            background.applied = true
-                        }
-                        appliedSwitch.busy = false
-                        PatchManager.patchToggleService(model.patch, model.categoryCode)
-                        checkApplicability()
-                    })
-                } else {
-                    patchmanagerDbusInterface.typedCall("unapplyPatch",
-                                                      [{"type": "s", "value": model.patch}],
-                    function (ok) {
-                        if (ok) {
-                            background.applied = false
-                        }
-                        appliedSwitch.busy = false
-                        PatchManager.patchToggleService(model.patch, model.categoryCode)
-                        if (!model.available) {
-                            patchModel.remove(model.index)
-                        } else {
-                            checkApplicability()
-                        }
-                    })
-                }
-            }
+            contentHeight: delegateContent.height
+            height: Theme.itemSizeExtraLarge + Theme.paddingSmall
 
             onClicked: {
-                pageStack.push(Qt.resolvedUrl("LegacyPatchPage.qml"),
+                pageStack.push(Qt.resolvedUrl("WebPatchPage.qml"),
                                {modelData: model, delegate: background})
             }
 
-            function checkApplicability() {
-                appliedSwitch.enabled = background.canApply
-            }
-
-            Component.onCompleted: {
-                checkApplicability()
-            }
-
-            Switch {
-                id: appliedSwitch
+            Column {
+                id: delegateContent
                 anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
-                anchors.verticalCenter: parent.verticalCenter
-                automaticCheck: false
-                checked: background.applied
-                onClicked: background.doPatch()
-                enabled: false
-            }
-
-            Label {
-                anchors.left: appliedSwitch.right; anchors.leftMargin: Theme.paddingMedium
                 anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
                 anchors.verticalCenter: parent.verticalCenter
-                text: model.name
-                color: background.down ? Theme.highlightColor : Theme.primaryColor
-                truncationMode: TruncationMode.Fade
+
+                Item {
+                    height: nameLabel.height
+                    width: parent.width
+                    Label {
+                        id: nameLabel
+                        width: parent.width - authorLabel.width - Theme.paddingMedium
+                        text: model.display_name
+                        color: background.down ? Theme.highlightColor : Theme.primaryColor
+                        truncationMode: TruncationMode.Fade
+                    }
+
+                    Label {
+                        id: authorLabel
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: Theme.fontSizeExtraSmall
+                        text: model.author
+                        color: Theme.secondaryHighlightColor
+                    }
+                }
+
+                Label {
+                    width: parent.width
+                    text: model.description.replace("\r\n\r\n", "\r\n")
+                    color: background.down ? Theme.secondaryHighlightColor : Theme.secondaryColor
+                    font.pixelSize: Theme.fontSizeExtraSmall
+                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                    maximumLineCount: 3
+                }
             }
         }
 
@@ -172,6 +138,7 @@ Page {
     BusyIndicator {
         id: indicator
         running: visible
+        visible: view.count == 0
         anchors.centerIn: parent
         size: BusyIndicatorSize.Large
     }

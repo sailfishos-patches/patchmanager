@@ -2,8 +2,8 @@
 <node>
     <interface name="org.SfietKonstantin.patchmanager">
         <method name="listPatches">
-            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QList&lt;Patch&gt;"/>
-            <arg name="result" type="a(sssssba{sv})" direction="out" />
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantList"/>
+            <arg name="result" type="a(v)" direction="out" />
         </method>
         <method name="isPatchApplied">
             <arg name="patch" type="s" direction="in" />
@@ -16,10 +16,6 @@
         <method name="unapplyPatch">
             <arg name="patch" type="s" direction="in" />
             <arg name="ok" type="b" direction="out" />
-        </method>
-        <method name="checkLipstick">
-            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="PackageBackupStatus"/>
-            <arg name="packageStatus" type="(basas)" direction="out" />
         </method>
         <method name="unapplyAllPatches">
             <arg name="ok" type="b" direction="out" />

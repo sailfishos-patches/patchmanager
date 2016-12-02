@@ -42,6 +42,7 @@ class PatchManager: public QObject
     Q_PROPERTY(bool homescreenNeedRestart READ isHomescreenNeedRestart NOTIFY homescreenNeedRestartChanged)
 public:
     explicit PatchManager(QObject *parent = 0);
+    static PatchManager *GetInstance(QObject *parent = 0);
     bool isAppsNeedRestart() const;
     bool isHomescreenNeedRestart() const;
 public slots:

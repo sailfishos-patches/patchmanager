@@ -34,10 +34,19 @@
 # include <QtQml/QQmlContext>
 # include <QtQml/QQmlEngine>
 #include "patchmanager.h"
+#include "webpatchesmodel.h"
+#include "webpatchdata.h"
 
 static const char *PAYPAL_DONATE = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&"
                                    "hosted_button_id=R6AJV4U2G33XG";
 
+static QObject *patchmanager_singleton(QQmlEngine *engine, QJSEngine *scriptEngine)
+{
+    Q_UNUSED(engine)
+    Q_UNUSED(scriptEngine)
+
+    return PatchManager::GetInstance(0);
+}
 
 class NemoSocialPlugin : public QQmlExtensionPlugin
 {
@@ -54,7 +63,9 @@ public:
     void registerTypes(const char *uri)
     {
         Q_ASSERT(uri == QLatin1String("org.SfietKonstantin.patchmanager"));
-        qmlRegisterType<PatchManager>(uri, 1, 0, "PatchManager");
+        qmlRegisterSingletonType<PatchManager>(uri, 2, 0, "PatchManager", patchmanager_singleton);
+        qmlRegisterType<WebPatchesModel>(uri, 2, 0, "WebPatchesModel");
+        qmlRegisterType<WebPatchData>(uri, 2, 0, "WebPatchData");
 
     }
 };

@@ -36,31 +36,10 @@
 #include <QtCore/QSet>
 #include <QtCore/QStringList>
 #include <QtCore/QVariantMap>
+#include <QtCore/QVariantList>
+#include <QtCore/QDir>
 
 class QTimer;
-struct Patch
-{
-    QString patch;
-    QString name;
-    QString description;
-    QString category;
-    QString categoryCode;
-    bool available;
-    QVariantMap infos;
-};
-
-Q_DECLARE_METATYPE(Patch)
-Q_DECLARE_METATYPE(QList<Patch>)
-
-struct PackageBackupStatus
-{
-    bool isBackupOk;
-    QStringList alteredOriginalFiles;
-    QStringList alteredBackupFiles;
-};
-
-Q_DECLARE_METATYPE(PackageBackupStatus)
-
 class QDBusInterface;
 class PatchManagerObject : public QObject
 {
@@ -71,20 +50,22 @@ public:
     virtual ~PatchManagerObject();
     void registerDBus();
 public slots:
-    QList<Patch> listPatches();
+    QVariantList listPatches();
     bool isPatchApplied(const QString &patch);
     bool applyPatch(const QString &patch);
     bool unapplyPatch(const QString &patch);
     bool unapplyAllPatches();
-    PackageBackupStatus checkLipstick();
     void quit();
 protected:
     bool event(QEvent *e);
 private:
+    QVariantList listPatchesFromDir(const QString &dir, QSet<QString> &existingPatches, bool existing = true);
+    bool makePatch(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available);
+
     void refreshPatchList();
     bool m_dbusRegistered;
     QSet<QString> m_appliedPatches;
-    QList<Patch> m_patches;
+    QVariantList m_patches;
     QTimer *m_timer;
 };
 

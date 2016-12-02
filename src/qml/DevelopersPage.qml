@@ -55,12 +55,30 @@ Page {
             website: "https://github.com/SfietKonstantin"
         }
         ListElement {
+            icon: "/usr/share/patchmanager/data/coderus.jpg"
+            category: "Patchmanager"
+            name: "Andrey Kozhevnikov"
+            nickname: "coderus"
+            description: "Community developer"
+            twitter: "https://twitter.com/icoderus"
+            website: "https://github.com/coderus"
+        }
+        ListElement {
             icon: "/usr/share/patchmanager/data/morpog.jpeg"
             category: "Thanks to"
             name: "Stephan Beyerle"
             nickname: "Morpog"
             description: "Icons master"
             twitter: "https://twitter.com/Morpog"
+            website: ""
+        }
+        ListElement {
+            icon: "/usr/share/patchmanager/data/ancelad.jpg"
+            category: "Thanks to"
+            name: ""
+            nickname: "Ancelad"
+            description: "Icons master"
+            twitter: "https://twitter.com/iAncelad"
             website: ""
         }
     }
@@ -76,7 +94,7 @@ Page {
         }
 
         header: PageHeader {
-            title: "Developers"
+            title: qsTr("Developers")
         }
 
         delegate: ListItem {
@@ -100,7 +118,7 @@ Page {
                 anchors.left: icon.right; anchors.leftMargin: Theme.paddingMedium
                 spacing: Theme.paddingSmall
                 Label {
-                    text: model.name + (model.nickname != "" ? " (" + model.nickname + ")" : "")
+                    text: model.name ? (model.name + (model.nickname != "" ? " (" + model.nickname + ")" : "")) : model.nickname
                 }
 
                 Label {
@@ -115,12 +133,12 @@ Page {
                 ContextMenu {
                     MenuItem {
                         visible: model.website != ""
-                        text: model.name + "'s webpage"
+                        text: qsTr("%1's webpage").arg(model.name)
                         onClicked: Qt.openUrlExternally(model.website)
                     }
                     MenuItem {
                         visible: model.twitter != ""
-                        text: model.name + "'s Twitter account"
+                        text: qsTr("%1's Twitter account").arg(model.name)
                         onClicked: Qt.openUrlExternally(model.twitter)
                     }
                 }

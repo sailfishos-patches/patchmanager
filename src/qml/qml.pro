@@ -2,26 +2,32 @@ TARGET = patchmanager
 PLUGIN_IMPORT_PATH = org/SfietKonstantin/patchmanager
 
 TEMPLATE = lib
-QT = core qml
+QT = core qml network
 CONFIG += qt plugin hide_symbols
 
 HEADERS += \
-    patchmanager.h
+    patchmanager.h \
+    webcatalog.h \
+    webpatchesmodel.h \
+    webpatchdata.h
 
 SOURCES += \
     plugin.cpp \
-    patchmanager.cpp
+    patchmanager.cpp \
+    webpatchesmodel.cpp \
+    webpatchdata.cpp
  
-OTHER_FILES += qmldir \
+DISTFILES += qmldir \
     PatchManagerPage.qml \
     AboutPage.qml \
     DevelopersPage.qml \
-    LipstickWarningDialog.qml \
-    PatchPage.qml \
-    RestartServicesDialog.qml
+    RestartServicesDialog.qml \
+    LegacyPatchPage.qml \
+    WebCatalogPage.qml \
+    WebPatchPage.qml
 
 target.path = $$[QT_INSTALL_QML]/$$PLUGIN_IMPORT_PATH
 
-qmlfiles.files += $${OTHER_FILES}
+qmlfiles.files += $${DISTFILES}
 qmlfiles.path +=  $$[QT_INSTALL_QML]/$$PLUGIN_IMPORT_PATH
 INSTALLS += target qmlfiles

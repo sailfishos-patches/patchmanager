@@ -34,57 +34,19 @@ import Sailfish.Silica 1.0
 
 Page {
     id: container
-    property alias name: name.text
-    property alias description: description.text
+    property var modelData
     property QtObject delegate
-    property bool available
     signal doPatch
 
     SilicaFlickable {
         id: view
         anchors.fill: parent
-
-        Column {
-            width: view.width
-            spacing: Theme.paddingMedium
-
-            PageHeader {
-                title: "Patch information"
-            }
-
-            Label {
-                visible: !container.available
-                color: Theme.primaryColor
-                anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
-                anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
-                wrapMode: Text.WordWrap
-                font.pixelSize: Theme.fontSizeLarge
-                text: "This patch is no available anymore. You won't be able to reinstall it."
-            }
-
-            Label {
-                id: name
-                color: Theme.highlightColor
-                anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
-                anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
-                wrapMode: Text.WordWrap
-                font.pixelSize: Theme.fontSizeLarge
-            }
-
-
-            Label {
-                id: description
-                color: Theme.highlightColor
-                anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
-                anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
-                wrapMode: Text.WordWrap
-            }
-        }
+        contentHeight: content.height
 
         PullDownMenu {
             enabled: !container.delegate.applying || active
             MenuItem {
-                text: container.delegate.applying ? "Patch being applied" : (container.delegate.applied ? "Unapply patch" : "Apply patch")
+                text: container.delegate.applying ? qsTr("Patch being applied") : (container.delegate.applied ? qsTr("Unapply patch") : qsTr("Apply patch"))
                 enabled: !container.delegate.applying
                 onClicked: {
                     container.delegate.doPatch()
@@ -92,6 +54,65 @@ Page {
                         pageStack.pop()
                     }
                 }
+            }
+        }
+
+        Column {
+            id: content
+            width: view.width
+            spacing: Theme.paddingMedium
+
+            PageHeader {
+                title: qsTr("Patch information")
+            }
+
+            Label {
+                visible: !modelData.available
+                color: Theme.primaryColor
+                anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
+                anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
+                wrapMode: Text.WordWrap
+                font.pixelSize: Theme.fontSizeLarge
+                text: qsTr("This patch is no available anymore. You won't be able to reinstall it.")
+            }
+
+            SectionHeader {
+                text: qsTr("Name")
+            }
+
+            Label {
+                color: Theme.highlightColor
+                anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
+                anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
+                wrapMode: Text.WordWrap
+                font.pixelSize: Theme.fontSizeLarge
+                text: modelData.name
+            }
+
+            SectionHeader {
+                visible: !!modelData.infos && modelData.infos.maintainer
+                text: qsTr("Maintainer")
+            }
+
+            Label {
+                color: Theme.highlightColor
+                anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
+                anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
+                wrapMode: Text.WordWrap
+                visible: !!modelData.infos && modelData.infos.maintainer
+                text: modelData.infos.maintainer
+            }
+
+            SectionHeader {
+                text: qsTr("Description")
+            }
+
+            Label {
+                color: Theme.highlightColor
+                anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
+                anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
+                wrapMode: Text.WordWrap
+                text: modelData.description
             }
         }
     }

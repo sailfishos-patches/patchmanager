@@ -31,13 +31,12 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import org.SfietKonstantin.patchmanager 1.0
+import org.SfietKonstantin.patchmanager 2.0
 
 
 Dialog {
     id: container
-    property PatchManager patchManager
-    onAccepted: patchManager.restartServices()
+    onAccepted: PatchManager.restartServices()
 
     SilicaFlickable {
         anchors.fill: parent
@@ -50,11 +49,11 @@ Dialog {
 
             Label {
                 function getText() {
-                    if (patchManager.appsNeedRestart && patchManager.homescreenNeedRestart) {
+                    if (PatchManager.appsNeedRestart && PatchManager.homescreenNeedRestart) {
                         return "Both preloaded services (dialer, messages) and the homescreen will now be restarted. Your device might be unusable for a short moment."
-                    } else if (patchManager.appsNeedRestart) {
+                    } else if (PatchManager.appsNeedRestart) {
                         return "Preloaded services (dialer, messages) will now be restarted. These application might take time to load for a short moment."
-                    } else if (patchManager.homescreenNeedRestart) {
+                    } else if (PatchManager.homescreenNeedRestart) {
                         return "The homescreen will now be restarted. Your device might be unusable for a short moment."
                     }
                     return ""

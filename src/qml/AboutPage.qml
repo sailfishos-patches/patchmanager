@@ -35,14 +35,15 @@ import Sailfish.Silica 1.0
 Page {
     SilicaFlickable {
         anchors.fill: parent
-        contentHeight: mainColumn.height + Theme.paddingLarge + buttonsColumn.height
+        contentHeight: mainColumn.height
+
         Column {
             id: mainColumn
             spacing: Theme.paddingMedium
-            anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
-            anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
+            anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
+            anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
             PageHeader {
-                title: "About"
+                title: qsTr("About")
             }
 
             Image {
@@ -56,7 +57,7 @@ Page {
                 Label {
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: Theme.fontSizeHuge
-                    text: "patchmanager"
+                    text: "Patchmanager"
                 }
 
 //                Label {
@@ -72,14 +73,9 @@ Page {
                 wrapMode: Text.WordWrap
                 anchors.left: parent.left; anchors.right: parent.right
                 font.pixelSize: Theme.fontSizeSmall
-                text: "patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations."
+                text: "Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations."
             }
-        }
 
-        Column {
-            id: buttonsColumn
-            anchors.top: mainColumn.bottom; anchors.topMargin: Theme.paddingLarge
-            anchors.left: parent.left; anchors.right: parent.right
             BackgroundItem {
                 anchors.left: parent.left; anchors.right: parent.right
                 onClicked: Qt.openUrlExternally(PAYPAL_DONATE)
@@ -87,7 +83,7 @@ Page {
                     anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
                     anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
                     anchors.verticalCenter: parent.verticalCenter
-                    text: "Donate"
+                    text: qsTr("Donate")
                 }
             }
             BackgroundItem {
@@ -97,7 +93,7 @@ Page {
                     anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
                     anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
                     anchors.verticalCenter: parent.verticalCenter
-                    text: "Developers"
+                    text: qsTr("Developers")
                 }
             }
         }

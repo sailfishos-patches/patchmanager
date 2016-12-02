@@ -59,6 +59,15 @@ PatchManager::PatchManager(QObject *parent)
 {
 }
 
+PatchManager *PatchManager::GetInstance(QObject *parent)
+{
+    static PatchManager* lsSingleton = NULL;
+    if (!lsSingleton) {
+        lsSingleton = new PatchManager(parent);
+    }
+    return lsSingleton;
+}
+
 bool PatchManager::isAppsNeedRestart() const
 {
     return m_appsNeedRestart;

@@ -34,13 +34,9 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDateTime>
 #include <QtCore/QDebug>
-#include <QtCore/QDir>
 #include <QtCore/QEvent>
 #include <QtCore/QFile>
-#include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
-#include <QtCore/QJsonObject>
-#include <QtCore/QJsonValue>
 #include <QtCore/QProcess>
 #include <QtCore/QTimer>
 #include <QtDBus/QDBusArgument>
@@ -110,68 +106,16 @@ static QString categoryFromCode(const QString &code)
     return QObject::tr("Other");
 }
 
-static bool patchSort(const Patch &patch1, const Patch &patch2)
+static bool patchSort(const QVariant &patch1, const QVariant &patch2)
 {
-    if (patch1.category == patch2.category) {
-        return patch1.name < patch2.name;
+    if (patch1.toMap()["category"].toString() == patch2.toMap()["category"].toString()) {
+        return patch1.toMap()["name"].toString() < patch2.toMap()["name"].toString();
     }
 
-    return patch1.category < patch2.category;
+    return patch1.toMap()["category"].toString() < patch2.toMap()["category"].toString();
 }
 
-QDBusArgument &operator<<(QDBusArgument &argument, const Patch &patch)
-{
-    argument.beginStructure();
-    argument << patch.patch << patch.name << patch.description << patch.category
-             << patch.categoryCode << patch.available;
-    argument.beginMap(qMetaTypeId<QString>(), qMetaTypeId<QDBusVariant>());
-    foreach (const QString &key, patch.infos.keys()) {
-        argument.beginMapEntry();
-        argument << key << QDBusVariant(patch.infos.value(key));
-        argument.endMapEntry();
-    }
-    argument.endMap();
-    argument.endStructure();
-    return argument;
-}
-
-const QDBusArgument &operator>>(const QDBusArgument &argument, Patch &patch)
-{
-    argument.beginStructure();
-    argument >> patch.patch >> patch.name >> patch.description >> patch.category
-             >> patch.categoryCode >> patch.available;
-    patch.infos.clear();
-    argument.beginMap();
-    while (!argument.atEnd()) {
-        argument.beginMapEntry();
-        QString key;
-        QDBusVariant value;
-        argument >> key >> value;
-        patch.infos.insert(key, value.variant());
-        argument.endMapEntry();
-    }
-    argument.endMap();
-    argument.endStructure();
-    return argument;
-}
-
-QDBusArgument &operator<<(QDBusArgument &argument, const PackageBackupStatus &status)
-{
-    argument.beginStructure();
-    argument << status.isBackupOk << status.alteredOriginalFiles << status.alteredBackupFiles;
-    argument.endStructure();
-    return argument;
-}
-
-const QDBusArgument &operator>>(const QDBusArgument &argument, PackageBackupStatus &status)
-{
-    argument.beginStructure();
-    argument >> status.isBackupOk >> status.alteredOriginalFiles >> status.alteredBackupFiles;
-    argument.endStructure();
-    return argument;
-}
-
-static inline bool makePatch(const QDir &root, const QString &patchPath, Patch *patch, bool available)
+bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available)
 {
     QDir patchDir (root);
     if (!patchDir.cd(patchPath)) {
@@ -191,39 +135,32 @@ static inline bool makePatch(const QDir &root, const QString &patchPath, Patch *
         return false;
     }
 
-    const QJsonObject &object = document.object();
-    QString name = object.value(NAME_KEY).toString().trimmed();
-    QString description = object.value(DESCRIPTION_KEY).toString().trimmed();
-    QString categoryCode = object.value(CATEGORY_KEY).toString().trimmed();
+    QVariantMap json = document.toVariant().toMap();
 
-    if (name.isEmpty() || description.isEmpty() || categoryCode.isEmpty()) {
+    const QStringList &keys = json.keys();
+
+    if (!keys.contains(NAME_KEY) || !keys.contains(DESCRIPTION_KEY) || !keys.contains(CATEGORY_KEY)) {
         return false;
     }
 
-    patch->patch = patchPath;
-    patch->name = name;
-    patch->description = description;
-    patch->category = categoryFromCode(categoryCode);
-    patch->categoryCode = categoryCode;
-    patch->available = available;
-    patch->infos.clear();
-    QJsonObject infos = object.value(INFOS_KEY).toObject();
-    foreach (const QString &key, infos.keys()) {
-        patch->infos.insert(key, infos.value(key).toVariant());
-    }
+    json["patch"] = patchPath;
+    json["available"] = available;
+    json["categoryCode"] = json["category"];
+    json["category"] = categoryFromCode(json["category"].toString());
+    json["patched"] = m_appliedPatches.contains(patchPath);
+    patch = json;
 
     return true;
 }
 
-static inline QList<Patch> listPatchesFromDir(const QString &dir, QSet<QString> &existingPatches,
-                                              bool existing = true)
+QVariantList PatchManagerObject::listPatchesFromDir(const QString &dir, QSet<QString> &existingPatches, bool existing)
 {
-    QList<Patch> patches;
+    QVariantList patches;
     QDir root (dir);
     foreach (const QString &patchPath, root.entryList(QDir::AllDirs | QDir::NoDotAndDotDot)) {
         if (!existingPatches.contains(patchPath)) {
-            Patch patch;
-            bool ok = makePatch(root, patchPath, &patch, existing);
+            QVariantMap patch;
+            bool ok = makePatch(root, patchPath, patch, existing);
             if (ok) {
                 patches.append(patch);
                 existingPatches.insert(patchPath);
@@ -270,10 +207,6 @@ PatchManagerObject::~PatchManagerObject()
 void PatchManagerObject::registerDBus()
 {
     if (!m_dbusRegistered) {
-        qDBusRegisterMetaType<Patch>();
-        qDBusRegisterMetaType<QList<Patch> >();
-        qDBusRegisterMetaType<PackageBackupStatus>();
-
         // DBus
         QDBusConnection connection = QDBusConnection::systemBus();
         if (!connection.registerService(SERVICE)) {
@@ -289,7 +222,7 @@ void PatchManagerObject::registerDBus()
     }
 }
 
-QList<Patch> PatchManagerObject::listPatches()
+QVariantList PatchManagerObject::listPatches()
 {
     m_timer->start();
     return m_patches;
@@ -394,45 +327,6 @@ bool PatchManagerObject::unapplyAllPatches()
 
 //    refreshPatchList();
 //}
-
-PackageBackupStatus PatchManagerObject::checkLipstick()
-{
-    m_timer->stop();
-    PackageBackupStatus status;
-
-    QStringList args;
-    args.append("lipstick-jolla-home-qt5");
-    int returnCode = QProcess::execute("/usr/share/patchmanager/tools/check-package.sh", args);
-    if (!returnCode) {
-        status.isBackupOk = true;
-        m_timer->start();
-        return status;
-    }
-
-    status.isBackupOk = false;
-    QFile original ("/var/lib/patchmanager/check-package-lipstick-jolla-home-qt5-original.log");
-    if (original.exists()) {
-        if (original.open(QIODevice::ReadOnly)) {
-            while (!original.atEnd()) {
-                status.alteredOriginalFiles.append(QString::fromLocal8Bit(original.readLine()));
-            }
-            original.close();
-        }
-    }
-
-    QFile backup ("/var/lib/patchmanager/check-package-lipstick-jolla-home-qt5-backup.log");
-    if (backup.exists()) {
-        if (backup.open(QIODevice::ReadOnly)) {
-            while (!backup.atEnd()) {
-                status.alteredBackupFiles.append(QString::fromLocal8Bit(backup.readLine()));
-            }
-            backup.close();
-        }
-    }
-
-    m_timer->start();
-    return status;
-}
 
 void PatchManagerObject::quit()
 {
