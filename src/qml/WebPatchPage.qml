@@ -46,9 +46,12 @@ Page {
     property bool developer
     property string release
 
+    property int voteAction
+
     onStatusChanged: {
         if (status == PageStatus.Active) {
             patchmanagerDbusInterface.listVersions()
+            patchmanagerDbusInterface.checkVote(modelData.name)
         }
     }
 
@@ -105,6 +108,14 @@ Page {
             typedCall("listVersions", [], function (patches) {
                 container.versions = patches
             })
+        }
+        function checkVote(patch, action) {
+            typedCall("checkVote", [{"type": "s", "value": patch}], function(action) {
+                voteAction = action
+            })
+        }
+        function doVote(patch, action) {
+            typedCall("doVote", [{"type": "s", "value": patch}, {"type": "i", "value": action}])
         }
     }
 
@@ -176,9 +187,12 @@ Page {
                     anchors.verticalCenter: parent.verticalCenter
                     icon.source: "image://theme/icon-m-like"
                     rotation: 180
+                    highlighted: down || voteAction == 2
+                    enabled: voteAction != 2
 
                     onClicked: {
-
+                        patchmanagerDbusInterface.doVote(modelData.name, 2)
+                        voteAction = 2
                     }
                 }
 
@@ -188,9 +202,12 @@ Page {
                     anchors.rightMargin: Theme.horizontalPageMargin
                     anchors.verticalCenter: parent.verticalCenter
                     icon.source: "image://theme/icon-m-like"
+                    highlighted: down || voteAction == 1
+                    enabled: voteAction != 1
 
                     onClicked: {
-
+                        patchmanagerDbusInterface.doVote(modelData.name, 1)
+                        voteAction = 1
                     }
                 }
             }

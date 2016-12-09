@@ -38,6 +38,7 @@
 #include <QtCore/QVariantMap>
 #include <QtCore/QVariantList>
 #include <QtCore/QDir>
+#include <QSettings>
 
 class QTimer;
 class QDBusInterface;
@@ -58,6 +59,8 @@ public slots:
     bool unapplyAllPatches();
     bool installPatch(const QString &patch, const QString &json, const QString &archive);
     bool uninstallPatch(const QString &patch);
+    int checkVote(const QString &patch);
+    void doVote(const QString &patch, int action);
     void quit();
 protected:
     bool event(QEvent *e);
@@ -71,6 +74,7 @@ private:
     QVariantList m_patches;
     QVariantMap m_versions;
     QTimer *m_timer;
+    QSettings *m_settings;
 };
 
 #endif // PATCHMANAGEROBJECT_H
