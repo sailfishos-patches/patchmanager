@@ -39,6 +39,7 @@
 #include <QtQml/QQmlContext>
 #include <QtQml/QQmlEngine>
 #include <QtQuick/QQuickView>
+#include "webcatalog.h"
 
 static const char *HOMESCREEN_CODE = "homescreen";
 static const char *MESSAGES_CODE = "messages";
@@ -76,6 +77,19 @@ bool PatchManager::isAppsNeedRestart() const
 bool PatchManager::isHomescreenNeedRestart() const
 {
     return m_homescreenNeedRestart;
+}
+
+QString PatchManager::serverMediaUrl()
+{
+    return QString(MEDIA_URL);
+}
+
+void PatchManager::downloadFinished()
+{
+    WebDownloader * download = qobject_cast<WebDownloader*>(sender());
+    if (download) {
+        download->deleteLater();
+    }
 }
 
 void PatchManager::patchToggleService(const QString &patch, const QString &code)
@@ -125,7 +139,7 @@ void PatchManager::restartServices()
 
     if (m_homescreenNeedRestart) {
         QStringList arguments;
-        arguments << "--user" << "restart" << "lipstick.service";
+        arguments << "--user" << "--no-block" << "restart" << "lipstick.service";
         QProcess::startDetached("systemctl", arguments);
     }
 
@@ -135,9 +149,12 @@ void PatchManager::restartServices()
     }
 }
 
-void PatchManager::restartLipstick()
+void PatchManager::downloadPatch(const QString &patch, const QString &destination, const QString &patchUrl)
 {
-    QStringList arguments;
-    arguments << "--user" << "restart" << "lipstick.service";
-    QProcess::startDetached("systemctl", arguments);
+    WebDownloader * download = new WebDownloader(this);
+    download->patch = patch;
+    download->url = patchUrl;
+    download->destination = destination;
+    QObject::connect(download, SIGNAL(downloadFinished(QString,QString)), this, SIGNAL(downloadFinished(QString,QString)));
+    download->start();
 }

@@ -5,6 +5,10 @@
             <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantList"/>
             <arg name="result" type="a(v)" direction="out" />
         </method>
+        <method name="listVersions">
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+            <arg name="result" type="a{sv}" direction="out" />
+        </method>
         <method name="isPatchApplied">
             <arg name="patch" type="s" direction="in" />
             <arg name="applied" type="b" direction="out" />
@@ -14,6 +18,16 @@
             <arg name="ok" type="b" direction="out" />
         </method>
         <method name="unapplyPatch">
+            <arg name="patch" type="s" direction="in" />
+            <arg name="ok" type="b" direction="out" />
+        </method>
+        <method name="installPatch">
+            <arg name="patch" type="s" direction="in" />
+            <arg name="json" type="s" direction="in" />
+            <arg name="archive" type="s" direction="in" />
+            <arg name="ok" type="b" direction="out" />
+        </method>
+        <method name="uninstallPatch">
             <arg name="patch" type="s" direction="in" />
             <arg name="ok" type="b" direction="out" />
         </method>

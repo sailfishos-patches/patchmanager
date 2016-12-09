@@ -13,6 +13,7 @@ License:    TODO
 URL:        https://github.com/sailfishos-patches/patchmanager
 Source0:    %{name}-%{version}.tar.bz2
 Requires:   ausmt
+Requires:   unzip
 Requires:   jolla-settings-%{name} = %{version}-%{release}
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
@@ -52,6 +53,10 @@ rm -rf %{buildroot}
 %qmake5_install
 
 %preun
+if [ -d /var/lib/patchmanager/ausmt/patches/sailfishos-patchmanager-unapplyall ]; then
+/usr/sbin/patchmanager -u sailfishos-patchmanager-unapplyall || true
+fi
+
 dbus-send --system --type=method_call \
 --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager \
 org.SfietKonstantin.patchmanager.quit

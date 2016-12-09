@@ -20,6 +20,9 @@ public:
     Q_PROPERTY(QJsonObject value READ value NOTIFY valueChanged)
     QJsonObject value() const;
 
+    Q_INVOKABLE void getJson(const QString & version);
+
+
     explicit WebPatchData(QObject * parent = 0);
 
     void classBegin();
@@ -34,10 +37,13 @@ private:
 
 private slots:
     void serverReply();
+    void jsonReply();
 
 signals:
     void nameChanged(const QString & name);
     void valueChanged(const QJsonObject & value);
+    void jsonReceived(const QString & json);
+    void jsonError();
 
 };
 

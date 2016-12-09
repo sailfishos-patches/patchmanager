@@ -5,17 +5,21 @@ TEMPLATE = lib
 QT = core qml network
 CONFIG += qt plugin hide_symbols
 
+DEFINES += "SERVER_URL=\\\"http://10.189.121.141:443\\\""
+
 HEADERS += \
     patchmanager.h \
     webcatalog.h \
     webpatchesmodel.h \
-    webpatchdata.h
+    webpatchdata.h \
+    webdownloader.h
 
 SOURCES += \
     plugin.cpp \
     patchmanager.cpp \
     webpatchesmodel.cpp \
-    webpatchdata.cpp
+    webpatchdata.cpp \
+    webdownloader.cpp
  
 DISTFILES += qmldir \
     PatchManagerPage.qml \
@@ -24,7 +28,8 @@ DISTFILES += qmldir \
     RestartServicesDialog.qml \
     LegacyPatchPage.qml \
     WebCatalogPage.qml \
-    WebPatchPage.qml
+    WebPatchPage.qml \
+    ItemErrorComponent.qml
 
 target.path = $$[QT_INSTALL_QML]/$$PLUGIN_IMPORT_PATH
 

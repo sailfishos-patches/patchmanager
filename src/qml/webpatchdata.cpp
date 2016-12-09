@@ -23,6 +23,18 @@ QJsonObject WebPatchData::value() const
     return _value;
 }
 
+void WebPatchData::getJson(const QString &version)
+{
+    QUrl url(CATALOG_URL"/"PROJECT_PATH);
+    QUrlQuery query;
+    query.addQueryItem("name", _name);
+    query.addQueryItem("version", version);
+    url.setQuery(query);
+    QNetworkRequest request(url);
+    QNetworkReply * reply = _nam->get(request);
+    QObject::connect(reply, &QNetworkReply::finished, this, &WebPatchData::jsonReply);
+}
+
 WebPatchData::WebPatchData(QObject * parent) : QObject(parent)
 {
     _completed = false;
@@ -40,7 +52,6 @@ void WebPatchData::componentComplete()
     QUrlQuery query;
     query.addQueryItem("name", _name);
     url.setQuery(query);
-
     QNetworkRequest request(url);
     QNetworkReply * reply = _nam->get(request);
     QObject::connect(reply, &QNetworkReply::finished, this, &WebPatchData::serverReply);
@@ -62,6 +73,28 @@ void WebPatchData::serverReply()
                 if (error.error == QJsonParseError::NoError) {
                     _value = document.object();
                     emit valueChanged(_value);
+                }
+            }
+        }
+        reply->deleteLater();
+    }
+}
+
+void WebPatchData::jsonReply()
+{
+    QNetworkReply * reply = qobject_cast<QNetworkReply *>(sender());
+    if (reply) {
+        if (reply->error() == QNetworkReply::NoError) {
+            if (reply->bytesAvailable()) {
+                QByteArray json = reply->readAll();
+
+                QJsonParseError error;
+                QJsonDocument::fromJson(json, &error);
+
+                if (error.error == QJsonParseError::NoError) {
+                    emit jsonReceived(QString::fromUtf8(json));
+                } else {
+                    emit jsonError();
                 }
             }
         }

@@ -51,10 +51,13 @@ public:
     void registerDBus();
 public slots:
     QVariantList listPatches();
+    QVariantMap listVersions();
     bool isPatchApplied(const QString &patch);
     bool applyPatch(const QString &patch);
     bool unapplyPatch(const QString &patch);
     bool unapplyAllPatches();
+    bool installPatch(const QString &patch, const QString &json, const QString &archive);
+    bool uninstallPatch(const QString &patch);
     void quit();
 protected:
     bool event(QEvent *e);
@@ -66,6 +69,7 @@ private:
     bool m_dbusRegistered;
     QSet<QString> m_appliedPatches;
     QVariantList m_patches;
+    QVariantMap m_versions;
     QTimer *m_timer;
 };
 

@@ -34,24 +34,30 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QSet>
+#include "webdownloader.h"
 
 class PatchManager: public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool appsNeedRestart READ isAppsNeedRestart NOTIFY appsNeedRestartChanged)
     Q_PROPERTY(bool homescreenNeedRestart READ isHomescreenNeedRestart NOTIFY homescreenNeedRestartChanged)
+    Q_PROPERTY(QString serverMediaUrl READ serverMediaUrl FINAL)
 public:
     explicit PatchManager(QObject *parent = 0);
     static PatchManager *GetInstance(QObject *parent = 0);
     bool isAppsNeedRestart() const;
     bool isHomescreenNeedRestart() const;
+    QString serverMediaUrl();
+private slots:
+    void downloadFinished();
 public slots:
     void patchToggleService(const QString &patch, const QString &code);
     void restartServices();
-    void restartLipstick();
+    void downloadPatch(const QString & patch, const QString & destination, const QString & patchUrl);
 signals:
     void appsNeedRestartChanged();
     void homescreenNeedRestartChanged();
+    void downloadFinished(const QString & patch, const QString & fileName);
 private:
     QSet<QString> m_homescreenPatches;
     QSet<QString> m_voiceCallPatches;

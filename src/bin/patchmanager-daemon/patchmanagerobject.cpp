@@ -148,6 +148,9 @@ bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, Q
     json["categoryCode"] = json["category"];
     json["category"] = categoryFromCode(json["category"].toString());
     json["patched"] = m_appliedPatches.contains(patchPath);
+    if (!json.contains("version")) {
+        json["version"] = "0.0.0";
+    }
     patch = json;
 
     return true;
@@ -228,6 +231,12 @@ QVariantList PatchManagerObject::listPatches()
     return m_patches;
 }
 
+QVariantMap PatchManagerObject::listVersions()
+{
+    m_timer->start();
+    return m_versions;
+}
+
 bool PatchManagerObject::isPatchApplied(const QString &patch)
 {
     m_timer->start();
@@ -280,14 +289,73 @@ bool PatchManagerObject::unapplyPatch(const QString &patch)
 
 bool PatchManagerObject::unapplyAllPatches()
 {
-//    checkPatches();
+    m_timer->stop();
     bool ok = true;
     QStringList appliedPatches = m_appliedPatches.toList();
     foreach (const QString &patch, appliedPatches) {
         ok &= unapplyPatch(patch);
     }
     return ok;
-//    quit();
+    m_timer->start();
+}
+
+bool PatchManagerObject::installPatch(const QString &patch, const QString &json, const QString &archive)
+{
+    m_timer->stop();
+    QString patchDir = QString("%1/%2").arg(PATCHES_DIR).arg(patch);
+    QString jsonPath = QString("%1/%2/%3").arg(PATCHES_DIR).arg(patch).arg(PATCH_FILE);
+    if (QDir(patchDir).exists()) {
+        m_timer->start();
+        return false;
+    } else if (QDir().mkpath(patchDir)) {
+        QFile jsonFile(jsonPath);
+        if (jsonFile.open(QFile::WriteOnly)) {
+            jsonFile.write(json.toLatin1());
+            jsonFile.close();
+        } else {
+            m_timer->start();
+            return false;
+        }
+        QFile archiveFile(archive);
+        if (archiveFile.exists()) {
+            QProcess proc;
+            int ret = 0;
+            if (archive.endsWith(".zip")) {
+                ret = proc.execute("/usr/bin/unzip", QStringList() << archive << "-d" << patchDir);
+            } else {
+                ret = proc.execute("/bin/tar", QStringList() << "xzf" << archive << "-C" << patchDir);
+            }
+            if (ret == 0) {
+                refreshPatchList();
+                m_timer->start();
+                return true;
+            }
+        }
+        jsonFile.remove();
+        QDir(patchDir).removeRecursively();
+    }
+    m_timer->start();
+    return false;
+}
+
+bool PatchManagerObject::uninstallPatch(const QString &patch)
+{
+    m_timer->stop();
+    if (m_appliedPatches.contains(patch)) {
+        unapplyPatch(patch);
+        m_timer->stop();
+    }
+
+    QDir patchDir(QString("%1/%2").arg(PATCHES_DIR).arg(patch));
+    if (patchDir.exists()) {
+        bool ok = patchDir.removeRecursively();
+        refreshPatchList();
+        m_timer->start();
+        return ok;
+    }
+
+    m_timer->start();
+    return true;
 }
 
 //void PatchManagerObject::checkPatches()
@@ -349,4 +417,12 @@ void PatchManagerObject::refreshPatchList()
     m_patches = listPatchesFromDir(PATCHES_DIR, existingPatches);
     m_patches.append(listPatchesFromDir(PATCHES_ADDITIONAL_DIR, existingPatches, false));
     std::sort(m_patches.begin(), m_patches.end(), patchSort);
+    foreach (const QVariant & patch, m_patches) {
+        QVariantMap d_patch = patch.toMap();
+        if (d_patch.contains("version")) {
+            m_versions[d_patch["name"].toString()] = d_patch["version"];
+        } else {
+            m_versions[d_patch["name"].toString()] = "0.0.0";
+        }
+    }
 }

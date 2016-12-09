@@ -36,6 +36,16 @@ import org.SfietKonstantin.patchmanager 2.0
 
 Page {
     id: container
+    property string author
+    property var versions
+    property bool developer
+    property string release
+
+    onStatusChanged: {
+        if (status == PageStatus.Active) {
+            patchmanagerDbusInterface.listVersions()
+        }
+    }
 
     DBusInterface {
         id: patchmanagerDbusInterface
@@ -43,6 +53,12 @@ Page {
         path: "/org/SfietKonstantin/patchmanager"
         iface: "org.SfietKonstantin.patchmanager"
         bus: DBus.SystemBus
+        function listVersions() {
+            typedCall("listVersions", [], function (patches) {
+                container.versions = patches
+                console.log("### versions:", JSON.stringify(patches))
+            })
+        }
     }
 
     SilicaListView {
@@ -54,24 +70,14 @@ Page {
                 text: qsTr("About")
                 onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
             }
-
-            MenuItem {
-                text: qsTr("Installed patches")
-                onClicked: pageStack.replace(Qt.resolvedUrl("PatchManagerPage.qml"))
-            }
-
-            MenuItem {
-                text: qsTr("Restart preloaded services")
-                visible: PatchManager.appsNeedRestart || PatchManager.homescreenNeedRestart
-                onClicked: pageStack.push(Qt.resolvedUrl("RestartServicesDialog.qml"))
-            }
         }
 
         header: PageHeader {
-            title: qsTr("Web catalog")
+            title: container.author ? qsTr("%1 patches").arg(container.author) : qsTr("Web catalog")
         }
         model: WebPatchesModel {
             id: patchModel
+            queryParams: container.author ? {'author': container.author} : {}
         }
         section.criteria: ViewSection.FullString
         section.delegate: SectionHeader {
@@ -86,7 +92,7 @@ Page {
 
             onClicked: {
                 pageStack.push(Qt.resolvedUrl("WebPatchPage.qml"),
-                               {modelData: model, delegate: background})
+                               {modelData: model, delegate: background, developer: developer, release: release})
             }
 
             Column {
@@ -103,6 +109,7 @@ Page {
                         width: parent.width - authorLabel.width - Theme.paddingMedium
                         text: model.display_name
                         color: background.down ? Theme.highlightColor : Theme.primaryColor
+                        font.bold: !!container.versions && container.versions.hasOwnProperty(model.name)
                         truncationMode: TruncationMode.Fade
                     }
 

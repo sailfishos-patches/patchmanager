@@ -37,8 +37,30 @@ import org.SfietKonstantin.patchmanager 2.0
 Page {
     id: container
 
+    property bool developer
+    property string release
+
+    onStatusChanged: {
+        if (status == PageStatus.Active) {
+            patchmanagerDbusInterface.listPatches()
+        }
+    }
+
     Component.onCompleted: {
-        patchmanagerDbusInterface.listPatches()
+        ssuDbusInterface.getVersion()
+    }
+
+    DBusInterface {
+        id: ssuDbusInterface
+        service: "org.nemo.ssu"
+        path: "/org/nemo/ssu"
+        iface: "org.nemo.ssu"
+        bus: DBus.SystemBus
+        function getVersion() {
+            typedCall("release", [{"type": "b", "value": false}], function (version) {
+                release = version
+            })
+        }
     }
 
     DBusInterface {
@@ -49,8 +71,15 @@ Page {
         bus: DBus.SystemBus
         function listPatches() {
             typedCall("listPatches", [], function (patches) {
+                patchModel.clear()
                 for (var i = 0; i < patches.length; i++) {
-                    patchModel.append(patches[i])
+                    var patch = patches[i]
+                    if (patch.compatible) {
+                        patch.compatible = patch.compatible.join(",")
+                    } else {
+                        patch.compatible = "0.0.0"
+                    }
+                    patchModel.append(patch)
                 }
                 indicator.visible = false
             })
@@ -63,13 +92,19 @@ Page {
 
         PullDownMenu {
             MenuItem {
+                text: developer ? qsTr("Disable developer mode") : qsTr("Enable developer mode")
+                onClicked: developer = !developer
+            }
+
+            MenuItem {
                 text: qsTr("About")
                 onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
             }
 
             MenuItem {
                 text: qsTr("Web catalog")
-                onClicked: pageStack.replace(Qt.resolvedUrl("WebCatalogPage.qml"))
+
+                onClicked: pageStack.push(Qt.resolvedUrl("WebCatalogPage.qml"), {developer: developer, release: release})
             }
 
             MenuItem {
@@ -91,25 +126,34 @@ Page {
         }
         section.property: "category"
 
-        delegate: BackgroundItem {
+        delegate: ListItem {
             id: background
+            menu: isNewPatch ? contextMenu : null
             property bool applied: model.patched
             property bool canApply: true
             property bool applying: !appliedSwitch.enabled
+            property bool isCompatible: !model.compatible || model.compatible == "0.0.0" || model.compatible.indexOf(release) >= 0
+            property bool isNewPatch: model.hasOwnProperty("display_name")
             function doPatch() {
                 appliedSwitch.enabled = false
                 appliedSwitch.busy = true
                 if (!background.applied) {
-                    patchmanagerDbusInterface.typedCall("applyPatch",
-                                                      [{"type": "s", "value": model.patch}],
-                    function (ok) {
-                        if (ok) {
-                            background.applied = true
-                        }
+                    if (developer || isCompatible) {
+                        patchmanagerDbusInterface.typedCall("applyPatch",
+                                                          [{"type": "s", "value": model.patch}],
+                        function (ok) {
+                            if (ok) {
+                                background.applied = true
+                            }
+                            appliedSwitch.busy = false
+                            PatchManager.patchToggleService(model.patch, model.categoryCode)
+                            checkApplicability()
+                        })
+                    } else {
+                        errorMesageComponent.createObject(background, {text: qsTr("This patch is not compatible with SailfishOS version!")})
+                        appliedSwitch.enabled = true
                         appliedSwitch.busy = false
-                        PatchManager.patchToggleService(model.patch, model.categoryCode)
-                        checkApplicability()
-                    })
+                    }
                 } else {
                     patchmanagerDbusInterface.typedCall("unapplyPatch",
                                                       [{"type": "s", "value": model.patch}],
@@ -128,9 +172,28 @@ Page {
                 }
             }
 
+            function removeAction() {
+                remorseAction(qsTr("Uninstalling patch %1").arg(model.patch), doRemove)
+            }
+
+            function doRemove() {
+                patchmanagerDbusInterface.typedCall("uninstallPatch",
+                                                  [{"type": "s", "value": model.patch}],
+                    function(ok) {
+                        console.log("### uninstall:", ok)
+                        if (ok) {
+                            patchModel.remove(index)
+                        }
+                    })
+            }
+
             onClicked: {
-                pageStack.push(Qt.resolvedUrl("LegacyPatchPage.qml"),
-                               {modelData: model, delegate: background})
+                if (isNewPatch) {
+                    pageStack.push("/usr/share/patchmanager/patches/%1/main.qml".arg(model.name))
+                } else {
+                    pageStack.push(Qt.resolvedUrl("LegacyPatchPage.qml"),
+                                  {modelData: model, delegate: background})
+                }
             }
 
             function checkApplicability() {
@@ -143,7 +206,8 @@ Page {
 
             Switch {
                 id: appliedSwitch
-                anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
+                anchors.left: parent.left
+                anchors.leftMargin: Theme.paddingMedium
                 anchors.verticalCenter: parent.verticalCenter
                 automaticCheck: false
                 checked: background.applied
@@ -152,12 +216,30 @@ Page {
             }
 
             Label {
-                anchors.left: appliedSwitch.right; anchors.leftMargin: Theme.paddingMedium
-                anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
+                anchors.left: appliedSwitch.right
+                anchors.leftMargin: Theme.paddingMedium
+                anchors.right: parent.right
+                anchors.rightMargin: background.isNewPatch ? Theme.itemSizeSmall : Theme.paddingMedium
                 anchors.verticalCenter: parent.verticalCenter
-                text: model.name
-                color: background.down ? Theme.highlightColor : Theme.primaryColor
+                text: background.isNewPatch ? model.display_name : model.name
+                color: isCompatible ? background.down ? Theme.highlightColor : Theme.primaryColor
+                                    : background.down ? Qt.tint(Theme.highlightColor, "red") : Qt.tint(Theme.primaryColor, "red")
                 truncationMode: TruncationMode.Fade
+            }
+
+            Component {
+                id: contextMenu
+                ContextMenu {
+                    MenuItem {
+                        text: qsTr("Uninstall")
+                        onClicked: removeAction()
+                    }
+                }
+            }
+
+            Component {
+                id: errorMesageComponent
+                ItemErrorComponent {}
             }
         }
 

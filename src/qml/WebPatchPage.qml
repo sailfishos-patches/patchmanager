@@ -31,6 +31,7 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import org.nemomobile.dbus 2.0
 import org.SfietKonstantin.patchmanager 2.0
 
 Page {
@@ -38,9 +39,75 @@ Page {
     property var modelData
     property QtObject delegate
 
+    property string jsonData
+    property string archFile
+
+    property var versions
+    property bool developer
+    property string release
+
+    onStatusChanged: {
+        if (status == PageStatus.Active) {
+            patchmanagerDbusInterface.listVersions()
+        }
+    }
+
+    onJsonDataChanged: {
+        if (jsonData && archFile) {
+            doPatchInstall()
+        }
+    }
+
+    onArchFileChanged: {
+        if (jsonData && archFile) {
+            doPatchInstall()
+        }
+    }
+
+    function doPatchInstall() {
+        patchmanagerDbusInterface.typedCall("installPatch", [{"type": "s", "value": patchData.value.name},
+                                                             {"type": "s", "value": container.jsonData},
+                                                             {"type": "s", "value": container.archFile}],
+                                            function(ok) {
+                                                console.log("Attempt to install patch", patchData.value.name, JSON.parse(container.jsonData).version, ok)
+                                                if (ok) {
+                                                    container.versions[patchData.value.name] = JSON.parse(container.jsonData).version
+                                                    container.versionsChanged()
+                                                }
+                                            })
+    }
+
     WebPatchData {
         id: patchData
         name: modelData.name
+        onJsonReceived: {
+            jsonData = json
+            console.log('###', json)
+        }
+        onJsonError: console.log('### json error')
+    }
+
+    Connections {
+        target: PatchManager
+        onDownloadFinished: {
+            if (patch == patchData.value.name) {
+                archFile = fileName
+            }
+        }
+    }
+
+    DBusInterface {
+        id: patchmanagerDbusInterface
+        service: "org.SfietKonstantin.patchmanager"
+        path: "/org/SfietKonstantin/patchmanager"
+        iface: "org.SfietKonstantin.patchmanager"
+        bus: DBus.SystemBus
+        function listVersions() {
+            typedCall("listVersions", [], function (patches) {
+                container.versions = patches
+                console.log("### versions:", JSON.stringify(patches))
+            })
+        }
     }
 
     SilicaFlickable {
@@ -50,70 +117,237 @@ Page {
 
         Column {
             id: content
-            width: view.width
+            width: parent.width
+
             spacing: Theme.paddingMedium
 
             PageHeader {
                 title: qsTr("Patch information")
             }
 
-            SectionHeader {
-                text: qsTr("Name")
-            }
-
             Label {
                 color: Theme.highlightColor
-                anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
-                anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    margins: Theme.horizontalPageMargin
+                }
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeLarge
-                text: patchData.value ? patchData.value.display_name : ""
+                text: patchData.value && patchData.value.display_name ? patchData.value.display_name : ""
             }
 
-            SectionHeader {
-                text: qsTr("Author")
+            BackgroundItem {
+                width: parent.width
+                height: Theme.itemSizeExtraSmall
+
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("WebCatalogPage.qml"), {'author': patchData.value.author})
+                }
+
+                Label {
+                    color: Theme.secondaryHighlightColor
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        margins: Theme.horizontalPageMargin
+                        verticalCenter: parent.verticalCenter
+                    }
+                    font.pixelSize: Theme.fontSizeSmall
+                    text: patchData.value && patchData.value.author ? qsTr("Author: %1").arg(patchData.value.author) : ""
+                }
             }
 
             Label {
                 color: Theme.highlightColor
-                anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
-                anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    margins: Theme.horizontalPageMargin
+                }
                 wrapMode: Text.WordWrap
-                text: patchData.value ? patchData.value.author : ""
+                text: patchData.value && patchData.value.description ? patchData.value.description : ""
+            }
+
+            BackgroundItem {
+                width: parent.width
+                height: Theme.itemSizeExtraSmall
+                visible: !!patchData.value && !!patchData.value.discussion
+
+                onClicked: {
+                    Qt.openUrlExternally(patchData.value.discussion)
+                }
+
+                Label {
+                    color: Theme.highlightColor
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        margins: Theme.horizontalPageMargin
+                        verticalCenter: parent.verticalCenter
+                    }
+                    text: patchData.value && patchData.value.discussion ? qsTr("Open discussion link") : ""
+                }
+            }
+
+            BackgroundItem {
+                width: parent.width
+                height: Theme.itemSizeExtraSmall
+                visible: !!patchData.value && !!patchData.value.donations
+
+                onClicked: {
+                    Qt.openUrlExternally(patchData.value.donations)
+                }
+
+                Label {
+                    color: Theme.highlightColor
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        margins: Theme.horizontalPageMargin
+                        verticalCenter: parent.verticalCenter
+                    }
+                    text: patchData.value && patchData.value.donations ? qsTr("Donate") : ""
+                }
+            }
+
+            BackgroundItem {
+                width: parent.width
+                height: Theme.itemSizeExtraSmall
+                visible: !!patchData.value && !!patchData.value.sources
+
+                onClicked: {
+                    Qt.openUrlExternally(patchData.value.sources)
+                }
+
+                Label {
+                    color: Theme.highlightColor
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        margins: Theme.horizontalPageMargin
+                        verticalCenter: parent.verticalCenter
+                    }
+                    text: patchData.value && patchData.value.sources ? qsTr("Sources") : ""
+                }
             }
 
             SectionHeader {
-                text: qsTr("Description")
+                text: qsTr("Screenshots")
+                visible: !!patchData.value && !!patchData.value.screenshots && patchData.value.screenshots.count > 0
             }
 
-            Label {
-                color: Theme.highlightColor
-                anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
-                anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
-                wrapMode: Text.WordWrap
-                text: patchData.value ? patchData.value.description : ""
+            Flickable {
+                width: parent.width
+                height: contentRow.height
+                contentHeight: height
+                contentWidth: contentRow.width
+                visible: !!patchData.value && !!patchData.value.screenshots && patchData.value.screenshots.count > 0
+
+                Row {
+                    id: contentRow
+                    height: Screen.height / 4
+                    Repeater {
+                        model: patchData.value && patchData.value.screenshots ? patchData.value.screenshots : 0
+                        delegate: Item {
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: imgItem.width * imgItem.scale
+                            height: imgItem.height * imgItem.scale
+                            Image {
+                                anchors.centerIn: parent
+                                id: imgItem
+                                scale: 0.25
+                                source: '%1/%2'.arg(PatchManager.serverMediaUrl).arg(modelData.screenshot)
+                            }
+                        }
+                    }
+                }
+
+                HorizontalScrollDecorator {}
             }
 
             SectionHeader {
                 text: qsTr("Files")
-                visible: !!patchData.value && patchData.value.files
+                visible: !!patchData.value && !!patchData.value.files
             }
 
             Repeater {
                 model: patchData.value && patchData.value.files ? patchData.value.files : 0
-                delegate: Column {
+                delegate: ListItem {
+                    id: fileDelegate
                     width: parent.width
-                    SectionHeader {
-                        text: modelData.version
+                    height: contentHeight
+                    contentHeight: filesContent.height
+                    property bool isInstalled: !!container.versions && container.versions[modelData.project] == modelData.version
+                    property bool isCompatible: modelData.compatible.indexOf(release) >= 0
+
+                    onClicked: {
+                        if (!developer && !isCompatible) {
+                            console.log("### not compatible", modelData.compatible, release)
+                            errorMesageComponent.createObject(fileDelegate, {text: qsTr("This file is not compatible with SailfishOS version!")})
+                        } else if (!fileDelegate.isInstalled) {
+                            remorseAction(qsTr("Install patch %1").arg(patchData.value.display_name), installPatch)
+                        }
                     }
-                    Label {
-                        text: modelData.uploaded
-                        font.pixelSize: Theme.fontSizeExtraSmall
+
+                    function installPatch() {
+                        patchData.getJson(modelData.version)
+                        var patchUrl = modelData.document
+                        var fName = patchUrl.substr(patchUrl.lastIndexOf("/") + 1)
+                        PatchManager.downloadPatch(patchData.value.name, '/tmp/%1'.arg(fName), patchUrl)
                     }
-                    Label {
-                        text: modelData.changelog
-                        font.pixelSize: Theme.fontSizeExtraSmall
-                        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+
+                    Column {
+                        id: filesContent
+                        anchors {
+                            left: parent.left
+                            right: parent.right
+                            margins: Theme.horizontalPageMargin
+                        }
+
+                        Item {
+                            width: parent.width
+                            height: Theme.itemSizeExtraSmall
+
+                            Label {
+                                anchors {
+                                    left: parent.left
+                                    verticalCenter: parent.verticalCenter
+                                }
+                                font.bold: fileDelegate.isInstalled
+                                color: Theme.highlightColor
+                                text: modelData.version
+                            }
+
+                            Label {
+                                anchors {
+                                    right: parent.right
+                                    verticalCenter: parent.verticalCenter
+                                }
+                                color: Theme.secondaryHighlightColor
+                                font.pixelSize: Theme.fontSizeSmall
+                                text: Qt.formatDateTime(new Date(modelData.uploaded), "dd.MM.yy hh:mm")
+                            }
+                        }
+
+                        Label {
+                            text: qsTr("Compatible: %1").arg(modelData.compatible)
+                            font.pixelSize: Theme.fontSizeExtraSmall
+                            color: fileDelegate.isCompatible ? Theme.highlightColor : Qt.tint(Theme.highlightColor, "red")
+                            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                        }
+
+                        Label {
+                            text: modelData.changelog
+                            font.pixelSize: Theme.fontSizeExtraSmall
+                            color: Theme.highlightColor
+                            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                        }
+                    }
+
+                    Component {
+                        id: errorMesageComponent
+                        ItemErrorComponent {}
                     }
                 }
             }
