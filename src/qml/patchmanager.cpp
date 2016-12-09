@@ -39,6 +39,7 @@
 #include <QtQml/QQmlContext>
 #include <QtQml/QQmlEngine>
 #include <QtQuick/QQuickView>
+#include <QLocale>
 #include "webcatalog.h"
 
 static const char *HOMESCREEN_CODE = "homescreen";
@@ -84,12 +85,13 @@ QString PatchManager::serverMediaUrl()
     return QString(MEDIA_URL);
 }
 
-void PatchManager::downloadFinished()
+void PatchManager::onDownloadFinished(const QString &patch, const QString &fileName)
 {
     WebDownloader * download = qobject_cast<WebDownloader*>(sender());
     if (download) {
         download->deleteLater();
     }
+    emit downloadFinished(patch, fileName);
 }
 
 void PatchManager::patchToggleService(const QString &patch, const QString &code)
@@ -155,6 +157,30 @@ void PatchManager::downloadPatch(const QString &patch, const QString &destinatio
     download->patch = patch;
     download->url = patchUrl;
     download->destination = destination;
-    QObject::connect(download, SIGNAL(downloadFinished(QString,QString)), this, SIGNAL(downloadFinished(QString,QString)));
+    QObject::connect(download, SIGNAL(downloadFinished(QString,QString)), this, SLOT(onDownloadFinished(QString,QString)));
     download->start();
+}
+
+bool PatchManager::installTranslator(const QString &patch)
+{
+    if (!m_translators.contains(patch)) {
+        QTranslator * translator = new QTranslator(this);
+        translator->load(QLocale::system(), QString("translation"), QString("_"), QString("/usr/share/patchmanager/patches/%1").arg(patch), QString(".qm"));
+        bool ok = qGuiApp->installTranslator(translator);
+        if (ok) {
+            m_translators[patch] = translator;
+        }
+        return ok;
+    }
+    return true;
+}
+
+bool PatchManager::removeTranslator(const QString &patch)
+{
+    if (m_translators.contains(patch)) {
+        QTranslator * translator = m_translators.take(patch);
+        translator->deleteLater();
+        return qGuiApp->removeTranslator(translator);
+    }
+    return true;
 }

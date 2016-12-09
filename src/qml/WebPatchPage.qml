@@ -82,7 +82,6 @@ Page {
         name: modelData.name
         onJsonReceived: {
             jsonData = json
-            console.log('###', json)
         }
         onJsonError: console.log('### json error')
     }
@@ -105,7 +104,6 @@ Page {
         function listVersions() {
             typedCall("listVersions", [], function (patches) {
                 container.versions = patches
-                console.log("### versions:", JSON.stringify(patches))
             })
         }
     }

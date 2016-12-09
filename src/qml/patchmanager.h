@@ -34,6 +34,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QSet>
+#include <QTranslator>
 #include "webdownloader.h"
 
 class PatchManager: public QObject
@@ -49,11 +50,13 @@ public:
     bool isHomescreenNeedRestart() const;
     QString serverMediaUrl();
 private slots:
-    void downloadFinished();
+    void onDownloadFinished(const QString & patch, const QString & fileName);
 public slots:
     void patchToggleService(const QString &patch, const QString &code);
     void restartServices();
     void downloadPatch(const QString & patch, const QString & destination, const QString & patchUrl);
+    bool installTranslator(const QString & patch);
+    bool removeTranslator(const QString & patch);
 signals:
     void appsNeedRestartChanged();
     void homescreenNeedRestartChanged();
@@ -62,6 +65,7 @@ private:
     QSet<QString> m_homescreenPatches;
     QSet<QString> m_voiceCallPatches;
     QSet<QString> m_messagesPatches;
+    QHash<QString, QTranslator*> m_translators;
     bool m_appsNeedRestart;
     bool m_homescreenNeedRestart;
 };

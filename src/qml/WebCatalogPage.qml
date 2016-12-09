@@ -89,6 +89,7 @@ Page {
             id: background
             contentHeight: delegateContent.height
             height: Theme.itemSizeExtraLarge + Theme.paddingSmall
+            property bool isInstalled: typeof(container.versions) != "undefined" && typeof(container.versions[model.name]) != "undefined"
 
             onClicked: {
                 pageStack.push(Qt.resolvedUrl("WebPatchPage.qml"),
@@ -109,7 +110,7 @@ Page {
                         width: parent.width - authorLabel.width - Theme.paddingMedium
                         text: model.display_name
                         color: background.down ? Theme.highlightColor : Theme.primaryColor
-                        font.bold: !!container.versions && container.versions.hasOwnProperty(model.name)
+                        font.bold: isInstalled
                         truncationMode: TruncationMode.Fade
                     }
 

@@ -129,11 +129,12 @@ Page {
         delegate: ListItem {
             id: background
             menu: isNewPatch ? contextMenu : null
+            contentHeight: content.height
             property bool applied: model.patched
             property bool canApply: true
             property bool applying: !appliedSwitch.enabled
             property bool isCompatible: !model.compatible || model.compatible == "0.0.0" || model.compatible.indexOf(release) >= 0
-            property bool isNewPatch: model.hasOwnProperty("display_name")
+            property bool isNewPatch: !!model.display_name && model.display_name
             function doPatch() {
                 appliedSwitch.enabled = false
                 appliedSwitch.busy = true
@@ -189,7 +190,14 @@ Page {
 
             onClicked: {
                 if (isNewPatch) {
-                    pageStack.push("/usr/share/patchmanager/patches/%1/main.qml".arg(model.name))
+                    var patchName = model.name
+                    PatchManager.installTranslator(patchName)
+                    var page = pageStack.push("/usr/share/patchmanager/patches/%1/main.qml".arg(patchName))
+                    page.statusChanged.connect(function() {
+                        if (page.status == PageStatus.Inactive) {
+                            PatchManager.removeTranslator(patchName)
+                        }
+                    })
                 } else {
                     pageStack.push(Qt.resolvedUrl("LegacyPatchPage.qml"),
                                   {modelData: model, delegate: background})
@@ -204,27 +212,44 @@ Page {
                 checkApplicability()
             }
 
-            Switch {
-                id: appliedSwitch
+            Item {
+                id: content
                 anchors.left: parent.left
-                anchors.leftMargin: Theme.paddingMedium
-                anchors.verticalCenter: parent.verticalCenter
-                automaticCheck: false
-                checked: background.applied
-                onClicked: background.doPatch()
-                enabled: false
-            }
-
-            Label {
-                anchors.left: appliedSwitch.right
-                anchors.leftMargin: Theme.paddingMedium
                 anchors.right: parent.right
-                anchors.rightMargin: background.isNewPatch ? Theme.itemSizeSmall : Theme.paddingMedium
-                anchors.verticalCenter: parent.verticalCenter
-                text: background.isNewPatch ? model.display_name : model.name
-                color: isCompatible ? background.down ? Theme.highlightColor : Theme.primaryColor
-                                    : background.down ? Qt.tint(Theme.highlightColor, "red") : Qt.tint(Theme.primaryColor, "red")
-                truncationMode: TruncationMode.Fade
+                anchors.leftMargin: Theme.paddingMedium
+                anchors.rightMargin: Theme.horizontalPageMargin
+                height: Theme.itemSizeSmall
+
+                Switch {
+                    id: appliedSwitch
+                    anchors.verticalCenter: parent.verticalCenter
+                    automaticCheck: false
+                    checked: background.applied
+                    onClicked: background.doPatch()
+                    enabled: false
+                }
+
+                Label {
+                    id: nameLabel
+                    anchors.left: appliedSwitch.right
+                    anchors.right: background.isNewPatch ? patchIcon.left : parent.right
+                    anchors.margins: Theme.paddingMedium
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: background.isNewPatch ? model.display_name : model.name
+                    color: isCompatible ? background.down ? Theme.highlightColor : Theme.primaryColor
+                                        : background.down ? Qt.tint(Theme.highlightColor, "red") : Qt.tint(Theme.primaryColor, "red")
+                    truncationMode: TruncationMode.Fade
+                }
+
+                Image {
+                    id: patchIcon
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: Theme.itemSizeExtraSmall
+                    height: Theme.itemSizeExtraSmall
+                    visible: background.isNewPatch
+                    source: visible ? "/usr/share/patchmanager/patches/%1/main.png".arg(model.name) : ""
+                }
             }
 
             Component {
