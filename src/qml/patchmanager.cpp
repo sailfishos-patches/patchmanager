@@ -59,6 +59,7 @@ static void toggleSet(QSet<QString> &set, const QString &entry)
 PatchManager::PatchManager(QObject *parent)
     : QObject(parent), m_appsNeedRestart(false), m_homescreenNeedRestart(false)
 {
+    m_nam = new QNetworkAccessManager(this);
 }
 
 PatchManager *PatchManager::GetInstance(QObject *parent)
@@ -183,4 +184,21 @@ bool PatchManager::removeTranslator(const QString &patch)
         return qGuiApp->removeTranslator(translator);
     }
     return true;
+}
+
+void PatchManager::activation(const QString &patch, const QString &version)
+{
+    QUrl url(CATALOG_URL"/"PROJECT_PATH);
+    QUrlQuery query;
+    query.addQueryItem("name", patch);
+    query.addQueryItem("version", version);
+    query.addQueryItem("action", "activation");
+    url.setQuery(query);
+    QNetworkRequest request(url);
+    m_nam->get(request);
+}
+
+void PatchManager::vote(const QString &patch, bool positive)
+{
+
 }

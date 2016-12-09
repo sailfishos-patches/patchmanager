@@ -135,6 +135,66 @@ Page {
                 text: patchData.value && patchData.value.display_name ? patchData.value.display_name : ""
             }
 
+            Item {
+                width: parent.width
+                height: Theme.itemSizeSmall
+
+                Image {
+                    id: activationsIcon
+                    anchors.left: parent.left
+                    anchors.leftMargin: Theme.horizontalPageMargin
+                    source: "image://theme/icon-s-installed"
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Label {
+                    id: activationsLabel
+                    anchors.left: activationsIcon.right
+                    anchors.leftMargin: Theme.paddingSmall
+                    text: patchData.value && patchData.value.total_activations ? patchData.value.total_activations : "0"
+                }
+
+                Image {
+                    id: likeIcon
+                    anchors.left: activationsLabel.right
+                    anchors.leftMargin: Theme.paddingMedium
+                    source: "image://theme/icon-s-like"
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Label {
+                    id: likeLabel
+                    anchors.left: likeIcon.right
+                    anchors.leftMargin: Theme.paddingSmall
+                    text: patchData.value && patchData.value.rating ? patchData.value.rating : "0"
+                }
+
+                IconButton {
+                    id: dislikeButton
+                    anchors.right: likeButton.left
+                    anchors.rightMargin: Theme.paddingMedium
+                    anchors.verticalCenter: parent.verticalCenter
+                    icon.source: "image://theme/icon-m-like"
+                    rotation: 180
+
+                    onClicked: {
+
+                    }
+                }
+
+                IconButton {
+                    id: likeButton
+                    anchors.right: parent.right
+                    anchors.rightMargin: Theme.horizontalPageMargin
+                    anchors.verticalCenter: parent.verticalCenter
+                    icon.source: "image://theme/icon-m-like"
+
+                    onClicked: {
+
+                    }
+                }
+            }
+
             BackgroundItem {
                 width: parent.width
                 height: Theme.itemSizeExtraSmall

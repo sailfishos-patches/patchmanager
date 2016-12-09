@@ -144,6 +144,9 @@ Page {
                                                           [{"type": "s", "value": model.patch}],
                         function (ok) {
                             if (ok) {
+                                if (isNewPatch) {
+                                    PatchManager.activation(model.name, model.version)
+                                }
                                 background.applied = true
                             }
                             appliedSwitch.busy = false

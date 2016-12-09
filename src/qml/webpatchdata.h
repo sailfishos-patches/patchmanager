@@ -21,7 +21,7 @@ public:
     QJsonObject value() const;
 
     Q_INVOKABLE void getJson(const QString & version);
-
+    Q_INVOKABLE void reload();
 
     explicit WebPatchData(QObject * parent = 0);
 

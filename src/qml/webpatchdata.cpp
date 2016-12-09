@@ -35,6 +35,17 @@ void WebPatchData::getJson(const QString &version)
     QObject::connect(reply, &QNetworkReply::finished, this, &WebPatchData::jsonReply);
 }
 
+void WebPatchData::reload()
+{
+    QUrl url(CATALOG_URL"/"PROJECT_PATH);
+    QUrlQuery query;
+    query.addQueryItem("name", _name);
+    url.setQuery(query);
+    QNetworkRequest request(url);
+    QNetworkReply * reply = _nam->get(request);
+    QObject::connect(reply, &QNetworkReply::finished, this, &WebPatchData::serverReply);
+}
+
 WebPatchData::WebPatchData(QObject * parent) : QObject(parent)
 {
     _completed = false;
@@ -48,14 +59,7 @@ void WebPatchData::classBegin()
 
 void WebPatchData::componentComplete()
 {
-    QUrl url(CATALOG_URL"/"PROJECT_PATH);
-    QUrlQuery query;
-    query.addQueryItem("name", _name);
-    url.setQuery(query);
-    QNetworkRequest request(url);
-    QNetworkReply * reply = _nam->get(request);
-    QObject::connect(reply, &QNetworkReply::finished, this, &WebPatchData::serverReply);
-
+    reload();
     _completed = true;
 }
 
