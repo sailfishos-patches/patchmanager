@@ -31,17 +31,19 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import org.SfietKonstantin.patchmanager 2.0
 
 Page {
     SilicaFlickable {
+        id: flick
         anchors.fill: parent
         contentHeight: mainColumn.height
 
         Column {
             id: mainColumn
             spacing: Theme.paddingMedium
-            anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
-            anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
+            width: parent.width
+
             PageHeader {
                 title: qsTr("About")
             }
@@ -52,7 +54,7 @@ Page {
             }
 
             Column {
-                anchors.left: parent.left; anchors.right: parent.right
+                width: parent.width
                 spacing: Theme.paddingSmall
                 Label {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -71,33 +73,147 @@ Page {
 
             Label {
                 wrapMode: Text.WordWrap
-                anchors.left: parent.left; anchors.right: parent.right
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: Theme.horizontalPageMargin
                 font.pixelSize: Theme.fontSizeSmall
-                text: "Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations."
+                text: qsTr("Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.")
             }
 
             BackgroundItem {
-                anchors.left: parent.left; anchors.right: parent.right
+                width: parent.width
                 onClicked: Qt.openUrlExternally(PAYPAL_DONATE)
                 Label {
-                    anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
-                    anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.margins: Theme.horizontalPageMargin
                     anchors.verticalCenter: parent.verticalCenter
                     text: qsTr("Donate")
                 }
             }
             BackgroundItem {
-                anchors.left: parent.left; anchors.right: parent.right
+                width: parent.width
                 onClicked: pageStack.push(Qt.resolvedUrl("DevelopersPage.qml"))
                 Label {
-                    anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
-                    anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.margins: Theme.horizontalPageMargin
                     anchors.verticalCenter: parent.verticalCenter
                     text: qsTr("Developers")
                 }
             }
+
+//            property int rotAngle: 0
+
+//            states: [
+//                State {
+//                    name: "animate"
+//                    PropertyChanges {
+//                        target: flick
+//                        contentY: mainColumn.height
+//                    }
+//                }
+
+//            ]
+
+//            transitions: Transition {
+//                to: "animate"
+//                SequentialAnimation {
+//                    PropertyAction {
+//                        target: flick
+//                        property: "interactive"
+//                        value: false
+//                    }
+
+//                    PropertyAction {
+//                        target: flick
+//                        property: "layer.effect"
+//                        value: rampComponent
+//                    }
+
+//                    PropertyAction {
+//                        target: flick
+//                        property: "layer.enabled"
+//                        value: true
+//                    }
+
+//                    NumberAnimation {
+//                        target: mainColumn
+//                        property: "rotAngle"
+//                        from: 0
+//                        to: 36
+//                        duration: 2000
+//                    }
+
+//                    PropertyAction {
+//                        target: mainColumn
+//                        property: "testValue"
+//                        value: 3000
+//                    }
+
+//                    NumberAnimation {
+//                        target: flick
+//                        property: "contentY"
+//                        duration: mainColumn.height * 128
+//                    }
+
+//                    PropertyAction {
+//                        target: flick
+//                        property: "interactive"
+//                        value: true
+//                    }
+//                }
+//            }
+
+//            transform: Rotation {
+//                origin { x: mainColumn.width / 2; y: flick.contentY + flick.height }
+//                axis { x: 1; y: 0; z: 0 }
+//                angle: mainColumn.rotAngle
+//            }
+
+//            Item {
+//                width: 1
+//                height: flick.height - y
+//            }
+
+//            Label {
+//                id: easterLabel
+//                anchors.left: parent.left
+//                anchors.right: parent.right
+//                anchors.margins: Theme.horizontalPageMargin
+//                                horizontalAlignment: Text.AlignHCenter
+//                wrapMode: Text.Wrap
+//            }
         }
 
         VerticalScrollDecorator {}
     }
+
+//    Timer {
+//        interval: 10000
+//        repeat: false
+//        running: true
+//        onTriggered: {
+//            PatchManager.checkEaster()
+//        }
+//    }
+
+//    Connections {
+//        target: PatchManager
+//        onEasterReceived: {
+//            easterLabel.text = easterText
+//            mainColumn.state = "animate"
+//        }
+//    }
+
+//    Component {
+//        id: rampComponent
+//        OpacityRampEffectBase {
+//            id: rampEffect
+//            direction: OpacityRamp.BottomToTop
+//            source: flick
+//            slope: 2.5
+//            offset: 0.5
+//        }
+//    }
 }

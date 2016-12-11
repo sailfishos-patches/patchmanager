@@ -87,7 +87,7 @@ Page {
 
         delegate: BackgroundItem {
             id: background
-            contentHeight: delegateContent.height
+            contentHeight: Theme.itemSizeSmall
             height: Theme.itemSizeExtraLarge + Theme.paddingSmall
             property bool isInstalled: typeof(container.versions) != "undefined" && typeof(container.versions[model.name]) != "undefined"
 
@@ -98,8 +98,9 @@ Page {
 
             Column {
                 id: delegateContent
-                anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
-                anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: Theme.horizontalPageMargin
                 anchors.verticalCenter: parent.verticalCenter
 
                 Item {

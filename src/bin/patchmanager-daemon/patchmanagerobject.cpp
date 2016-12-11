@@ -176,7 +176,6 @@ QVariantList PatchManagerObject::listPatchesFromDir(const QString &dir, QSet<QSt
 PatchManagerObject::PatchManagerObject(QObject *parent) :
     QObject(parent), m_dbusRegistered(false)
 {
-    m_settings = new QSettings(this);
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &PatchManagerObject::quit);
     m_timer->setSingleShot(true);
@@ -357,19 +356,6 @@ bool PatchManagerObject::uninstallPatch(const QString &patch)
 
     m_timer->start();
     return true;
-}
-
-int PatchManagerObject::checkVote(const QString &patch)
-{
-    return m_settings->value(patch, 0);
-    m_timer->start();
-}
-
-void PatchManagerObject::doVote(const QString &patch, int action)
-{
-    m_settings->setValue(patch, action);
-    m_settings->sync();
-    m_timer->start();
 }
 
 //void PatchManagerObject::checkPatches()

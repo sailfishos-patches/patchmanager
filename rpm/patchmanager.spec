@@ -85,3 +85,4 @@ dbus-send --system --type=method_call \
 %{_datadir}/jolla-settings/pages/%{name}
 %{_datadir}/jolla-settings/entries/%{name}.json
 %{_datadir}/%{name}/icons/icon-m-patchmanager.png
+%attr(644,nemo,nemo) %ghost /home/nemo/.config/patchmanager2.conf

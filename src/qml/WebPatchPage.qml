@@ -48,10 +48,12 @@ Page {
 
     property int voteAction
 
+    property bool isInstalled: !!container.versions && typeof(container.versions[modelData.name]) != "undefined"
+
     onStatusChanged: {
         if (status == PageStatus.Active) {
             patchmanagerDbusInterface.listVersions()
-            patchmanagerDbusInterface.checkVote(modelData.name)
+            voteAction = PatchManager.checkVote(modelData.name)
         }
     }
 
@@ -78,6 +80,13 @@ Page {
                                                     container.versionsChanged()
                                                 }
                                             })
+    }
+
+    Connections {
+        target: PatchManager
+        onServerReply: {
+            patchData.reload()
+        }
     }
 
     WebPatchData {
@@ -109,20 +118,17 @@ Page {
                 container.versions = patches
             })
         }
-        function checkVote(patch, action) {
-            typedCall("checkVote", [{"type": "s", "value": patch}], function(action) {
-                voteAction = action
-            })
-        }
-        function doVote(patch, action) {
-            typedCall("doVote", [{"type": "s", "value": patch}, {"type": "i", "value": action}])
-        }
     }
 
     SilicaFlickable {
         id: view
         anchors.fill: parent
         contentHeight: content.height
+
+        ViewPlaceholder {
+            enabled: !patchData.value
+            text: qsTr("Problem in fetching patch data")
+        }
 
         Column {
             id: content
@@ -149,19 +155,21 @@ Page {
             Item {
                 width: parent.width
                 height: Theme.itemSizeSmall
+                visible: patchData.value
 
                 Image {
                     id: activationsIcon
                     anchors.left: parent.left
                     anchors.leftMargin: Theme.horizontalPageMargin
-                    source: "image://theme/icon-s-installed"
                     anchors.verticalCenter: parent.verticalCenter
+                    source: "image://theme/icon-s-installed"
                 }
 
                 Label {
                     id: activationsLabel
                     anchors.left: activationsIcon.right
                     anchors.leftMargin: Theme.paddingSmall
+                    anchors.verticalCenter: parent.verticalCenter
                     text: patchData.value && patchData.value.total_activations ? patchData.value.total_activations : "0"
                 }
 
@@ -169,14 +177,15 @@ Page {
                     id: likeIcon
                     anchors.left: activationsLabel.right
                     anchors.leftMargin: Theme.paddingMedium
-                    source: "image://theme/icon-s-like"
                     anchors.verticalCenter: parent.verticalCenter
+                    source: "image://theme/icon-s-like"
                 }
 
                 Label {
                     id: likeLabel
                     anchors.left: likeIcon.right
                     anchors.leftMargin: Theme.paddingSmall
+                    anchors.verticalCenter: parent.verticalCenter
                     text: patchData.value && patchData.value.rating ? patchData.value.rating : "0"
                 }
 
@@ -187,12 +196,13 @@ Page {
                     anchors.verticalCenter: parent.verticalCenter
                     icon.source: "image://theme/icon-m-like"
                     rotation: 180
-                    highlighted: down || voteAction == 2
-                    enabled: voteAction != 2
+                    highlighted: down || voteAction == 1
+                    enabled: container.isInstalled
 
                     onClicked: {
-                        patchmanagerDbusInterface.doVote(modelData.name, 2)
-                        voteAction = 2
+                        var newAction = voteAction == 1 ? 0 : 1
+                        PatchManager.doVote(modelData.name, newAction)
+                        voteAction = newAction
                     }
                 }
 
@@ -202,12 +212,13 @@ Page {
                     anchors.rightMargin: Theme.horizontalPageMargin
                     anchors.verticalCenter: parent.verticalCenter
                     icon.source: "image://theme/icon-m-like"
-                    highlighted: down || voteAction == 1
-                    enabled: voteAction != 1
+                    highlighted: down || voteAction == 2
+                    enabled: container.isInstalled
 
                     onClicked: {
-                        patchmanagerDbusInterface.doVote(modelData.name, 1)
-                        voteAction = 1
+                        var newAction = voteAction == 2 ? 0 : 2
+                        PatchManager.doVote(modelData.name, newAction)
+                        voteAction = newAction
                     }
                 }
             }

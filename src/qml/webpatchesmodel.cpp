@@ -1,5 +1,6 @@
 #include "webpatchesmodel.h"
 #include "webcatalog.h"
+#include <QDebug>
 
 WebPatchesModel::WebPatchesModel(QObject * parent)
     : QAbstractListModel(parent)
@@ -62,6 +63,7 @@ void WebPatchesModel::componentComplete()
     QNetworkRequest request(url);
     QNetworkReply * reply = _nam->get(request);
     QObject::connect(reply, &QNetworkReply::finished, this, &WebPatchesModel::serverReply);
+    QObject::connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), this, &WebPatchesModel::onError);
 
     _completed = true;
 }
@@ -101,4 +103,9 @@ void WebPatchesModel::serverReply()
         }
         reply->deleteLater();
     }
+}
+
+void WebPatchesModel::onError(QNetworkReply::NetworkError error)
+{
+    qDebug() << error;
 }

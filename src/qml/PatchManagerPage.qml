@@ -71,6 +71,7 @@ Page {
         bus: DBus.SystemBus
         function listPatches() {
             typedCall("listPatches", [], function (patches) {
+                indicator.visible = false
                 patchModel.clear()
                 for (var i = 0; i < patches.length; i++) {
                     var patch = patches[i]
@@ -81,7 +82,6 @@ Page {
                     }
                     patchModel.append(patch)
                 }
-                indicator.visible = false
             })
         }
     }
@@ -272,7 +272,7 @@ Page {
         }
 
         ViewPlaceholder {
-            enabled: patchModel.count == 0
+            enabled: view.count == 0
             text: qsTr("No patches available")
         }
 

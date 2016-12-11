@@ -36,6 +36,7 @@
 #include <QtCore/QSet>
 #include <QTranslator>
 #include <QtNetwork>
+#include <QSettings>
 #include "webdownloader.h"
 
 class PatchManager: public QObject
@@ -52,6 +53,8 @@ public:
     QString serverMediaUrl();
 private slots:
     void onDownloadFinished(const QString & patch, const QString & fileName);
+    void onServerReplied();
+    void onEasterReply();
 public slots:
     void patchToggleService(const QString &patch, const QString &code);
     void restartServices();
@@ -59,11 +62,15 @@ public slots:
     bool installTranslator(const QString & patch);
     bool removeTranslator(const QString & patch);
     void activation(const QString & patch, const QString & version);
-    void vote(const QString & patch, bool positive);
+    int checkVote(const QString &patch);
+    void doVote(const QString &patch, int action);
+    void checkEaster();
 signals:
     void appsNeedRestartChanged();
     void homescreenNeedRestartChanged();
     void downloadFinished(const QString & patch, const QString & fileName);
+    void serverReply();
+    void easterReceived(const QString & easterText);
 private:
     QSet<QString> m_homescreenPatches;
     QSet<QString> m_voiceCallPatches;
@@ -72,6 +79,7 @@ private:
     bool m_appsNeedRestart;
     bool m_homescreenNeedRestart;
     QNetworkAccessManager * m_nam;
+    QSettings *m_settings;
 };
 
 #endif // PATCHMANAGER_H

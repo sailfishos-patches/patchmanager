@@ -40,6 +40,7 @@ private:
 
 private slots:
     void serverReply();
+    void onError(QNetworkReply::NetworkError error);
 
 signals:
     void queryParamsChanged(const QVariantMap & queryParams);

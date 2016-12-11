@@ -41,6 +41,7 @@
 #include <QtQuick/QQuickView>
 #include <QLocale>
 #include "webcatalog.h"
+#include <QDebug>
 
 static const char *HOMESCREEN_CODE = "homescreen";
 static const char *MESSAGES_CODE = "messages";
@@ -60,6 +61,7 @@ PatchManager::PatchManager(QObject *parent)
     : QObject(parent), m_appsNeedRestart(false), m_homescreenNeedRestart(false)
 {
     m_nam = new QNetworkAccessManager(this);
+    m_settings = new QSettings("/home/nemo/.config/patchmanager2.conf", QSettings::IniFormat, this);
 }
 
 PatchManager *PatchManager::GetInstance(QObject *parent)
@@ -93,6 +95,38 @@ void PatchManager::onDownloadFinished(const QString &patch, const QString &fileN
         download->deleteLater();
     }
     emit downloadFinished(patch, fileName);
+}
+
+void PatchManager::onServerReplied()
+{
+    QNetworkReply * reply = qobject_cast<QNetworkReply *>(sender());
+    if (reply) {
+        reply->deleteLater();
+        emit serverReply();
+    }
+}
+
+void PatchManager::onEasterReply()
+{
+    QNetworkReply * reply = qobject_cast<QNetworkReply *>(sender());
+    if (reply) {
+        if (reply->error() == QNetworkReply::NoError) {
+            if (reply->bytesAvailable()) {
+                QByteArray json = reply->readAll();
+
+                QJsonParseError error;
+                QJsonDocument document = QJsonDocument::fromJson(json, &error);
+
+                if (error.error == QJsonParseError::NoError) {
+                    const QJsonObject & object = document.object();
+                    if (object.value("status").toBool()) {
+                        emit easterReceived(object.value("text").toString());
+                    }
+                }
+            }
+        }
+        reply->deleteLater();
+    }
 }
 
 void PatchManager::patchToggleService(const QString &patch, const QString &code)
@@ -195,10 +229,45 @@ void PatchManager::activation(const QString &patch, const QString &version)
     query.addQueryItem("action", "activation");
     url.setQuery(query);
     QNetworkRequest request(url);
-    m_nam->get(request);
+    QNetworkReply * reply = m_nam->get(request);
+    QObject::connect(reply, &QNetworkReply::finished, this, &PatchManager::onServerReplied);
 }
 
-void PatchManager::vote(const QString &patch, bool positive)
+int PatchManager::checkVote(const QString &patch)
 {
+    return m_settings->value(patch, 0).toInt();
+}
 
+void PatchManager::doVote(const QString &patch, int action)
+{
+    if (checkVote(patch) == action) {
+        return;
+    }
+
+    QUrl url(CATALOG_URL"/"PROJECT_PATH);
+    QUrlQuery query;
+    query.addQueryItem("name", patch);
+    if (action == 0) {
+        query.addQueryItem("action", checkVote(patch) == 1 ? "upvote" : "downvote");
+    } else {
+        query.addQueryItem("action", action == 1 ? "downvote" : "upvote");
+        if (checkVote(patch) > 0) {
+            query.addQueryItem("twice", "true");
+        }
+    }
+    url.setQuery(query);
+    QNetworkRequest request(url);
+    QNetworkReply * reply = m_nam->get(request);
+    QObject::connect(reply, &QNetworkReply::finished, this, &PatchManager::onServerReplied);
+
+    m_settings->setValue(patch, action);
+    m_settings->sync();
+}
+
+void PatchManager::checkEaster()
+{
+    QUrl url(CATALOG_URL"/easter");
+    QNetworkRequest request(url);
+    QNetworkReply * reply = m_nam->get(request);
+    QObject::connect(reply, &QNetworkReply::finished, this, &PatchManager::onEasterReply);
 }
