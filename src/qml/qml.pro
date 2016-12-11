@@ -5,7 +5,7 @@ TEMPLATE = lib
 QT = core qml network
 CONFIG += qt plugin hide_symbols
 
-DEFINES += "SERVER_URL=\\\"http://192.168.1.141:8000\\\""
+#DEFINES += "SERVER_URL=\\\"http://192.168.1.141:8000\\\""
 
 HEADERS += \
     patchmanager.h \

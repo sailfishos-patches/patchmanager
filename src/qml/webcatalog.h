@@ -2,7 +2,7 @@
 #define WEBCATALOG_H
 
 #ifndef SERVER_URL
-#define SERVER_URL          "https://coderus.openrepos.net"
+#define SERVER_URL          "https://coderus.openrepos.net/pm2"
 #endif
 
 #define API_PATH            "api"
