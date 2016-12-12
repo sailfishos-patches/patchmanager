@@ -75,7 +75,7 @@ Page {
                 for (var i = 0; i < patches.length; i++) {
                     var patch = patches[i]
                     if (patch.compatible) {
-                        patch.compatible = patch.compatible.join(",")
+                        patch.compatible = patch.compatible.join(", ")
                     } else {
                         patch.compatible = "0.0.0"
                     }
@@ -193,10 +193,9 @@ Page {
             onClicked: {
                 if (isNewPatch) {
                     var patchName = model.name
-                    var pageComponent = Qt.createComponent("/usr/share/patchmanager/patches/%1/main.qml".arg(patchName))
-                    if (pageComponent) {
+                    try {
+                        var page = pageStack.push("/usr/share/patchmanager/patches/%1/main.qml".arg(patchName))
                         var translator = PatchManager.installTranslator(patchName)
-                        var page = pageStack.push(pageComponent)
                         if (translator) {
                             page.statusChanged.connect(function() {
                                 if (page.status == PageStatus.Inactive) {
@@ -204,7 +203,8 @@ Page {
                                 }
                             })
                         }
-                    } else {
+                    }
+                    catch(err) {
                         pageStack.push(Qt.resolvedUrl("NewPatchPage.qml"),
                                       {modelData: model, delegate: background})
                     }
