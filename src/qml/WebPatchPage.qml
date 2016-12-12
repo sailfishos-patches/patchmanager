@@ -43,7 +43,6 @@ Page {
     property string archFile
 
     property var versions
-    property bool developer
     property string release
 
     property int voteAction
@@ -255,6 +254,11 @@ Page {
                 text: patchData.value && patchData.value.description ? patchData.value.description : ""
             }
 
+            SectionHeader {
+                text: qsTr("Links")
+                visible: patchData.value && (!!patchData.value.discussion || !!patchData.value.donations || !!patchData.value.sources)
+            }
+
             BackgroundItem {
                 width: parent.width
                 height: Theme.itemSizeExtraSmall
@@ -368,8 +372,7 @@ Page {
                     property bool isCompatible: modelData.compatible.indexOf(release) >= 0
 
                     onClicked: {
-                        if (!developer && !isCompatible) {
-                            console.log("### not compatible", modelData.compatible, release)
+                        if (!PatchManager.developerMode && !isCompatible) {
                             errorMesageComponent.createObject(fileDelegate, {text: qsTr("This file is not compatible with SailfishOS version!")})
                         } else if (!fileDelegate.isInstalled) {
                             remorseAction(qsTr("Install patch %1").arg(patchData.value.display_name), installPatch)
@@ -396,6 +399,7 @@ Page {
                             height: Theme.itemSizeExtraSmall
 
                             Label {
+                                id: versionLabel
                                 anchors {
                                     left: parent.left
                                     verticalCenter: parent.verticalCenter
@@ -403,6 +407,16 @@ Page {
                                 font.bold: fileDelegate.isInstalled
                                 color: Theme.highlightColor
                                 text: modelData.version
+                            }
+
+                            Label {
+                                anchors {
+                                    left: versionLabel.right
+                                    leftMargin: Theme.paddingMedium
+                                    verticalCenter: parent.verticalCenter
+                                }
+                                color: Theme.highlightColor
+                                text: fileDelegate.isInstalled ? qsTr("[installed]") : qsTr("[click to install]")
                             }
 
                             Label {

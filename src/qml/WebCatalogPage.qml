@@ -38,7 +38,6 @@ Page {
     id: container
     property string author
     property var versions
-    property bool developer
     property string release
 
     onStatusChanged: {
@@ -65,13 +64,6 @@ Page {
         id: view
         anchors.fill: parent
 
-        PullDownMenu {
-            MenuItem {
-                text: qsTr("About")
-                onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
-            }
-        }
-
         header: PageHeader {
             title: container.author ? qsTr("%1 patches").arg(container.author) : qsTr("Web catalog")
         }
@@ -87,13 +79,13 @@ Page {
 
         delegate: BackgroundItem {
             id: background
-            contentHeight: Theme.itemSizeSmall
+            contentHeight: height
             height: Theme.itemSizeExtraLarge + Theme.paddingSmall
             property bool isInstalled: typeof(container.versions) != "undefined" && typeof(container.versions[model.name]) != "undefined"
 
             onClicked: {
                 pageStack.push(Qt.resolvedUrl("WebPatchPage.qml"),
-                               {modelData: model, delegate: background, developer: developer, release: release})
+                               {modelData: model, delegate: background, release: release})
             }
 
             Column {

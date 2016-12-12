@@ -45,12 +45,15 @@ class PatchManager: public QObject
     Q_PROPERTY(bool appsNeedRestart READ isAppsNeedRestart NOTIFY appsNeedRestartChanged)
     Q_PROPERTY(bool homescreenNeedRestart READ isHomescreenNeedRestart NOTIFY homescreenNeedRestartChanged)
     Q_PROPERTY(QString serverMediaUrl READ serverMediaUrl FINAL)
+    Q_PROPERTY(bool developerMode READ developerMode WRITE setDeveloperMode NOTIFY developerModeChanged)
 public:
     explicit PatchManager(QObject *parent = 0);
     static PatchManager *GetInstance(QObject *parent = 0);
     bool isAppsNeedRestart() const;
     bool isHomescreenNeedRestart() const;
     QString serverMediaUrl();
+    bool developerMode();
+    void setDeveloperMode(bool developerMode);
 private slots:
     void onDownloadFinished(const QString & patch, const QString & fileName);
     void onServerReplied();
@@ -71,7 +74,11 @@ signals:
     void downloadFinished(const QString & patch, const QString & fileName);
     void serverReply();
     void easterReceived(const QString & easterText);
+    void developerModeChanged(bool developerMode);
 private:
+    bool putSettings(const QString & name, const QVariant & value);
+    QVariant getSettings(const QString & name, const QVariant & def = QVariant());
+
     QSet<QString> m_homescreenPatches;
     QSet<QString> m_voiceCallPatches;
     QSet<QString> m_messagesPatches;

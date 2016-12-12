@@ -417,6 +417,7 @@ void PatchManagerObject::refreshPatchList()
     m_patches = listPatchesFromDir(PATCHES_DIR, existingPatches);
     m_patches.append(listPatchesFromDir(PATCHES_ADDITIONAL_DIR, existingPatches, false));
     std::sort(m_patches.begin(), m_patches.end(), patchSort);
+    m_versions.clear();
     foreach (const QVariant & patch, m_patches) {
         QVariantMap d_patch = patch.toMap();
         if (d_patch.contains("version")) {

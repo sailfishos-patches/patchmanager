@@ -88,6 +88,18 @@ QString PatchManager::serverMediaUrl()
     return QString(MEDIA_URL);
 }
 
+bool PatchManager::developerMode()
+{
+    return getSettings("developerMode", false).toBool();
+}
+
+void PatchManager::setDeveloperMode(bool developerMode)
+{
+    if (putSettings("developerMode", developerMode)) {
+        emit developerModeChanged(developerMode);
+    }
+}
+
 void PatchManager::onDownloadFinished(const QString &patch, const QString &fileName)
 {
     WebDownloader * download = qobject_cast<WebDownloader*>(sender());
@@ -235,7 +247,8 @@ void PatchManager::activation(const QString &patch, const QString &version)
 
 int PatchManager::checkVote(const QString &patch)
 {
-    return m_settings->value(patch, 0).toInt();
+    QString key = QString("votes/%1"),arg(patch);
+    return m_settings->value(key, 0).toInt();
 }
 
 void PatchManager::doVote(const QString &patch, int action)
@@ -260,7 +273,8 @@ void PatchManager::doVote(const QString &patch, int action)
     QNetworkReply * reply = m_nam->get(request);
     QObject::connect(reply, &QNetworkReply::finished, this, &PatchManager::onServerReplied);
 
-    m_settings->setValue(patch, action);
+    QString key = QString("votes/%1"),arg(patch);
+    m_settings->setValue(key, action);
     m_settings->sync();
 }
 
@@ -270,4 +284,21 @@ void PatchManager::checkEaster()
     QNetworkRequest request(url);
     QNetworkReply * reply = m_nam->get(request);
     QObject::connect(reply, &QNetworkReply::finished, this, &PatchManager::onEasterReply);
+}
+
+bool PatchManager::putSettings(const QString &name, const QVariant &value)
+{
+    QString key = QString("votes/%1"),arg(name);
+    QVariant old = m_settings->value(key);
+    if (old != value) {
+        m_settings->setValue(key ,value);
+        return true;
+    }
+    return false;
+}
+
+QVariant PatchManager::getSettings(const QString &name, const QVariant &def)
+{
+    QString key = QString("votes/%1"),arg(name);
+    return m_settings->value(key ,def);
 }

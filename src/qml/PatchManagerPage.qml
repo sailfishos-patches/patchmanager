@@ -37,7 +37,6 @@ import org.SfietKonstantin.patchmanager 2.0
 Page {
     id: container
 
-    property bool developer
     property string release
 
     onStatusChanged: {
@@ -92,8 +91,8 @@ Page {
 
         PullDownMenu {
             MenuItem {
-                text: developer ? qsTr("Disable developer mode") : qsTr("Enable developer mode")
-                onClicked: developer = !developer
+                text: PatchManager.developerMode ? qsTr("Disable developer mode") : qsTr("Enable developer mode")
+                onClicked: PatchManager.developerMode = !PatchManager.developerMode
             }
 
             MenuItem {
@@ -104,7 +103,7 @@ Page {
             MenuItem {
                 text: qsTr("Web catalog")
 
-                onClicked: pageStack.push(Qt.resolvedUrl("WebCatalogPage.qml"), {developer: developer, release: release})
+                onClicked: pageStack.push(Qt.resolvedUrl("WebCatalogPage.qml"), {release: release})
             }
 
             MenuItem {
@@ -139,7 +138,7 @@ Page {
                 appliedSwitch.enabled = false
                 appliedSwitch.busy = true
                 if (!background.applied) {
-                    if (developer || isCompatible) {
+                    if (PatchManager.developerMode || isCompatible) {
                         patchmanagerDbusInterface.typedCall("applyPatch",
                                                           [{"type": "s", "value": model.patch}],
                         function (ok) {
@@ -194,13 +193,21 @@ Page {
             onClicked: {
                 if (isNewPatch) {
                     var patchName = model.name
-                    PatchManager.installTranslator(patchName)
-                    var page = pageStack.push("/usr/share/patchmanager/patches/%1/main.qml".arg(patchName))
-                    page.statusChanged.connect(function() {
-                        if (page.status == PageStatus.Inactive) {
-                            PatchManager.removeTranslator(patchName)
+                    var pageComponent = Qt.createComponent("/usr/share/patchmanager/patches/%1/main.qml".arg(patchName))
+                    if (pageComponent) {
+                        var translator = PatchManager.installTranslator(patchName)
+                        var page = pageStack.push(pageComponent)
+                        if (translator) {
+                            page.statusChanged.connect(function() {
+                                if (page.status == PageStatus.Inactive) {
+                                    PatchManager.removeTranslator(patchName)
+                                }
+                            })
                         }
-                    })
+                    } else {
+                        pageStack.push(Qt.resolvedUrl("NewPatchPage.qml"),
+                                      {modelData: model, delegate: background})
+                    }
                 } else {
                     pageStack.push(Qt.resolvedUrl("LegacyPatchPage.qml"),
                                   {modelData: model, delegate: background})
@@ -235,7 +242,7 @@ Page {
                 Label {
                     id: nameLabel
                     anchors.left: appliedSwitch.right
-                    anchors.right: background.isNewPatch ? patchIcon.left : parent.right
+                    anchors.right: patchIcon.status == Image.Ready ? patchIcon.left : parent.right
                     anchors.margins: Theme.paddingMedium
                     anchors.verticalCenter: parent.verticalCenter
                     text: background.isNewPatch ? model.display_name : model.name
@@ -250,7 +257,7 @@ Page {
                     anchors.verticalCenter: parent.verticalCenter
                     width: Theme.itemSizeExtraSmall
                     height: Theme.itemSizeExtraSmall
-                    visible: background.isNewPatch
+                    visible: status == Image.Ready
                     source: visible ? "/usr/share/patchmanager/patches/%1/main.png".arg(model.name) : ""
                 }
             }
