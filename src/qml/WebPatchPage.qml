@@ -324,7 +324,7 @@ Page {
 
             SectionHeader {
                 text: qsTr("Screenshots")
-                visible: !!patchData.value && !!patchData.value.screenshots && patchData.value.screenshots.count > 0
+                visible: !!patchData.value && !!patchData.value.screenshots && patchData.value.screenshots.length > 0
             }
 
             Flickable {
@@ -332,7 +332,8 @@ Page {
                 height: contentRow.height
                 contentHeight: height
                 contentWidth: contentRow.width
-                visible: !!patchData.value && !!patchData.value.screenshots && patchData.value.screenshots.count > 0
+                flickableDirection: Flickable.HorizontalFlick
+                visible: !!patchData.value && !!patchData.value.screenshots && patchData.value.screenshots.length > 0
 
                 Row {
                     id: contentRow
@@ -343,10 +344,12 @@ Page {
                             anchors.verticalCenter: parent.verticalCenter
                             width: imgItem.width * imgItem.scale
                             height: imgItem.height * imgItem.scale
+
                             Image {
-                                anchors.centerIn: parent
                                 id: imgItem
+                                anchors.centerIn: parent
                                 scale: 0.25
+                                fillMode: Image.PreserveAspectFit
                                 source: '%1/%2'.arg(PatchManager.serverMediaUrl).arg(modelData.screenshot)
                             }
                         }
