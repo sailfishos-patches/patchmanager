@@ -258,7 +258,7 @@ Page {
                     width: Theme.itemSizeExtraSmall
                     height: Theme.itemSizeExtraSmall
                     visible: status == Image.Ready
-                    source: visible ? "/usr/share/patchmanager/patches/%1/main.png".arg(model.name) : ""
+                    source: background.isNewPatch ? "/usr/share/patchmanager/patches/%1/main.png".arg(model.name) : ""
                 }
             }
 
