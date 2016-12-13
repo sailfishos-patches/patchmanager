@@ -247,7 +247,7 @@ void PatchManager::activation(const QString &patch, const QString &version)
 
 int PatchManager::checkVote(const QString &patch)
 {
-    QString key = QString("votes/%1"),arg(patch);
+    QString key = QString("votes/%1").arg(patch);
     return m_settings->value(key, 0).toInt();
 }
 
@@ -273,7 +273,7 @@ void PatchManager::doVote(const QString &patch, int action)
     QNetworkReply * reply = m_nam->get(request);
     QObject::connect(reply, &QNetworkReply::finished, this, &PatchManager::onServerReplied);
 
-    QString key = QString("votes/%1"),arg(patch);
+    QString key = QString("votes/%1").arg(patch);
     m_settings->setValue(key, action);
     m_settings->sync();
 }
@@ -288,7 +288,7 @@ void PatchManager::checkEaster()
 
 bool PatchManager::putSettings(const QString &name, const QVariant &value)
 {
-    QString key = QString("votes/%1"),arg(name);
+    QString key = QString("settings/%1").arg(name);
     QVariant old = m_settings->value(key);
     if (old != value) {
         m_settings->setValue(key ,value);
@@ -299,6 +299,6 @@ bool PatchManager::putSettings(const QString &name, const QVariant &value)
 
 QVariant PatchManager::getSettings(const QString &name, const QVariant &def)
 {
-    QString key = QString("votes/%1"),arg(name);
+    QString key = QString("settings/%1").arg(name);
     return m_settings->value(key ,def);
 }
