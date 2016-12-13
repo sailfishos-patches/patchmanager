@@ -259,6 +259,7 @@ bool PatchManagerObject::applyPatch(const QString &patch)
     bool ok = (process.exitCode() == 0);
     if (ok) {
         m_appliedPatches.insert(patch);
+        refreshPatchList();
     }
 
     m_timer->start();
@@ -281,6 +282,7 @@ bool PatchManagerObject::unapplyPatch(const QString &patch)
     bool ok = (process.exitCode() == 0);
     if (ok) {
         m_appliedPatches.remove(patch);
+        refreshPatchList();
     }
 
     m_timer->start();
