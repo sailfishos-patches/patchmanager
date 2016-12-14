@@ -68,6 +68,7 @@ public slots:
     int checkVote(const QString &patch);
     void doVote(const QString &patch, int action);
     void checkEaster();
+    QString valueIfExists(const QString & filename);
 signals:
     void appsNeedRestartChanged();
     void homescreenNeedRestartChanged();

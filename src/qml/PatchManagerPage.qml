@@ -191,25 +191,20 @@ Page {
             }
 
             onClicked: {
-                if (isNewPatch) {
-                    var patchName = model.name
-                    try {
-                        var page = pageStack.push("/usr/share/patchmanager/patches/%1/main.qml".arg(patchName))
-                        var translator = PatchManager.installTranslator(patchName)
-                        if (translator) {
-                            page.statusChanged.connect(function() {
-                                if (page.status == PageStatus.Inactive) {
-                                    PatchManager.removeTranslator(patchName)
-                                }
-                            })
-                        }
+                var patchName = model.patch
+                try {
+                    var page = pageStack.push("/usr/share/patchmanager/patches/%1/main.qml".arg(patchName))
+                    var translator = PatchManager.installTranslator(patchName)
+                    if (translator) {
+                        page.statusChanged.connect(function() {
+                            if (page.status == PageStatus.Inactive) {
+                                PatchManager.removeTranslator(patchName)
+                            }
+                        })
                     }
-                    catch(err) {
-                        pageStack.push(Qt.resolvedUrl("NewPatchPage.qml"),
-                                      {modelData: model, delegate: background})
-                    }
-                } else {
-                    pageStack.push(Qt.resolvedUrl("LegacyPatchPage.qml"),
+                }
+                catch(err) {
+                    pageStack.push(Qt.resolvedUrl(isNewPatch ? "NewPatchPage.qml" : "LegacyPatchPage.qml"),
                                   {modelData: model, delegate: background})
                 }
             }
@@ -258,7 +253,9 @@ Page {
                     width: Theme.itemSizeExtraSmall
                     height: Theme.itemSizeExtraSmall
                     visible: status == Image.Ready
-                    source: background.isNewPatch ? "/usr/share/patchmanager/patches/%1/main.png".arg(model.name) : ""
+                    source: PatchManager.valueIfExists("/usr/share/patchmanager/patches/%1/main.png".arg(model.patch))
+                            || PatchManager.valueIfExists("/usr/share/patchmanager/patches/%1/main.svg".arg(model.patch))
+                            || ""
                 }
             }
 

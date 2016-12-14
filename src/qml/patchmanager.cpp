@@ -286,6 +286,14 @@ void PatchManager::checkEaster()
     QObject::connect(reply, &QNetworkReply::finished, this, &PatchManager::onEasterReply);
 }
 
+QString PatchManager::valueIfExists(const QString &filename)
+{
+    if (QFile(filename).exists()) {
+        return filename;
+    }
+    return QString();
+}
+
 bool PatchManager::putSettings(const QString &name, const QVariant &value)
 {
     QString key = QString("settings/%1").arg(name);
