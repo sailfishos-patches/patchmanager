@@ -1,2 +1,2 @@
 TEMPLATE = subdirs
-SUBDIRS = bin qml share plugin
+SUBDIRS = bin qml share plugin icons

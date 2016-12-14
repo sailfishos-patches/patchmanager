@@ -6,7 +6,7 @@
             "type": "page",
             "title": "Patchmanager",
             "translation_id": "settings-patchmanager-patchmanager",
-            "icon": "/usr/share/patchmanager/icons/icon-m-patchmanager.png",
+            "icon": "image://theme/icon-m-patchmanager2",
             "order": 2000,
             "params": {
                 "source": "/usr/share/jolla-settings/pages/patchmanager/patchmanager.qml"
