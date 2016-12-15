@@ -304,40 +304,37 @@ bool PatchManagerObject::unapplyAllPatches()
 bool PatchManagerObject::installPatch(const QString &patch, const QString &json, const QString &archive)
 {
     m_timer->stop();
-    QString patchDir = QString("%1/%2").arg(PATCHES_DIR).arg(patch);
-    QString jsonPath = QString("%1/%2/%3").arg(PATCHES_DIR).arg(patch).arg(PATCH_FILE);
-    if (QDir(patchDir).exists()) {
-        m_timer->start();
-        return false;
-    } else if (QDir().mkpath(patchDir)) {
+    QString patchPath = QString("%1/%2").arg(PATCHES_DIR).arg(patch);
+    QString jsonPath = QString("%1/%2").arg(patchPath).arg(PATCH_FILE);
+    QFile archiveFile(archive);
+    QDir patchDir(patchPath);
+    bool result = false;
+    if (archiveFile.exists() && !patchDir.exists() && patchDir.mkpath(patchPath)) {
         QFile jsonFile(jsonPath);
         if (jsonFile.open(QFile::WriteOnly)) {
             jsonFile.write(json.toLatin1());
             jsonFile.close();
-        } else {
-            m_timer->start();
-            return false;
-        }
-        QFile archiveFile(archive);
-        if (archiveFile.exists()) {
+
             QProcess proc;
             int ret = 0;
             if (archive.endsWith(".zip")) {
-                ret = proc.execute("/usr/bin/unzip", QStringList() << archive << "-d" << patchDir);
+                ret = proc.execute("/usr/bin/unzip", QStringList() << archive << "-d" << patchPath);
             } else {
-                ret = proc.execute("/bin/tar", QStringList() << "xzf" << archive << "-C" << patchDir);
+                ret = proc.execute("/bin/tar", QStringList() << "xzf" << archive << "-C" << patchPath);
             }
             if (ret == 0) {
                 refreshPatchList();
-                m_timer->start();
-                return true;
+                result = true;
+            } else {
+                patchDir.removeRecursively();
             }
         }
-        jsonFile.remove();
-        QDir(patchDir).removeRecursively();
+    }
+    if (archiveFile.exists()) {
+        archiveFile.remove();
     }
     m_timer->start();
-    return false;
+    return result;
 }
 
 bool PatchManagerObject::uninstallPatch(const QString &patch)
