@@ -103,117 +103,115 @@ Page {
                 }
             }
 
-//            property int rotAngle: 0
+            property int rotAngle: 0
 
-//            states: [
-//                State {
-//                    name: "animate"
-//                    PropertyChanges {
-//                        target: flick
-//                        contentY: mainColumn.height
-//                    }
-//                }
+            transitions: Transition {
+                to: "animate"
+                SequentialAnimation {
+                    PropertyAction {
+                        target: flick
+                        property: "interactive"
+                        value: false
+                    }
 
-//            ]
+                    NumberAnimation {
+                        target: mainColumn
+                        property: "rotAngle"
+                        from: 0
+                        to: 36
+                        duration: 2000
+                    }
 
-//            transitions: Transition {
-//                to: "animate"
-//                SequentialAnimation {
-//                    PropertyAction {
-//                        target: flick
-//                        property: "interactive"
-//                        value: false
-//                    }
+                    PropertyAction {
+                        target: flick
+                        property: "layer.effect"
+                        value: rampComponent
+                    }
 
-//                    PropertyAction {
-//                        target: flick
-//                        property: "layer.effect"
-//                        value: rampComponent
-//                    }
+                    PropertyAction {
+                        target: flick
+                        property: "layer.enabled"
+                        value: true
+                    }
 
-//                    PropertyAction {
-//                        target: flick
-//                        property: "layer.enabled"
-//                        value: true
-//                    }
+                    NumberAnimation {
+                        target: flick
+                        property: "contentY"
+                        from: 0
+                        to: mainColumn.height - flick.height
+                        duration: mainColumn.height * 20
+                    }
 
-//                    NumberAnimation {
-//                        target: mainColumn
-//                        property: "rotAngle"
-//                        from: 0
-//                        to: 36
-//                        duration: 2000
-//                    }
+                    PropertyAction {
+                        target: flick
+                        property: "interactive"
+                        value: true
+                    }
+                }
+            }
 
-//                    PropertyAction {
-//                        target: mainColumn
-//                        property: "testValue"
-//                        value: 3000
-//                    }
+            transform: Rotation {
+                origin { x: mainColumn.width / 2; y: flick.contentY + flick.height }
+                axis { x: 1; y: 0; z: 0 }
+                angle: mainColumn.rotAngle
+            }
 
-//                    NumberAnimation {
-//                        target: flick
-//                        property: "contentY"
-//                        duration: mainColumn.height * 128
-//                    }
+            Item {
+                width: 1
+                height: flick.height - y
+            }
 
-//                    PropertyAction {
-//                        target: flick
-//                        property: "interactive"
-//                        value: true
-//                    }
-//                }
-//            }
-
-//            transform: Rotation {
-//                origin { x: mainColumn.width / 2; y: flick.contentY + flick.height }
-//                axis { x: 1; y: 0; z: 0 }
-//                angle: mainColumn.rotAngle
-//            }
-
-//            Item {
-//                width: 1
-//                height: flick.height - y
-//            }
-
-//            Label {
-//                id: easterLabel
-//                anchors.left: parent.left
-//                anchors.right: parent.right
-//                anchors.margins: Theme.horizontalPageMargin
-//                                horizontalAlignment: Text.AlignHCenter
-//                wrapMode: Text.Wrap
-//            }
+            Label {
+                id: easterLabel
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: Theme.horizontalPageMargin
+                horizontalAlignment: Text.AlignHCenter
+                wrapMode: Text.Wrap
+            }
         }
 
         VerticalScrollDecorator {}
     }
 
-//    Timer {
-//        interval: 10000
-//        repeat: false
-//        running: true
-//        onTriggered: {
-//            PatchManager.checkEaster()
-//        }
-//    }
+    onStatusChanged: {
+        if (status == PageStatus.Active) {
+            timer.start()
+        } else {
+            timer.stop()
+        }
+    }
 
-//    Connections {
-//        target: PatchManager
-//        onEasterReceived: {
-//            easterLabel.text = easterText
-//            mainColumn.state = "animate"
-//        }
-//    }
+    Timer {
+        id: timer
+        interval: 10000
+        repeat: false
+        onTriggered: {
+            PatchManager.checkEaster()
+        }
+    }
 
-//    Component {
-//        id: rampComponent
-//        OpacityRampEffectBase {
-//            id: rampEffect
-//            direction: OpacityRamp.BottomToTop
-//            source: flick
-//            slope: 2.5
-//            offset: 0.5
-//        }
-//    }
+    Connections {
+        target: PatchManager
+        onEasterReceived: {
+            var f = function() {
+                mainColumn.state = "animate"
+                mainColumn.heightChanged.disconnect(f)
+            }
+
+            easterLabel.text = easterText
+            mainColumn.heightChanged.connect(f)
+        }
+    }
+
+    Component {
+        id: rampComponent
+        OpacityRampEffectBase {
+            id: rampEffect
+            direction: OpacityRamp.BottomToTop
+            source: flick
+            slope: 2.5
+            offset: 0.5
+        }
+    }
 }
