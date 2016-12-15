@@ -40,8 +40,8 @@
 #include <QtQml/QQmlEngine>
 #include <QtQuick/QQuickView>
 #include <QLocale>
+#include <QtDBus/QtDBus>
 #include "webcatalog.h"
-#include <QDebug>
 
 static const char *HOMESCREEN_CODE = "homescreen";
 static const char *MESSAGES_CODE = "messages";
@@ -292,6 +292,26 @@ QString PatchManager::valueIfExists(const QString &filename)
         return filename;
     }
     return QString();
+}
+
+bool PatchManager::callUninstallOldPatch(const QString &patch)
+{
+    QString patchPath = QString("/usr/share/patchmanager/patches/%1").arg(patch);
+    if (QDir(patchPath).exists()) {
+        QProcess proc;
+        proc.start("/bin/rpm", QStringList() << "-qf" << "--qf" << "%{NAME}" << patchPath);
+        if (proc.waitForFinished(5000) && proc.exitCode() == 0) {
+            QString package = QString::fromLatin1(proc.readAllStandardOutput());
+            if (!package.isEmpty()) {
+                QDBusInterface iface("com.jolla.jollastore", "/StoreClient", "com.jolla.jollastore", QDBusConnection::sessionBus());
+                iface.call(QDBus::NoBlock, "removePackage", package, true);
+                return true;
+            }
+        } else {
+            proc.kill();
+        }
+    }
+    return false;
 }
 
 bool PatchManager::putSettings(const QString &name, const QVariant &value)

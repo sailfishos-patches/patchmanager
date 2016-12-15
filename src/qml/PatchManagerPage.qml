@@ -127,7 +127,7 @@ Page {
 
         delegate: ListItem {
             id: background
-            menu: isNewPatch ? contextMenu : null
+            menu: model.patch != "sailfishos-patchmanager-unapplyall" ? contextMenu : null
             contentHeight: content.height
             property bool applied: model.patched
             property bool canApply: true
@@ -179,15 +179,38 @@ Page {
                 remorseAction(qsTr("Uninstalling patch %1").arg(model.patch), doRemove)
             }
 
+            function doUninstall() {
+                if (isNewPatch) {
+                    patchmanagerDbusInterface.typedCall("uninstallPatch",
+                                                      [{"type": "s", "value": model.patch}],
+                        function(ok) {
+                            if (ok) {
+                                patchModel.remove(index)
+                            }
+                        })
+                } else {
+                    if (PatchManager.callUninstallOldPatch(model.patch)) {
+                        patchModel.remove(index)
+                    }
+                }
+            }
+
             function doRemove() {
-                patchmanagerDbusInterface.typedCall("uninstallPatch",
-                                                  [{"type": "s", "value": model.patch}],
-                    function(ok) {
-                        console.log("### uninstall:", ok)
+                if (background.applied) {
+                    appliedSwitch.enabled = false
+                    appliedSwitch.busy = true
+                    patchmanagerDbusInterface.typedCall("unapplyPatch",
+                                                      [{"type": "s", "value": model.patch}],
+                    function (ok) {
+                        appliedSwitch.busy = false
+                        PatchManager.patchToggleService(model.patch, model.categoryCode)
                         if (ok) {
-                            patchModel.remove(index)
+                            doUninstall()
                         }
                     })
+                } else {
+                    doUninstall();
+                }
             }
 
             onClicked: {
