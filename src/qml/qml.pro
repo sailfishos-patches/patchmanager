@@ -32,7 +32,8 @@ DISTFILES += qmldir \
     WebCatalogPage.qml \
     WebPatchPage.qml \
     ItemErrorComponent.qml \
-    NewPatchPage.qml
+    NewPatchPage.qml \
+    ScreenshotsPage.qml
 
 target.path = $$[QT_INSTALL_QML]/$$PLUGIN_IMPORT_PATH
 

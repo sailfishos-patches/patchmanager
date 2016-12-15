@@ -334,16 +334,25 @@ Page {
                 contentWidth: contentRow.width
                 flickableDirection: Flickable.HorizontalFlick
                 visible: !!patchData.value && !!patchData.value.screenshots && patchData.value.screenshots.length > 0
+                boundsBehavior: Flickable.StopAtBounds
 
                 Row {
                     id: contentRow
                     height: Screen.height / 4
                     Repeater {
                         model: patchData.value && patchData.value.screenshots ? patchData.value.screenshots : 0
-                        delegate: Item {
+                        delegate: MouseArea {
                             anchors.verticalCenter: parent.verticalCenter
                             width: imgItem.width * imgItem.scale
                             height: imgItem.height * imgItem.scale
+
+                            onClicked: {
+                                pageStack.push(Qt.resolvedUrl("ScreenshotsPage.qml"),
+                                               {
+                                                   model: patchData.value.screenshots,
+                                                   currentIndex: index
+                                               })
+                            }
 
                             Image {
                                 id: imgItem
