@@ -44,7 +44,7 @@ class PatchManager: public QObject
     Q_OBJECT
     Q_PROPERTY(bool appsNeedRestart READ isAppsNeedRestart NOTIFY appsNeedRestartChanged)
     Q_PROPERTY(bool homescreenNeedRestart READ isHomescreenNeedRestart NOTIFY homescreenNeedRestartChanged)
-    Q_PROPERTY(QString serverMediaUrl READ serverMediaUrl FINAL)
+    Q_PROPERTY(QString serverMediaUrl READ serverMediaUrl CONSTANT)
     Q_PROPERTY(bool developerMode READ developerMode WRITE setDeveloperMode NOTIFY developerModeChanged)
 public:
     explicit PatchManager(QObject *parent = 0);
