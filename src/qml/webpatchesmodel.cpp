@@ -50,9 +50,11 @@ void WebPatchesModel::classBegin()
 
 void WebPatchesModel::componentComplete()
 {
-    beginResetModel();
-    _modelData.clear();
-    endResetModel();
+    if (_modelData.size() > 0) {
+        beginRemoveRows(QModelIndex(), 0, _modelData.size() - 1);
+        _modelData.clear();
+        endRemoveRows();
+    }
 
     QUrl url(CATALOG_URL"/"PROJECTS_PATH);
     QUrlQuery query;

@@ -39,6 +39,8 @@ Page {
     property string author
     property var versions
     property string release
+    property string search
+    property bool searchVisible
 
     onStatusChanged: {
         if (status == PageStatus.Active) {
@@ -64,18 +66,71 @@ Page {
         id: view
         anchors.fill: parent
 
-        header: PageHeader {
-            title: container.author ? qsTr("%1 patches").arg(container.author) : qsTr("Web catalog")
+        PullDownMenu {
+            quickSelect: true
+            visible: !container.author
+            MenuItem {
+                text: searchVisible ? qsTr("Hide search field") : qsTr("Show search field")
+                onClicked: {
+                    searchVisible = !searchVisible
+                }
+            }
+        }
+
+        header: Component {
+            Column {
+            width: view.width
+            PageHeader {
+                title: container.author ? qsTr("%1 patches").arg(container.author) : qsTr("Web catalog")
+            }
+
+            SearchField {
+                id: searchField
+                width: parent.width
+                placeholderText: qsTr("Tap to enter search query")
+                visible: container.searchVisible
+                onVisibleChanged: {
+                    if (visible) {
+                        forceActiveFocus()
+                    } else {
+                        text = ''
+                        container.forceActiveFocus()
+                    }
+                }
+                onTextChanged: {
+                    if (visible) {
+                        searchTimer.restart()
+                    }
+                }
+                EnterKey.enabled: text.length > 0
+                EnterKey.iconSource: "image://theme/icon-m-enter-accept"
+                EnterKey.onClicked: {
+                    searchTimer.stop()
+                    container.search = searchField.text
+                }
+                Timer {
+                    id: searchTimer
+                    interval: 1500
+                    repeat: false
+                    onTriggered: {
+                        container.search = searchField.text
+                    }
+                }
+            }
+            }
         }
         model: WebPatchesModel {
             id: patchModel
-            queryParams: container.author ? {'author': container.author} : {}
+            queryParams:  container.author ? { 'author': container.author }
+                                           : container.search ? { 'display_name__contains': container.search }
+                                                              : {}
         }
         section.criteria: ViewSection.FullString
         section.delegate: SectionHeader {
             text: qsTr(section[0].toUpperCase() + section.substr(1))
         }
         section.property: "category"
+        currentIndex: -1
 
         delegate: BackgroundItem {
             id: background
