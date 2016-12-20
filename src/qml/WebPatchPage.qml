@@ -126,7 +126,7 @@ Page {
 
         ViewPlaceholder {
             enabled: !patchData.value
-            text: qsTr("Problem in fetching patch data")
+            text: qsTranslate("", "Problem in fetching patch data")
         }
 
         Column {
@@ -136,7 +136,7 @@ Page {
             spacing: Theme.paddingMedium
 
             PageHeader {
-                title: qsTr("Patch information")
+                title: qsTranslate("", "Patch information")
             }
 
             Label {
@@ -239,7 +239,7 @@ Page {
                         verticalCenter: parent.verticalCenter
                     }
                     font.pixelSize: Theme.fontSizeSmall
-                    text: patchData.value && patchData.value.author ? qsTr("Author: %1").arg(patchData.value.author) : ""
+                    text: patchData.value && patchData.value.author ? qsTranslate("", "Author: %1").arg(patchData.value.author) : ""
                 }
             }
 
@@ -255,7 +255,7 @@ Page {
             }
 
             SectionHeader {
-                text: qsTr("Links")
+                text: qsTranslate("", "Links")
                 visible: patchData.value && (!!patchData.value.discussion || !!patchData.value.donations || !!patchData.value.sources)
             }
 
@@ -276,7 +276,7 @@ Page {
                         margins: Theme.horizontalPageMargin
                         verticalCenter: parent.verticalCenter
                     }
-                    text: patchData.value && patchData.value.discussion ? qsTr("Open discussion link") : ""
+                    text: patchData.value && patchData.value.discussion ? qsTranslate("", "Open discussion link") : ""
                 }
             }
 
@@ -297,7 +297,7 @@ Page {
                         margins: Theme.horizontalPageMargin
                         verticalCenter: parent.verticalCenter
                     }
-                    text: patchData.value && patchData.value.donations ? qsTr("Donate") : ""
+                    text: patchData.value && patchData.value.donations ? qsTranslate("", "Donate") : ""
                 }
             }
 
@@ -318,12 +318,12 @@ Page {
                         margins: Theme.horizontalPageMargin
                         verticalCenter: parent.verticalCenter
                     }
-                    text: patchData.value && patchData.value.sources ? qsTr("Sources") : ""
+                    text: patchData.value && patchData.value.sources ? qsTranslate("", "Sources") : ""
                 }
             }
 
             SectionHeader {
-                text: qsTr("Screenshots")
+                text: qsTranslate("", "Screenshots")
                 visible: !!patchData.value && !!patchData.value.screenshots && patchData.value.screenshots.length > 0
             }
 
@@ -369,7 +369,7 @@ Page {
             }
 
             SectionHeader {
-                text: qsTr("Files")
+                text: qsTranslate("", "Files")
                 visible: !!patchData.value && !!patchData.value.files
             }
 
@@ -385,9 +385,9 @@ Page {
 
                     onClicked: {
                         if (!PatchManager.developerMode && !isCompatible) {
-                            errorMesageComponent.createObject(fileDelegate, {text: qsTr("This file is not compatible with SailfishOS version!")})
+                            errorMesageComponent.createObject(fileDelegate, {text: qsTranslate("", "This file is not compatible with SailfishOS version!")})
                         } else if (!fileDelegate.isInstalled) {
-                            remorseAction(qsTr("Install patch %1").arg(patchData.value.display_name), installPatch)
+                            remorseAction(qsTranslate("", "Install patch %1").arg(patchData.value.display_name), installPatch)
                         }
                     }
 
@@ -428,7 +428,7 @@ Page {
                                     verticalCenter: parent.verticalCenter
                                 }
                                 color: Theme.highlightColor
-                                text: fileDelegate.isInstalled ? qsTr("[installed]") : qsTr("[click to install]")
+                                text: fileDelegate.isInstalled ? qsTranslate("", "[installed]") : qsTranslate("", "[click to install]")
                             }
 
                             Label {
@@ -443,7 +443,7 @@ Page {
                         }
 
                         Label {
-                            text: qsTr("Compatible: %1").arg(modelData.compatible)
+                            text: qsTranslate("", "Compatible: %1").arg(modelData.compatible)
                             font.pixelSize: Theme.fontSizeExtraSmall
                             color: fileDelegate.isCompatible ? Theme.highlightColor : Qt.tint(Theme.highlightColor, "red")
                             wrapMode: Text.WrapAtWordBoundaryOrAnywhere

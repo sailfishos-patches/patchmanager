@@ -57,7 +57,6 @@ Page {
         function listVersions() {
             typedCall("listVersions", [], function (patches) {
                 container.versions = patches
-                console.log("### versions:", JSON.stringify(patches))
             })
         }
     }
@@ -70,7 +69,7 @@ Page {
             quickSelect: true
             visible: !container.author
             MenuItem {
-                text: searchVisible ? qsTr("Hide search field") : qsTr("Show search field")
+                text: searchVisible ? qsTranslate("", "Hide search field") : qsTranslate("", "Show search field")
                 onClicked: {
                     searchVisible = !searchVisible
                 }
@@ -79,44 +78,44 @@ Page {
 
         header: Component {
             Column {
-            width: view.width
-            PageHeader {
-                title: container.author ? qsTr("%1 patches").arg(container.author) : qsTr("Web catalog")
-            }
+                width: view.width
+                PageHeader {
+                    title: container.author ? qsTranslate("", "%1 patches").arg(container.author) : qsTranslate("", "Web catalog")
+                }
 
-            SearchField {
-                id: searchField
-                width: parent.width
-                placeholderText: qsTr("Tap to enter search query")
-                visible: container.searchVisible
-                onVisibleChanged: {
-                    if (visible) {
-                        forceActiveFocus()
-                    } else {
-                        text = ''
-                        container.forceActiveFocus()
+                SearchField {
+                    id: searchField
+                    width: parent.width
+                    placeholderText: qsTranslate("", "Tap to enter search query")
+                    visible: container.searchVisible
+                    onVisibleChanged: {
+                        if (visible) {
+                            forceActiveFocus()
+                        } else {
+                            text = ''
+                            container.forceActiveFocus()
+                        }
                     }
-                }
-                onTextChanged: {
-                    if (visible) {
-                        searchTimer.restart()
+                    onTextChanged: {
+                        if (visible) {
+                            searchTimer.restart()
+                        }
                     }
-                }
-                EnterKey.enabled: text.length > 0
-                EnterKey.iconSource: "image://theme/icon-m-enter-accept"
-                EnterKey.onClicked: {
-                    searchTimer.stop()
-                    container.search = searchField.text
-                }
-                Timer {
-                    id: searchTimer
-                    interval: 1500
-                    repeat: false
-                    onTriggered: {
+                    EnterKey.enabled: text.length > 0
+                    EnterKey.iconSource: "image://theme/icon-m-enter-accept"
+                    EnterKey.onClicked: {
+                        searchTimer.stop()
                         container.search = searchField.text
                     }
+                    Timer {
+                        id: searchTimer
+                        interval: 1500
+                        repeat: false
+                        onTriggered: {
+                            container.search = searchField.text
+                        }
+                    }
                 }
-            }
             }
         }
         model: WebPatchesModel {
@@ -127,7 +126,7 @@ Page {
         }
         section.criteria: ViewSection.FullString
         section.delegate: SectionHeader {
-            text: qsTr(section[0].toUpperCase() + section.substr(1))
+            text: qsTranslate("", section[0].toUpperCase() + section.substr(1))
         }
         section.property: "category"
         currentIndex: -1
@@ -185,7 +184,7 @@ Page {
 
         ViewPlaceholder {
             enabled: patchModel.count == 0
-            text: qsTr("No patches available")
+            text: qsTranslate("", "No patches available")
         }
 
         VerticalScrollDecorator {}

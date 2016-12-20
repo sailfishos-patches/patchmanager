@@ -36,6 +36,6 @@ Page {
     PageHeader {
         id: header
         visible: !view.interactive
-        title: qsTr("Screenshot")
+        title: qsTranslate("", "Screenshots")
     }
 }

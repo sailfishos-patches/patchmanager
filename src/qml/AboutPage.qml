@@ -45,7 +45,7 @@ Page {
             width: parent.width
 
             PageHeader {
-                title: qsTr("About")
+                title: qsTranslate("", "About")
             }
 
             Image {
@@ -59,7 +59,7 @@ Page {
                 Label {
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: Theme.fontSizeHuge
-                    text: "Patchmanager"
+                    text: qsTranslate("", "Patchmanager")
                 }
 
 //                Label {
@@ -77,7 +77,7 @@ Page {
                 anchors.right: parent.right
                 anchors.margins: Theme.horizontalPageMargin
                 font.pixelSize: Theme.fontSizeSmall
-                text: qsTr("Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.")
+                text: qsTranslate("", "Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.")
             }
 
             BackgroundItem {
@@ -88,7 +88,7 @@ Page {
                     anchors.right: parent.right
                     anchors.margins: Theme.horizontalPageMargin
                     anchors.verticalCenter: parent.verticalCenter
-                    text: qsTr("Donate")
+                    text: qsTranslate("", "Donate")
                 }
             }
             BackgroundItem {
@@ -99,7 +99,7 @@ Page {
                     anchors.right: parent.right
                     anchors.margins: Theme.horizontalPageMargin
                     anchors.verticalCenter: parent.verticalCenter
-                    text: qsTr("Developers")
+                    text: qsTranslate("", "Developers")
                 }
             }
 

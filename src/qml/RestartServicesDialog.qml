@@ -44,17 +44,17 @@ Dialog {
             spacing: Theme.paddingMedium
             anchors.left: parent.left; anchors.right: parent.right
             DialogHeader {
-                acceptText: "Restart services"
+                acceptText: qsTranslate("", "Restart services")
             }
 
             Label {
                 function getText() {
                     if (PatchManager.appsNeedRestart && PatchManager.homescreenNeedRestart) {
-                        return "Both preloaded services (dialer, messages) and the homescreen will now be restarted. Your device might be unusable for a short moment."
+                        return qsTranslate("", "Both preloaded services (dialer, messages) and the homescreen will now be restarted. Your device might be unusable for a short moment.")
                     } else if (PatchManager.appsNeedRestart) {
-                        return "Preloaded services (dialer, messages) will now be restarted. These application might take time to load for a short moment."
+                        return qsTranslate("", "Preloaded services (dialer, messages) will now be restarted. These application might take time to load for a short moment.")
                     } else if (PatchManager.homescreenNeedRestart) {
-                        return "The homescreen will now be restarted. Your device might be unusable for a short moment."
+                        return qsTranslate("", "The homescreen will now be restarted. Your device might be unusable for a short moment.")
                     }
                     return ""
                 }

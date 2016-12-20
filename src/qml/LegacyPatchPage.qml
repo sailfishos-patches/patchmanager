@@ -46,7 +46,7 @@ Page {
         PullDownMenu {
             enabled: !container.delegate.applying || active
             MenuItem {
-                text: container.delegate.applying ? qsTr("Patch being applied") : (container.delegate.applied ? qsTr("Unapply patch") : qsTr("Apply patch"))
+                text: container.delegate.applying ? qsTranslate("", "Patch being applied") : (container.delegate.applied ? qsTranslate("", "Unapply patch") : qsTranslate("", "Apply patch"))
                 enabled: !container.delegate.applying
                 onClicked: {
                     container.delegate.doPatch()
@@ -63,7 +63,7 @@ Page {
             spacing: Theme.paddingMedium
 
             PageHeader {
-                title: qsTr("Patch information")
+                title: qsTranslate("", "Patch information")
             }
 
             Label {
@@ -73,11 +73,11 @@ Page {
                 anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeLarge
-                text: qsTr("This patch is no available anymore. You won't be able to reinstall it.")
+                text: qsTranslate("", "This patch is no available anymore. You won't be able to reinstall it.")
             }
 
             SectionHeader {
-                text: qsTr("Name")
+                text: qsTranslate("", "Name")
             }
 
             Label {
@@ -91,7 +91,7 @@ Page {
 
             SectionHeader {
                 visible: !!modelData.infos && modelData.infos.maintainer
-                text: qsTr("Maintainer")
+                text: qsTranslate("", "Maintainer")
             }
 
             Label {
@@ -104,7 +104,7 @@ Page {
             }
 
             SectionHeader {
-                text: qsTr("Description")
+                text: qsTranslate("", "Description")
             }
 
             Label {

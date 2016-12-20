@@ -94,7 +94,7 @@ Page {
         }
 
         header: PageHeader {
-            title: qsTr("Developers")
+            title: qsTranslate("", "Developers")
         }
 
         delegate: ListItem {
@@ -133,12 +133,12 @@ Page {
                 ContextMenu {
                     MenuItem {
                         visible: model.website != ""
-                        text: qsTr("%1's webpage").arg(model.name || model.nickname)
+                        text: qsTranslate("", "%1's webpage").arg(model.name || model.nickname)
                         onClicked: Qt.openUrlExternally(model.website)
                     }
                     MenuItem {
                         visible: model.twitter != ""
-                        text: qsTr("%1's Twitter account").arg(model.name || model.nickname)
+                        text: qsTranslate("", "%1's Twitter account").arg(model.name || model.nickname)
                         onClicked: Qt.openUrlExternally(model.twitter)
                     }
                 }

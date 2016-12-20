@@ -39,6 +39,24 @@ Page {
 
     property string release
 
+    function dummy() {
+        QT_TRANSLATE_NOOP("", "settings-patchmanager-title")
+        QT_TRANSLATE_NOOP("", "Browser")
+        QT_TRANSLATE_NOOP("", "Camera")
+        QT_TRANSLATE_NOOP("", "Calendar")
+        QT_TRANSLATE_NOOP("", "Clock")
+        QT_TRANSLATE_NOOP("", "Contacts")
+        QT_TRANSLATE_NOOP("", "Email")
+        QT_TRANSLATE_NOOP("", "Gallery")
+        QT_TRANSLATE_NOOP("", "Homescreen")
+        QT_TRANSLATE_NOOP("", "Media")
+        QT_TRANSLATE_NOOP("", "Messages")
+        QT_TRANSLATE_NOOP("", "Phone")
+        QT_TRANSLATE_NOOP("", "Silica")
+        QT_TRANSLATE_NOOP("", "Settings")
+        QT_TRANSLATE_NOOP("", "Other")
+    }
+
     onStatusChanged: {
         if (status == PageStatus.Active) {
             patchmanagerDbusInterface.listPatches()
@@ -91,37 +109,37 @@ Page {
 
         PullDownMenu {
             MenuItem {
-                text: PatchManager.developerMode ? qsTr("Disable developer mode") : qsTr("Enable developer mode")
+                text: PatchManager.developerMode ? qsTranslate("", "Disable developer mode") : qsTranslate("", "Enable developer mode")
                 onClicked: PatchManager.developerMode = !PatchManager.developerMode
             }
 
             MenuItem {
-                text: qsTr("About")
+                text: qsTranslate("", "About")
                 onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
             }
 
             MenuItem {
-                text: qsTr("Web catalog")
+                text: qsTranslate("", "Web catalog")
 
                 onClicked: pageStack.push(Qt.resolvedUrl("WebCatalogPage.qml"), {release: release})
             }
 
             MenuItem {
-                text: qsTr("Restart preloaded services")
+                text: qsTranslate("", "Restart preloaded services")
                 visible: PatchManager.appsNeedRestart || PatchManager.homescreenNeedRestart
                 onClicked: pageStack.push(Qt.resolvedUrl("RestartServicesDialog.qml"))
             }
         }
 
         header: PageHeader {
-            title: qsTr("Installed patches")
+            title: qsTranslate("", "Installed patches")
         }
         model: ListModel {
             id: patchModel
         }
         section.criteria: ViewSection.FullString
         section.delegate: SectionHeader {
-            text: section
+            text: qsTranslate("", section)
         }
         section.property: "category"
 
@@ -153,7 +171,7 @@ Page {
                             checkApplicability()
                         })
                     } else {
-                        errorMesageComponent.createObject(background, {text: qsTr("This patch is not compatible with SailfishOS version!")})
+                        errorMesageComponent.createObject(background, {text: qsTranslate("", "This patch is not compatible with SailfishOS version!")})
                         appliedSwitch.enabled = true
                         appliedSwitch.busy = false
                     }
@@ -176,7 +194,7 @@ Page {
             }
 
             function removeAction() {
-                remorseAction(qsTr("Uninstalling patch %1").arg(model.patch), doRemove)
+                remorseAction(qsTranslate("", "Uninstalling patch %1").arg(model.patch), doRemove)
             }
 
             function doUninstall() {
@@ -286,7 +304,7 @@ Page {
                 id: contextMenu
                 ContextMenu {
                     MenuItem {
-                        text: qsTr("Uninstall")
+                        text: qsTranslate("", "Uninstall")
                         onClicked: removeAction()
                     }
                 }
@@ -300,7 +318,7 @@ Page {
 
         ViewPlaceholder {
             enabled: view.count == 0
-            text: qsTr("No patches available")
+            text: qsTranslate("", "No patches available")
         }
 
         VerticalScrollDecorator {}

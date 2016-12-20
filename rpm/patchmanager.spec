@@ -144,6 +144,7 @@ dbus-send --system --type=method_call \
 %defattr(-,root,root,-)
 %{_libdir}/qt5/qml/org/SfietKonstantin/%{name}
 %{_datadir}/%{name}/data
+%{_datadir}/translations
 %{_datadir}/jolla-settings/pages/%{name}
 %{_datadir}/jolla-settings/entries/%{name}.json
 %{_datadir}/%{name}/icons/icon-m-patchmanager.png
