@@ -17,7 +17,7 @@ Source0:    %{name}-%{version}.tar.bz2
 Requires:   ausmt
 Requires:   unzip
 Requires:   jolla-settings-%{name} = %{version}-%{release}
-Requires:   %{name}-icons = %{version}-%{release}
+Requires:   %{name}-icons
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Qml)
@@ -34,7 +34,7 @@ contains the system daemon.
 %package -n jolla-settings-%{name}
 Summary:    Jolla settings plugin for Patchmanager
 Group:      Qt/Qt
-Requires:   %{name} = %{version}-%{release}
+Requires:   %{name} >= 2.0.0
 Conflicts:  %{name}-ui
 Obsoletes:  %{name}-ui
 
@@ -46,7 +46,7 @@ contains the Jolla settings plugin.
 %package -n %{name}-icons-z1.0
 BuildArch:     noarch
 Summary:       Icons for Patchmanager with zoom factor 1.0
-Requires:      %{name} = %{version}-%{release}
+Requires:      %{name} >= 2.0.0
 Requires:      sailfish-content-graphics-default-z1.0-base
 Provides:      %{name}-icons
 
@@ -56,7 +56,7 @@ Icons for Patchmanager with zoom factor 1.0
 %package -n %{name}-icons-z1.25
 BuildArch:     noarch
 Summary:       Icons for Patchmanager with zoom factor 1.25
-Requires:      %{name} = %{version}-%{release}
+Requires:      %{name} >= 2.0.0
 Requires:      sailfish-content-graphics-default-z1.25-base
 Provides:      %{name}-icons
 
@@ -66,7 +66,7 @@ Icons for Patchmanager with zoom factor 1.25
 %package -n %{name}-icons-z1.5
 BuildArch:     noarch
 Summary:       Icons for Patchmanager with zoom factor 1.5
-Requires:      %{name} = %{version}-%{release}
+Requires:      %{name} >= 2.0.0
 Requires:      sailfish-content-graphics-default-z1.5-base
 Provides:      %{name}-icons
 
@@ -76,7 +76,7 @@ Icons for Patchmanager with zoom factor 1.5
 %package -n %{name}-icons-z1.5-large
 BuildArch:     noarch
 Summary:       Icons for Patchmanager with zoom factor 1.5 for large screens
-Requires:      %{name} = %{version}-%{release}
+Requires:      %{name} >= 2.0.0
 Requires:      sailfish-content-graphics-default-z1.5-large-base
 Provides:      %{name}-icons
 
@@ -86,7 +86,7 @@ Icons for Patchmanager with zoom factor 1.5 for large screens
 %package -n %{name}-icons-z1.75
 BuildArch:     noarch
 Summary:       Icons for Patchmanager with zoom factor 1.75
-Requires:      %{name} = %{version}-%{release}
+Requires:      %{name} >= 2.0.0
 Requires:      sailfish-content-graphics-default-z1.75-base
 Provides:      %{name}-icons
 
@@ -96,7 +96,7 @@ Icons for Patchmanager with zoom factor 1.75
 %package -n %{name}-icons-z2.0
 BuildArch:     noarch
 Summary:       Icons for Patchmanager with zoom factor 2.0
-Requires:      %{name} = %{version}-%{release}
+Requires:      %{name} >= 2.0.0
 Requires:      sailfish-content-graphics-default-z2.0-base
 Provides:      %{name}-icons
 
