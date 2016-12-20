@@ -34,7 +34,8 @@ contains the system daemon.
 %package -n jolla-settings-%{name}
 Summary:    Jolla settings plugin for Patchmanager
 Group:      Qt/Qt
-Requires:   %{name} >= 2.0.0
+Requires:   %{name} = %{version}-%{release}
+Requires:   %{name}-icons
 Conflicts:  %{name}-ui
 Obsoletes:  %{name}-ui
 
