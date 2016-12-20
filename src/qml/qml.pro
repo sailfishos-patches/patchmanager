@@ -6,8 +6,8 @@ QT = core qml network
 CONFIG += qt plugin hide_symbols
 
 #DEFINES += "SERVER_URL=\\\"http://192.168.1.141:8000\\\""
-DEFINES += "SERVER_URL=\\\"http://10.189.121.141:8000\\\""
-DEFINES += "API_PATH=\\\"api\\\""
+#DEFINES += "SERVER_URL=\\\"http://10.189.121.141:8000\\\""
+#DEFINES += "API_PATH=\\\"api\\\""
 
 HEADERS += \
     patchmanager.h \
