@@ -17,7 +17,6 @@ Source0:    %{name}-%{version}.tar.bz2
 Requires:   ausmt
 Requires:   unzip
 Requires:   %{name}-icons
-Provides:   jolla-settings-%{name}
 Conflicts:  jolla-settings-%{name}
 Obsoletes:  jolla-settings-%{name}
 Conflicts:  %{name}-ui
