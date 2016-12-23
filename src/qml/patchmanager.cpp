@@ -296,8 +296,8 @@ QString PatchManager::valueIfExists(const QString &filename)
 
 bool PatchManager::callUninstallOldPatch(const QString &patch)
 {
-    QString patchPath = QString("/usr/share/patchmanager/patches/%1").arg(patch);
-    if (QDir(patchPath).exists()) {
+    QString patchPath = QString("/usr/share/patchmanager/patches/%1/unified_diff.patch").arg(patch);
+    if (QFile(patchPath).exists()) {
         QProcess proc;
         proc.start("/bin/rpm", QStringList() << "-qf" << "--qf" << "%{NAME}" << patchPath);
         if (proc.waitForFinished(5000) && proc.exitCode() == 0) {
