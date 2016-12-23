@@ -20,6 +20,8 @@ Requires:   %{name}-icons
 Provides:   jolla-settings-%{name}
 Conflicts:  jolla-settings-%{name}
 Obsoletes:  jolla-settings-%{name}
+Conflicts:  %{name}-ui
+Obsoletes:  %{name}-ui
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Qml)
