@@ -5,7 +5,7 @@
             "path": "system_settings/look_and_feel/patchmanager",
             "type": "page",
             "title": "Patchmanager",
-            "translation_id": "settings-patchmanager-title",
+            "translation_id": "Patchmanager",
             "icon": "image://theme/icon-m-patchmanager2",
             "order": 2000,
             "params": {

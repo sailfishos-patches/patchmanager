@@ -5,10 +5,6 @@ TEMPLATE = lib
 QT = core qml network
 CONFIG += qt plugin hide_symbols
 
-#DEFINES += "SERVER_URL=\\\"http://192.168.1.141:8000\\\""
-#DEFINES += "SERVER_URL=\\\"http://10.189.121.141:8000\\\""
-#DEFINES += "API_PATH=\\\"api\\\""
-
 HEADERS += \
     patchmanager.h \
     webcatalog.h \
@@ -40,7 +36,7 @@ target.path = $$[QT_INSTALL_QML]/$$PLUGIN_IMPORT_PATH
 qmlfiles.files += $${DISTFILES}
 qmlfiles.path = $$[QT_INSTALL_QML]/$$PLUGIN_IMPORT_PATH
 
-translations.files += *.qm
+translations.files += translations/*.qm
 translations.path = /usr/share/translations
 
 INSTALLS += target qmlfiles translations

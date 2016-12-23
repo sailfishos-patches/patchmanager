@@ -16,8 +16,10 @@ URL:        https://github.com/sailfishos-patches/patchmanager
 Source0:    %{name}-%{version}.tar.bz2
 Requires:   ausmt
 Requires:   unzip
-Requires:   jolla-settings-%{name} = %{version}-%{release}
 Requires:   %{name}-icons
+Provides:   jolla-settings-%{name}
+Conflicts:  jolla-settings-%{name}
+Obsoletes:  jolla-settings-%{name}
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Qml)
@@ -28,20 +30,7 @@ BuildRequires:  sailfish-svg2png >= 0.1.5
 
 %description
 patchmanager allows managing system patch
-on your SailfishOS device easily. This package
-contains the system daemon.
-
-%package -n jolla-settings-%{name}
-Summary:    Jolla settings plugin for Patchmanager
-Group:      Qt/Qt
-Requires:   %{name} >= 2.0.0
-Conflicts:  %{name}-ui
-Obsoletes:  %{name}-ui
-
-%description -n jolla-settings-%{name}
-Patchmanager allows managing system patch
-on your SailfishOS device easily. This package
-contains the Jolla settings plugin.
+on your SailfishOS device easily.
 
 %package -n %{name}-icons-z1.0
 BuildArch:     noarch
@@ -119,9 +108,11 @@ if [ -d /var/lib/patchmanager/ausmt/patches/sailfishos-patchmanager-unapplyall ]
 /usr/sbin/patchmanager -u sailfishos-patchmanager-unapplyall || true
 fi
 
+if /sbin/pidof patchmanager > /dev/null; then
 dbus-send --system --type=method_call \
 --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager \
 org.SfietKonstantin.patchmanager.quit
+fi
 
 %post
 dbus-send --system --type=method_call \
@@ -140,8 +131,6 @@ dbus-send --system --type=method_call \
 %{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/patch.json
 %{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/unified_diff.patch
 
-%files -n jolla-settings-%{name}
-%defattr(-,root,root,-)
 %{_libdir}/qt5/qml/org/SfietKonstantin/%{name}
 %{_datadir}/%{name}/data
 %{_datadir}/translations

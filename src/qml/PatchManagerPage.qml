@@ -40,7 +40,6 @@ Page {
     property string release
 
     function dummy() {
-        QT_TRANSLATE_NOOP("", "settings-patchmanager-title")
         QT_TRANSLATE_NOOP("", "Browser")
         QT_TRANSLATE_NOOP("", "Camera")
         QT_TRANSLATE_NOOP("", "Calendar")
