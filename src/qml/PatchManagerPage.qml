@@ -233,11 +233,12 @@ Page {
             onClicked: {
                 var patchName = model.patch
                 try {
-                    var page = pageStack.push("/usr/share/patchmanager/patches/%1/main.qml".arg(patchName))
                     var translator = PatchManager.installTranslator(patchName)
+                    var bottomDepth = pageStack.depth
+                    var page = pageStack.push("/usr/share/patchmanager/patches/%1/main.qml".arg(patchName))
                     if (translator) {
                         page.statusChanged.connect(function() {
-                            if (page.status == PageStatus.Inactive) {
+                            if (pageStack.depth == bottomDepth && page.status == PageStatus.Inactive) {
                                 PatchManager.removeTranslator(patchName)
                             }
                         })
