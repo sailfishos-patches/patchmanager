@@ -57,6 +57,7 @@ fi
 %post
 dbus-send --system --type=method_call \
 --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+/usr/sbin/patchmanager -a sailfishos-patchmanager-unapplyall || true
 
 %postun
 dbus-send --system --type=method_call \
