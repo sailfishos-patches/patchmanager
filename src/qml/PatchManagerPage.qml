@@ -118,6 +118,13 @@ Page {
             }
 
             MenuItem {
+                text: qsTranslate("", "Unapply all patches")
+                onClicked: {
+                    list.unapplyAll()
+                }
+            }
+
+            MenuItem {
                 text: qsTranslate("", "Web catalog")
 
                 onClicked: pageStack.push(Qt.resolvedUrl("WebCatalogPage.qml"), {release: release})
@@ -141,6 +148,8 @@ Page {
             text: qsTranslate("", section)
         }
         section.property: "category"
+
+        signal unapplyAll
 
         delegate: ListItem {
             id: background
@@ -192,8 +201,32 @@ Page {
                 }
             }
 
+            Connections {
+                target: view
+                onUnapplyAll: {
+                    if (background.applied) {
+                        appliedSwitch.enabled = false
+                        appliedSwitch.busy = true
+                        patchmanagerDbusInterface.typedCall("unapplyPatch",
+                                                          [{"type": "s", "value": model.patch}],
+                        function (ok) {
+                            if (ok) {
+                                background.applied = false
+                            }
+                            appliedSwitch.busy = false
+                            PatchManager.patchToggleService(model.patch, model.categoryCode)
+                            if (!model.available) {
+                                patchModel.remove(model.index)
+                            } else {
+                                checkApplicability()
+                            }
+                        })
+                    }
+                }
+            }
+
             function removeAction() {
-                remorseAction(qsTranslate("", "Uninstalling patch %1").arg(model.patch), doRemove)
+                remorseAction(qsTranslate("", "Uninstalling patch %1").arg(background.isNewPatch ? model.display_name : model.name), doRemove)
             }
 
             function doUninstall() {

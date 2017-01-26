@@ -309,7 +309,10 @@ bool PatchManagerObject::installPatch(const QString &patch, const QString &json,
     QFile archiveFile(archive);
     QDir patchDir(patchPath);
     bool result = false;
-    if (archiveFile.exists() && !patchDir.exists() && patchDir.mkpath(patchPath)) {
+    if (patchDir.exists()) {
+        patchDir.removeRecursively();
+    }
+    if (archiveFile.exists() && patchDir.mkpath(patchPath)) {
         QFile jsonFile(jsonPath);
         if (jsonFile.open(QFile::WriteOnly)) {
             jsonFile.write(json.toLatin1());

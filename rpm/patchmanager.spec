@@ -16,7 +16,6 @@ URL:        https://github.com/sailfishos-patches/patchmanager
 Source0:    %{name}-%{version}.tar.bz2
 Requires:   ausmt
 Requires:   unzip
-Requires:   %{name}-icons
 Conflicts:  jolla-settings-%{name}
 Obsoletes:  jolla-settings-%{name}
 Conflicts:  %{name}-ui
@@ -32,66 +31,6 @@ BuildRequires:  sailfish-svg2png >= 0.1.5
 %description
 patchmanager allows managing system patch
 on your SailfishOS device easily.
-
-%package -n %{name}-icons-z1.0
-BuildArch:     noarch
-Summary:       Icons for Patchmanager with zoom factor 1.0
-Requires:      %{name} >= 2.0.0
-Requires:      sailfish-content-graphics-default-z1.0-base
-Provides:      %{name}-icons
-
-%description -n %{name}-icons-z1.0
-Icons for Patchmanager with zoom factor 1.0
-
-%package -n %{name}-icons-z1.25
-BuildArch:     noarch
-Summary:       Icons for Patchmanager with zoom factor 1.25
-Requires:      %{name} >= 2.0.0
-Requires:      sailfish-content-graphics-default-z1.25-base
-Provides:      %{name}-icons
-
-%description -n %{name}-icons-z1.25
-Icons for Patchmanager with zoom factor 1.25
-
-%package -n %{name}-icons-z1.5
-BuildArch:     noarch
-Summary:       Icons for Patchmanager with zoom factor 1.5
-Requires:      %{name} >= 2.0.0
-Requires:      sailfish-content-graphics-default-z1.5-base
-Provides:      %{name}-icons
-
-%description -n %{name}-icons-z1.5
-Icons for Patchmanager with zoom factor 1.5
-
-%package -n %{name}-icons-z1.5-large
-BuildArch:     noarch
-Summary:       Icons for Patchmanager with zoom factor 1.5 for large screens
-Requires:      %{name} >= 2.0.0
-Requires:      sailfish-content-graphics-default-z1.5-large-base
-Provides:      %{name}-icons
-
-%description -n %{name}-icons-z1.5-large
-Icons for Patchmanager with zoom factor 1.5 for large screens
-
-%package -n %{name}-icons-z1.75
-BuildArch:     noarch
-Summary:       Icons for Patchmanager with zoom factor 1.75
-Requires:      %{name} >= 2.0.0
-Requires:      sailfish-content-graphics-default-z1.75-base
-Provides:      %{name}-icons
-
-%description -n %{name}-icons-z1.75
-Icons for Patchmanager with zoom factor 1.75
-
-%package -n %{name}-icons-z2.0
-BuildArch:     noarch
-Summary:       Icons for Patchmanager with zoom factor 2.0
-Requires:      %{name} >= 2.0.0
-Requires:      sailfish-content-graphics-default-z2.0-base
-Provides:      %{name}-icons
-
-%description -n %{name}-icons-z2.0
-Icons for Patchmanager with zoom factor 2.0
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -140,26 +79,9 @@ dbus-send --system --type=method_call \
 %{_datadir}/%{name}/icons/icon-m-patchmanager.png
 %attr(644,nemo,nemo) %ghost /home/nemo/.config/patchmanager2.conf
 
-%files -n %{name}-icons-z1.0
-%defattr(-,root,root,-)
 %{_datadir}/themes/%{theme}/meegotouch/z1.0/icons/*.png
-
-%files -n %{name}-icons-z1.25
-%defattr(-,root,root,-)
 %{_datadir}/themes/%{theme}/meegotouch/z1.25/icons/*.png
-
-%files -n %{name}-icons-z1.5
-%defattr(-,root,root,-)
 %{_datadir}/themes/%{theme}/meegotouch/z1.5/icons/*.png
-
-%files -n %{name}-icons-z1.5-large
-%defattr(-,root,root,-)
 %{_datadir}/themes/%{theme}/meegotouch/z1.5-large/icons/*.png
-
-%files -n %{name}-icons-z1.75
-%defattr(-,root,root,-)
 %{_datadir}/themes/%{theme}/meegotouch/z1.75/icons/*.png
-
-%files -n %{name}-icons-z2.0
-%defattr(-,root,root,-)
 %{_datadir}/themes/%{theme}/meegotouch/z2.0/icons/*.png
