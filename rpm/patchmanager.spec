@@ -14,7 +14,7 @@ Group:      Qt/Qt
 License:    TODO
 URL:        https://github.com/sailfishos-patches/patchmanager
 Source0:    %{name}-%{version}.tar.bz2
-Requires:   ausmt
+Requires:   ausmt >= 1.3.0
 Requires:   unzip
 Conflicts:  jolla-settings-%{name}
 Obsoletes:  jolla-settings-%{name}

@@ -3,8 +3,13 @@ TARGET = patchmanager
 
 QT = core dbus
 
-# DBus
-system(qdbusxml2cpp dbus/org.SfietKonstantin.patchmanager.xml -i patchmanagerobject.h -a adaptor)
+SOURCES += \
+    notification.cpp \
+    notificationmanagerproxy.cpp
+
+HEADERS += \
+    notification.h \
+    notificationmanagerproxy.h
 
 HEADERS += \
     adaptor.h \
@@ -46,3 +51,7 @@ INSTALLS += tools
 patch.path = /usr/share/patchmanager/patches/sailfishos-patchmanager-unapplyall
 patch.files = patch/patch.json patch/unified_diff.patch
 INSTALLS += patch
+
+# DBus
+system(qdbusxml2cpp dbus/org.SfietKonstantin.patchmanager.xml -i patchmanagerobject.h -a adaptor)
+system(qdbusxml2cpp org.freedesktop.Notifications.xml -p notificationmanagerproxy -c NotificationManagerProxy -i notification.h)

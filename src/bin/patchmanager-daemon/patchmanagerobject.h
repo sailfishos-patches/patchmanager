@@ -64,12 +64,13 @@ protected:
 private:
     QVariantList listPatchesFromDir(const QString &dir, QSet<QString> &existingPatches, bool existing = true);
     bool makePatch(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available);
+    void notify(const QString &patch, bool apply, bool success);
 
     void refreshPatchList();
     bool m_dbusRegistered;
     QSet<QString> m_appliedPatches;
     QVariantList m_patches;
-    QVariantMap m_versions;
+    QMap<QString, QVariantMap> m_metadata;
     QTimer *m_timer;
 };
 

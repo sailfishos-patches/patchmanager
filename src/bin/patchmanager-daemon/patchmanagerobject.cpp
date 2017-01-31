@@ -30,6 +30,7 @@
  */
 
 #include "patchmanagerobject.h"
+#include "notification.h"
 #include <algorithm>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDateTime>
@@ -77,33 +78,33 @@ static const char *SETTINGS_CODE = "settings";
 static QString categoryFromCode(const QString &code)
 {
     if (code == BROWSER_CODE) {
-        return QObject::tr("Browser");
+        return qApp->translate("", "Browser");
     } else if (code == CAMERA_CODE) {
-        return QObject::tr("Camera");
+        return qApp->translate("", "Camera");
     } else if (code == CALENDAR_CODE) {
-        return QObject::tr("Calendar");
+        return qApp->translate("", "Calendar");
     } else if (code == CLOCK_CODE) {
-        return QObject::tr("Clock");
+        return qApp->translate("", "Clock");
     } else if (code == CONTACTS_CODE) {
-        return QObject::tr("Contacts");
+        return qApp->translate("", "Contacts");
     } else if (code == EMAIL_CODE) {
-        return QObject::tr("Email");
+        return qApp->translate("", "Email");
     } else if (code == GALLERY_CODE) {
-        return QObject::tr("Gallery");
+        return qApp->translate("", "Gallery");
     } else if (code == HOMESCREEN_CODE) {
-        return QObject::tr("Homescreen");
+        return qApp->translate("", "Homescreen");
     } else if (code == MEDIA_CODE) {
-        return QObject::tr("Media");
+        return qApp->translate("", "Media");
     } else if (code == MESSAGES_CODE) {
-        return QObject::tr("Messages");
+        return qApp->translate("", "Messages");
     } else if (code == PHONE_CODE) {
-        return QObject::tr("Phone");
+        return qApp->translate("", "Phone");
     } else if (code == SILICA_CODE) {
-        return QObject::tr("Silica");
+        return qApp->translate("", "Silica");
     } else if (code == SETTINGS_CODE) {
-        return QObject::tr("Settings");
+        return qApp->translate("", "Settings");
     }
-    return QObject::tr("Other");
+    return qApp->translate("", "Other");
 }
 
 static bool patchSort(const QVariant &patch1, const QVariant &patch2)
@@ -154,6 +155,39 @@ bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, Q
     patch = json;
 
     return true;
+}
+
+void PatchManagerObject::notify(const QString &patch, bool apply, bool success)
+{
+    QString summary;
+    QString body;
+
+    if (apply && success) {
+        // Installing
+        summary = qApp->translate("", "Patch installed");
+        body = qApp->translate("", "Patch %1 installed").arg(patch);
+    } else if (apply) {
+        summary = qApp->translate("", "Failed to install patch");
+        body = qApp->translate("", "Patch %1 installation failed").arg(patch);
+    } else if (success) {
+        // Removing
+        summary = qApp->translate("", "Patch removed");
+        body = qApp->translate("", "Patch %1 removed").arg(patch);
+    } else {
+        summary = qApp->translate("", "Failed to remove patch");
+        body = qApp->translate("", "Patch %1 removal failed").arg(patch);
+    }
+
+    Notification notification;
+    notification.setAppName(qApp->translate("", "Patchmanager"));
+    notification.setHintValue("x-nemo-icon", "icon-l-developer-mode");
+    notification.setHintValue("x-nemo-preview-icon", "icon-l-developer-mode");
+    notification.setSummary(summary);
+    notification.setBody(body);
+    notification.setPreviewSummary(summary);
+    notification.setPreviewBody(body);
+    notification.setTimestamp(QDateTime::currentDateTime());
+    notification.publish();
 }
 
 QVariantList PatchManagerObject::listPatchesFromDir(const QString &dir, QSet<QString> &existingPatches, bool existing)
@@ -234,7 +268,12 @@ QVariantList PatchManagerObject::listPatches()
 QVariantMap PatchManagerObject::listVersions()
 {
     m_timer->start();
-    return m_versions;
+    QVariantMap versionsList;
+    foreach (const QString & patch, m_metadata.keys()) {
+        versionsList[patch] = m_metadata[patch]["version"];
+    }
+
+    return versionsList;
 }
 
 bool PatchManagerObject::isPatchApplied(const QString &patch)
@@ -245,6 +284,9 @@ bool PatchManagerObject::isPatchApplied(const QString &patch)
 
 bool PatchManagerObject::applyPatch(const QString &patch)
 {
+    QVariantMap patchData = m_metadata[patch];
+    QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData["name"];
+
     m_timer->stop();
     QProcess process;
     process.setProgram(AUSMT_INSTALL);
@@ -261,6 +303,7 @@ bool PatchManagerObject::applyPatch(const QString &patch)
         m_appliedPatches.insert(patch);
         refreshPatchList();
     }
+    notify(displayName.toString(), true, ok);
 
     m_timer->start();
     return ok;
@@ -268,6 +311,9 @@ bool PatchManagerObject::applyPatch(const QString &patch)
 
 bool PatchManagerObject::unapplyPatch(const QString &patch)
 {
+    QVariantMap patchData = m_metadata[patch];
+    QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData["name"];
+
     m_timer->stop();
     QProcess process;
     process.setProgram(AUSMT_REMOVE);
@@ -284,6 +330,7 @@ bool PatchManagerObject::unapplyPatch(const QString &patch)
         m_appliedPatches.remove(patch);
         refreshPatchList();
     }
+    notify(displayName.toString(), false, ok);
 
     m_timer->start();
     return ok;
@@ -419,13 +466,12 @@ void PatchManagerObject::refreshPatchList()
     m_patches = listPatchesFromDir(PATCHES_DIR, existingPatches);
     m_patches.append(listPatchesFromDir(PATCHES_ADDITIONAL_DIR, existingPatches, false));
     std::sort(m_patches.begin(), m_patches.end(), patchSort);
-    m_versions.clear();
+    m_metadata.clear();
     foreach (const QVariant & patch, m_patches) {
         QVariantMap d_patch = patch.toMap();
-        if (d_patch.contains("version")) {
-            m_versions[d_patch["name"].toString()] = d_patch["version"];
-        } else {
-            m_versions[d_patch["name"].toString()] = "0.0.0";
+        if (!d_patch.contains("version")) {
+            d_patch["version"] = "0.0.0";
         }
+        m_metadata[d_patch["patch"].toString()] = d_patch;
     }
 }
