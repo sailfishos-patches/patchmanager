@@ -180,8 +180,8 @@ void PatchManagerObject::notify(const QString &patch, bool apply, bool success)
 
     Notification notification;
     notification.setAppName(qApp->translate("", "Patchmanager"));
-    notification.setHintValue("x-nemo-icon", "icon-l-developer-mode");
-    notification.setHintValue("x-nemo-preview-icon", "icon-l-developer-mode");
+    notification.setHintValue("x-nemo-icon", "icon-m-patchmanager2");
+    notification.setHintValue("x-nemo-preview-icon", "icon-m-patchmanager2");
     notification.setSummary(summary);
     notification.setBody(body);
     notification.setPreviewSummary(summary);
@@ -284,10 +284,11 @@ bool PatchManagerObject::isPatchApplied(const QString &patch)
 
 bool PatchManagerObject::applyPatch(const QString &patch)
 {
+    m_timer->stop();
+
     QVariantMap patchData = m_metadata[patch];
     QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData["name"];
 
-    m_timer->stop();
     QProcess process;
     process.setProgram(AUSMT_INSTALL);
 
@@ -311,10 +312,11 @@ bool PatchManagerObject::applyPatch(const QString &patch)
 
 bool PatchManagerObject::unapplyPatch(const QString &patch)
 {
+    m_timer->stop();
+
     QVariantMap patchData = m_metadata[patch];
     QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData["name"];
 
-    m_timer->stop();
     QProcess process;
     process.setProgram(AUSMT_REMOVE);
 

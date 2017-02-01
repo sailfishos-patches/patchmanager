@@ -57,6 +57,8 @@ int main(int argc, char **argv)
         exit(2);
     }
 
+    qputenv("DBUS_SESSION_BUS_ADDRESS", "unix:path=/run/user/100000/dbus/user_bus_socket");
+
     QCoreApplication app (argc, argv);
     PatchManagerObject patchManager;
     new PatchmanagerAdaptor(&patchManager);
@@ -69,8 +71,7 @@ int main(int argc, char **argv)
         return app.exec();
     } else if (arguments.count() == 2) {
         if (arguments.at(1) == "--unapply-all") {
-            patchManager.unapplyAllPatches();
-            return 0;
+            return patchManager.unapplyAllPatches() ? 0 : 2;
         }
     } else if (arguments.count() == 3) {
         QString patch = arguments.at(2);
