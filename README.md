@@ -3,13 +3,9 @@
 Patchmanager is a tool that can be used to modify the Sailfish OS user experience.
 It is based on AUSMT, a set of scripts that emables system file patching.
 
-## Wiki and list of existing patches
-
-https://github.com/sailfishos-patches/patchmanager/wiki/Patches-list
-
 ## For developers
 
-To write a patch, you need to provide two files. A patch file, and the JSON metadata.
+To write a patch, you need to provide at least two files. A patch file, and the JSON metadata.
 Both files should be installed inside `/usr/share/patchmanager/patches/<patch-subfolder>`.
 
 ### The patch file
@@ -70,3 +66,16 @@ or prestarted services.
 
 A maintainer can be registered inside the JSON metadata file to claim maintainership of the patch. 
 Either use your real name, as displayed on Github or Twitter, or use your usual nickname.
+
+#### Additional files
+
+Patchmanager starting from version 2.0 can utilize additional files to provide better users experience. All files should be placed in to same folder: `/usr/share/patchmanager/patches/<patch-subfolder>`
+
+- **main.qml** - QML page with some additional info about patch and/or configuration. Will be showed when user tap on patch entry inside Patchmanager
+- **main.png** or **main.svg** - icon for patch, will be displayed inside list of patches, at right corner after patch name
+- **translation_\<LANG_CODE\>.qm** - translation files for QML page, allow patch developers to translate texts to various languages
+- any additional **.qml**, .**js**, **.png** files used by QML page is allowed
+
+#### Web catalog for patches
+
+Patchmanager is supporting installing patches from web catalog. Patch developers can upload patches to https://coderus.openrepos.net/pm2 to make them visible inside Patchmanager Web Catalog list. When uploading patch to web catalog, patch developer should not provide patch.json file with metadata, but he should fill necessary fields on webpage before uploading instead.
