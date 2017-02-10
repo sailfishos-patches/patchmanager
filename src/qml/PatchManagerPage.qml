@@ -120,7 +120,7 @@ Page {
             MenuItem {
                 text: qsTranslate("", "Unapply all patches")
                 onClicked: {
-                    list.unapplyAll()
+                    view.unapplyAll()
                 }
             }
 
