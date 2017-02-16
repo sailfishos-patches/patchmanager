@@ -5,10 +5,17 @@ It is based on AUSMT (Auto-Update System Modification Technology), a set of scri
 
 Patchmanager does not have application icon inside launcher. After installation Patchmanager can be found inside Settings.
 
+## For users
+
+To install Patchmanager you first need to install Warehouse https://openrepos.net/content/basil/warehouse-sailfishos, then install Patchmanager 2 using Warehouse.
+
+RPM patches can be installed from Warehouse or manually downloaded from https://openrepos.net/category/patches
+
+Patches available via Web Catalog can be found here: https://coderus.openrepos.net/pm2/projects/
+
 ## For developers
 
 To write a patch, you need to provide at least two files. A patch file, and the JSON metadata.
-Both files should be installed inside `/usr/share/patchmanager/patches/<patch-subfolder>`.
 
 ### The patch file
 
@@ -71,13 +78,23 @@ Either use your real name, as displayed on Github or Twitter, or use your usual 
 
 #### Additional files
 
-Patchmanager starting from version 2.0 can utilize additional files to provide better users experience. All files should be placed in to same folder: `/usr/share/patchmanager/patches/<patch-subfolder>`
+Patchmanager starting from version 2.0 can utilize additional files to provide better users experience. All files should be placed in the same folder
 
 - **main.qml** - QML page with some additional info about patch and/or configuration. Will be showed when user tap on patch entry inside Patchmanager
 - **main.png** or **main.svg** - icon for patch, will be displayed inside list of patches, at right corner after patch name
 - **translation_\<LANG_CODE\>.qm** - translation files for QML page, allow patch developers to translate texts to various languages
 - any additional **.qml**, .**js**, **.png** files used by QML page is allowed
 
-#### Web catalog for patches
+## Web catalog for patches
 
 Patchmanager is supporting installing patches from web catalog. Patch developers can upload patches to https://coderus.openrepos.net/pm2 to make them visible inside Patchmanager Web Catalog list. When uploading patch to web catalog, patch developer should not provide patch.json file with metadata, but he should fill necessary fields on webpage before uploading instead.
+
+## Patches distribution at OpenRepos.net
+
+Some patches can be too complex for Web Catalog. In this case developer can package patch to RPM file and upload to https://openrepos.net
+
+In this case patch content should be installed to `/usr/share/patchmanager/patches/<patch-name>/` and patch developer should follow same rules for including additional files.
+
+Additionaly, when patch developer decide to use RPM packages, he should manually maintain compatibility of patch by using RPM spec file fields.
+
+Sample RPM patch project: https://github.com/CODeRUS/sailfishos-disable-glass-avatar
