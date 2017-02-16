@@ -1,7 +1,9 @@
 # Patchmanager
 
 Patchmanager is a tool that can be used to modify the Sailfish OS user experience.
-It is based on AUSMT, a set of scripts that emables system file patching.
+It is based on AUSMT (Auto-Update System Modification Technology), a set of scripts that enables system file patching.
+
+Patchmanager does not have application icon inside launcher. After installation Patchmanager can be found inside Settings.
 
 ## For developers
 
