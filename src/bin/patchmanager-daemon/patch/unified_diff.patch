@@ -2,8 +2,8 @@ diff --git a/usr/share/jolla-settings/pages/sailfishos/mainpage.qml b/usr/share/
 index ca5c814..c330236 100644
 --- a/usr/share/jolla-settings/pages/sailfishos/mainpage.qml
 +++ b/usr/share/jolla-settings/pages/sailfishos/mainpage.qml
-@@ -127,6 +127,25 @@ Page {
-         iface: "org.nemomobile.lipstick"
+@@ -82,6 +82,22 @@ Page {
+         }
      }
  
 +    DBusInterface {
@@ -16,10 +16,7 @@ index ca5c814..c330236 100644
 +
 +    function unapplyAllCallback(arg) {
 +        if (arg) {
-+            // Let the UI smoothly fade out first before doing anything scary
-+            shutdownBus.call("setShutdownMode", ["upgrade"])
-+            // Clear the cache and the system update notification
-+            storeIf.clearOsUpdateCheckCache()
++            storeIf.installDownloadedUpdate()
 +        } else {
 +            patchmanagerBus.call("applyPatch", ["sailfishos-patchmanager-unapplyall"])
 +        }
@@ -28,14 +25,11 @@ index ca5c814..c330236 100644
      SilicaFlickable {
          anchors.fill: parent
          contentHeight: content.height
-@@ -250,10 +269,7 @@ Page {
+@@ -217,7 +217,7 @@ Page {
                              }
                          }
                      } else if (storeIf.mayInstall) {
--                        // Let the UI smoothly fade out first before doing anything scary
--                        shutdownBus.call("setShutdownMode", ["upgrade"])
--                        // Clear the cache and the system update notification
--                        storeIf.clearOsUpdateCheckCache()
+-                        storeIf.installDownloadedUpdate()
 +                        patchmanagerBus.call("unapplyAllPatches", [], unapplyAllCallback)
                      }
                  }
