@@ -20,20 +20,6 @@ Conflicts:  jolla-settings-%{name}
 Obsoletes:  jolla-settings-%{name}
 Conflicts:  %{name}-ui
 Obsoletes:  %{name}-ui
-Conflicts:  %{name}-icons
-Obsoletes:  %{name}-icons
-Conflicts: %{name}-icons-z1.0
-Obsoletes: %{name}-icons-z1.0
-Conflicts: %{name}-icons-z1.25
-Obsoletes: %{name}-icons-z1.25
-Conflicts: %{name}-icons-z1.5
-Obsoletes: %{name}-icons-z1.5
-Conflicts: %{name}-icons-z1.5-large
-Obsoletes: %{name}-icons-z1.5-large
-Conflicts: %{name}-icons-z1.75
-Obsoletes: %{name}-icons-z1.75
-Conflicts: %{name}-icons-z2.0
-Obsoletes: %{name}-icons-z2.0
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Qml)
@@ -43,8 +29,8 @@ BuildRequires:  pkgconfig(sailfishapp) >= 0.0.10
 BuildRequires:  sailfish-svg2png >= 0.1.5
 
 %description
-patchmanager allows managing system patch
-on your SailfishOS device easily.
+patchmanager allows managing Sailfish OS patches
+on your device easily.
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -57,7 +43,21 @@ on your SailfishOS device easily.
 rm -rf %{buildroot}
 %qmake5_install
 
+%pre
+case "$*" in
+1)
+echo Installing package
+;;
+2)
+echo Upgrading package
+;;
+*) echo case "$*" not handled in pre
+esac
+
 %preun
+case "$*" in
+0)
+echo Uninstalling package
 if [ -d /var/lib/patchmanager/ausmt/patches/sailfishos-patchmanager-unapplyall ]; then
 /usr/sbin/patchmanager -u sailfishos-patchmanager-unapplyall || true
 fi
@@ -67,15 +67,49 @@ dbus-send --system --type=method_call \
 --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager \
 org.SfietKonstantin.patchmanager.quit
 fi
+;;
+1)
+echo Upgrading package
+if /sbin/pidof patchmanager > /dev/null; then
+dbus-send --system --type=method_call \
+--dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager \
+org.SfietKonstantin.patchmanager.quit
+fi
+;;
+*) echo case "$*" not handled in preun
+esac
 
 %post
+case "$*" in
+1)
+echo Installing package
 dbus-send --system --type=method_call \
 --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 /usr/sbin/patchmanager -a sailfishos-patchmanager-unapplyall || true
-
-%postun
+;;
+2)
+echo Upgrading package
 dbus-send --system --type=method_call \
 --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+/usr/sbin/patchmanager -a sailfishos-patchmanager-unapplyall || true
+;;
+*) echo case "$*" not handled in post
+esac
+
+%postun
+case "$*" in
+0)
+echo Uninstalling package
+dbus-send --system --type=method_call \
+--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+;;
+1)
+echo Upgrading package
+dbus-send --system --type=method_call \
+--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+;;
+*) echo case "$*" not handled in postun
+esac
 
 %files
 %defattr(-,root,root,-)
