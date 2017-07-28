@@ -1,15 +1,23 @@
 diff --git a/usr/share/jolla-settings/pages/sailfishos/mainpage.qml b/usr/share/jolla-settings/pages/sailfishos/mainpage.qml
-index ca5c814..c330236 100644
+index 417cc50..ad9dbf6 100644
 --- a/usr/share/jolla-settings/pages/sailfishos/mainpage.qml
 +++ b/usr/share/jolla-settings/pages/sailfishos/mainpage.qml
-@@ -82,6 +82,22 @@ Page {
+@@ -4,6 +4,7 @@ import Sailfish.Vault 1.0
+ import Sailfish.Policy 1.0
+ import org.nemomobile.configuration 1.0
+ import org.nemomobile.systemsettings 1.0
++import org.nemomobile.dbus 2.0
+ import com.jolla.settings.sailfishos 1.0
+ import com.jolla.settings.system 1.0 as MdmBanner
+ 
+@@ -82,6 +83,22 @@ Page {
          }
      }
  
 +    DBusInterface {
 +        id: patchmanagerBus
-+        busType: DBusInterface.SystemBus
-+        destination: "org.SfietKonstantin.patchmanager"
++        bus: DBus.SystemBus
++        service: "org.SfietKonstantin.patchmanager"
 +        path: "/org/SfietKonstantin/patchmanager"
 +        iface: "org.SfietKonstantin.patchmanager"
 +    }
@@ -25,7 +33,7 @@ index ca5c814..c330236 100644
      SilicaFlickable {
          anchors.fill: parent
          contentHeight: content.height
-@@ -217,7 +217,7 @@ Page {
+@@ -217,7 +234,7 @@ Page {
                              }
                          }
                      } else if (storeIf.mayInstall) {
