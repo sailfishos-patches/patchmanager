@@ -187,12 +187,12 @@ void PatchManager::restartServices()
     }
 
     if (m_homescreenNeedRestart) {
-        QStringList arguments;
-        arguments << "--user" << "--no-block" << "restart" << "lipstick.service";
-        QProcess::startDetached("systemctl", arguments);
-    }
-
-    if (m_homescreenNeedRestart) {
+        QDBusMessage m = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
+                                                        QStringLiteral("/org/freedesktop/systemd1/unit/lipstick_2eservice"),
+                                                        QStringLiteral("org.freedesktop.systemd1.Unit"),
+                                                        QStringLiteral("Restart"));
+        m.setArguments({ QStringLiteral("replace") });
+        QDBusConnection::sessionBus().send(m);
         m_homescreenNeedRestart = false;
         emit homescreenNeedRestartChanged();
     }
