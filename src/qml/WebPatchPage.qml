@@ -36,6 +36,7 @@ import org.SfietKonstantin.patchmanager 2.0
 
 Page {
     id: container
+    objectName: "WebPatchPage"
     property var modelData
     property QtObject delegate
 

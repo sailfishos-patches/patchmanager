@@ -57,7 +57,8 @@ Page {
     }
 
     onStatusChanged: {
-        if (status == PageStatus.Active) {
+        if (status == PageStatus.Activating
+                && pageStack.currentPage.objectName == "WebPatchPage") {
             patchmanagerDbusInterface.listPatches()
         }
     }
