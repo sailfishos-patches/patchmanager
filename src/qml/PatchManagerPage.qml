@@ -85,6 +85,7 @@ Page {
         path: "/org/SfietKonstantin/patchmanager"
         iface: "org.SfietKonstantin.patchmanager"
         bus: DBus.SystemBus
+        signalsEnabled: true
         function listPatches() {
             typedCall("listPatches", [], function (patches) {
                 indicator.visible = false
@@ -100,6 +101,32 @@ Page {
                 }
             })
         }
+        function applyPatch(patch, cb) {
+            patchmanagerDbusInterface.typedCall("applyPatch",
+                                                [{"type": "s", "value": patch}],
+                                                cb)
+        }
+        function unapplyPatch(patch, cb) {
+            patchmanagerDbusInterface.typedCall("unapplyPatch",
+                                                [{"type": "s", "value": patch}],
+                                                cb)
+        }
+        function unapplyAllPatches() {
+            patchmanagerDbusInterface.typedCall("unapplyAllPatches", [])
+        }
+        function applyPatchFinished(patch) {
+            console.log(patch)
+            view.applyPatchFinished(patch)
+        }
+        function unapplyPatchFinished(patch) {
+            console.log(patch)
+            view.unapplyPatchFinished(patch)
+        }
+        function unapplyAllPatchesFinished() {
+            console.log()
+            view.unapplyAllFinished()
+            view.busy = false
+        }
     }
 
     SilicaListView {
@@ -107,6 +134,8 @@ Page {
         anchors.fill: parent
 
         PullDownMenu {
+            busy: view.busy
+            enabled: !busy
             MenuItem {
                 text: PatchManager.developerMode ? qsTranslate("", "Disable developer mode") : qsTranslate("", "Enable developer mode")
                 onClicked: PatchManager.developerMode = !PatchManager.developerMode
@@ -120,7 +149,9 @@ Page {
             MenuItem {
                 text: qsTranslate("", "Unapply all patches")
                 onClicked: {
+                    patchmanagerDbusInterface.unapplyAllPatches()
                     view.unapplyAll()
+                    view.busy = true
                 }
             }
 
@@ -149,7 +180,11 @@ Page {
         }
         section.property: "category"
 
+        property bool busy
         signal unapplyAll
+        signal unapplyAllFinished
+        signal applyPatchFinished(string patchName)
+        signal unapplyPatchFinished(string patchName)
 
         delegate: ListItem {
             id: background
@@ -160,13 +195,12 @@ Page {
             property bool applying: !appliedSwitch.enabled
             property bool isCompatible: !model.compatible || model.compatible == "0.0.0" || model.compatible.indexOf(release) >= 0
             property bool isNewPatch: !!model.display_name && model.display_name
+            enabled: !view.busy
             function doPatch() {
-                appliedSwitch.enabled = false
                 appliedSwitch.busy = true
                 if (!background.applied) {
                     if (PatchManager.developerMode || isCompatible) {
-                        patchmanagerDbusInterface.typedCall("applyPatch",
-                                                          [{"type": "s", "value": model.patch}],
+                        patchmanagerDbusInterface.applyPatch(model.patch,
                         function (ok) {
                             if (ok) {
                                 if (isNewPatch) {
@@ -180,12 +214,10 @@ Page {
                         })
                     } else {
                         errorMesageComponent.createObject(background, {text: qsTranslate("", "This patch is not compatible with SailfishOS version!")})
-                        appliedSwitch.enabled = true
                         appliedSwitch.busy = false
                     }
                 } else {
-                    patchmanagerDbusInterface.typedCall("unapplyPatch",
-                                                      [{"type": "s", "value": model.patch}],
+                    patchmanagerDbusInterface.unapplyPatch(model.patch,
                     function (ok) {
                         if (ok) {
                             background.applied = false
@@ -205,22 +237,24 @@ Page {
                 target: view
                 onUnapplyAll: {
                     if (background.applied) {
-                        appliedSwitch.enabled = false
                         appliedSwitch.busy = true
-                        patchmanagerDbusInterface.typedCall("unapplyPatch",
-                                                          [{"type": "s", "value": model.patch}],
-                        function (ok) {
-                            if (ok) {
-                                background.applied = false
-                            }
-                            appliedSwitch.busy = false
-                            PatchManager.patchToggleService(model.patch, model.categoryCode)
-                            if (!model.available) {
-                                patchModel.remove(model.index)
-                            } else {
-                                checkApplicability()
-                            }
-                        })
+                    }
+                }
+                onUnapplyPatchFinished: {
+                    if (patchName !== model.patch) {
+                        return
+                    }
+                    if (!view.busy) {
+                        return
+                    }
+
+                    background.applied = false
+                    appliedSwitch.busy = false
+                    PatchManager.patchToggleService(model.patch, model.categoryCode)
+                    if (!model.available) {
+                        patchModel.remove(model.index)
+                    } else {
+                        checkApplicability()
                     }
                 }
             }
@@ -247,10 +281,8 @@ Page {
 
             function doRemove() {
                 if (background.applied) {
-                    appliedSwitch.enabled = false
                     appliedSwitch.busy = true
-                    patchmanagerDbusInterface.typedCall("unapplyPatch",
-                                                      [{"type": "s", "value": model.patch}],
+                    patchmanagerDbusInterface.unapplyPatch(model.patch,
                     function (ok) {
                         appliedSwitch.busy = false
                         PatchManager.patchToggleService(model.patch, model.categoryCode)
@@ -279,7 +311,7 @@ Page {
             }
 
             function checkApplicability() {
-                appliedSwitch.enabled = background.canApply
+                //appliedSwitch.enabled = background.canApply
             }
 
             Component.onCompleted: {
@@ -300,7 +332,8 @@ Page {
                     automaticCheck: false
                     checked: background.applied
                     onClicked: background.doPatch()
-                    enabled: false
+                    enabled: !busy
+                    busy: view.busy
                 }
 
                 Label {

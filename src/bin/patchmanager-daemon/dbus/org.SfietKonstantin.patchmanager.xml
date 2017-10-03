@@ -35,5 +35,12 @@
             <arg name="ok" type="b" direction="out" />
         </method>
         <method name="quit" />
+        <signal name="applyPatchFinished">
+          <arg name="patch" type="s"/>
+        </signal>
+        <signal name="unapplyPatchFinished">
+          <arg name="patch" type="s"/>
+        </signal>
+        <signal name="unapplyAllPatchesFinished" />
     </interface>
 </node>
