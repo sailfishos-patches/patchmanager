@@ -39,12 +39,13 @@
 #include <QtCore/QVariantList>
 #include <QtCore/QDir>
 
+#include <QDBusContext>
+
 class QTimer;
-class QDBusInterface;
-class PatchManagerObject : public QObject
+class PatchmanagerAdaptor;
+class PatchManagerObject : public QObject, public QDBusContext
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "org.SfietKonstantin.patchmanager")
 public:
     explicit PatchManagerObject(QObject *parent = 0);
     virtual ~PatchManagerObject();
@@ -72,6 +73,7 @@ private:
     QVariantList m_patches;
     QMap<QString, QVariantMap> m_metadata;
     QTimer *m_timer;
+    PatchmanagerAdaptor *m_adaptor;
 };
 
 #endif // PATCHMANAGEROBJECT_H

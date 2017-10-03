@@ -61,7 +61,6 @@ int main(int argc, char **argv)
 
     QCoreApplication app (argc, argv);
     PatchManagerObject patchManager;
-    new PatchmanagerAdaptor(&patchManager);
 
     QStringList arguments = app.arguments();
 

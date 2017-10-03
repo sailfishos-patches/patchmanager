@@ -31,6 +31,7 @@
 
 #include "patchmanagerobject.h"
 #include "notification.h"
+#include "adaptor.h"
 #include <algorithm>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDateTime>
@@ -45,6 +46,7 @@
 #include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusMetaType>
 #include <QtDBus/QDBusVariant>
+#include <QtDBus/QDBusConnectionInterface>
 
 static const char *SERVICE = "org.SfietKonstantin.patchmanager";
 static const char *PATH = "/org/SfietKonstantin/patchmanager";
@@ -207,8 +209,10 @@ QVariantList PatchManagerObject::listPatchesFromDir(const QString &dir, QSet<QSt
     return patches;
 }
 
-PatchManagerObject::PatchManagerObject(QObject *parent) :
-    QObject(parent), m_dbusRegistered(false)
+PatchManagerObject::PatchManagerObject(QObject *parent)
+    : QObject(parent)
+    , m_dbusRegistered(false)
+    , m_adaptor(nullptr)
 {
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &PatchManagerObject::quit);
@@ -243,30 +247,46 @@ PatchManagerObject::~PatchManagerObject()
 
 void PatchManagerObject::registerDBus()
 {
-    if (!m_dbusRegistered) {
-        // DBus
-        QDBusConnection connection = QDBusConnection::systemBus();
-        if (!connection.registerService(SERVICE)) {
-            QCoreApplication::quit();
-            return;
-        }
+    if (m_dbusRegistered) {
+        return;
+    }
 
-        if (!connection.registerObject(PATH, this)) {
-            QCoreApplication::quit();
-            return;
-        }
+    QDBusConnection connection = QDBusConnection::systemBus();
+
+    if (connection.interface()->isServiceRegistered(SERVICE)) {
+        qWarning() << "### service already registered";
+        return;
+    }
+
+    if (!connection.registerObject(PATH, this)) {
+        qCritical("Cannot register object");
+        QCoreApplication::quit();
+        return;
+    } else {
+        qWarning() << "Object registered";
+    }
+
+    if (!connection.registerService(SERVICE)) {
+        qCritical("Cannot register D-Bus service");
+        QCoreApplication::quit();
+        return;
+    } else {
+        m_adaptor = new PatchmanagerAdaptor(this);
+        qWarning() << "Service registered";
         m_dbusRegistered = true;
     }
 }
 
 QVariantList PatchManagerObject::listPatches()
 {
+    qDebug() << Q_FUNC_INFO;
     m_timer->start();
     return m_patches;
 }
 
 QVariantMap PatchManagerObject::listVersions()
 {
+    qDebug() << Q_FUNC_INFO;
     m_timer->start();
     QVariantMap versionsList;
     foreach (const QString & patch, m_metadata.keys()) {
@@ -278,12 +298,14 @@ QVariantMap PatchManagerObject::listVersions()
 
 bool PatchManagerObject::isPatchApplied(const QString &patch)
 {
+    qDebug() << Q_FUNC_INFO;
     m_timer->start();
     return m_appliedPatches.contains(patch);
 }
 
 bool PatchManagerObject::applyPatch(const QString &patch)
 {
+    qDebug() << Q_FUNC_INFO << patch;
     m_timer->stop();
 
     QVariantMap patchData = m_metadata[patch];
@@ -312,6 +334,7 @@ bool PatchManagerObject::applyPatch(const QString &patch)
 
 bool PatchManagerObject::unapplyPatch(const QString &patch)
 {
+    qDebug() << Q_FUNC_INFO << patch;
     m_timer->stop();
 
     QVariantMap patchData = m_metadata[patch];
@@ -328,6 +351,7 @@ bool PatchManagerObject::unapplyPatch(const QString &patch)
     process.waitForFinished(-1);
 
     bool ok = (process.exitCode() == 0);
+    qDebug() << "ok:" << ok;
     if (ok) {
         m_appliedPatches.remove(patch);
         refreshPatchList();
@@ -340,18 +364,19 @@ bool PatchManagerObject::unapplyPatch(const QString &patch)
 
 bool PatchManagerObject::unapplyAllPatches()
 {
+    qDebug() << Q_FUNC_INFO;
     m_timer->stop();
     bool ok = true;
-    QStringList appliedPatches = m_appliedPatches.toList();
-    foreach (const QString &patch, appliedPatches) {
+    for (const QString &patch : m_appliedPatches.toList()) {
         ok &= unapplyPatch(patch);
     }
-    return ok;
     m_timer->start();
+    return ok;
 }
 
 bool PatchManagerObject::installPatch(const QString &patch, const QString &json, const QString &archive)
 {
+    qDebug() << Q_FUNC_INFO << patch;
     m_timer->stop();
     QString patchPath = QString("%1/%2").arg(PATCHES_DIR).arg(patch);
     QString jsonPath = QString("%1/%2").arg(patchPath).arg(PATCH_FILE);
@@ -391,6 +416,7 @@ bool PatchManagerObject::installPatch(const QString &patch, const QString &json,
 
 bool PatchManagerObject::uninstallPatch(const QString &patch)
 {
+    qDebug() << Q_FUNC_INFO << patch;
     m_timer->stop();
     if (m_appliedPatches.contains(patch)) {
         unapplyPatch(patch);
@@ -449,6 +475,7 @@ bool PatchManagerObject::uninstallPatch(const QString &patch)
 
 void PatchManagerObject::quit()
 {
+    qDebug() << Q_FUNC_INFO;
     QCoreApplication::postEvent(this, new QEvent(QEvent::User));
 }
 
@@ -464,6 +491,7 @@ bool PatchManagerObject::event(QEvent *e)
 
 void PatchManagerObject::refreshPatchList()
 {
+    qDebug() << Q_FUNC_INFO;
     QSet<QString> existingPatches;
     m_patches = listPatchesFromDir(PATCHES_DIR, existingPatches);
     m_patches.append(listPatchesFromDir(PATCHES_ADDITIONAL_DIR, existingPatches, false));
