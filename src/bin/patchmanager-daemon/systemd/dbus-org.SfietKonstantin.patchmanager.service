@@ -1,0 +1,15 @@
+[Unit]
+Description=Patchmanager service
+Requires=dbus.service
+After=dbus.service
+
+[Service]
+Type=dbus
+BusName=org.SfietKonstantin.patchmanager
+SupplementaryGroups=inet
+User=root
+EnvironmentFile=-/var/lib/environment/patchmanager/*.conf
+ExecStart=/usr/sbin/patchmanager --daemon
+
+[Install]
+WantedBy=multi-user.target

@@ -8,13 +8,13 @@
 Name:       patchmanager
 
 Summary:    Patchmanager allows you to manage Sailfish OS patches
-Version:    2.0.0
+Version:    3.0.1
 Release:    1
 Group:      Qt/Qt
 License:    TODO
 URL:        https://github.com/sailfishos-patches/patchmanager
 Source0:    %{name}-%{version}.tar.bz2
-Requires:   ausmt >= 1.3.0
+#Requires:   ausmt >= 1.3.0
 Requires:   unzip
 Conflicts:  jolla-settings-%{name}
 Obsoletes:  jolla-settings-%{name}
@@ -36,80 +36,80 @@ on your device easily.
 %setup -q -n %{name}-%{version}
 
 %build
-%qtc_qmake5 
+%qtc_qmake5
 %qtc_make %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
 %qmake5_install
 
-%pre
-case "$*" in
-1)
-echo Installing package
-;;
-2)
-echo Upgrading package
-;;
-*) echo case "$*" not handled in pre
-esac
+#%pre
+#case "$*" in
+#1)
+#echo Installing package
+#;;
+#2)
+#echo Upgrading package
+#;;
+#*) echo case "$*" not handled in pre
+#esac
 
-%preun
-case "$*" in
-0)
-echo Uninstalling package
-if [ -d /var/lib/patchmanager/ausmt/patches/sailfishos-patchmanager-unapplyall ]; then
-/usr/sbin/patchmanager -u sailfishos-patchmanager-unapplyall || true
-fi
+#%preun
+#case "$*" in
+#0)
+#echo Uninstalling package
+#if [ -d /var/lib/patchmanager/ausmt/patches/sailfishos-patchmanager-unapplyall ]; then
+#/usr/sbin/patchmanager -u sailfishos-patchmanager-unapplyall || true
+#fi
 
-if /sbin/pidof patchmanager > /dev/null; then
-dbus-send --system --type=method_call \
---dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager \
-org.SfietKonstantin.patchmanager.quit
-fi
-;;
-1)
-echo Upgrading package
-if /sbin/pidof patchmanager > /dev/null; then
-dbus-send --system --type=method_call \
---dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager \
-org.SfietKonstantin.patchmanager.quit
-fi
-;;
-*) echo case "$*" not handled in preun
-esac
+#if /sbin/pidof patchmanager > /dev/null; then
+#dbus-send --system --type=method_call \
+#--dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager \
+#org.SfietKonstantin.patchmanager.quit
+#fi
+#;;
+#1)
+#echo Upgrading package
+#if /sbin/pidof patchmanager > /dev/null; then
+#dbus-send --system --type=method_call \
+#--dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager \
+#org.SfietKonstantin.patchmanager.quit
+#fi
+#;;
+#*) echo case "$*" not handled in preun
+#esac
 
-%post
-case "$*" in
-1)
-echo Installing package
-dbus-send --system --type=method_call \
---dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
-/usr/sbin/patchmanager -a sailfishos-patchmanager-unapplyall || true
-;;
-2)
-echo Upgrading package
-dbus-send --system --type=method_call \
---dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
-/usr/sbin/patchmanager -a sailfishos-patchmanager-unapplyall || true
-;;
-*) echo case "$*" not handled in post
-esac
+#%post
+#case "$*" in
+#1)
+#echo Installing package
+#dbus-send --system --type=method_call \
+#--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+#/usr/sbin/patchmanager -a sailfishos-patchmanager-unapplyall || true
+#;;
+#2)
+#echo Upgrading package
+#dbus-send --system --type=method_call \
+#--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+#/usr/sbin/patchmanager -a sailfishos-patchmanager-unapplyall || true
+#;;
+#*) echo case "$*" not handled in post
+#esac
 
-%postun
-case "$*" in
-0)
-echo Uninstalling package
-dbus-send --system --type=method_call \
---dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
-;;
-1)
-echo Upgrading package
-dbus-send --system --type=method_call \
---dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
-;;
-*) echo case "$*" not handled in postun
-esac
+#%postun
+#case "$*" in
+#0)
+#echo Uninstalling package
+#dbus-send --system --type=method_call \
+#--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+#;;
+#1)
+#echo Upgrading package
+#dbus-send --system --type=method_call \
+#--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+#;;
+#*) echo case "$*" not handled in postun
+#esac
 
 %files
 %defattr(-,root,root,-)
@@ -117,6 +117,8 @@ esac
 %{_datadir}/%{name}/tools
 %{_datadir}/dbus-1/
 %{_sysconfdir}/dbus-1/system.d/
+/lib/systemd/system/dbus-org.SfietKonstantin.patchmanager.service
+%{_sharedstatedir}/environment/patchmanager/10-dbus.conf
 %{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/patch.json
 %{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/unified_diff.patch
 

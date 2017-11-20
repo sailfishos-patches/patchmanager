@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2014 Lucien XU <sfietkonstantin@free.fr>
+ * Copyright (C) 2014-2016 Lucien XU <sfietkonstantin@free.fr>
+ * Copyright (C) 2016-2017 Andrey Kozhevnikov <coderusinbox@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -36,18 +37,19 @@
 
 #include <QtCore/QCoreApplication>
 #include "patchmanagerobject.h"
-#include "adaptor.h"
 #include <iostream>
+#include <QTimer>
 
 void help()
 {
     std::cout << "patchmanager-daemon" << std::endl;
     std::cout << std::endl;
     std::cout << "Usage:" << std::endl;
-    std::cout << "  patchmanager-daemon               : run as daemon" << std::endl;
-    std::cout << "  patchmanager-daemon -a <patch>    : apply a patch" << std::endl;
-    std::cout << "  patchmanager-daemon -u <patch>    : unapply a patch" << std::endl;
-    std::cout << "  patchmanager-daemon --unapply-all : unapply all patches" << std::endl;
+    std::cout << "  patchmanager-daemon                : run as daemon" << std::endl;
+    std::cout << "  patchmanager-daemon -a <patch>     : apply a patch" << std::endl;
+    std::cout << "  patchmanager-daemon -u <patch>     : unapply a patch" << std::endl;
+    std::cout << "  patchmanager-daemon --unapply-all  : unapply all patches" << std::endl;
+    std::cout << "  patchmanager-daemon --daemon       : daemonize" << std::endl;
 }
 
 int main(int argc, char **argv)
@@ -57,32 +59,13 @@ int main(int argc, char **argv)
         exit(2);
     }
 
-    qputenv("DBUS_SESSION_BUS_ADDRESS", "unix:path=/run/user/100000/dbus/user_bus_socket");
-
-    QCoreApplication app (argc, argv);
-    PatchManagerObject patchManager;
-
-    QStringList arguments = app.arguments();
-
-    // Daemon
-    if (arguments.count() == 1) {
-        patchManager.registerDBus();
-        return app.exec();
-    } else if (arguments.count() == 2) {
-        if (arguments.at(1) == "--unapply-all") {
-            return patchManager.unapplyAllPatches() ? 0 : 2;
-        }
-    } else if (arguments.count() == 3) {
-        QString patch = arguments.at(2);
-        if (arguments.at(1) == "-a") {
-            return patchManager.applyPatch(patch) ? 0 : 2;
-        }
-
-        if (arguments.at(1) == "-u") {
-            return patchManager.unapplyPatch(patch) ? 0 : 2;
-        }
+    QCoreApplication app(argc, argv);
+    if (app.arguments().length() < 2) {
+        help();
+        return 0;
     }
 
-    help();
-    return 1;
+    PatchManagerObject patchManager;
+    QTimer::singleShot(0, &patchManager, &PatchManagerObject::process);
+    return app.exec();
 }

@@ -40,6 +40,47 @@
 #include <QtCore/QDir>
 
 #include <QDBusContext>
+#include <QEvent>
+
+#include <QtNetwork/QNetworkAccessManager>
+
+#ifndef SERVER_URL
+#define SERVER_URL          "https://coderus.openrepos.net"
+#endif
+
+#ifndef API_PATH
+#define API_PATH            "pm2/api"
+#endif
+
+#define PROJECTS_PATH       "projects"
+#define PROJECT_PATH        "project"
+#define RATING_PATH         "rating"
+#define FILES_PATH          "files"
+#define MEDIA_PATH          "media"
+
+#define CATALOG_URL         SERVER_URL"/"API_PATH
+#define MEDIA_URL           SERVER_URL"/"MEDIA_PATH
+
+class PatchManagerEvent : public QEvent
+{
+    Q_GADGET
+public:
+    enum PatchManagerEventType {
+        ApplyPatchManagerEventType,
+        UnapplyPatchManagerEventType,
+        UnapplyAllPatchManagerEventType,
+        DownloadCatalogPatchManagerEventType,
+        PatchManagerEventTypeCount
+    };
+    Q_ENUM(PatchManagerEventType)
+
+    explicit PatchManagerEvent(PatchManagerEventType eventType, const QVariantMap &data);
+    static QEvent::Type customType(PatchManagerEventType eventType);
+    const PatchManagerEventType myEventType;
+    const QVariantMap myData;
+
+    static void post(PatchManagerEventType eventType, QObject *receiver, const QVariantMap &data);
+};
 
 class QTimer;
 class PatchmanagerAdaptor;
@@ -47,7 +88,8 @@ class PatchManagerObject : public QObject, public QDBusContext
 {
     Q_OBJECT
 public:
-    explicit PatchManagerObject(QObject *parent = 0);
+
+    explicit PatchManagerObject(QObject *parent = nullptr);
     virtual ~PatchManagerObject();
     void registerDBus();
 public slots:
@@ -59,10 +101,15 @@ public slots:
     bool unapplyAllPatches();
     bool installPatch(const QString &patch, const QString &json, const QString &archive);
     bool uninstallPatch(const QString &patch);
+    void process();
     void quit();
 protected:
-    bool event(QEvent *e);
+    void customEvent(QEvent *e);
+private slots:
+    void downloadCatalogFinished();
 private:
+    void requestDownloadCatalog(const QVariantMap &params);
+
     QVariantList listPatchesFromDir(const QString &dir, QSet<QString> &existingPatches, bool existing = true);
     bool makePatch(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available);
     void notify(const QString &patch, bool apply, bool success);
@@ -74,6 +121,8 @@ private:
     QMap<QString, QVariantMap> m_metadata;
     QTimer *m_timer;
     PatchmanagerAdaptor *m_adaptor;
+
+    QNetworkAccessManager *m_nam;
 };
 
 #endif // PATCHMANAGEROBJECT_H

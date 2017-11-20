@@ -34,6 +34,9 @@
         <method name="unapplyAllPatches">
             <arg name="ok" type="b" direction="out" />
         </method>
+        <method name="downloadCatalog">
+            <arg name="params" type="a{sv}" direction="in" />
+        </method>
         <method name="quit" />
         <signal name="applyPatchFinished">
           <arg name="patch" type="s"/>
@@ -42,5 +45,8 @@
           <arg name="patch" type="s"/>
         </signal>
         <signal name="unapplyAllPatchesFinished" />
+        <signal name="catalogReceived">
+          <arg name="json" type="a(v)"/>
+        </signal>
     </interface>
 </node>
