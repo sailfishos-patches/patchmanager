@@ -40,9 +40,11 @@
 #include <QtCore/QDir>
 
 #include <QDBusContext>
+#include <QDBusMessage>
 #include <QEvent>
 
 #include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
 
 #ifndef SERVER_URL
 #define SERVER_URL          "https://coderus.openrepos.net"
@@ -66,33 +68,48 @@ class PatchManagerEvent : public QEvent
     Q_GADGET
 public:
     enum PatchManagerEventType {
+        RefreshPatchManagerEventType,
+        ListPatchesPatchManagerEventType,
+
         ApplyPatchManagerEventType,
         UnapplyPatchManagerEventType,
         UnapplyAllPatchManagerEventType,
+
         DownloadCatalogPatchManagerEventType,
+        DownloadPatchPatchManagerEventType,
+        CheckForUpdatesPatchManagerEventType,
+
+        InstallPatchManagerEventType,
+        UninstallPatchManagerEventType,
+
         PatchManagerEventTypeCount
     };
     Q_ENUM(PatchManagerEventType)
 
-    explicit PatchManagerEvent(PatchManagerEventType eventType, const QVariantMap &data);
+    explicit PatchManagerEvent(PatchManagerEventType eventType, const QVariantMap &data, const QDBusMessage &message);
     static QEvent::Type customType(PatchManagerEventType eventType);
     const PatchManagerEventType myEventType;
     const QVariantMap myData;
+    const QDBusMessage myMessage;
 
-    static void post(PatchManagerEventType eventType, QObject *receiver, const QVariantMap &data);
+    static void post(PatchManagerEventType eventType, QObject *receiver, const QVariantMap &data, const QDBusMessage &message);
 };
 
 class QTimer;
-class PatchmanagerAdaptor;
+class PatchManagerAdaptor;
 class PatchManagerObject : public QObject, public QDBusContext
 {
     Q_OBJECT
-public:
 
+public:
     explicit PatchManagerObject(QObject *parent = nullptr);
     virtual ~PatchManagerObject();
     void registerDBus();
+
 public slots:
+    void process();
+    void quit();
+
     QVariantList listPatches();
     QVariantMap listVersions();
     bool isPatchApplied(const QString &patch);
@@ -101,27 +118,42 @@ public slots:
     bool unapplyAllPatches();
     bool installPatch(const QString &patch, const QString &json, const QString &archive);
     bool uninstallPatch(const QString &patch);
-    void process();
-    void quit();
-protected:
-    void customEvent(QEvent *e);
-private slots:
-    void downloadCatalogFinished();
-private:
-    void requestDownloadCatalog(const QVariantMap &params);
 
-    QVariantList listPatchesFromDir(const QString &dir, QSet<QString> &existingPatches, bool existing = true);
+    QVariantList downloadCatalog(const QVariantMap &params);
+    QVariantMap downloadPatchInfo(const QString &name);
+    void checkForUpdates();
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
+    void customEvent(QEvent *e);
+
+private:
+    void doRefreshPatchList();
+    void doListPatches(const QDBusMessage &message);
+
+    void requestDownloadCatalog(const QVariantMap &params, const QDBusMessage &message);
+    void requestDownloadPatchInfo(const QString &name, const QDBusMessage &message);
+    void requestCheckForUpdates();
+
+    void postCustomEvent(PatchManagerEvent::PatchManagerEventType eventType, const QVariantMap &data, const QDBusMessage &message);
+    void sendMessageReply(const QDBusMessage &message, const QVariant &result);
+    void sendMessageError(const QDBusMessage &message, const QString &errorString);
+
+    QList<QVariantMap> listPatchesFromDir(const QString &dir, QSet<QString> &existingPatches, bool existing = true);
     bool makePatch(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available);
     void notify(const QString &patch, bool apply, bool success);
 
     void refreshPatchList();
     bool m_dbusRegistered;
     QSet<QString> m_appliedPatches;
-    QVariantList m_patches;
+    QList<QVariantMap> m_patches;
     QMap<QString, QVariantMap> m_metadata;
     QTimer *m_timer;
-    PatchmanagerAdaptor *m_adaptor;
 
+    QMap<QString, QStringList> m_conflicts;
+
+    PatchManagerAdaptor *m_adaptor;
+    bool m_havePendingEvent;
     QNetworkAccessManager *m_nam;
 };
 

@@ -35,8 +35,17 @@
             <arg name="ok" type="b" direction="out" />
         </method>
         <method name="downloadCatalog">
+            <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QVariantMap"/>
             <arg name="params" type="a{sv}" direction="in" />
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantList"/>
+            <arg name="json" type="a(v)" direction="out" />
         </method>
+        <method name="downloadPatchInfo">
+        <arg name="name" type="s" direction="in" />
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+            <arg name="data" type="a{sv}" direction="out" />
+        </method>
+        <method name="checkForUpdates" />
         <method name="quit" />
         <signal name="applyPatchFinished">
           <arg name="patch" type="s"/>
@@ -45,8 +54,5 @@
           <arg name="patch" type="s"/>
         </signal>
         <signal name="unapplyAllPatchesFinished" />
-        <signal name="catalogReceived">
-          <arg name="json" type="a(v)"/>
-        </signal>
     </interface>
 </node>

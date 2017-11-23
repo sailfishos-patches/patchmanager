@@ -1,23 +1,15 @@
 TEMPLATE = app
 TARGET = patchmanager
 
-QT = core dbus
-
-#SOURCES += \
-#    notification.cpp \
-#    notificationmanagerproxy.cpp
-
-#HEADERS += \
-#    notification.h \
-#    notificationmanagerproxy.h
+QT = core dbus network
+CONFIG += link_pkgconfig
+PKGCONFIG += nemonotifications-qt5
 
 HEADERS += \
-#    adaptor.h \
     patchmanagerobject.h
 
 SOURCES += \
     main.cpp \
-#    adaptor.cpp \
     patchmanagerobject.cpp
 
 OTHER_FILES += dbus/org.SfietKonstantin.patchmanager.xml \
@@ -42,6 +34,7 @@ dbusConf.files = dbus/org.SfietKonstantin.patchmanager.conf
 dbusConf.path = /etc/dbus-1/system.d/
 INSTALLS += dbusConf
 
+# Systemd
 systemd.files = systemd/dbus-org.SfietKonstantin.patchmanager.service
 systemd.path = /lib/systemd/system/
 INSTALLS += systemd
@@ -61,16 +54,7 @@ patch.files = patch/patch.json patch/unified_diff.patch
 INSTALLS += patch
 
 # DBus
-#system(qdbusxml2cpp dbus/org.SfietKonstantin.patchmanager.xml -i patchmanagerobject.h -a adaptor)
-#system(qdbusxml2cpp org.freedesktop.Notifications.xml -p notificationmanagerproxy -c NotificationManagerProxy -i notification.h)
-
 pm_dbus_adaptor.files = dbus/org.SfietKonstantin.patchmanager.xml
 pm_dbus_adaptor.source_flags = -c PatchManagerAdaptor
 pm_dbus_adaptor.header_flags = -c PatchManagerAdaptor -i patchmanagerobject.h
 DBUS_ADAPTORS += pm_dbus_adaptor
-
-#dbus_interface.files = org.freedesktop.Notifications.xml
-#dbus_interface.source_flags = -p notificationmanagerproxy -c NotificationManagerProxy
-#dbus_interface.header_flags = -p notificationmanagerproxy -c NotificationManagerProxy -i notification.h
-#DBUS_INTERFACES += dbus_interface
-
