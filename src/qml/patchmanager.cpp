@@ -42,6 +42,7 @@
 #include <QLocale>
 #include <QtDBus/QtDBus>
 #include "webcatalog.h"
+#include "patchmanager_interface.h"
 
 static const char *HOMESCREEN_CODE = "homescreen";
 static const char *MESSAGES_CODE = "messages";
@@ -58,10 +59,17 @@ static void toggleSet(QSet<QString> &set, const QString &entry)
 }
 
 PatchManager::PatchManager(QObject *parent)
-    : QObject(parent), m_appsNeedRestart(false), m_homescreenNeedRestart(false)
+    : QObject(parent)
+    , m_appsNeedRestart(false)
+    , m_homescreenNeedRestart(false)
+    , m_installedModel(new PatchManagerModel(this))
+    , m_interface(new PatchManagerInterface(DBUS_SERVICE_NAME, DBUS_PATH_NAME, QDBusConnection::systemBus(), this))
 {
     m_nam = new QNetworkAccessManager(this);
     m_settings = new QSettings("/home/nemo/.config/patchmanager2.conf", QSettings::IniFormat, this);
+
+    requestListPatches(QString(), false);
+    connect(m_interface, &PatchManagerInterface::patchAltered, this, &PatchManager::requestListPatches);
 }
 
 PatchManager *PatchManager::GetInstance(QObject *parent)
@@ -100,6 +108,11 @@ void PatchManager::setDeveloperMode(bool developerMode)
     }
 }
 
+PatchManagerModel *PatchManager::installedModel()
+{
+    return m_installedModel;
+}
+
 void PatchManager::onDownloadFinished(const QString &patch, const QString &fileName)
 {
     WebDownloader * download = qobject_cast<WebDownloader*>(sender());
@@ -118,27 +131,19 @@ void PatchManager::onServerReplied()
     }
 }
 
-void PatchManager::onEasterReply()
+void PatchManager::requestListPatches(const QString &patch ,bool installed)
 {
-    QNetworkReply * reply = qobject_cast<QNetworkReply *>(sender());
-    if (reply) {
-        if (reply->error() == QNetworkReply::NoError) {
-            if (reply->bytesAvailable()) {
-                QByteArray json = reply->readAll();
-
-                QJsonParseError error;
-                QJsonDocument document = QJsonDocument::fromJson(json, &error);
-
-                if (error.error == QJsonParseError::NoError) {
-                    const QJsonObject & object = document.object();
-                    if (object.value("status").toBool()) {
-                        emit easterReceived(object.value("text").toString());
-                    }
-                }
-            }
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(m_interface->listPatches(), this);
+    connect(watcher, &QDBusPendingCallWatcher::finished, [this, patch, installed](QDBusPendingCallWatcher *watcher){
+        QDBusPendingReply<QVariantList> reply = *watcher;
+        if (reply.isError()) {
+            qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
+            return;
         }
-        reply->deleteLater();
-    }
+        const QVariantList data = unwind(reply.value()).toList();
+        m_installedModel->populateData(data, patch, installed);
+        watcher->deleteLater();
+    });
 }
 
 void PatchManager::patchToggleService(const QString &patch, const QString &code)
@@ -280,10 +285,14 @@ void PatchManager::doVote(const QString &patch, int action)
 
 void PatchManager::checkEaster()
 {
-    QUrl url(CATALOG_URL"/easter");
-    QNetworkRequest request(url);
-    QNetworkReply * reply = m_nam->get(request);
-    QObject::connect(reply, &QNetworkReply::finished, this, &PatchManager::onEasterReply);
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(m_interface->checkEaster(), this);
+    connect(watcher, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
+        QDBusPendingReply<QString> reply = *watcher;
+        if (!reply.isError()) {
+            emit easterReceived(reply.value());
+        }
+        watcher->deleteLater();
+    });
 }
 
 QString PatchManager::valueIfExists(const QString &filename)
@@ -329,4 +338,135 @@ QVariant PatchManager::getSettings(const QString &name, const QVariant &def)
 {
     QString key = QString("settings/%1").arg(name);
     return m_settings->value(key ,def);
+}
+
+QVariant PatchManager::unwind(const QVariant &val, int depth)
+{
+    /* Limit recursion depth to protect against type conversions
+     * that fail to converge to basic qt types within qt variant.
+     *
+     * Using limit >= DBUS_MAXIMUM_TYPE_RECURSION_DEPTH (=32) should
+     * mean we do not bail out too soon on deeply nested but othewise
+     * valid dbus messages. */
+    static const int maximum_dept = 32;
+
+    /* Default to QVariant with isInvalid() == true */
+    QVariant res;
+
+    const int type = val.userType();
+
+    if( ++depth > maximum_dept ) {
+        /* Leave result to invalid variant */
+        qWarning() << "Too deep recursion detected at userType:" << type;
+    }
+    else if (type == QVariant::List) {
+        /* Is built-in type, but does not get correctly converted
+         * to qml domain if contains QDBus types inside -> convert
+         * to variant list and unwind each item separately */
+        QVariantList list;
+        for (const QVariant &var: val.toList()) {
+            list.append(unwind(var, depth));
+        }
+        res = list;
+    }
+    else if (type == QVariant::ByteArray ) {
+        /* Is built-in type, but does not get correctly converted
+         * to qml domain -> convert to variant list */
+        QByteArray arr = val.toByteArray();
+        QVariantList lst;
+        for( int i = 0; i < arr.size(); ++i )
+            lst <<QVariant::fromValue(static_cast<quint8>(arr[i]));
+        res = QVariant::fromValue(lst);
+    }
+    else if (type == val.type()) {
+        /* Already is built-in qt type, use as is */
+        res = val;
+    } else if (type == qMetaTypeId<QDBusVariant>()) {
+        /* Convert QDBusVariant to QVariant */
+        res = unwind(val.value<QDBusVariant>().variant(), depth);
+    } else if (type == qMetaTypeId<QDBusObjectPath>()) {
+        /* Convert QDBusObjectPath to QString */
+        res = val.value<QDBusObjectPath>().path();
+    } else if (type == qMetaTypeId<QDBusSignature>()) {
+        /* Convert QDBusSignature to QString */
+        res =  val.value<QDBusSignature>().signature();
+    } else if (type == qMetaTypeId<QDBusUnixFileDescriptor>()) {
+        /* Convert QDBusUnixFileDescriptor to int */
+        res =  val.value<QDBusUnixFileDescriptor>().fileDescriptor();
+    } else if (type == qMetaTypeId<QDBusArgument>()) {
+        /* Try to deal with everything QDBusArgument could be ... */
+        const QDBusArgument &arg = val.value<QDBusArgument>();
+        const QDBusArgument::ElementType elem = arg.currentType();
+        switch (elem) {
+        case QDBusArgument::BasicType:
+            /* Most of the basic types should be convertible to QVariant.
+             * Recurse anyway to deal with object paths and the like. */
+            res = unwind(arg.asVariant(), depth);
+            break;
+
+        case QDBusArgument::VariantType:
+            /* Try to convert to QVariant. Recurse to check content */
+            res = unwind(arg.asVariant().value<QDBusVariant>().variant(),
+                         depth);
+            break;
+
+        case QDBusArgument::ArrayType:
+            /* Convert dbus array to QVariantList */
+            {
+                QVariantList list;
+                arg.beginArray();
+                while (!arg.atEnd()) {
+                    QVariant tmp = arg.asVariant();
+                    list.append(unwind(tmp, depth));
+                }
+                arg.endArray();
+                res = list;
+            }
+            break;
+
+        case QDBusArgument::StructureType:
+            /* Convert dbus struct to QVariantList */
+            {
+                QVariantList list;
+                arg.beginStructure();
+                while (!arg.atEnd()) {
+                    QVariant tmp = arg.asVariant();
+                    list.append(unwind(tmp, depth));
+                }
+                arg.endStructure();
+                res = QVariant::fromValue(list);
+            }
+            break;
+
+        case QDBusArgument::MapType:
+            /* Convert dbus dict to QVariantMap */
+            {
+                QVariantMap map;
+                arg.beginMap();
+                while (!arg.atEnd()) {
+                    arg.beginMapEntry();
+                    QVariant key = arg.asVariant();
+                    QVariant val = arg.asVariant();
+                    map.insert(unwind(key, depth).toString(),
+                               unwind(val, depth));
+                    arg.endMapEntry();
+                }
+                arg.endMap();
+                res = map;
+            }
+            break;
+
+        default:
+            /* Unhandled types produce invalid QVariant */
+            qWarning() << "Unhandled QDBusArgument element type:" << elem;
+            break;
+        }
+    } else {
+        /* Default to using as is. This should leave for example QDBusError
+         * types in a form that does not look like a string to qml code. */
+        res = val;
+        qWarning() << "Unhandled QVariant userType:" << type;
+    }
+
+    return res;
 }

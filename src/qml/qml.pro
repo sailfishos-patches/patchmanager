@@ -2,7 +2,7 @@ TARGET = patchmanager
 PLUGIN_IMPORT_PATH = org/SfietKonstantin/patchmanager
 
 TEMPLATE = lib
-QT = core qml network
+QT = core qml network dbus
 CONFIG += qt plugin hide_symbols
 
 HEADERS += \
@@ -10,14 +10,16 @@ HEADERS += \
     webcatalog.h \
     webpatchesmodel.h \
     webpatchdata.h \
-    webdownloader.h
+    webdownloader.h \
+    patchmanagermodel.h
 
 SOURCES += \
     plugin.cpp \
     patchmanager.cpp \
     webpatchesmodel.cpp \
     webpatchdata.cpp \
-    webdownloader.cpp
+    webdownloader.cpp \
+    patchmanagermodel.cpp
 
 DISTFILES += qmldir \
     PatchManagerPage.qml \
@@ -40,3 +42,8 @@ translations.files += translations/*.qm
 translations.path = /usr/share/translations
 
 INSTALLS += target qmlfiles translations
+
+pm_dbus_interface.files = ../bin/patchmanager-daemon/dbus/org.SfietKonstantin.patchmanager.xml
+pm_dbus_interface.source_flags = -c PatchManagerInterface
+pm_dbus_interface.header_flags = -c PatchManagerInterface -i ../bin/patchmanager-daemon/patchmanager_include.h
+DBUS_INTERFACES += pm_dbus_interface

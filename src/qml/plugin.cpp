@@ -37,6 +37,7 @@
 #include "webpatchesmodel.h"
 #include "webpatchdata.h"
 
+// TODO ask for paypal.me
 static const char *PAYPAL_DONATE = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&"
                                    "hosted_button_id=R6AJV4U2G33XG";
 

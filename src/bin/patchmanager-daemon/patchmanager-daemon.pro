@@ -6,11 +6,14 @@ CONFIG += link_pkgconfig
 PKGCONFIG += nemonotifications-qt5
 
 HEADERS += \
-    patchmanagerobject.h
+    patchmanagerobject.h \
+    patchmanager_include.h \
+    inotifywatcher.h
 
 SOURCES += \
     main.cpp \
-    patchmanagerobject.cpp
+    patchmanagerobject.cpp \
+    inotifywatcher.cpp
 
 OTHER_FILES += dbus/org.SfietKonstantin.patchmanager.xml \
     dbus/org.SfietKonstantin.patchmanager.service \
@@ -56,5 +59,5 @@ INSTALLS += patch
 # DBus
 pm_dbus_adaptor.files = dbus/org.SfietKonstantin.patchmanager.xml
 pm_dbus_adaptor.source_flags = -c PatchManagerAdaptor
-pm_dbus_adaptor.header_flags = -c PatchManagerAdaptor -i patchmanagerobject.h
+pm_dbus_adaptor.header_flags = -c PatchManagerAdaptor -i patchmanager_include.h
 DBUS_ADAPTORS += pm_dbus_adaptor

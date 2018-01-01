@@ -41,10 +41,9 @@
 
 #include <QDBusContext>
 #include <QDBusMessage>
+#include <QDBusVariant>
 #include <QEvent>
-
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkReply>
+#include <QFileSystemWatcher>
 
 #ifndef SERVER_URL
 #define SERVER_URL          "https://coderus.openrepos.net"
@@ -68,6 +67,8 @@ class PatchManagerEvent : public QEvent
     Q_GADGET
 public:
     enum PatchManagerEventType {
+        GetVersionPatchManagerEventType,
+
         RefreshPatchManagerEventType,
         ListPatchesPatchManagerEventType,
 
@@ -78,6 +79,11 @@ public:
         DownloadCatalogPatchManagerEventType,
         DownloadPatchPatchManagerEventType,
         CheckForUpdatesPatchManagerEventType,
+
+        ActivationPatchManagerEventType,
+        CheckVotePatchManagerEventType,
+        VotePatchManagerEventType,
+        CheckEasterPatchManagerEventType,
 
         InstallPatchManagerEventType,
         UninstallPatchManagerEventType,
@@ -96,6 +102,8 @@ public:
 };
 
 class QTimer;
+class QSettings;
+class QNetworkAccessManager;
 class PatchManagerAdaptor;
 class PatchManagerObject : public QObject, public QDBusContext
 {
@@ -119,6 +127,11 @@ public slots:
     bool installPatch(const QString &patch, const QString &json, const QString &archive);
     bool uninstallPatch(const QString &patch);
 
+    int checkVote(const QString &patch);
+    void votePatch(const QString &patch, int action);
+
+    QString checkEaster();
+
     QVariantList downloadCatalog(const QVariantMap &params);
     QVariantMap downloadPatchInfo(const QString &name);
     void checkForUpdates();
@@ -130,6 +143,14 @@ protected:
 private:
     void doRefreshPatchList();
     void doListPatches(const QDBusMessage &message);
+
+    int getVote(const QString &patch);
+    void doCheckVote(const QString &patch, const QDBusMessage &message);
+    void sendVote(const QString &patch, int action);
+
+    void doCheckEaster(const QDBusMessage &message);
+
+    void sendActivation(const QString & patch, const QString & version);
 
     void requestDownloadCatalog(const QVariantMap &params, const QDBusMessage &message);
     void requestDownloadPatchInfo(const QString &name, const QDBusMessage &message);
@@ -143,6 +164,7 @@ private:
     bool makePatch(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available);
     void notify(const QString &patch, bool apply, bool success);
 
+    void getVersion();
     void refreshPatchList();
     bool m_dbusRegistered;
     QSet<QString> m_appliedPatches;
@@ -152,9 +174,12 @@ private:
 
     QMap<QString, QStringList> m_conflicts;
 
+    QString m_ssuRelease;
     PatchManagerAdaptor *m_adaptor;
     bool m_havePendingEvent;
     QNetworkAccessManager *m_nam;
+
+    QSettings *m_settings;
 };
 
 #endif // PATCHMANAGEROBJECT_H

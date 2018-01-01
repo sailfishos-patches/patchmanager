@@ -35,7 +35,6 @@
             <arg name="ok" type="b" direction="out" />
         </method>
         <method name="votePatch">
-            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
             <arg name="patch" type="s" direction="in" />
             <arg name="action" type="i" direction="in" />
         </method>
@@ -58,20 +57,13 @@
             <arg name="data" type="a{sv}" direction="out" />
         </method>
         <method name="checkForUpdates" />
-        <method name="quit">
-            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
-        </method>
+        <method name="quit" />
         <signal name="applyPatchFinished">
           <arg name="patch" type="s"/>
         </signal>
         <signal name="unapplyPatchFinished">
           <arg name="patch" type="s"/>
         </signal>
-        <signal name="patchAltered">
-            <arg name="patch" type="s"/>
-            <arg name="installed" type="b"/>
-        </signal>
-        <signal name="listPatchesChanged" />
         <signal name="unapplyAllPatchesFinished" />
     </interface>
 </node>

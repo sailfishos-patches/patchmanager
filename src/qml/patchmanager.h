@@ -38,7 +38,9 @@
 #include <QtNetwork>
 #include <QSettings>
 #include "webdownloader.h"
+#include "patchmanagermodel.h"
 
+class PatchManagerInterface;
 class PatchManager: public QObject
 {
     Q_OBJECT
@@ -46,6 +48,8 @@ class PatchManager: public QObject
     Q_PROPERTY(bool homescreenNeedRestart READ isHomescreenNeedRestart NOTIFY homescreenNeedRestartChanged)
     Q_PROPERTY(QString serverMediaUrl READ serverMediaUrl CONSTANT)
     Q_PROPERTY(bool developerMode READ developerMode WRITE setDeveloperMode NOTIFY developerModeChanged)
+    Q_PROPERTY(PatchManagerModel *installedModel READ installedModel CONSTANT)
+
 public:
     explicit PatchManager(QObject *parent = 0);
     static PatchManager *GetInstance(QObject *parent = 0);
@@ -54,10 +58,14 @@ public:
     QString serverMediaUrl();
     bool developerMode();
     void setDeveloperMode(bool developerMode);
+    PatchManagerModel *installedModel();
+
 private slots:
     void onDownloadFinished(const QString & patch, const QString & fileName);
     void onServerReplied();
-    void onEasterReply();
+
+    void requestListPatches(const QString &patch, bool installed);
+
 public slots:
     void patchToggleService(const QString &patch, const QString &code);
     void restartServices();
@@ -70,6 +78,7 @@ public slots:
     void checkEaster();
     QString valueIfExists(const QString & filename);
     bool callUninstallOldPatch(const QString & patch);
+
 signals:
     void appsNeedRestartChanged();
     void homescreenNeedRestartChanged();
@@ -77,9 +86,12 @@ signals:
     void serverReply();
     void easterReceived(const QString & easterText);
     void developerModeChanged(bool developerMode);
+
 private:
     bool putSettings(const QString & name, const QVariant & value);
     QVariant getSettings(const QString & name, const QVariant & def = QVariant());
+
+    QVariant unwind(const QVariant &val, int depth = 0);
 
     QSet<QString> m_homescreenPatches;
     QSet<QString> m_voiceCallPatches;
@@ -87,8 +99,11 @@ private:
     QHash<QString, QTranslator*> m_translators;
     bool m_appsNeedRestart;
     bool m_homescreenNeedRestart;
-    QNetworkAccessManager * m_nam;
+    QNetworkAccessManager *m_nam;
     QSettings *m_settings;
+
+    PatchManagerModel *m_installedModel;
+    PatchManagerInterface *m_interface;
 };
 
 #endif // PATCHMANAGER_H

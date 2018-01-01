@@ -59,76 +59,76 @@ Page {
     onStatusChanged: {
         if (status == PageStatus.Activating
                 && pageStack.currentPage.objectName == "WebPatchPage") {
-            patchmanagerDbusInterface.listPatches()
+            //patchmanagerDbusInterface.listPatches()
         }
     }
 
-    Component.onCompleted: {
-        ssuDbusInterface.getVersion()
-    }
+//    Component.onCompleted: {
+//        ssuDbusInterface.getVersion()
+//    }
 
-    DBusInterface {
-        id: ssuDbusInterface
-        service: "org.nemo.ssu"
-        path: "/org/nemo/ssu"
-        iface: "org.nemo.ssu"
-        bus: DBus.SystemBus
-        function getVersion() {
-            typedCall("release", [{"type": "b", "value": false}], function (version) {
-                release = version
-            })
-        }
-    }
+//    DBusInterface {
+//        id: ssuDbusInterface
+//        service: "org.nemo.ssu"
+//        path: "/org/nemo/ssu"
+//        iface: "org.nemo.ssu"
+//        bus: DBus.SystemBus
+//        function getVersion() {
+//            typedCall("release", [{"type": "b", "value": false}], function (version) {
+//                release = version
+//            })
+//        }
+//    }
 
-    DBusInterface {
-        id: patchmanagerDbusInterface
-        service: "org.SfietKonstantin.patchmanager"
-        path: "/org/SfietKonstantin/patchmanager"
-        iface: "org.SfietKonstantin.patchmanager"
-        bus: DBus.SystemBus
-        signalsEnabled: true
-        function listPatches() {
-            typedCall("listPatches", [], function (patches) {
-                indicator.visible = false
-                patchModel.clear()
-                for (var i = 0; i < patches.length; i++) {
-                    var patch = patches[i]
-                    if (patch.compatible) {
-                        patch.compatible = patch.compatible.join(", ")
-                    } else {
-                        patch.compatible = "0.0.0"
-                    }
-                    patchModel.append(patch)
-                }
-            })
-        }
-        function applyPatch(patch, cb) {
-            patchmanagerDbusInterface.typedCall("applyPatch",
-                                                [{"type": "s", "value": patch}],
-                                                cb)
-        }
-        function unapplyPatch(patch, cb) {
-            patchmanagerDbusInterface.typedCall("unapplyPatch",
-                                                [{"type": "s", "value": patch}],
-                                                cb)
-        }
-        function unapplyAllPatches() {
-            patchmanagerDbusInterface.typedCall("unapplyAllPatches", [])
-        }
-        function applyPatchFinished(patch) {
-            console.log(patch)
-            view.applyPatchFinished(patch)
-        }
-        function unapplyPatchFinished(patch) {
-            console.log(patch)
-            view.unapplyPatchFinished(patch)
-        }
-        function unapplyAllPatchesFinished() {
-            console.log()
-            view.unapplyAllFinished()
-            view.busy = false
-        }
-    }
+//    DBusInterface {
+//        id: patchmanagerDbusInterface
+//        service: "org.SfietKonstantin.patchmanager"
+//        path: "/org/SfietKonstantin/patchmanager"
+//        iface: "org.SfietKonstantin.patchmanager"
+//        bus: DBus.SystemBus
+//        signalsEnabled: true
+//        function listPatches() {
+//            typedCall("listPatches", [], function (patches) {
+//                indicator.visible = false
+//                patchModel.clear()
+//                for (var i = 0; i < patches.length; i++) {
+//                    var patch = patches[i]
+//                    if (patch.compatible) {
+//                        patch.compatible = patch.compatible.join(", ")
+//                    } else {
+//                        patch.compatible = "0.0.0"
+//                    }
+//                    patchModel.append(patch)
+//                }
+//            })
+//        }
+//        function applyPatch(patch, cb) {
+//            patchmanagerDbusInterface.typedCall("applyPatch",
+//                                                [{"type": "s", "value": patch}],
+//                                                cb)
+//        }
+//        function unapplyPatch(patch, cb) {
+//            patchmanagerDbusInterface.typedCall("unapplyPatch",
+//                                                [{"type": "s", "value": patch}],
+//                                                cb)
+//        }
+//        function unapplyAllPatches() {
+//            patchmanagerDbusInterface.typedCall("unapplyAllPatches", [])
+//        }
+//        function applyPatchFinished(patch) {
+//            console.log(patch)
+//            view.applyPatchFinished(patch)
+//        }
+//        function unapplyPatchFinished(patch) {
+//            console.log(patch)
+//            view.unapplyPatchFinished(patch)
+//        }
+//        function unapplyAllPatchesFinished() {
+//            console.log()
+//            view.unapplyAllFinished()
+//            view.busy = false
+//        }
+//    }
 
     SilicaListView {
         id: view
@@ -150,7 +150,7 @@ Page {
             MenuItem {
                 text: qsTranslate("", "Unapply all patches")
                 onClicked: {
-                    patchmanagerDbusInterface.unapplyAllPatches()
+                    //patchmanagerDbusInterface.unapplyAllPatches()
                     view.unapplyAll()
                     view.busy = true
                 }
@@ -172,9 +172,10 @@ Page {
         header: PageHeader {
             title: qsTranslate("", "Installed patches")
         }
-        model: ListModel {
-            id: patchModel
-        }
+//        model: ListModel {
+//            id: patchModel
+//        }
+        model: PatchManager.installedModel
         section.criteria: ViewSection.FullString
         section.delegate: SectionHeader {
             text: qsTranslate("", section)
@@ -201,36 +202,36 @@ Page {
                 appliedSwitch.busy = true
                 if (!background.applied) {
                     if (PatchManager.developerMode || isCompatible) {
-                        patchmanagerDbusInterface.applyPatch(model.patch,
-                        function (ok) {
-                            if (ok) {
-                                if (isNewPatch) {
-                                    PatchManager.activation(model.name, model.version)
-                                }
-                                background.applied = true
-                            }
-                            appliedSwitch.busy = false
-                            PatchManager.patchToggleService(model.patch, model.categoryCode)
-                            checkApplicability()
-                        })
+//                        patchmanagerDbusInterface.applyPatch(model.patch,
+//                        function (ok) {
+//                            if (ok) {
+//                                if (isNewPatch) {
+//                                    PatchManager.activation(model.name, model.version)
+//                                }
+//                                background.applied = true
+//                            }
+//                            appliedSwitch.busy = false
+//                            PatchManager.patchToggleService(model.patch, model.categoryCode)
+//                            checkApplicability()
+//                        })
                     } else {
                         errorMesageComponent.createObject(background, {text: qsTranslate("", "This patch is not compatible with SailfishOS version!")})
                         appliedSwitch.busy = false
                     }
                 } else {
-                    patchmanagerDbusInterface.unapplyPatch(model.patch,
-                    function (ok) {
-                        if (ok) {
-                            background.applied = false
-                        }
-                        appliedSwitch.busy = false
-                        PatchManager.patchToggleService(model.patch, model.categoryCode)
-                        if (!model.available) {
-                            patchModel.remove(model.index)
-                        } else {
-                            checkApplicability()
-                        }
-                    })
+//                    patchmanagerDbusInterface.unapplyPatch(model.patch,
+//                    function (ok) {
+//                        if (ok) {
+//                            background.applied = false
+//                        }
+//                        appliedSwitch.busy = false
+//                        PatchManager.patchToggleService(model.patch, model.categoryCode)
+//                        if (!model.available) {
+//                            patchModel.remove(model.index)
+//                        } else {
+//                            checkApplicability()
+//                        }
+//                    })
                 }
             }
 
@@ -253,7 +254,7 @@ Page {
                     appliedSwitch.busy = false
                     PatchManager.patchToggleService(model.patch, model.categoryCode)
                     if (!model.available) {
-                        patchModel.remove(model.index)
+                        //patchModel.remove(model.index)
                     } else {
                         checkApplicability()
                     }
@@ -266,16 +267,16 @@ Page {
 
             function doUninstall() {
                 if (isNewPatch) {
-                    patchmanagerDbusInterface.typedCall("uninstallPatch",
-                                                      [{"type": "s", "value": model.patch}],
-                        function(ok) {
-                            if (ok) {
-                                patchModel.remove(index)
-                            }
-                        })
+//                    patchmanagerDbusInterface.typedCall("uninstallPatch",
+//                                                      [{"type": "s", "value": model.patch}],
+//                        function(ok) {
+//                            if (ok) {
+//                                patchModel.remove(index)
+//                            }
+//                        })
                 } else {
                     if (PatchManager.callUninstallOldPatch(model.patch)) {
-                        patchModel.remove(index)
+                        //patchModel.remove(index)
                     }
                 }
             }
@@ -283,14 +284,14 @@ Page {
             function doRemove() {
                 if (background.applied) {
                     appliedSwitch.busy = true
-                    patchmanagerDbusInterface.unapplyPatch(model.patch,
-                    function (ok) {
-                        appliedSwitch.busy = false
-                        PatchManager.patchToggleService(model.patch, model.categoryCode)
-                        if (ok) {
-                            doUninstall()
-                        }
-                    })
+//                    patchmanagerDbusInterface.unapplyPatch(model.patch,
+//                    function (ok) {
+//                        appliedSwitch.busy = false
+//                        PatchManager.patchToggleService(model.patch, model.categoryCode)
+//                        if (ok) {
+//                            doUninstall()
+//                        }
+//                    })
                 } else {
                     doUninstall();
                 }
@@ -315,9 +316,9 @@ Page {
                 //appliedSwitch.enabled = background.canApply
             }
 
-            Component.onCompleted: {
-                checkApplicability()
-            }
+//            Component.onCompleted: {
+//                checkApplicability()
+//            }
 
             Item {
                 id: content
@@ -389,6 +390,7 @@ Page {
     BusyIndicator {
         id: indicator
         running: visible
+        visible: view.count == 0
         anchors.centerIn: parent
         size: BusyIndicatorSize.Large
     }
