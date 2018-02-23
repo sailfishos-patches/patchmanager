@@ -108,11 +108,9 @@ class PatchManagerAdaptor;
 class PatchManagerObject : public QObject, public QDBusContext
 {
     Q_OBJECT
-
 public:
     explicit PatchManagerObject(QObject *parent = nullptr);
     virtual ~PatchManagerObject();
-    void registerDBus();
 
 public slots:
     void process();
@@ -141,8 +139,13 @@ protected:
     void customEvent(QEvent *e);
 
 private:
+    void registerDBus();
+    void initialize();
+
     void doRefreshPatchList();
     void doListPatches(const QDBusMessage &message);
+
+    void doPatch(const QVariantMap &params, const QDBusMessage &message, bool apply);
 
     int getVote(const QString &patch);
     void doCheckVote(const QString &patch, const QDBusMessage &message);
@@ -166,7 +169,7 @@ private:
 
     void getVersion();
     void refreshPatchList();
-    bool m_dbusRegistered;
+    bool m_dbusRegistered = false;
     QSet<QString> m_appliedPatches;
     QList<QVariantMap> m_patches;
     QMap<QString, QVariantMap> m_metadata;
@@ -175,8 +178,8 @@ private:
     QMap<QString, QStringList> m_conflicts;
 
     QString m_ssuRelease;
-    PatchManagerAdaptor *m_adaptor;
-    bool m_havePendingEvent;
+    PatchManagerAdaptor *m_adaptor = nullptr;
+    bool m_havePendingEvent = false;
     QNetworkAccessManager *m_nam;
 
     QSettings *m_settings;

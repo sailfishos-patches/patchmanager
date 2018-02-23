@@ -49,6 +49,23 @@ static const char *MESSAGES_CODE = "messages";
 static const char *PHONE_CODE = "phone";
 static const char *SILICA_CODE = "silica";
 
+static const char *noop_strings[] = {
+    QT_TRANSLATE_NOOP("Sections", "browser"),
+    QT_TRANSLATE_NOOP("Sections", "camera"),
+    QT_TRANSLATE_NOOP("Sections", "calendar"),
+    QT_TRANSLATE_NOOP("Sections", "clock"),
+    QT_TRANSLATE_NOOP("Sections", "contacts"),
+    QT_TRANSLATE_NOOP("Sections", "email"),
+    QT_TRANSLATE_NOOP("Sections", "gallery"),
+    QT_TRANSLATE_NOOP("Sections", "homescreen"),
+    QT_TRANSLATE_NOOP("Sections", "media"),
+    QT_TRANSLATE_NOOP("Sections", "messages"),
+    QT_TRANSLATE_NOOP("Sections", "phone"),
+    QT_TRANSLATE_NOOP("Sections", "silica"),
+    QT_TRANSLATE_NOOP("Sections", "settings"),
+    QT_TRANSLATE_NOOP("Sections", "other"),
+};
+
 static void toggleSet(QSet<QString> &set, const QString &entry)
 {
     if (set.contains(entry)) {
@@ -64,9 +81,9 @@ PatchManager::PatchManager(QObject *parent)
     , m_homescreenNeedRestart(false)
     , m_installedModel(new PatchManagerModel(this))
     , m_interface(new PatchManagerInterface(DBUS_SERVICE_NAME, DBUS_PATH_NAME, QDBusConnection::systemBus(), this))
+    , m_nam(new QNetworkAccessManager(this))
+    , m_settings(new QSettings(QStringLiteral("/home/nemo/.config/patchmanager2.conf"), QSettings::IniFormat, this))
 {
-    m_nam = new QNetworkAccessManager(this);
-    m_settings = new QSettings("/home/nemo/.config/patchmanager2.conf", QSettings::IniFormat, this);
 
     requestListPatches(QString(), false);
     connect(m_interface, &PatchManagerInterface::patchAltered, this, &PatchManager::requestListPatches);
@@ -113,6 +130,15 @@ PatchManagerModel *PatchManager::installedModel()
     return m_installedModel;
 }
 
+QString PatchManager::trCategory(const QString &category) const
+{
+    const QString section = qApp->translate("Sections", category.toLatin1().constData());
+    if (section == category) {
+        return qApp->translate("Sections", "other");
+    }
+    return section;
+}
+
 void PatchManager::onDownloadFinished(const QString &patch, const QString &fileName)
 {
     WebDownloader * download = qobject_cast<WebDownloader*>(sender());
@@ -131,8 +157,12 @@ void PatchManager::onServerReplied()
     }
 }
 
-void PatchManager::requestListPatches(const QString &patch ,bool installed)
+void PatchManager::requestListPatches(const QString &patch, bool installed)
 {
+    if (!installed) {
+        m_installedModel->removePatch(patch);
+    }
+
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(m_interface->listPatches(), this);
     connect(watcher, &QDBusPendingCallWatcher::finished, [this, patch, installed](QDBusPendingCallWatcher *watcher){
         QDBusPendingReply<QVariantList> reply = *watcher;
@@ -144,6 +174,16 @@ void PatchManager::requestListPatches(const QString &patch ,bool installed)
         m_installedModel->populateData(data, patch, installed);
         watcher->deleteLater();
     });
+}
+
+QDBusPendingCallWatcher* PatchManager::applyPatch(const QString &patch)
+{
+    return new QDBusPendingCallWatcher(m_interface->applyPatch(patch), this);
+}
+
+QDBusPendingCallWatcher* PatchManager::unapplyPatch(const QString &patch)
+{
+    return new QDBusPendingCallWatcher(m_interface->unapplyPatch(patch), this);
 }
 
 void PatchManager::patchToggleService(const QString &patch, const QString &code)
@@ -295,6 +335,19 @@ void PatchManager::checkEaster()
     });
 }
 
+QString PatchManager::iconForPatch(const QString &patch)
+{
+    const QString iconPlaceholder = QStringLiteral("/usr/share/patchmanager/patches/%1/main.%2").arg(patch);
+    const QStringList validExtensions = { QStringLiteral("png"), QStringLiteral("svg") };
+    for (const QString &extension : validExtensions) {
+        QString filename = iconPlaceholder.arg(extension);
+        if (QFileInfo::exists(filename)) {
+            return filename;
+        }
+    }
+    return QString();
+}
+
 QString PatchManager::valueIfExists(const QString &filename)
 {
     if (QFile(filename).exists()) {
@@ -316,11 +369,33 @@ bool PatchManager::callUninstallOldPatch(const QString &patch)
                 iface.call(QDBus::NoBlock, "removePackage", package, true);
                 return true;
             }
-        } else {
+        } else if (proc.state() == QProcess::Running) {
             proc.kill();
         }
     }
     return false;
+}
+
+void PatchManager::successCall(QJSValue callback, const QVariant &value)
+{
+    if (callback.isUndefined() || !callback.isCallable()) {
+        return;
+    }
+
+    QJSValueList callbackArguments;
+    callbackArguments << callback.engine()->toScriptValue(value);
+    callback.call(callbackArguments);
+}
+
+void PatchManager::errorCall(QJSValue errorCallback, const QString &message)
+{
+    if (errorCallback.isUndefined() || !errorCallback.isCallable()) {
+        return;
+    }
+
+    QJSValueList callbackArguments;
+    callbackArguments << QJSValue(message);
+    errorCallback.call(callbackArguments);
 }
 
 bool PatchManager::putSettings(const QString &name, const QVariant &value)

@@ -68,75 +68,51 @@ if (!calledFromDBus()) {\
 
 static QVector<QEvent::Type> s_customEventTypes(PatchManagerEvent::PatchManagerEventTypeCount, QEvent::None);
 
-static const char *PATCHES_DIR = "/usr/share/patchmanager/patches";
-static const char *PATCHES_ADDITIONAL_DIR = "/var/lib/patchmanager/ausmt/patches";
-static const char *PATCH_FILE = "patch.json";
+static const QString PATCHES_DIR = QStringLiteral("/usr/share/patchmanager/patches");
+static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("/var/lib/patchmanager/ausmt/patches");
+static const QString PATCH_FILE = QStringLiteral("patch.json");
 
-static const char *NAME_KEY = "name";
-static const char *DESCRIPTION_KEY = "description";
-static const char *CATEGORY_KEY = "category";
-static const char *INFOS_KEY = "infos";
+static const QString NAME_KEY = QStringLiteral("name");
+static const QString DESCRIPTION_KEY = QStringLiteral("description");
+static const QString CATEGORY_KEY = QStringLiteral("category");
+static const QString INFOS_KEY = QStringLiteral("infos");
+static const QString PATCH_KEY = QStringLiteral("patch");
+static const QString AVAILABLE_KEY = QStringLiteral("available");
+static const QString SECTION_KEY = QStringLiteral("section");
+static const QString PATCHED_KEY = QStringLiteral("patched");
+static const QString VERSION_KEY = QStringLiteral("version");
+static const QString COMPATIBLE_KEY = QStringLiteral("compatible");
+static const QString ISCOMPATIBLE_KEY = QStringLiteral("isCompatible");
+static const QString CONFLICTS_KEY = QStringLiteral("conflicts");
 
-static const char *AUSMT_INSTALLED_LIST_FILE = "/var/lib/patchmanager/ausmt/packages";
-static const char *AUSMT_INSTALL = "/opt/ausmt/ausmt-install";
-static const char *AUSMT_REMOVE = "/opt/ausmt/ausmt-remove";
+static const QString AUSMT_INSTALLED_LIST_FILE = QStringLiteral("/var/lib/patchmanager/ausmt/packages");
+static const QString AUSMT_INSTALL = QStringLiteral("/opt/ausmt/ausmt-install");
+static const QString AUSMT_REMOVE = QStringLiteral("/opt/ausmt/ausmt-remove");
 
-static const char *BROWSER_CODE = "browser";
-static const char *CAMERA_CODE = "camera";
-static const char *CALENDAR_CODE = "calendar";
-static const char *CLOCK_CODE = "clock";
-static const char *CONTACTS_CODE = "contacts";
-static const char *EMAIL_CODE = "email";
-static const char *GALLERY_CODE = "gallery";
-static const char *HOMESCREEN_CODE = "homescreen";
-static const char *MEDIA_CODE = "media";
-static const char *MESSAGES_CODE = "messages";
-static const char *PHONE_CODE = "phone";
-static const char *SILICA_CODE = "silica";
-static const char *SETTINGS_CODE = "settings";
+static const QString BROWSER_CODE = QStringLiteral("browser");
+static const QString CAMERA_CODE = QStringLiteral("camera");
+static const QString CALENDAR_CODE = QStringLiteral("calendar");
+static const QString CLOCK_CODE = QStringLiteral("clock");
+static const QString CONTACTS_CODE = QStringLiteral("contacts");
+static const QString EMAIL_CODE = QStringLiteral("email");
+static const QString GALLERY_CODE = QStringLiteral("gallery");
+static const QString HOMESCREEN_CODE = QStringLiteral("homescreen");
+static const QString MEDIA_CODE = QStringLiteral("media");
+static const QString MESSAGES_CODE = QStringLiteral("messages");
+static const QString PHONE_CODE = QStringLiteral("phone");
+static const QString SILICA_CODE = QStringLiteral("silica");
+static const QString SETTINGS_CODE = QStringLiteral("settings");
 
 static const QString newConfigLocation = QStringLiteral("/etc/patchmanager2.conf");
 static const QString oldConfigLocation = QStringLiteral("/home/nemo/.config/patchmanager2.conf");
 
-static QString categoryFromCode(const QString &code)
-{
-    if (code == BROWSER_CODE) {
-        return qApp->translate("", "Browser");
-    } else if (code == CAMERA_CODE) {
-        return qApp->translate("", "Camera");
-    } else if (code == CALENDAR_CODE) {
-        return qApp->translate("", "Calendar");
-    } else if (code == CLOCK_CODE) {
-        return qApp->translate("", "Clock");
-    } else if (code == CONTACTS_CODE) {
-        return qApp->translate("", "Contacts");
-    } else if (code == EMAIL_CODE) {
-        return qApp->translate("", "Email");
-    } else if (code == GALLERY_CODE) {
-        return qApp->translate("", "Gallery");
-    } else if (code == HOMESCREEN_CODE) {
-        return qApp->translate("", "Homescreen");
-    } else if (code == MEDIA_CODE) {
-        return qApp->translate("", "Media");
-    } else if (code == MESSAGES_CODE) {
-        return qApp->translate("", "Messages");
-    } else if (code == PHONE_CODE) {
-        return qApp->translate("", "Phone");
-    } else if (code == SILICA_CODE) {
-        return qApp->translate("", "Silica");
-    } else if (code == SETTINGS_CODE) {
-        return qApp->translate("", "Settings");
-    }
-    return qApp->translate("", "Other");
-}
-
 static bool patchSort(const QVariantMap &patch1, const QVariantMap &patch2)
 {
-    if (patch1["category"].toString() == patch2["category"].toString()) {
-        return patch1["name"].toString() < patch2["name"].toString();
+    if (patch1[CATEGORY_KEY].toString() == patch2[CATEGORY_KEY].toString()) {
+        return patch1[NAME_KEY].toString() < patch2[NAME_KEY].toString();
     }
 
-    return patch1["category"].toString() < patch2["category"].toString();
+    return patch1[CATEGORY_KEY].toString() < patch2[CATEGORY_KEY].toString();
 }
 
 bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available)
@@ -167,15 +143,21 @@ bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, Q
         return false;
     }
 
-    json["patch"] = patchPath;
-    json["available"] = available;
-    json["categoryCode"] = json["category"];
-    json["category"] = categoryFromCode(json["category"].toString());
-    json["patched"] = m_appliedPatches.contains(patchPath);
-    if (!json.contains("version")) {
-        json["version"] = "0.0.0";
+    json[PATCH_KEY] = patchPath;
+    json[AVAILABLE_KEY] = available;
+    json[CATEGORY_KEY] = json[CATEGORY_KEY];
+    json[SECTION_KEY] = QStringLiteral("Other");
+    json[PATCHED_KEY] = m_appliedPatches.contains(patchPath);
+    if (!json.contains(VERSION_KEY)) {
+        json[VERSION_KEY] = QStringLiteral("0.0.0");
     }
-    json["conflicts"] = QStringList();
+    if (!json.contains(COMPATIBLE_KEY)) {
+        json[COMPATIBLE_KEY] = QStringList();
+        json[ISCOMPATIBLE_KEY] = true;
+    } else {
+        json[ISCOMPATIBLE_KEY] = json[COMPATIBLE_KEY].toStringList().contains(m_ssuRelease);
+    }
+    json[CONFLICTS_KEY] = QStringList();
     patch = json;
 
     return true;
@@ -218,14 +200,13 @@ void PatchManagerObject::getVersion()
 {
     qDebug() << Q_FUNC_INFO;
     QDBusMessage msg = QDBusMessage::createMethodCall("org.nemo.ssu", "/org/nemo/ssu", "org.nemo.ssu", "release");
-    msg.setArguments(QVariantList({ false }));
+    msg.setArguments({ QVariant::fromValue(false) });
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(QDBusConnection::systemBus().asyncCall(msg), this);
     connect(watcher, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher) {
-        QDBusPendingReply<QString> reply = *watcher;
-        if (!reply.isError()) {
-            m_ssuRelease = reply.value();
-            watcher->deleteLater();
+        if (!watcher->isError()) {
+            m_ssuRelease = QDBusPendingReply<QString>(*watcher);
         }
+        watcher->deleteLater();
     });
 }
 
@@ -233,7 +214,7 @@ QList<QVariantMap> PatchManagerObject::listPatchesFromDir(const QString &dir, QS
 {
     QList<QVariantMap> patches;
     QDir root (dir);
-    foreach (const QString &patchPath, root.entryList(QDir::AllDirs | QDir::NoDotAndDotDot)) {
+    for (const QString &patchPath : root.entryList(QDir::AllDirs | QDir::NoDotAndDotDot)) {
         if (!existingPatches.contains(patchPath)) {
             QVariantMap patch;
             bool ok = makePatch(root, patchPath, patch, existing);
@@ -248,10 +229,8 @@ QList<QVariantMap> PatchManagerObject::listPatchesFromDir(const QString &dir, QS
 
 PatchManagerObject::PatchManagerObject(QObject *parent)
     : QObject(parent)
-    , m_dbusRegistered(false)
-    , m_adaptor(nullptr)
+    , m_timer(new QTimer(this))
     , m_nam(new QNetworkAccessManager(this))
-    , m_havePendingEvent(false)
     , m_settings(new QSettings(newConfigLocation, QSettings::IniFormat, this))
 {
     if (!QFileInfo::exists(newConfigLocation) && QFileInfo::exists(oldConfigLocation)) {
@@ -262,25 +241,11 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
         installEventFilter(this);
     }
 
-    m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &PatchManagerObject::quit);
     m_timer->setSingleShot(true);
     m_timer->setTimerType(Qt::VeryCoarseTimer);
     m_timer->setInterval(15000);  // Try to Quit after 15s timeout
     m_timer->start();
-
-//    QFile file (AUSMT_INSTALLED_LIST_FILE);
-//    if (file.open(QIODevice::ReadOnly)) {
-//        while (!file.atEnd()) {
-//            QString line = QString::fromLocal8Bit(file.readLine());
-//            qDebug() << line;
-//            QStringList splitted = line.split(" ");
-//            if (splitted.count() == 2) {
-//                m_appliedPatches.insert(splitted.first());
-//            }
-//        }
-//        file.close();
-//    }
 }
 
 PatchManagerObject::~PatchManagerObject()
@@ -326,7 +291,10 @@ void PatchManagerObject::registerDBus()
     }
     qWarning() << "Service registered:" << DBUS_SERVICE_NAME;
     m_dbusRegistered = true;
+}
 
+void PatchManagerObject::initialize()
+{
     getVersion();
     refreshPatchList();
 
@@ -338,12 +306,12 @@ void PatchManagerObject::registerDBus()
         emit m_adaptor->patchAltered(path, created);
     });
 
-    INotifyWatcher *additionalWatcher = new INotifyWatcher(this);
-    additionalWatcher->addPaths({ PATCHES_ADDITIONAL_DIR });
-    connect(additionalWatcher, &INotifyWatcher::contentChanged, [this](const QString &path, bool created) {
-        qDebug() << "contentChanged:" << path << "created:" << created;
-        refreshPatchList();
-    });
+//    INotifyWatcher *additionalWatcher = new INotifyWatcher(this);
+//    additionalWatcher->addPaths({ PATCHES_ADDITIONAL_DIR });
+//    connect(additionalWatcher, &INotifyWatcher::contentChanged, [this](const QString &path, bool created) {
+//        qDebug() << "contentChanged:" << path << "created:" << created;
+//        refreshPatchList();
+//    });
 }
 
 void PatchManagerObject::process()
@@ -382,32 +350,31 @@ void PatchManagerObject::process()
             msg.setArguments(data);
         }
         connection.send(msg);
-    } else {
-        registerDBus();
-        if (!m_dbusRegistered) {
-            QCoreApplication::exit(2);
-            return;
-        }
-        if (args[1] == QStringLiteral("-a")) {
-            if (args.length() < 3) {
-                return;
-            } else {
-                applyPatch(args[2]);
-            }
-        } else if (args[1] == QStringLiteral("-u")) {
-            if (args.length() < 3) {
-                return;
-            } else {
-                unapplyPatch(args[2]);
-            }
-        } else if (args[1] == QStringLiteral("--unapply-all")) {
-            unapplyAllPatches();
-        } else {
-            return;
-        }
+        return;
     }
 
-    return;
+    registerDBus();
+    if (!m_dbusRegistered) {
+        QCoreApplication::exit(2);
+        return;
+    }
+
+    initialize();
+    if (args[1] == QStringLiteral("-a")) {
+        if (args.length() < 3) {
+            return;
+        } else {
+            applyPatch(args[2]);
+        }
+    } else if (args[1] == QStringLiteral("-u")) {
+        if (args.length() < 3) {
+            return;
+        } else {
+            unapplyPatch(args[2]);
+        }
+    } else if (args[1] == QStringLiteral("--unapply-all")) {
+        unapplyAllPatches();
+    }
 }
 
 QVariantList PatchManagerObject::listPatches()
@@ -425,7 +392,7 @@ QVariantMap PatchManagerObject::listVersions()
 //    m_timer->start();
     QVariantMap versionsList;
     for (const QString &patch : m_metadata.keys()) {
-        versionsList[patch] = m_metadata[patch]["version"];
+        versionsList[patch] = m_metadata[patch][VERSION_KEY];
     }
 
     return versionsList;
@@ -441,6 +408,7 @@ bool PatchManagerObject::isPatchApplied(const QString &patch)
 bool PatchManagerObject::applyPatch(const QString &patch)
 {
     qDebug() << Q_FUNC_INFO << patch;
+    setDelayedReply(true);
     QDBusMessage msg;
     if (calledFromDBus()) {
         msg = message();
@@ -451,7 +419,7 @@ bool PatchManagerObject::applyPatch(const QString &patch)
 //    m_timer->stop();
 
     QVariantMap patchData = m_metadata[patch];
-    QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData["name"];
+    QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
 
     QProcess process;
     process.setProgram(AUSMT_INSTALL);
@@ -480,12 +448,18 @@ bool PatchManagerObject::applyPatch(const QString &patch)
 bool PatchManagerObject::unapplyPatch(const QString &patch)
 {
     qDebug() << Q_FUNC_INFO << patch;
+    setDelayedReply(true);
+    QDBusMessage msg;
+    if (calledFromDBus()) {
+        msg = message();
+    }
+    postCustomEvent(PatchManagerEvent::UnapplyPatchManagerEventType, QVariantMap({{QStringLiteral("name"), patch}}), msg);
     return true;
 
 //    m_timer->stop();
 
     QVariantMap patchData = m_metadata[patch];
-    QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData["name"];
+    QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
 
     QProcess process;
     process.setProgram(AUSMT_REMOVE);
@@ -531,8 +505,8 @@ bool PatchManagerObject::installPatch(const QString &patch, const QString &json,
 {
     qDebug() << Q_FUNC_INFO << patch;
 //    m_timer->stop();
-    QString patchPath = QString("%1/%2").arg(PATCHES_DIR, patch);
-    QString jsonPath = QString("%1/%2").arg(patchPath, PATCH_FILE);
+    const QString patchPath = QStringLiteral("%1/%2").arg(PATCHES_DIR, patch);
+    const QString jsonPath = QStringLiteral("%1/%2").arg(patchPath, PATCH_FILE);
     QFile archiveFile(archive);
     QDir patchDir(patchPath);
     bool result = false;
@@ -608,6 +582,7 @@ QString PatchManagerObject::checkEaster()
     DBUS_GUARD(QString())
     qDebug() << Q_FUNC_INFO;
     postCustomEvent(PatchManagerEvent::CheckEasterPatchManagerEventType, QVariantMap(), message());
+    return QString();
 }
 
 QVariantList PatchManagerObject::downloadCatalog(const QVariantMap &params)
@@ -713,8 +688,10 @@ void PatchManagerObject::customEvent(QEvent *e)
         doListPatches(pmEvent->myMessage);
         break;
     case PatchManagerEvent::ApplyPatchManagerEventType:
+        doPatch(pmEvent->myData, pmEvent->myMessage, true);
         break;
     case PatchManagerEvent::UnapplyPatchManagerEventType:
+        doPatch(pmEvent->myData, pmEvent->myMessage, false);
         break;
     case PatchManagerEvent::UnapplyAllPatchManagerEventType:
         break;
@@ -747,6 +724,21 @@ void PatchManagerObject::customEvent(QEvent *e)
 void PatchManagerObject::doRefreshPatchList()
 {
     qDebug() << Q_FUNC_INFO;
+
+    // load applied patches
+
+    QFile file (AUSMT_INSTALLED_LIST_FILE);
+    if (file.open(QFile::ReadOnly)) {
+        while (!file.atEnd()) {
+            const QString line = QString::fromLatin1(file.readLine());
+            qDebug() << line;
+            QStringList splitted = line.split(QChar(' '));
+            if (splitted.count() == 2) {
+                m_appliedPatches.insert(splitted.first());
+            }
+        }
+        file.close();
+    }
 
     // collect conflicts per file
 
@@ -799,9 +791,9 @@ void PatchManagerObject::doRefreshPatchList()
 
     m_metadata.clear();
     for (QVariantMap &patch : patches) {
-        const QString patchName = patch["patch"].toString();
+        const QString patchName = patch[PATCH_KEY].toString();
         if (patchConflicts.contains(patchName)) {
-            patch["conflicts"] = patchConflicts[patchName];
+            patch[CONFLICTS_KEY] = patchConflicts[patchName];
         }
 
         m_metadata[patchName] = patch;
@@ -825,6 +817,102 @@ void PatchManagerObject::doListPatches(const QDBusMessage &message)
         result.append(patch);
     }
     sendMessageReply(message, result);
+}
+
+void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &message, bool apply)
+{
+    qDebug() << Q_FUNC_INFO << params << apply;
+    const QString &patch = params.value(QStringLiteral("name")).toString();
+
+    QVariantMap patchData = m_metadata[patch];
+    QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
+
+    QProcess process;
+    process.setProgram(apply ? AUSMT_INSTALL : AUSMT_REMOVE);
+
+    QStringList arguments;
+    arguments.append(patch);
+
+    process.setArguments(arguments);
+    qDebug() << "Starting:" << process.program() << process.arguments();
+    process.start();
+    process.waitForFinished(-1);
+
+    bool ok = (process.exitCode() == 0);
+    qDebug() << "ok:" << ok;
+    if (ok) {
+        if (apply) {
+            m_appliedPatches.insert(patch);
+        } else {
+            m_appliedPatches.remove(patch);
+        }
+        refreshPatchList();
+    }
+    notify(displayName.toString(), apply, ok);
+
+//    m_timer->start();
+    if (ok) {
+//        emit m_adaptor->applyPatchFinished(patch);
+    }
+
+    sendMessageReply(message, ok);
+
+    return;
+
+    if (apply) {
+        QVariantMap patchData = m_metadata[patch];
+        QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
+
+        QProcess process;
+        process.setProgram(AUSMT_INSTALL);
+
+        QStringList arguments;
+        arguments.append(patch);
+
+        process.setArguments(arguments);
+        process.start();
+        process.waitForFinished(-1);
+
+        bool ok = (process.exitCode() == 0);
+        if (ok) {
+            m_appliedPatches.insert(patch);
+            refreshPatchList();
+        }
+        notify(displayName.toString(), true, ok);
+
+    //    m_timer->start();
+        if (ok) {
+    //        emit m_adaptor->applyPatchFinished(patch);
+        }
+    //    return ok;
+    } else {
+        QVariantMap patchData = m_metadata[patch];
+        QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
+
+        QProcess process;
+        process.setProgram(AUSMT_REMOVE);
+
+        QStringList arguments;
+        arguments.append(patch);
+
+        process.setArguments(arguments);
+        process.start();
+        process.waitForFinished(-1);
+
+        bool ok = (process.exitCode() == 0);
+        qDebug() << "ok:" << ok;
+        if (ok) {
+            m_appliedPatches.remove(patch);
+            refreshPatchList();
+        }
+        notify(displayName.toString(), false, ok);
+
+    //    m_timer->start();
+        if (ok) {
+    //        emit m_adaptor->unapplyPatchFinished(patch);
+        }
+    //    return ok;
+    }
 }
 
 int PatchManagerObject::getVote(const QString &patch)
@@ -911,7 +999,7 @@ void PatchManagerObject::requestDownloadCatalog(const QVariantMap &params, const
     qDebug() << Q_FUNC_INFO << params;
     QUrl url(CATALOG_URL"/"PROJECTS_PATH);
     QUrlQuery query;
-    foreach (const QString &key, params.keys()) {
+    for (const QString &key : params.keys()) {
         query.addQueryItem(key, params.value(key).toString());
     }
     url.setQuery(query);

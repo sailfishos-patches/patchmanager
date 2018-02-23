@@ -3,23 +3,30 @@
 
 #include <QAbstractListModel>
 
+class PatchObject;
 class PatchManagerModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
     explicit PatchManagerModel(QObject *parent = nullptr);
+    explicit PatchManagerModel(const QList<PatchObject*> &data, QObject *parent = nullptr);
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    QHash<int, QByteArray> roleNames() const { return m_roles; }
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QHash<int, QByteArray> roleNames() const override;
+
+    QList<PatchObject*> patches() const;
+    void setPatches(const QList<PatchObject*> &patches);
+    void populateData(const QVariantList &data, const QString &patch, bool installed);
+    void removePatch(const QString &patch);
 
 private:
+    Q_DISABLE_COPY(PatchManagerModel)
     friend class PatchManager;
-    void populateData(const QVariantList &data, const QString &patch, bool installed);
 
-    QList<QVariantMap> m_modelData;
-    QStringList m_roleNames;
-    QHash<int, QByteArray> m_roles;
+    QList<PatchObject*> m_modelData;
+    QMap<QString,PatchObject*> m_patchMap;
+
 };
 
 #endif // PATCHMANAGERMODEL_H

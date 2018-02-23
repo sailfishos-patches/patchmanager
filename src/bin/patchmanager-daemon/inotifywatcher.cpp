@@ -25,7 +25,6 @@ void qAsConst(const T &&) Q_DECL_EQ_DELETE;
 
 INotifyWatcher::INotifyWatcher(QObject *parent)
     : QObject(parent)
-    , inotifyFd(-1)
 {
 #if defined(IN_CLOEXEC)
     inotifyFd = inotify_init1(IN_CLOEXEC);

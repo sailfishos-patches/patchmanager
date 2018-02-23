@@ -37,9 +37,11 @@
 #include <QTranslator>
 #include <QtNetwork>
 #include <QSettings>
+#include <QJSValue>
 #include "webdownloader.h"
 #include "patchmanagermodel.h"
 
+class QDBusPendingCallWatcher;
 class PatchManagerInterface;
 class PatchManager: public QObject
 {
@@ -51,14 +53,15 @@ class PatchManager: public QObject
     Q_PROPERTY(PatchManagerModel *installedModel READ installedModel CONSTANT)
 
 public:
-    explicit PatchManager(QObject *parent = 0);
-    static PatchManager *GetInstance(QObject *parent = 0);
+    explicit PatchManager(QObject *parent = nullptr);
+    static PatchManager *GetInstance(QObject *parent = nullptr);
     bool isAppsNeedRestart() const;
     bool isHomescreenNeedRestart() const;
     QString serverMediaUrl();
     bool developerMode();
     void setDeveloperMode(bool developerMode);
     PatchManagerModel *installedModel();
+    QString trCategory(const QString &category) const;
 
 private slots:
     void onDownloadFinished(const QString & patch, const QString & fileName);
@@ -67,6 +70,9 @@ private slots:
     void requestListPatches(const QString &patch, bool installed);
 
 public slots:
+    QDBusPendingCallWatcher *applyPatch(const QString &patch);
+    QDBusPendingCallWatcher *unapplyPatch(const QString &patch);
+
     void patchToggleService(const QString &patch, const QString &code);
     void restartServices();
     void downloadPatch(const QString & patch, const QString & destination, const QString & patchUrl);
@@ -76,6 +82,7 @@ public slots:
     int checkVote(const QString &patch);
     void doVote(const QString &patch, int action);
     void checkEaster();
+    QString iconForPatch(const QString &patch);
     QString valueIfExists(const QString & filename);
     bool callUninstallOldPatch(const QString & patch);
 
@@ -88,6 +95,9 @@ signals:
     void developerModeChanged(bool developerMode);
 
 private:
+    void successCall(QJSValue callback, const QVariant &value);
+    void errorCall(QJSValue errorCallback, const QString &message);
+
     bool putSettings(const QString & name, const QVariant & value);
     QVariant getSettings(const QString & name, const QVariant & def = QVariant());
 

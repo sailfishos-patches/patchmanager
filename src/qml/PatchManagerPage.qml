@@ -37,48 +37,12 @@ import org.SfietKonstantin.patchmanager 2.0
 Page {
     id: container
 
-    property string release
-
-    function dummy() {
-        QT_TRANSLATE_NOOP("", "Browser")
-        QT_TRANSLATE_NOOP("", "Camera")
-        QT_TRANSLATE_NOOP("", "Calendar")
-        QT_TRANSLATE_NOOP("", "Clock")
-        QT_TRANSLATE_NOOP("", "Contacts")
-        QT_TRANSLATE_NOOP("", "Email")
-        QT_TRANSLATE_NOOP("", "Gallery")
-        QT_TRANSLATE_NOOP("", "Homescreen")
-        QT_TRANSLATE_NOOP("", "Media")
-        QT_TRANSLATE_NOOP("", "Messages")
-        QT_TRANSLATE_NOOP("", "Phone")
-        QT_TRANSLATE_NOOP("", "Silica")
-        QT_TRANSLATE_NOOP("", "Settings")
-        QT_TRANSLATE_NOOP("", "Other")
-    }
-
     onStatusChanged: {
         if (status == PageStatus.Activating
                 && pageStack.currentPage.objectName == "WebPatchPage") {
             //patchmanagerDbusInterface.listPatches()
         }
     }
-
-//    Component.onCompleted: {
-//        ssuDbusInterface.getVersion()
-//    }
-
-//    DBusInterface {
-//        id: ssuDbusInterface
-//        service: "org.nemo.ssu"
-//        path: "/org/nemo/ssu"
-//        iface: "org.nemo.ssu"
-//        bus: DBus.SystemBus
-//        function getVersion() {
-//            typedCall("release", [{"type": "b", "value": false}], function (version) {
-//                release = version
-//            })
-//        }
-//    }
 
 //    DBusInterface {
 //        id: patchmanagerDbusInterface
@@ -159,7 +123,7 @@ Page {
             MenuItem {
                 text: qsTranslate("", "Web catalog")
 
-                onClicked: pageStack.push(Qt.resolvedUrl("WebCatalogPage.qml"), {release: release})
+                onClicked: pageStack.push(Qt.resolvedUrl("WebCatalogPage.qml"))
             }
 
             MenuItem {
@@ -178,9 +142,9 @@ Page {
         model: PatchManager.installedModel
         section.criteria: ViewSection.FullString
         section.delegate: SectionHeader {
-            text: qsTranslate("", section)
+            text: section
         }
-        section.property: "category"
+        section.property: "section"
 
         property bool busy
         signal unapplyAll
@@ -190,18 +154,35 @@ Page {
 
         delegate: ListItem {
             id: background
-            menu: model.patch != "sailfishos-patchmanager-unapplyall" ? contextMenu : null
+            menu: contextMenu
             contentHeight: content.height
-            property bool applied: model.patched
             property bool canApply: true
             property bool applying: !appliedSwitch.enabled
-            property bool isCompatible: !model.compatible || model.compatible == "0.0.0" || model.compatible.indexOf(release) >= 0
-            property bool isNewPatch: !!model.display_name && model.display_name
+            property bool isNewPatch: !!patchObject.details.display_name && patchObject.details.display_name
             enabled: !view.busy
+
+            Component.onCompleted: {
+                console.log("Constructing delegate for:", patchObject.details.patch)
+            }
+
+            Connections {
+                target: patchObject.details
+                onPatchedChanged: {
+                    console.log("onPatchedChanged:", patchObject.details.patch, patchObject.details.patched)
+                }
+            }
+
+            Connections {
+                target: patchObject
+                onBusyChanged: {
+                    console.log("onBusyChanged:", patchObject.details.patch, patchObject.busy)
+                }
+            }
+
             function doPatch() {
-                appliedSwitch.busy = true
-                if (!background.applied) {
-                    if (PatchManager.developerMode || isCompatible) {
+                if (!patchObject.details.patched) {
+                    if (PatchManager.developerMode || patchObject.details.isCompatible) {
+                        patchObject.apply()
 //                        patchmanagerDbusInterface.applyPatch(model.patch,
 //                        function (ok) {
 //                            if (ok) {
@@ -216,9 +197,9 @@ Page {
 //                        })
                     } else {
                         errorMesageComponent.createObject(background, {text: qsTranslate("", "This patch is not compatible with SailfishOS version!")})
-                        appliedSwitch.busy = false
                     }
                 } else {
+                    patchObject.unapply()
 //                    patchmanagerDbusInterface.unapplyPatch(model.patch,
 //                    function (ok) {
 //                        if (ok) {
@@ -238,22 +219,22 @@ Page {
             Connections {
                 target: view
                 onUnapplyAll: {
-                    if (background.applied) {
-                        appliedSwitch.busy = true
+                    if (patchObject.details.patched) {
+                        //appliedSwitch.busy = true
                     }
                 }
                 onUnapplyPatchFinished: {
-                    if (patchName !== model.patch) {
+                    if (patchName !== patchObject.details.patch) {
                         return
                     }
                     if (!view.busy) {
                         return
                     }
 
-                    background.applied = false
-                    appliedSwitch.busy = false
-                    PatchManager.patchToggleService(model.patch, model.categoryCode)
-                    if (!model.available) {
+                    //background.applied = false
+                    //appliedSwitch.busy = false
+                    PatchManager.patchToggleService(patchObject.details.patch, patchObject.details.categoryCode)
+                    if (!patchObject.details.available) {
                         //patchModel.remove(model.index)
                     } else {
                         checkApplicability()
@@ -262,7 +243,7 @@ Page {
             }
 
             function removeAction() {
-                remorseAction(qsTranslate("", "Uninstalling patch %1").arg(background.isNewPatch ? model.display_name : model.name), doRemove)
+                remorseAction(qsTranslate("", "Uninstalling patch %1").arg(name), doRemove)
             }
 
             function doUninstall() {
@@ -275,15 +256,15 @@ Page {
 //                            }
 //                        })
                 } else {
-                    if (PatchManager.callUninstallOldPatch(model.patch)) {
+                    if (PatchManager.callUninstallOldPatch(patchObject.details.patch)) {
                         //patchModel.remove(index)
                     }
                 }
             }
 
             function doRemove() {
-                if (background.applied) {
-                    appliedSwitch.busy = true
+                if (patchObject.details.patched) {
+                    //appliedSwitch.busy = true
 //                    patchmanagerDbusInterface.unapplyPatch(model.patch,
 //                    function (ok) {
 //                        appliedSwitch.busy = false
@@ -298,7 +279,7 @@ Page {
             }
 
             onClicked: {
-                var patchName = model.patch
+                var patchName = patchObject.details.patch
                 try {
                     var translator = PatchManager.installTranslator(patchName)
                     var page = pageStack.push("/usr/share/patchmanager/patches/%1/main.qml".arg(patchName))
@@ -308,7 +289,7 @@ Page {
                 }
                 catch(err) {
                     pageStack.push(Qt.resolvedUrl(isNewPatch ? "NewPatchPage.qml" : "LegacyPatchPage.qml"),
-                                  {modelData: model, delegate: background})
+                                  {modelData: patchObject.details, delegate: background})
                 }
             }
 
@@ -332,10 +313,10 @@ Page {
                     id: appliedSwitch
                     anchors.verticalCenter: parent.verticalCenter
                     automaticCheck: false
-                    checked: background.applied
+                    checked: patchObject.details.patched
                     onClicked: background.doPatch()
                     enabled: !busy
-                    busy: view.busy
+                    busy: patchObject.busy
                 }
 
                 Label {
@@ -344,9 +325,9 @@ Page {
                     anchors.right: patchIcon.status == Image.Ready ? patchIcon.left : parent.right
                     anchors.margins: Theme.paddingMedium
                     anchors.verticalCenter: parent.verticalCenter
-                    text: background.isNewPatch ? model.display_name : model.name
-                    color: isCompatible ? background.down ? Theme.highlightColor : Theme.primaryColor
-                                        : background.down ? Qt.tint(Theme.highlightColor, "red") : Qt.tint(Theme.primaryColor, "red")
+                    text: name
+                    color: patchObject.details.isCompatible ? background.down ? Theme.highlightColor : Theme.primaryColor
+                                                            : background.down ? Qt.tint(Theme.highlightColor, "red") : Qt.tint(Theme.primaryColor, "red")
                     truncationMode: TruncationMode.Fade
                 }
 
@@ -357,9 +338,7 @@ Page {
                     width: Theme.itemSizeExtraSmall
                     height: Theme.itemSizeExtraSmall
                     visible: status == Image.Ready
-                    source: PatchManager.valueIfExists("/usr/share/patchmanager/patches/%1/main.png".arg(model.patch))
-                            || PatchManager.valueIfExists("/usr/share/patchmanager/patches/%1/main.svg".arg(model.patch))
-                            || ""
+                    source: PatchManager.iconForPatch(patchObject.details.patch)
                 }
             }
 
@@ -367,6 +346,11 @@ Page {
                 id: contextMenu
                 ContextMenu {
                     MenuItem {
+                        text: patchObject.details.patched ? qsTranslate("", "Unapply") : qsTranslate("", "Apply")
+                        onClicked: background.doPatch()
+                    }
+                    MenuItem {
+                        visible: patchObject.details.patch != "sailfishos-patchmanager-unapplyall"
                         text: qsTranslate("", "Uninstall")
                         onClicked: removeAction()
                     }

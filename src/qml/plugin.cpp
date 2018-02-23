@@ -43,10 +43,9 @@ static const char *PAYPAL_DONATE = "https://www.paypal.com/cgi-bin/webscr?cmd=_s
 
 static QObject *patchmanager_singleton(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
-    Q_UNUSED(engine)
     Q_UNUSED(scriptEngine)
 
-    return PatchManager::GetInstance(0);
+    return PatchManager::GetInstance(engine);
 }
 
 class NemoSocialPlugin : public QQmlExtensionPlugin

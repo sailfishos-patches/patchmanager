@@ -28,10 +28,10 @@ private:
     QString getPathFromID(int id) const;
 
 private:
-    int inotifyFd;
+    int inotifyFd = -1;
     QHash<QString, int> pathToID;
     QMultiHash<int, QString> idToPath;
-    QSocketNotifier *notifier;
+    QSocketNotifier *notifier = nullptr;
 
     QStringList files;
     QStringList directories;
