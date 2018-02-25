@@ -44,6 +44,7 @@ INSTALLS += target qmlfiles
 
 TRANSLATIONS += \
     translations/settings-$${TARGET}-ru.ts
+    translations/settings-$${TARGET}-en.ts
 
 TS_FILE = $${_PRO_FILE_PWD_}/translations/settings-$${TARGET}.ts
 HAVE_TRANSLATIONS = 0
@@ -78,6 +79,8 @@ qm.commands += lupdate -noobsolete $${TRANSLATION_SOURCES} -ts $${TS_FILE} $$TRA
 qm.commands += ; [ $$HAVE_TRANSLATIONS -eq 1 ] && lrelease -nounfinished $${TRANSLATIONS_OUT} || :
 
 INSTALLS += qm
+
+OTHER_FILES += $$TRANSLATIONS
 
 pm_dbus_interface.files = ../bin/patchmanager-daemon/dbus/org.SfietKonstantin.patchmanager.xml
 pm_dbus_interface.source_flags = -c PatchManagerInterface

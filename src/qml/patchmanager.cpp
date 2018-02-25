@@ -91,7 +91,7 @@ PatchManager::PatchManager(QObject *parent)
 
 PatchManager *PatchManager::GetInstance(QObject *parent)
 {
-    static PatchManager* lsSingleton = NULL;
+    static PatchManager* lsSingleton = nullptr;
     if (!lsSingleton) {
         lsSingleton = new PatchManager(parent);
     }
@@ -110,7 +110,7 @@ bool PatchManager::isHomescreenNeedRestart() const
 
 QString PatchManager::serverMediaUrl()
 {
-    return QString(MEDIA_URL);
+    return QStringLiteral(MEDIA_URL);
 }
 
 bool PatchManager::developerMode()
@@ -257,7 +257,11 @@ bool PatchManager::installTranslator(const QString &patch)
 {
     if (!m_translators.contains(patch)) {
         QTranslator * translator = new QTranslator(this);
-        translator->load(QLocale::system(), QString("translation"), QString("_"), QString("/usr/share/patchmanager/patches/%1").arg(patch), QString(".qm"));
+        translator->load(QLocale::system(),
+                         QStringLiteral("translation"),
+                         QStringLiteral("_"),
+                         QStringLiteral("/usr/share/patchmanager/patches/%1").arg(patch),
+                         QStringLiteral(".qm"));
         bool ok = qGuiApp->installTranslator(translator);
         if (ok) {
             m_translators[patch] = translator;
@@ -292,7 +296,7 @@ void PatchManager::activation(const QString &patch, const QString &version)
 
 int PatchManager::checkVote(const QString &patch)
 {
-    QString key = QString("votes/%1").arg(patch);
+    QString key = QStringLiteral("votes/%1").arg(patch);
     return m_settings->value(key, 0).toInt();
 }
 
@@ -318,7 +322,7 @@ void PatchManager::doVote(const QString &patch, int action)
     QNetworkReply * reply = m_nam->get(request);
     QObject::connect(reply, &QNetworkReply::finished, this, &PatchManager::onServerReplied);
 
-    QString key = QString("votes/%1").arg(patch);
+    QString key = QStringLiteral("votes/%1").arg(patch);
     m_settings->setValue(key, action);
     m_settings->sync();
 }
@@ -358,7 +362,7 @@ QString PatchManager::valueIfExists(const QString &filename)
 
 bool PatchManager::callUninstallOldPatch(const QString &patch)
 {
-    QString patchPath = QString("/usr/share/patchmanager/patches/%1/unified_diff.patch").arg(patch);
+    QString patchPath = QStringLiteral("/usr/share/patchmanager/patches/%1/unified_diff.patch").arg(patch);
     if (QFile(patchPath).exists()) {
         QProcess proc;
         proc.start("/bin/rpm", QStringList() << "-qf" << "--qf" << "%{NAME}" << patchPath);
@@ -400,7 +404,7 @@ void PatchManager::errorCall(QJSValue errorCallback, const QString &message)
 
 bool PatchManager::putSettings(const QString &name, const QVariant &value)
 {
-    QString key = QString("settings/%1").arg(name);
+    QString key = QStringLiteral("settings/%1").arg(name);
     QVariant old = m_settings->value(key);
     if (old != value) {
         m_settings->setValue(key ,value);
@@ -411,7 +415,7 @@ bool PatchManager::putSettings(const QString &name, const QVariant &value)
 
 QVariant PatchManager::getSettings(const QString &name, const QVariant &def)
 {
-    QString key = QString("settings/%1").arg(name);
+    QString key = QStringLiteral("settings/%1").arg(name);
     return m_settings->value(key ,def);
 }
 

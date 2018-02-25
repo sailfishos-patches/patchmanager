@@ -158,7 +158,6 @@ Page {
             contentHeight: content.height
             property bool canApply: true
             property bool applying: !appliedSwitch.enabled
-            property bool isNewPatch: !!patchObject.details.display_name && patchObject.details.display_name
             enabled: !view.busy
 
             Component.onCompleted: {
@@ -186,7 +185,7 @@ Page {
 //                        patchmanagerDbusInterface.applyPatch(model.patch,
 //                        function (ok) {
 //                            if (ok) {
-//                                if (isNewPatch) {
+//                                if (patchObject.details.isNewPatch) {
 //                                    PatchManager.activation(model.name, model.version)
 //                                }
 //                                background.applied = true
@@ -247,7 +246,7 @@ Page {
             }
 
             function doUninstall() {
-                if (isNewPatch) {
+                if (patchObject.details.isNewPatch) {
 //                    patchmanagerDbusInterface.typedCall("uninstallPatch",
 //                                                      [{"type": "s", "value": model.patch}],
 //                        function(ok) {
@@ -288,7 +287,7 @@ Page {
                     }
                 }
                 catch(err) {
-                    pageStack.push(Qt.resolvedUrl(isNewPatch ? "NewPatchPage.qml" : "LegacyPatchPage.qml"),
+                    pageStack.push(Qt.resolvedUrl(patchObject.details.isNewPatch ? "NewPatchPage.qml" : "LegacyPatchPage.qml"),
                                   {modelData: patchObject.details, delegate: background})
                 }
             }
@@ -345,12 +344,27 @@ Page {
             Component {
                 id: contextMenu
                 ContextMenu {
+                    MenuLabel {
+                        visible: !patchObject.details.isCompatible
+                        text: qsTranslate("", "Compatible with: %1").arg(patchObject.details.compatible.join(', '))
+                    }
+                    MenuLabel {
+                        visible: patchObject.details.conflicts.length > 0
+                        text: qsTranslate("", "Possible conflicts: %1").arg(patchObject.details.conflicts.join(', '))
+                    }
                     MenuItem {
                         text: patchObject.details.patched ? qsTranslate("", "Unapply") : qsTranslate("", "Apply")
                         onClicked: background.doPatch()
                     }
+//                    MenuItem {
+//                        visible: PatchManager.developerMode && patchObject.details.patched
+//                        text: qsTranslate("", "Force mark unapplied")
+//                        onClicked: {
+
+//                        }
+//                    }
                     MenuItem {
-                        visible: patchObject.details.patch != "sailfishos-patchmanager-unapplyall"
+                        visible: !patchObject.details.patched && patchObject.details.patch != "sailfishos-patchmanager-unapplyall"
                         text: qsTranslate("", "Uninstall")
                         onClicked: removeAction()
                     }
