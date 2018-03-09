@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2014 Lucien XU <sfietkonstantin@free.fr>
+ * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
+ * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *

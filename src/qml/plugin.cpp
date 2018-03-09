@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2013 Jolla Ltd. <chris.adams@jollamobile.com>
+ * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
+ * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -12,9 +13,9 @@
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
  *     distribution.
- *   * Neither the name of Nemo Mobile nor the names of its contributors
- *     may be used to endorse or promote products derived from this
- *     software without specific prior written permission.
+ *   * The names of its contributors may not be used to endorse or promote
+ *     products derived from this software without specific prior written
+ *     permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -37,34 +38,32 @@
 #include "webpatchesmodel.h"
 #include "webpatchdata.h"
 
-// TODO ask for paypal.me
-static const char *PAYPAL_DONATE = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&"
-                                   "hosted_button_id=R6AJV4U2G33XG";
+// TODO: ask for paypal.me
+static QString PAYPAL_DONATE = QStringLiteral("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R6AJV4U2G33XG");
 
 static QObject *patchmanager_singleton(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
     Q_UNUSED(scriptEngine)
-
     return PatchManager::GetInstance(engine);
 }
 
-class NemoSocialPlugin : public QQmlExtensionPlugin
+class PatchManagerPlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.SfietKonstantin.patchmanager")
 public:
     void initializeEngine(QQmlEngine *engine, const char *uri)
     {
-        Q_ASSERT(uri == QLatin1String("org.SfietKonstantin.patchmanager"));
-        engine->rootContext()->setContextProperty("PAYPAL_DONATE", PAYPAL_DONATE);
+        Q_ASSERT(strcmp(uri, "org.SfietKonstantin.patchmanager") == 0);
+        engine->rootContext()->setContextProperty(QStringLiteral("PAYPAL_DONATE"), PAYPAL_DONATE);
         Q_UNUSED(uri)
     }
 
     void registerTypes(const char *uri)
     {
-        Q_ASSERT(uri == QLatin1String("org.SfietKonstantin.patchmanager"));
+        Q_ASSERT(strcmp(uri, "org.SfietKonstantin.patchmanager") == 0);
         qmlRegisterSingletonType<PatchManager>(uri, 2, 0, "PatchManager", patchmanager_singleton);
-        qmlRegisterType<WebPatchesModel>(uri, 2, 0, "WebPatchesModel");
+        qmlRegisterUncreatableType<WebPatchesModel>(uri, 2, 0, "WebPatchesModel", "WebPatchesModel is not creatable");
         qmlRegisterType<WebPatchData>(uri, 2, 0, "WebPatchData");
 
     }

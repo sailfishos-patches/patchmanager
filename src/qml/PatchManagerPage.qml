@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2014 Lucien XU <sfietkonstantin@free.fr>
+ * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
+ * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -215,50 +216,52 @@ Page {
                 }
             }
 
-            Connections {
-                target: view
-                onUnapplyAll: {
-                    if (patchObject.details.patched) {
-                        //appliedSwitch.busy = true
-                    }
-                }
-                onUnapplyPatchFinished: {
-                    if (patchName !== patchObject.details.patch) {
-                        return
-                    }
-                    if (!view.busy) {
-                        return
-                    }
+//            Connections {
+//                target: view
+//                onUnapplyAll: {
+//                    if (patchObject.details.patched) {
+//                        //appliedSwitch.busy = true
+//                    }
+//                }
+//                onUnapplyPatchFinished: {
+//                    if (patchName !== patchObject.details.patch) {
+//                        return
+//                    }
+//                    if (!view.busy) {
+//                        return
+//                    }
 
-                    //background.applied = false
-                    //appliedSwitch.busy = false
-                    PatchManager.patchToggleService(patchObject.details.patch, patchObject.details.categoryCode)
-                    if (!patchObject.details.available) {
-                        //patchModel.remove(model.index)
-                    } else {
-                        checkApplicability()
-                    }
-                }
-            }
+//                    //background.applied = false
+//                    //appliedSwitch.busy = false
+//                    PatchManager.patchToggleService(patchObject.details.patch, patchObject.details.categoryCode)
+//                    if (!patchObject.details.available) {
+//                        //patchModel.remove(model.index)
+//                    } else {
+//                        checkApplicability()
+//                    }
+//                }
+//            }
 
             function removeAction() {
                 remorseAction(qsTranslate("", "Uninstalling patch %1").arg(name), doRemove)
             }
 
             function doUninstall() {
-                if (patchObject.details.isNewPatch) {
-//                    patchmanagerDbusInterface.typedCall("uninstallPatch",
-//                                                      [{"type": "s", "value": model.patch}],
-//                        function(ok) {
-//                            if (ok) {
-//                                patchModel.remove(index)
-//                            }
-//                        })
-                } else {
-                    if (PatchManager.callUninstallOldPatch(patchObject.details.patch)) {
-                        //patchModel.remove(index)
-                    }
-                }
+                patchObject.uninstall()
+//                if (patchObject.details.isNewPatch) {
+
+////                    patchmanagerDbusInterface.typedCall("uninstallPatch",
+////                                                      [{"type": "s", "value": model.patch}],
+////                        function(ok) {
+////                            if (ok) {
+////                                patchModel.remove(index)
+////                            }
+////                        })
+//                } else {
+//                    if (PatchManager.callUninstallOldPatch(patchObject.details.patch)) {
+//                        //patchModel.remove(index)
+//                    }
+//                }
             }
 
             function doRemove() {
@@ -356,13 +359,11 @@ Page {
                         text: patchObject.details.patched ? qsTranslate("", "Unapply") : qsTranslate("", "Apply")
                         onClicked: background.doPatch()
                     }
-//                    MenuItem {
-//                        visible: PatchManager.developerMode && patchObject.details.patched
-//                        text: qsTranslate("", "Force mark unapplied")
-//                        onClicked: {
-
-//                        }
-//                    }
+                    MenuItem {
+                        visible: PatchManager.developerMode && patchObject.details.patched
+                        text: qsTranslate("", "Reset state")
+                        onClicked: patchObject.resetState()
+                    }
                     MenuItem {
                         visible: !patchObject.details.patched && patchObject.details.patch != "sailfishos-patchmanager-unapplyall"
                         text: qsTranslate("", "Uninstall")

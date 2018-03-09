@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2014 Lucien XU <sfietkonstantin@free.fr>
+ * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
+ * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -159,9 +160,11 @@ void PatchManager::onServerReplied()
 
 void PatchManager::requestListPatches(const QString &patch, bool installed)
 {
-    if (!installed) {
-        m_installedModel->removePatch(patch);
-    }
+    qDebug() << Q_FUNC_INFO << patch << installed;
+
+//    if (!patch.isEmpty() && !installed) {
+//        m_installedModel->removePatch(patch);
+//    }
 
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(m_interface->listPatches(), this);
     connect(watcher, &QDBusPendingCallWatcher::finished, [this, patch, installed](QDBusPendingCallWatcher *watcher){
@@ -184,6 +187,16 @@ QDBusPendingCallWatcher* PatchManager::applyPatch(const QString &patch)
 QDBusPendingCallWatcher* PatchManager::unapplyPatch(const QString &patch)
 {
     return new QDBusPendingCallWatcher(m_interface->unapplyPatch(patch), this);
+}
+
+QDBusPendingCallWatcher *PatchManager::uninstallPatch(const QString &patch)
+{
+    return new QDBusPendingCallWatcher(m_interface->uninstallPatch(patch), this);
+}
+
+QDBusPendingCallWatcher *PatchManager::resetState(const QString &patch)
+{
+    return new QDBusPendingCallWatcher(m_interface->resetState(patch), this);
 }
 
 void PatchManager::patchToggleService(const QString &patch, const QString &code)
@@ -358,26 +371,6 @@ QString PatchManager::valueIfExists(const QString &filename)
         return filename;
     }
     return QString();
-}
-
-bool PatchManager::callUninstallOldPatch(const QString &patch)
-{
-    QString patchPath = QStringLiteral("/usr/share/patchmanager/patches/%1/unified_diff.patch").arg(patch);
-    if (QFile(patchPath).exists()) {
-        QProcess proc;
-        proc.start("/bin/rpm", QStringList() << "-qf" << "--qf" << "%{NAME}" << patchPath);
-        if (proc.waitForFinished(5000) && proc.exitCode() == 0) {
-            QString package = QString::fromLatin1(proc.readAllStandardOutput());
-            if (!package.isEmpty()) {
-                QDBusInterface iface("com.jolla.jollastore", "/StoreClient", "com.jolla.jollastore", QDBusConnection::sessionBus());
-                iface.call(QDBus::NoBlock, "removePackage", package, true);
-                return true;
-            }
-        } else if (proc.state() == QProcess::Running) {
-            proc.kill();
-        }
-    }
-    return false;
 }
 
 void PatchManager::successCall(QJSValue callback, const QVariant &value)

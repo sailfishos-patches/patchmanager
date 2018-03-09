@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2014 Lucien XU <sfietkonstantin@free.fr>
+ * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
+ * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -75,6 +76,7 @@ public:
         ApplyPatchManagerEventType,
         UnapplyPatchManagerEventType,
         UnapplyAllPatchManagerEventType,
+        ResetStatePatchManagerEventType,
 
         DownloadCatalogPatchManagerEventType,
         DownloadPatchPatchManagerEventType,
@@ -124,6 +126,7 @@ public slots:
     bool unapplyAllPatches();
     bool installPatch(const QString &patch, const QString &json, const QString &archive);
     bool uninstallPatch(const QString &patch);
+    bool resetPatchState(const QString &patch);
 
     int checkVote(const QString &patch);
     void votePatch(const QString &patch, int action);
@@ -138,14 +141,23 @@ protected:
     bool eventFilter(QObject *watched, QEvent *event);
     void customEvent(QEvent *e);
 
+private slots:
+    void onLipstickChanged(const QString &, const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
+    void onTimerAction();
+
 private:
     void registerDBus();
     void initialize();
+
+    QString checkRpmPatch(const QString &patch) const;
 
     void doRefreshPatchList();
     void doListPatches(const QDBusMessage &message);
 
     void doPatch(const QVariantMap &params, const QDBusMessage &message, bool apply);
+    void doResetPatchState(const QString &patch, const QDBusMessage &message);
+
+    void doUninstallPatch(const QString &patch, const QDBusMessage &message);
 
     int getVote(const QString &patch);
     void doCheckVote(const QString &patch, const QDBusMessage &message);
@@ -171,7 +183,6 @@ private:
     void refreshPatchList();
     bool m_dbusRegistered = false;
     QSet<QString> m_appliedPatches;
-    QList<QVariantMap> m_patches;
     QMap<QString, QVariantMap> m_metadata;
     QTimer *m_timer;
 

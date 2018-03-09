@@ -1,3 +1,35 @@
+/*
+ * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
+ * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
+ *
+ * You may use this file under the terms of the BSD license as follows:
+ *
+ * "Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *   * Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *   * Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *   * The names of its contributors may not be used to endorse or promote
+ *     products derived from this software without specific prior written
+ *     permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+ */
+
 #include "PatchObject.hpp"
 #include "patchmanagermodel.h"
 
@@ -36,10 +68,11 @@ QVariant PatchManagerModel::data(const QModelIndex &index, int role) const
 
 QHash<int, QByteArray> PatchManagerModel::roleNames() const
 {
-    QHash<int, QByteArray> r;
-    r[Qt::DisplayRole] = QByteArrayLiteral("name");
-    r[Qt::DecorationRole] = QByteArrayLiteral("section");
-    r[Qt::EditRole] = QByteArrayLiteral("patchObject");
+    static const QHash<int, QByteArray> r = {
+        { Qt::DisplayRole,      QByteArrayLiteral("name") },
+        { Qt::DecorationRole,   QByteArrayLiteral("section") },
+        { Qt::EditRole,         QByteArrayLiteral("patchObject") },
+    };
     return r;
 }
 
@@ -50,11 +83,17 @@ QList<PatchObject *> PatchManagerModel::patches() const
 
 void PatchManagerModel::setPatches(const QList<PatchObject *> &patches)
 {
+    qDebug() << Q_FUNC_INFO << patches.length();
     beginResetModel();
+
+    for (PatchObject *o : m_modelData) {
+        disconnect(o, 0, 0, 0);
+    }
     m_modelData = patches;
 
     m_patchMap.clear();
     for (PatchObject *o : m_modelData) {
+        connect(o, &PatchObject::toBeDestroyed, this, &PatchManagerModel::itemRemoved);
         m_patchMap[o->details()->value(QStringLiteral("patch")).toString()] = o;
     }
 
@@ -77,29 +116,62 @@ void PatchManagerModel::populateData(const QVariantList &data, const QString &pa
         for (const QVariant &var : data) {
             const QVariantMap item = var.toMap();
             PatchObject *o = new PatchObject(item, this);
+            connect(o, &PatchObject::toBeDestroyed, this, &PatchManagerModel::itemRemoved);
             m_modelData.append(o);
             m_patchMap[o->details()->value(QStringLiteral("patch")).toString()] = o;
         }
 
         endResetModel();
     } else {
-        PatchObject *o = new PatchObject(data.first().toMap(), this);
-        m_modelData.append(o);
-        m_patchMap[o->details()->value(QStringLiteral("patch")).toString()] = o;
+        for (const QVariant &var : data) {
+            const QVariantMap item = var.toMap();
+            if (item.value(QStringLiteral("patch")).toString() == patch) {
+                if (installed) {
+                    beginInsertRows(QModelIndex(), m_modelData.count(), m_modelData.count());
+                    PatchObject *o = new PatchObject(item, this);
+                    connect(o, &PatchObject::toBeDestroyed, this, &PatchManagerModel::itemRemoved);
+                    m_modelData.append(o);
+                    m_patchMap[o->details()->value(QStringLiteral("patch")).toString()] = o;
+                    endInsertRows();
+                } else if (m_patchMap.contains(patch)) {
+                    PatchObject *o = m_patchMap[patch];
+                    o->deleteLater();
+                }
+                return;
+            }
+        }
     }
 }
 
 void PatchManagerModel::removePatch(const QString &patch)
 {
+    qDebug() << Q_FUNC_INFO << patch;
     if (!m_patchMap.contains(patch)) {
         return;
     }
 
     PatchObject *p = m_patchMap[patch];
+    qDebug() << p;
     int index = m_modelData.indexOf(p);
+    qDebug() << index;
+    p->deleteLater();
     beginRemoveRows(QModelIndex(), index, index);
     m_modelData.removeAt(index);
     m_patchMap.remove(patch);
-    p->deleteLater();
+    endRemoveRows();
+}
+
+void PatchManagerModel::itemRemoved(PatchObject *object)
+{
+    qDebug() << Q_FUNC_INFO << object;
+    if (!m_modelData.contains(object)) {
+        return;
+    }
+
+    const QString patch = object->details()->value(QStringLiteral("patch")).toString();
+    int index = m_modelData.indexOf(object);
+    beginRemoveRows(QModelIndex(), index, index);
+    m_modelData.removeAt(index);
+    m_patchMap.remove(patch);
     endRemoveRows();
 }

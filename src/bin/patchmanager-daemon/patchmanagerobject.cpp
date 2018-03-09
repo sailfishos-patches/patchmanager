@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2014-2016 Lucien XU <sfietkonstantin@free.fr>
- * Copyright (C) 2016-2017 Andrey Kozhevnikov <coderusinbox@gmail.com>
+ * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
+ * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -77,6 +77,7 @@ static const QString DESCRIPTION_KEY = QStringLiteral("description");
 static const QString CATEGORY_KEY = QStringLiteral("category");
 static const QString INFOS_KEY = QStringLiteral("infos");
 static const QString PATCH_KEY = QStringLiteral("patch");
+static const QString RPM_KEY = QStringLiteral("rpm");
 static const QString AVAILABLE_KEY = QStringLiteral("available");
 static const QString SECTION_KEY = QStringLiteral("section");
 static const QString PATCHED_KEY = QStringLiteral("patched");
@@ -144,9 +145,10 @@ bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, Q
     }
 
     json[PATCH_KEY] = patchPath;
+    json[RPM_KEY] = checkRpmPatch(patchPath);
     json[AVAILABLE_KEY] = available;
-    json[CATEGORY_KEY] = json[CATEGORY_KEY];
-    json[SECTION_KEY] = QStringLiteral("Other");
+//    json[CATEGORY_KEY] = json[CATEGORY_KEY];
+//    json[SECTION_KEY] = QStringLiteral("Other");
     json[PATCHED_KEY] = m_appliedPatches.contains(patchPath);
     if (!json.contains(VERSION_KEY)) {
         json[VERSION_KEY] = QStringLiteral("0.0.0");
@@ -241,11 +243,20 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
         installEventFilter(this);
     }
 
-    connect(m_timer, &QTimer::timeout, this, &PatchManagerObject::quit);
-    m_timer->setSingleShot(true);
+    if (qEnvironmentVariableIsEmpty("DBUS_SESSION_BUS_ADDRESS")) {
+        qWarning() << "Session bus address is not set! Please check environment configuration!";
+    }
+
+    connect(m_timer, &QTimer::timeout, this, &PatchManagerObject::onTimerAction);
+    m_timer->setSingleShot(false);
     m_timer->setTimerType(Qt::VeryCoarseTimer);
-    m_timer->setInterval(15000);  // Try to Quit after 15s timeout
+    m_timer->setInterval(15000);
     m_timer->start();
+
+    QDBusConnection::sessionBus().connect(QString(),
+                                          QStringLiteral("/org/freedesktop/systemd1/unit/lipstick_2eservice"),
+                                          QStringLiteral("org.freedesktop.DBus.Properties"),
+                                          QStringLiteral("PropertiesChanged"), this, SLOT(onLipstickChanged(QString,QVariantMap,QStringList)));
 }
 
 PatchManagerObject::~PatchManagerObject()
@@ -311,7 +322,25 @@ void PatchManagerObject::initialize()
 //    connect(additionalWatcher, &INotifyWatcher::contentChanged, [this](const QString &path, bool created) {
 //        qDebug() << "contentChanged:" << path << "created:" << created;
 //        refreshPatchList();
-//    });
+    //    });
+}
+
+QString PatchManagerObject::checkRpmPatch(const QString &patch) const
+{
+    QString patchPath = QStringLiteral("/usr/share/patchmanager/patches/%1/unified_diff.patch").arg(patch);
+    if (!QFile(patchPath).exists()) {
+        return QString();
+    }
+    QProcess proc;
+    proc.start(QStringLiteral("/bin/rpm"), { QStringLiteral("-qf"), QStringLiteral("--qf"), QStringLiteral("%{NAME}"), patchPath });
+    if (!proc.waitForFinished(5000) || proc.exitCode() != 0) {
+        return QString();
+    }
+    const QString package = QString::fromLatin1(proc.readAllStandardOutput());
+    if (package.isEmpty()) {
+        return QString();
+    }
+    return package;
 }
 
 void PatchManagerObject::process()
@@ -389,7 +418,6 @@ QVariantList PatchManagerObject::listPatches()
 QVariantMap PatchManagerObject::listVersions()
 {
     qDebug() << Q_FUNC_INFO;
-//    m_timer->start();
     QVariantMap versionsList;
     for (const QString &patch : m_metadata.keys()) {
         versionsList[patch] = m_metadata[patch][VERSION_KEY];
@@ -401,7 +429,6 @@ QVariantMap PatchManagerObject::listVersions()
 bool PatchManagerObject::isPatchApplied(const QString &patch)
 {
     qDebug() << Q_FUNC_INFO;
-//    m_timer->start();
     return m_appliedPatches.contains(patch);
 }
 
@@ -415,8 +442,6 @@ bool PatchManagerObject::applyPatch(const QString &patch)
     }
     postCustomEvent(PatchManagerEvent::ApplyPatchManagerEventType, QVariantMap({{QStringLiteral("name"), patch}}), msg);
     return true;
-
-//    m_timer->stop();
 
     QVariantMap patchData = m_metadata[patch];
     QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
@@ -438,7 +463,6 @@ bool PatchManagerObject::applyPatch(const QString &patch)
     }
     notify(displayName.toString(), true, ok);
 
-//    m_timer->start();
     if (ok) {
 //        emit m_adaptor->applyPatchFinished(patch);
     }
@@ -455,8 +479,6 @@ bool PatchManagerObject::unapplyPatch(const QString &patch)
     }
     postCustomEvent(PatchManagerEvent::UnapplyPatchManagerEventType, QVariantMap({{QStringLiteral("name"), patch}}), msg);
     return true;
-
-//    m_timer->stop();
 
     QVariantMap patchData = m_metadata[patch];
     QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
@@ -479,7 +501,6 @@ bool PatchManagerObject::unapplyPatch(const QString &patch)
     }
     notify(displayName.toString(), false, ok);
 
-//    m_timer->start();
     if (ok) {
 //        emit m_adaptor->unapplyPatchFinished(patch);
     }
@@ -491,12 +512,10 @@ bool PatchManagerObject::unapplyAllPatches()
     qDebug() << Q_FUNC_INFO;
     return true;
 
-//    m_timer->stop();
     bool ok = true;
     for (const QString &patch : m_appliedPatches.toList()) {
         ok &= unapplyPatch(patch);
     }
-//    m_timer->start();
 //    emit m_adaptor->unapplyAllPatchesFinished();
     return ok;
 }
@@ -504,7 +523,6 @@ bool PatchManagerObject::unapplyAllPatches()
 bool PatchManagerObject::installPatch(const QString &patch, const QString &json, const QString &archive)
 {
     qDebug() << Q_FUNC_INFO << patch;
-//    m_timer->stop();
     const QString patchPath = QStringLiteral("%1/%2").arg(PATCHES_DIR, patch);
     const QString jsonPath = QStringLiteral("%1/%2").arg(patchPath, PATCH_FILE);
     QFile archiveFile(archive);
@@ -537,28 +555,32 @@ bool PatchManagerObject::installPatch(const QString &patch, const QString &json,
     if (archiveFile.exists()) {
         archiveFile.remove();
     }
-//    m_timer->start();
     return result;
 }
 
 bool PatchManagerObject::uninstallPatch(const QString &patch)
 {
     qDebug() << Q_FUNC_INFO << patch;
-//    m_timer->stop();
+    setDelayedReply(true);
+
     if (m_appliedPatches.contains(patch)) {
         unapplyPatch(patch);
-//        m_timer->stop();
     }
 
-    QDir patchDir(QString("%1/%2").arg(PATCHES_DIR, patch));
-    if (patchDir.exists()) {
-        bool ok = patchDir.removeRecursively();
-        refreshPatchList();
-//        m_timer->start();
-        return ok;
+    postCustomEvent(PatchManagerEvent::UninstallPatchManagerEventType, {{"patch", patch}}, message());
+    return true;
+}
+
+bool PatchManagerObject::resetPatchState(const QString &patch)
+{
+    qDebug() << Q_FUNC_INFO << patch;
+    setDelayedReply(true);
+
+    if (m_appliedPatches.contains(patch)) {
+        unapplyPatch(patch);
     }
 
-//    m_timer->start();
+    postCustomEvent(PatchManagerEvent::ResetStatePatchManagerEventType, {{"patch", patch}}, message());
     return true;
 }
 
@@ -672,9 +694,6 @@ void PatchManagerObject::customEvent(QEvent *e)
     if (!s_customEventTypes.contains(e->type())) {
         return;
     }
-    if (m_timer->isActive()) {
-        m_timer->stop();
-    }
     if (m_havePendingEvent) {
         m_havePendingEvent = false;
     }
@@ -695,6 +714,9 @@ void PatchManagerObject::customEvent(QEvent *e)
         break;
     case PatchManagerEvent::UnapplyAllPatchManagerEventType:
         break;
+    case PatchManagerEvent::UninstallPatchManagerEventType:
+        doUninstallPatch(pmEvent->myData.value(QStringLiteral("patch")).toString(), pmEvent->myMessage);
+        break;
     case PatchManagerEvent::DownloadCatalogPatchManagerEventType:
         requestDownloadCatalog(pmEvent->myData, pmEvent->myMessage);
         break;
@@ -713,12 +735,31 @@ void PatchManagerObject::customEvent(QEvent *e)
     case PatchManagerEvent::CheckEasterPatchManagerEventType:
         doCheckEaster(pmEvent->myMessage);
         break;
+    case PatchManagerEvent::ResetStatePatchManagerEventType:
+        doResetPatchState(pmEvent->myData.value(QStringLiteral("patch")).toString(), pmEvent->myMessage);
+        break;
     default:
         qWarning() << "Unhandled event!" << pmEvent->myEventType;
         break;
     }
+}
 
-    m_timer->start();
+void PatchManagerObject::onLipstickChanged(const QString &, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
+{
+    if (invalidatedProperties.contains(QStringLiteral("ActiveState"))) {
+        return;
+    }
+
+    const QString activeState = changedProperties.value(QStringLiteral("ActiveState"), QStringLiteral("unknown")).toString();
+    if (activeState == QStringLiteral("failed")) {
+        qWarning() << "Detected lipstick crash, deactivating all patches";
+        unapplyAllPatches();
+    }
+}
+
+void PatchManagerObject::onTimerAction()
+{
+
 }
 
 void PatchManagerObject::doRefreshPatchList()
@@ -850,7 +891,6 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
     }
     notify(displayName.toString(), apply, ok);
 
-//    m_timer->start();
     if (ok) {
 //        emit m_adaptor->applyPatchFinished(patch);
     }
@@ -880,7 +920,6 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
         }
         notify(displayName.toString(), true, ok);
 
-    //    m_timer->start();
         if (ok) {
     //        emit m_adaptor->applyPatchFinished(patch);
         }
@@ -907,12 +946,38 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
         }
         notify(displayName.toString(), false, ok);
 
-    //    m_timer->start();
         if (ok) {
     //        emit m_adaptor->unapplyPatchFinished(patch);
         }
     //    return ok;
     }
+}
+
+void PatchManagerObject::doResetPatchState(const QString &patch, const QDBusMessage &message)
+{
+    sendMessageReply(message, m_appliedPatches.remove(patch));
+}
+
+void PatchManagerObject::doUninstallPatch(const QString &patch, const QDBusMessage &message)
+{
+    bool removeSuccess = false;
+    const QString rpmPatch = m_metadata[patch][RPM_KEY].toString();
+    if (rpmPatch.isEmpty()) {
+        QDir patchDir(QStringLiteral("%1/%2").arg(PATCHES_DIR, patch));
+        if (patchDir.exists()) {
+            removeSuccess = patchDir.removeRecursively();
+        }
+    } else {
+        QDBusInterface iface("com.jolla.jollastore", "/StoreClient", "com.jolla.jollastore", QDBusConnection::sessionBus());
+        iface.call(QDBus::NoBlock, "removePackage", rpmPatch, true);
+        removeSuccess = true;
+    }
+
+    if (removeSuccess) {
+        // TODO: gracefully update models
+        refreshPatchList();
+    }
+    sendMessageReply(message, removeSuccess);
 }
 
 int PatchManagerObject::getVote(const QString &patch)

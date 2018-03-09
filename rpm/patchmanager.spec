@@ -28,6 +28,7 @@ BuildRequires:  pkgconfig(mlite5)
 BuildRequires:  pkgconfig(sailfishapp) >= 0.0.10
 BuildRequires:  sailfish-svg2png >= 0.1.5
 BuildRequires:  pkgconfig(nemonotifications-qt5)
+BuildRequires:  qt5-qtdeclarative-devel-tools
 
 %description
 patchmanager allows managing Sailfish OS patches
@@ -44,73 +45,73 @@ on your device easily.
 rm -rf %{buildroot}
 %qmake5_install
 
-#%pre
-#case "$*" in
-#1)
-#echo Installing package
-#;;
-#2)
-#echo Upgrading package
-#;;
-#*) echo case "$*" not handled in pre
-#esac
+/usr/lib/qt5/bin/qmlplugindump -v -noinstantiate -nonrelocatable org.SfietKonstantin.patchmanager 2.0 %{buildroot}%{_libdir}/qt5/qml > %{buildroot}%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}/plugin.qmltypes
+sed -i 's#%{buildroot}##g' %{buildroot}%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}/plugin.qmltypes
 
-#%preun
-#case "$*" in
-#0)
-#echo Uninstalling package
-#if [ -d /var/lib/patchmanager/ausmt/patches/sailfishos-patchmanager-unapplyall ]; then
+mkdir -p %{buildroot}/lib/systemd/system/multi-user.target.wants/
+ln -s ../dbus-org.SfietKonstantin.patchmanager.service %{buildroot}/lib/systemd/system/multi-user.target.wants/
+
+%pre
+case "$*" in
+1)
+echo Installing package
+;;
+2)
+echo Upgrading package
+;;
+*) echo case "$*" not handled in pre
+esac
+
+%preun
+case "$*" in
+0)
+echo Uninstalling package
+if [ -d /var/lib/patchmanager/ausmt/patches/sailfishos-patchmanager-unapplyall ]; then
 #/usr/sbin/patchmanager -u sailfishos-patchmanager-unapplyall || true
-#fi
+fi
 
-#if /sbin/pidof patchmanager > /dev/null; then
-#dbus-send --system --type=method_call \
-#--dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager \
-#org.SfietKonstantin.patchmanager.quit
-#fi
-#;;
-#1)
-#echo Upgrading package
-#if /sbin/pidof patchmanager > /dev/null; then
-#dbus-send --system --type=method_call \
-#--dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager \
-#org.SfietKonstantin.patchmanager.quit
-#fi
-#;;
-#*) echo case "$*" not handled in preun
-#esac
+systemctl stop dbus-org.SfietKonstantin.patchmanager.service
+;;
+1)
+echo Upgrading package
+;;
+*) echo case "$*" not handled in preun
+esac
 
-#%post
-#case "$*" in
-#1)
-#echo Installing package
-#dbus-send --system --type=method_call \
-#--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+%post
+case "$*" in
+1)
+echo Installing package
+dbus-send --system --type=method_call \
+--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 #/usr/sbin/patchmanager -a sailfishos-patchmanager-unapplyall || true
-#;;
-#2)
-#echo Upgrading package
-#dbus-send --system --type=method_call \
-#--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+;;
+2)
+echo Upgrading package
+dbus-send --system --type=method_call \
+--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 #/usr/sbin/patchmanager -a sailfishos-patchmanager-unapplyall || true
-#;;
-#*) echo case "$*" not handled in post
-#esac
+;;
+*) echo case "$*" not handled in post
+esac
+systemctl daemon-reload
+systemctl restart dbus-org.SfietKonstantin.patchmanager.service
 
-#%postun
-#case "$*" in
-#0)
-#echo Uninstalling package
-#dbus-send --system --type=method_call \
-#--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
-#;;
-#1)
-#echo Upgrading package
-#dbus-send --system --type=method_call \
-#--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
-#;;
-#*) echo case "$*" not handled in postun
-#esac
+%postun
+case "$*" in
+0)
+echo Uninstalling package
+dbus-send --system --type=method_call \
+--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+;;
+1)
+echo Upgrading package
+dbus-send --system --type=method_call \
+--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+;;
+*) echo case "$*" not handled in postun
+esac
+systemctl daemon-reload
 
 %files
 %defattr(-,root,root,-)
@@ -119,6 +120,7 @@ rm -rf %{buildroot}
 %{_datadir}/dbus-1/
 %{_sysconfdir}/dbus-1/system.d/
 /lib/systemd/system/dbus-org.SfietKonstantin.patchmanager.service
+/lib/systemd/system/multi-user.target.wants/dbus-org.SfietKonstantin.patchmanager.service
 %{_sharedstatedir}/environment/patchmanager/10-dbus.conf
 %{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/patch.json
 %{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/unified_diff.patch
