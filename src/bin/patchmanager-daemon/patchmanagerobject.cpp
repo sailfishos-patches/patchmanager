@@ -33,6 +33,9 @@
 #include "patchmanagerobject.h"
 #include "patchmanager_adaptor.h"
 
+#include <QLocalSocket>
+#include <QLocalServer>
+
 #include <algorithm>
 
 #include <QtCore/QCoreApplication>
@@ -59,6 +62,9 @@
 
 #include <nemonotifications-qt5/notification.h>
 #include "inotifywatcher.h"
+
+#include <unistd.h>
+#include <sys/stat.h>
 
 #define DBUS_GUARD(x) \
 if (!calledFromDBus()) {\
@@ -106,6 +112,9 @@ static const QString SETTINGS_CODE = QStringLiteral("settings");
 
 static const QString newConfigLocation = QStringLiteral("/etc/patchmanager2.conf");
 static const QString oldConfigLocation = QStringLiteral("/home/nemo/.config/patchmanager2.conf");
+
+static const QString patchmanager_socket = QStringLiteral("/tmp/patchmanager-socket");
+static const QString patchmanager_cache_root = QStringLiteral("/tmp/patchmanager");
 
 static bool patchSort(const QVariantMap &patch1, const QVariantMap &patch2)
 {
@@ -233,7 +242,9 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
     : QObject(parent)
     , m_timer(new QTimer(this))
     , m_nam(new QNetworkAccessManager(this))
+    , m_originalWatcher(new QFileSystemWatcher(this))
     , m_settings(new QSettings(newConfigLocation, QSettings::IniFormat, this))
+    , m_localServer(new QLocalServer(this))
 {
     if (!QFileInfo::exists(newConfigLocation) && QFileInfo::exists(oldConfigLocation)) {
         QFile::copy(oldConfigLocation, newConfigLocation);
@@ -257,6 +268,21 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
                                           QStringLiteral("/org/freedesktop/systemd1/unit/lipstick_2eservice"),
                                           QStringLiteral("org.freedesktop.DBus.Properties"),
                                           QStringLiteral("PropertiesChanged"), this, SLOT(onLipstickChanged(QString,QVariantMap,QStringList)));
+
+    connect(m_originalWatcher, &QFileSystemWatcher::fileChanged, this, &PatchManagerObject::onOriginalFileChanged);
+
+    m_localServer->setSocketOptions(QLocalServer::WorldAccessOption);
+    m_localServer->setMaxPendingConnections(2147483647);
+    connect(m_localServer, &QLocalServer::newConnection, this, &PatchManagerObject::startReadingLocalServer);
+    bool listening = m_localServer->listen(patchmanager_socket);
+    if (!listening // not listening
+            && m_localServer->serverError() == QAbstractSocket::AddressInUseError // because have error which is matching AddressInUseError
+            && QFileInfo::exists(patchmanager_socket) // socket file already exists
+            && QFile::remove(patchmanager_socket)) { // and successfully removed it
+        qWarning() << Q_FUNC_INFO << "Removed old stuck socket";
+        listening = m_localServer->listen(patchmanager_socket); // try to start lisening again
+    }
+    qDebug() << Q_FUNC_INFO << "Server listening:" << listening;
 }
 
 PatchManagerObject::~PatchManagerObject()
@@ -269,6 +295,12 @@ PatchManagerObject::~PatchManagerObject()
 }
 
 void PatchManagerObject::registerDBus()
+{
+    qDebug() << Q_FUNC_INFO;
+    postCustomEvent(PatchManagerEvent::RegisterDBusServicePatchManagerEventType, QVariantMap(), QDBusMessage());
+}
+
+void PatchManagerObject::doRegisterDBus()
 {
     qDebug() << Q_FUNC_INFO;
     if (m_dbusRegistered) {
@@ -304,17 +336,83 @@ void PatchManagerObject::registerDBus()
     m_dbusRegistered = true;
 }
 
+void PatchManagerObject::doPrepareCacheRoot()
+{
+    // TODO: написать патчинг при включении сервиса
+
+    for (const QString &patchName : m_appliedPatches) {
+        doPatch({{QStringLiteral("name"), patchName}, {QStringLiteral("dont_notify"), true}}, QDBusMessage(), true);
+    }
+}
+
+void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
+{
+    qWarning() << Q_FUNC_INFO << patchName << apply;
+
+    if (!m_patchFiles.contains(patchName)) {
+        return;
+    }
+
+    for (const QString &fileName : m_patchFiles.value(patchName)) {
+        QFileInfo fi(fileName);
+
+        if (!fi.exists()) {
+            qWarning() << Q_FUNC_INFO << "warning!" << fileName << "does not exists!";
+            continue; // TODO: WTF?
+        }
+        QDir fakeDir(QStringLiteral("%1%2").arg(patchmanager_cache_root, fi.absoluteDir().absolutePath()));
+        if (!fakeDir.exists()) {
+            QDir::root().mkpath(fakeDir.absolutePath());
+        }
+
+        const QString fakeFileName = QStringLiteral("%1/%2").arg(fakeDir.absolutePath(), fi.fileName());
+
+        if (QFileInfo::exists(fakeFileName)) {
+            if (apply) {
+                continue;
+            }
+
+            if (m_fileToPatch.value(fileName).length() > 1) {
+                continue;
+            }
+
+            m_originalWatcher->removePath(fileName);
+            QFile::remove(fakeFileName);
+        } else {
+            if (!apply) {
+                continue;
+            }
+
+            struct stat fileStat;
+            if (stat(fileName.toLatin1().constData(), &fileStat) < 0) {
+                qWarning() << Q_FUNC_INFO << "warning!" << fileName << "could not be stat!";
+                continue;
+            }
+
+            qWarning() << Q_FUNC_INFO << "Copying" << fileName << "to" << fakeFileName;
+            m_originalWatcher->addPath(fileName);
+            QFile::copy(fileName, fakeFileName);
+
+            chmod(fakeFileName.toLatin1().constData(), fileStat.st_mode);
+            chown(fakeFileName.toLatin1().constData(), fileStat.st_uid, fileStat.st_gid);
+        }
+    }
+ }
+
 void PatchManagerObject::initialize()
 {
     getVersion();
     refreshPatchList();
+    prepareCacheRoot();
 
     INotifyWatcher *mainWatcher = new INotifyWatcher(this);
     mainWatcher->addPaths({ PATCHES_DIR });
     connect(mainWatcher, &INotifyWatcher::contentChanged, [this](const QString &path, bool created) {
         qDebug() << "contentChanged:" << path << "created:" << created;
         refreshPatchList();
-        emit m_adaptor->patchAltered(path, created);
+        if (m_adaptor) {
+            emit m_adaptor->patchAltered(path, created);
+        }
     });
 
 //    INotifyWatcher *additionalWatcher = new INotifyWatcher(this);
@@ -379,16 +477,14 @@ void PatchManagerObject::process()
             msg.setArguments(data);
         }
         connection.send(msg);
-        return;
-    }
 
-    registerDBus();
-    if (!m_dbusRegistered) {
         QCoreApplication::exit(2);
         return;
     }
 
     initialize();
+    registerDBus();
+
     if (args[1] == QStringLiteral("-a")) {
         if (args.length() < 3) {
             return;
@@ -700,6 +796,12 @@ void PatchManagerObject::customEvent(QEvent *e)
     PatchManagerEvent *pmEvent = static_cast<PatchManagerEvent*>(e);
     qDebug() << pmEvent->myEventType << pmEvent->myData;
     switch (pmEvent->myEventType) {
+    case PatchManagerEvent::RegisterDBusServicePatchManagerEventType:
+        doRegisterDBus();
+        break;
+    case PatchManagerEvent::PrepareCacheRootPatchManagerEventType:
+        doPrepareCacheRoot();
+        break;
     case PatchManagerEvent::RefreshPatchManagerEventType:
         doRefreshPatchList();
         break;
@@ -762,6 +864,50 @@ void PatchManagerObject::onTimerAction()
 
 }
 
+void PatchManagerObject::startReadingLocalServer()
+{
+    QLocalSocket *clientConnection = m_localServer->nextPendingConnection();
+    qDebug() << Q_FUNC_INFO << "Got new connection" << clientConnection << clientConnection->state();
+    if (clientConnection->state() != QLocalSocket::ConnectedState) {
+        qWarning() << "Socket client is not connected yet!";
+        clientConnection->waitForConnected();
+    }
+    connect(clientConnection, &QLocalSocket::disconnected, [clientConnection](){
+        qDebug() << "Client disconnected:" << clientConnection;
+        clientConnection->deleteLater();
+    });
+    connect(clientConnection, &QLocalSocket::readyRead, this, &PatchManagerObject::readFromLocalClient);
+}
+
+void PatchManagerObject::readFromLocalClient()
+{
+    QLocalSocket *clientConnection = qobject_cast<QLocalSocket*>(sender());
+    if (!clientConnection) {
+        return;
+    }
+    if (clientConnection->bytesAvailable() > 0) {
+        QByteArray payload = clientConnection->readAll();
+        qWarning() << Q_FUNC_INFO << "Requested:" << payload << payload.size();
+        const QString fakePath = QStringLiteral("/tmp/patchmanager%1").arg(QString::fromLatin1(payload));
+        if (QFileInfo::exists(fakePath)) {
+            payload = fakePath.toLatin1();
+        }
+
+// TODO: return files from fakeroot
+        qWarning() << Q_FUNC_INFO << "Sending:" << payload;
+        clientConnection->write(payload);
+        clientConnection->flush();
+        clientConnection->waitForBytesWritten();
+    } else {
+        qWarning() << Q_FUNC_INFO << "Nothing to read";
+    }
+}
+
+void PatchManagerObject::onOriginalFileChanged(const QString &path)
+{
+    qWarning() << Q_FUNC_INFO << path;
+}
+
 void PatchManagerObject::doRefreshPatchList()
 {
     qDebug() << Q_FUNC_INFO;
@@ -781,8 +927,11 @@ void PatchManagerObject::doRefreshPatchList()
         file.close();
     }
 
+    // scan all patches
     // collect conflicts per file
 
+    m_patchFiles.clear();
+    m_fileToPatch.clear();
     QMap<QString, QStringList> filesConflicts;
     QDir patchesDir(PATCHES_DIR);
     for (const QString &patchFolder : patchesDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
@@ -794,10 +943,26 @@ void PatchManagerObject::doRefreshPatchList()
             QByteArray line = patchFile.readLine();
             if (line.startsWith(QByteArrayLiteral("+++ "))) {
                 QString toPatch = QString::fromLatin1(line.split(' ')[1].split('\t')[0].split('\n')[0]);
-                if (!toPatch.startsWith('/')) {
-                    toPatch = toPatch.mid(toPatch.indexOf('/'));
+                QString path = toPatch;
+                while (!QFileInfo::exists(path) && path.count('/') > 1) {
+                    path = path.mid(path.indexOf('/', 1));
                 }
-                filesConflicts[toPatch].append(patchFolder);
+                if (!QFileInfo::exists(path)) {
+                    path = toPatch.mid(toPatch.indexOf('/', 1));
+                }
+                filesConflicts[path].append(patchFolder);
+
+                QStringList patchFiles = m_patchFiles[patchFolder];
+                if (!patchFiles.contains(path)) {
+                    patchFiles.append(path);
+                }
+                m_patchFiles[patchFolder] = patchFiles;
+
+                QStringList fileToPatch = m_fileToPatch[path];
+                if (!fileToPatch.contains(patchFolder)) {
+                    fileToPatch.append(patchFolder);
+                }
+                m_fileToPatch[path] = fileToPatch;
             }
         }
 
@@ -847,7 +1012,9 @@ void PatchManagerObject::doRefreshPatchList()
 
     qDebug().noquote() << QJsonDocument::fromVariant(debug).toJson(QJsonDocument::Indented);
 
-    emit m_adaptor->listPatchesChanged();
+    if (m_adaptor) {
+        emit m_adaptor->listPatchesChanged();
+    }
 }
 
 void PatchManagerObject::doListPatches(const QDBusMessage &message)
@@ -864,6 +1031,8 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
 {
     qDebug() << Q_FUNC_INFO << params << apply;
     const QString &patch = params.value(QStringLiteral("name")).toString();
+
+    doPrepareCache(patch, apply);
 
     QVariantMap patchData = m_metadata[patch];
     QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
@@ -889,13 +1058,18 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
         }
         refreshPatchList();
     }
-    notify(displayName.toString(), apply, ok);
+
+    if (!params.value(QStringLiteral("dont_notify"), false).toBool()) {
+        notify(displayName.toString(), apply, ok);
+    }
 
     if (ok) {
 //        emit m_adaptor->applyPatchFinished(patch);
     }
 
-    sendMessageReply(message, ok);
+    if (message.isDelayedReply()) {
+        sendMessageReply(message, ok);
+    }
 
     return;
 
@@ -1152,6 +1326,12 @@ void PatchManagerObject::refreshPatchList()
 {
     qDebug() << Q_FUNC_INFO;
     postCustomEvent(PatchManagerEvent::RefreshPatchManagerEventType, QVariantMap(), QDBusMessage());
+}
+
+void PatchManagerObject::prepareCacheRoot()
+{
+    qDebug() << Q_FUNC_INFO;
+    postCustomEvent(PatchManagerEvent::PrepareCacheRootPatchManagerEventType, QVariantMap(), QDBusMessage());
 }
 
 PatchManagerEvent::PatchManagerEvent(PatchManagerEventType eventType, const QVariantMap &data, const QDBusMessage &message)

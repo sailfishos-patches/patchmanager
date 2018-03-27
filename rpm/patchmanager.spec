@@ -52,6 +52,7 @@ mkdir -p %{buildroot}/lib/systemd/system/multi-user.target.wants/
 ln -s ../dbus-org.SfietKonstantin.patchmanager.service %{buildroot}/lib/systemd/system/multi-user.target.wants/
 
 %pre
+export NO_PM_PRELOAD=1
 case "$*" in
 1)
 echo Installing package
@@ -63,6 +64,7 @@ echo Upgrading package
 esac
 
 %preun
+export NO_PM_PRELOAD=1
 case "$*" in
 0)
 echo Uninstalling package
@@ -79,6 +81,7 @@ echo Upgrading package
 esac
 
 %post
+export NO_PM_PRELOAD=1
 case "$*" in
 1)
 echo Installing package
@@ -96,8 +99,10 @@ dbus-send --system --type=method_call \
 esac
 systemctl daemon-reload
 systemctl restart dbus-org.SfietKonstantin.patchmanager.service
+/sbin/ldconfig
 
 %postun
+export NO_PM_PRELOAD=1
 case "$*" in
 0)
 echo Uninstalling package
@@ -112,6 +117,7 @@ dbus-send --system --type=method_call \
 *) echo case "$*" not handled in postun
 esac
 systemctl daemon-reload
+/sbin/ldconfig
 
 %files
 %defattr(-,root,root,-)
@@ -124,6 +130,7 @@ systemctl daemon-reload
 %{_sharedstatedir}/environment/patchmanager/10-dbus.conf
 %{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/patch.json
 %{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/unified_diff.patch
+%{_libdir}/libpreload%{name}.so
 
 %{_libdir}/qt5/qml/org/SfietKonstantin/%{name}
 %{_datadir}/%{name}/data

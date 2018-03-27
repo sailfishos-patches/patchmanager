@@ -54,6 +54,8 @@ void help()
 
 int main(int argc, char **argv)
 {
+    qputenv("NO_PM_PRELOAD", "1");
+
     if (getuid() != 0) {
         fprintf(stderr, "%s: Not running as root, exiting.\n", argv[0]);
         exit(2);

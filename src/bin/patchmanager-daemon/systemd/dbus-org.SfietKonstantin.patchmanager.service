@@ -2,6 +2,7 @@
 Description=Patchmanager service
 Requires=dbus.service
 After=dbus.service
+Before=systemd-user-sessions.service
 
 [Service]
 Type=dbus

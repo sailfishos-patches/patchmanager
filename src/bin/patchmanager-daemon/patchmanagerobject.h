@@ -68,6 +68,9 @@ class PatchManagerEvent : public QEvent
     Q_GADGET
 public:
     enum PatchManagerEventType {
+        RegisterDBusServicePatchManagerEventType,
+        PrepareCacheRootPatchManagerEventType,
+
         GetVersionPatchManagerEventType,
 
         RefreshPatchManagerEventType,
@@ -107,6 +110,7 @@ class QTimer;
 class QSettings;
 class QNetworkAccessManager;
 class PatchManagerAdaptor;
+class QLocalServer;
 class PatchManagerObject : public QObject, public QDBusContext
 {
     Q_OBJECT
@@ -145,8 +149,17 @@ private slots:
     void onLipstickChanged(const QString &, const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
     void onTimerAction();
 
+    void startReadingLocalServer();
+    void readFromLocalClient();
+
+    void onOriginalFileChanged(const QString &path);
+
 private:
     void registerDBus();
+    void doRegisterDBus();
+    void doPrepareCacheRoot();
+    void doPrepareCache(const QString &patchName, bool apply = true);
+
     void initialize();
 
     QString checkRpmPatch(const QString &patch) const;
@@ -181,19 +194,27 @@ private:
 
     void getVersion();
     void refreshPatchList();
+    void prepareCacheRoot();
+
     bool m_dbusRegistered = false;
     QSet<QString> m_appliedPatches;
     QMap<QString, QVariantMap> m_metadata;
     QTimer *m_timer;
 
-    QMap<QString, QStringList> m_conflicts;
+    QMap<QString, QStringList> m_patchFiles;
+    QMap<QString, QStringList> m_fileToPatch;
+    QStringList m_patchedFiles;
 
     QString m_ssuRelease;
     PatchManagerAdaptor *m_adaptor = nullptr;
     bool m_havePendingEvent = false;
     QNetworkAccessManager *m_nam;
 
+    QFileSystemWatcher *m_originalWatcher;
+
     QSettings *m_settings;
+
+    QLocalServer *m_localServer;
 };
 
 #endif // PATCHMANAGEROBJECT_H
