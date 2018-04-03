@@ -398,7 +398,19 @@ Page {
 //                        var patchUrl = modelData.document
 //                        var fName = patchUrl.substr(patchUrl.lastIndexOf("/") + 1)
 //                        PatchManager.downloadPatch(patchData.value.name, '/tmp/%1'.arg(fName), patchUrl)
-                        PatchManager.installPatch(modelData.name, modelData.version, modelData.document)
+                        PatchManager.watchCall(PatchManager.installPatch(modelData.project, modelData.version, modelData.document),
+                                               function(ok) {
+                                                   if (!ok) {
+                                                       console.warn("Unsuccessful installation!")
+                                                       return
+                                                   }
+                                                   container.versions[patchData.value.name] = modelData.version
+                                                   container.versionsChanged()
+                                               },
+                                               function(error) {
+                                                   console.log(error)
+                                               })
+//                        PatchManager.installPatch(modelData.name, modelData.version, modelData.document)
                     }
 
                     Column {
@@ -446,6 +458,7 @@ Page {
                         }
 
                         Label {
+                            width: parent.width
                             text: qsTranslate("", "Compatible: %1").arg(modelData.compatible)
                             font.pixelSize: Theme.fontSizeExtraSmall
                             color: fileDelegate.isCompatible ? Theme.highlightColor : Qt.tint(Theme.highlightColor, "red")
@@ -453,6 +466,7 @@ Page {
                         }
 
                         Label {
+                            width: parent.width
                             text: modelData.changelog
                             font.pixelSize: Theme.fontSizeExtraSmall
                             color: Theme.highlightColor

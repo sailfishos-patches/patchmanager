@@ -887,7 +887,11 @@ void PatchManagerObject::doRefreshPatchList()
                     path = path.mid(path.indexOf('/', 1));
                 }
                 if (!QFileInfo::exists(path)) {
-                    path = toPatch.mid(toPatch.indexOf('/', 1));
+                    if (toPatch.startsWith(QChar('/'))) {
+                        path = toPatch;
+                    } else {
+                        path = toPatch.mid(toPatch.indexOf('/', 1));
+                    }
                 }
                 filesConflicts[path].append(patchFolder);
 
@@ -1087,7 +1091,7 @@ void PatchManagerObject::doInstallPatch(const QVariantMap &params, const QDBusMe
 {
     qWarning() << Q_FUNC_INFO << params;
 
-    const QString &patch = params.value(QStringLiteral("name")).toString();
+    const QString &patch = params.value(QStringLiteral("patch")).toString();
     const QString &version = params.value(QStringLiteral("version")).toString();
     const QString &jsonUrl = QStringLiteral("%1/%2").arg(CATALOG_URL, PROJECT_PATH);
 
@@ -1100,6 +1104,9 @@ void PatchManagerObject::doInstallPatch(const QVariantMap &params, const QDBusMe
     QNetworkRequest request(url);
     QNetworkReply *reply = m_nam->get(request);
     QObject::connect(reply, &QNetworkReply::finished, [reply, message, params, this](){
+        if (reply->error() != QNetworkReply::NoError) {
+            return;
+        }
         if (reply->bytesAvailable() <= 0) {
             sendMessageError(message, QStringLiteral("Cannot get json"));
             return;
@@ -1129,8 +1136,10 @@ void PatchManagerObject::doInstallPatch(const QVariantMap &params, const QDBusMe
 
 void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const QDBusMessage &message)
 {
+    qDebug() << Q_FUNC_INFO << params;
+
     const QString &url = params.value(QStringLiteral("url")).toString();
-    const QString &patch = params.value(QStringLiteral("name")).toString();
+    const QString &patch = params.value(QStringLiteral("patch")).toString();
     const QString &json = params.value(QStringLiteral("json")).toString();
     const QString &archive = QStringLiteral("/tmp/%1").arg(url.section(QChar('/'), -1));
 
@@ -1138,9 +1147,14 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
     if (!archiveFile->open(QFile::WriteOnly)) {
         return;
     }
-    QNetworkRequest request(url);
+
+    QUrl webUrl(QString(MEDIA_URL"/%1").arg(url));
+    QNetworkRequest request(webUrl);
     QNetworkReply *reply = m_nam->get(request);
-    QObject::connect(reply, &QNetworkReply::finished, [message, patch, archiveFile, archive, json, this](){
+    QObject::connect(reply, &QNetworkReply::finished, [reply, message, patch, archiveFile, archive, json, this](){
+        if (reply->error() != QNetworkReply::NoError) {
+            return;
+        }
         if (!archiveFile) {
             sendMessageError(message, QStringLiteral("Lost in the wild"));
             return;

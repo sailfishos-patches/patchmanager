@@ -34,6 +34,7 @@
 #include <QtQml/QQmlExtensionPlugin>
 #include <QtQml/QQmlContext>
 #include <QtQml/QQmlEngine>
+#include <QDBusPendingCallWatcher>
 #include "patchmanager.h"
 #include "webpatchesmodel.h"
 #include "webpatchdata.h"
@@ -65,7 +66,7 @@ public:
 //        qmlRegisterUncreatableType<WebPatchesModel>(uri, 2, 0, "WebPatchesModel", "WebPatchesModel is not creatable"); // TODO move to server
         qmlRegisterType<WebPatchesModel>(uri, 2, 0, "WebPatchesModel");
         qmlRegisterType<WebPatchData>(uri, 2, 0, "WebPatchData");
-
+        qmlRegisterUncreatableType<QDBusPendingCallWatcher>(uri, 2, 0, "QDBusPendingCallWatcher", "Compatibility import");
     }
 };
 

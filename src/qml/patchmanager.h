@@ -64,6 +64,8 @@ public:
     PatchManagerModel *installedModel();
     QString trCategory(const QString &category) const;
 
+    Q_INVOKABLE void watchCall(QDBusPendingCallWatcher *call, QJSValue callback, QJSValue errorCallback);
+
 private slots:
     void onDownloadFinished(const QString & patch, const QString & fileName);
     void onServerReplied();

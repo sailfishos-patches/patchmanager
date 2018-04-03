@@ -99,8 +99,8 @@ Page {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.margins: Theme.horizontalPageMargin
-                wrapMode: Text.WordWrap
-                text: JSON.stringify(modelData.compatible)
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                text: modelData.compatible.join(', ')
             }
 
             SectionHeader {

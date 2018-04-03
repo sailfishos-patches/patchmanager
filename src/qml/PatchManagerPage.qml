@@ -349,7 +349,17 @@ Page {
                 ContextMenu {
                     MenuLabel {
                         visible: !patchObject.details.isCompatible
-                        text: qsTranslate("", "Compatible with: %1").arg(patchObject.details.compatible.join(', '))
+                        text: qsTranslate("", "Compatible with:")
+                    }
+                    MenuLabel {
+                        visible: !patchObject.details.isCompatible
+                        text: patchObject.details.compatible.join(', ')
+                        Component.onCompleted: {
+                            if (!data[0].toString().slice(0, 6) !== "Label_") {
+                                return;
+                            }
+                            data[0].elide = Text.ElideLeft;
+                        }
                     }
                     MenuLabel {
                         visible: patchObject.details.conflicts.length > 0

@@ -204,6 +204,34 @@ QDBusPendingCallWatcher *PatchManager::resetState(const QString &patch)
     return new QDBusPendingCallWatcher(m_interface->resetState(patch), this);
 }
 
+void PatchManager::watchCall(QDBusPendingCallWatcher *call, QJSValue callback, QJSValue errorCallback)
+{
+    connect(call,
+            &QDBusPendingCallWatcher::finished,
+            [callback, errorCallback](QDBusPendingCallWatcher *watcher) mutable {
+        QDBusPendingReply<> reply = *watcher;
+        if (reply.isError()) {
+            qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
+            if (errorCallback.isCallable()) {
+                QJSValueList callbackArguments;
+                callbackArguments << QJSValue(reply.error().message());
+                errorCallback.call(callbackArguments);
+            }
+        } else {
+            if (callback.isCallable()) {
+                const QDBusMessage message = reply.reply();
+                const QVariantList arguments = message.arguments();
+                QJSValueList callbackArguments;
+                for (const QVariant &argument : arguments) {
+                    callbackArguments << callback.engine()->toScriptValue<QVariant>(argument);
+                }
+                callback.call(callbackArguments);
+            }
+        }
+        watcher->deleteLater();
+    });
+}
+
 void PatchManager::patchToggleService(const QString &patch, const QString &code)
 {
     if (code == HOMESCREEN_CODE || code == SILICA_CODE) {

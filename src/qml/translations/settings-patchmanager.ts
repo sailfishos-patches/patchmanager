@@ -140,36 +140,36 @@
     </message>
     <message>
         <location filename="../PatchManagerPage.qml" line="352"/>
-        <source>Compatible with: %1</source>
+        <source>Compatible with:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="356"/>
+        <location filename="../PatchManagerPage.qml" line="366"/>
         <source>Possible conflicts: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="359"/>
+        <location filename="../PatchManagerPage.qml" line="369"/>
         <source>Unapply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="359"/>
+        <location filename="../PatchManagerPage.qml" line="369"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="364"/>
+        <location filename="../PatchManagerPage.qml" line="374"/>
         <source>Reset state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="369"/>
+        <location filename="../PatchManagerPage.qml" line="379"/>
         <source>Uninstall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="383"/>
+        <location filename="../PatchManagerPage.qml" line="393"/>
         <location filename="../WebCatalogPage.qml" line="188"/>
         <source>No patches available</source>
         <translation type="unfinished"></translation>
@@ -261,17 +261,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../WebPatchPage.qml" line="433"/>
+        <location filename="../WebPatchPage.qml" line="446"/>
         <source>[installed]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../WebPatchPage.qml" line="433"/>
+        <location filename="../WebPatchPage.qml" line="446"/>
         <source>[click to install]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../WebPatchPage.qml" line="448"/>
+        <location filename="../WebPatchPage.qml" line="462"/>
         <source>Compatible: %1</source>
         <translation type="unfinished"></translation>
     </message>
