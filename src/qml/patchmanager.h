@@ -73,6 +73,7 @@ private slots:
 public slots:
     QDBusPendingCallWatcher *applyPatch(const QString &patch);
     QDBusPendingCallWatcher *unapplyPatch(const QString &patch);
+    QDBusPendingCallWatcher *installPatch(const QString &patch, const QString &version, const QString &url);
     QDBusPendingCallWatcher *uninstallPatch(const QString &patch);
     QDBusPendingCallWatcher *resetState(const QString &patch);
 

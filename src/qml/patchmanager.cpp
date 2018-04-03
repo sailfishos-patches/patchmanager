@@ -189,6 +189,11 @@ QDBusPendingCallWatcher* PatchManager::unapplyPatch(const QString &patch)
     return new QDBusPendingCallWatcher(m_interface->unapplyPatch(patch), this);
 }
 
+QDBusPendingCallWatcher *PatchManager::installPatch(const QString &patch, const QString &version, const QString &url)
+{
+    return new QDBusPendingCallWatcher(m_interface->installPatch(patch, version, url), this);
+}
+
 QDBusPendingCallWatcher *PatchManager::uninstallPatch(const QString &patch)
 {
     return new QDBusPendingCallWatcher(m_interface->uninstallPatch(patch), this);

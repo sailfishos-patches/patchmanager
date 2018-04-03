@@ -100,7 +100,7 @@ Page {
                 anchors.right: parent.right
                 anchors.margins: Theme.horizontalPageMargin
                 wrapMode: Text.WordWrap
-                text: modelData.compatible
+                text: JSON.stringify(modelData.compatible)
             }
 
             SectionHeader {

@@ -394,10 +394,11 @@ Page {
                     }
 
                     function installPatch() {
-                        patchData.getJson(modelData.version)
-                        var patchUrl = modelData.document
-                        var fName = patchUrl.substr(patchUrl.lastIndexOf("/") + 1)
-                        PatchManager.downloadPatch(patchData.value.name, '/tmp/%1'.arg(fName), patchUrl)
+//                        patchData.getJson(modelData.version)
+//                        var patchUrl = modelData.document
+//                        var fName = patchUrl.substr(patchUrl.lastIndexOf("/") + 1)
+//                        PatchManager.downloadPatch(patchData.value.name, '/tmp/%1'.arg(fName), patchUrl)
+                        PatchManager.installPatch(modelData.name, modelData.version, modelData.document)
                     }
 
                     Column {

@@ -66,13 +66,13 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
+#define NAME(x) #x
+
 #define DBUS_GUARD(x) \
 if (!calledFromDBus()) {\
     qWarning() << Q_FUNC_INFO << "This function should be only called from D-Bus!";\
     return x;\
 }
-
-static QVector<QEvent::Type> s_customEventTypes(PatchManagerEvent::PatchManagerEventTypeCount, QEvent::None);
 
 static const QString PATCHES_DIR = QStringLiteral("/usr/share/patchmanager/patches");
 static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("/var/lib/patchmanager/ausmt/patches");
@@ -297,7 +297,7 @@ PatchManagerObject::~PatchManagerObject()
 void PatchManagerObject::registerDBus()
 {
     qDebug() << Q_FUNC_INFO;
-    postCustomEvent(PatchManagerEvent::RegisterDBusServicePatchManagerEventType, QVariantMap(), QDBusMessage());
+    QMetaObject::invokeMethod(this, NAME(doRegisterDBus), Qt::QueuedConnection);
 }
 
 void PatchManagerObject::doRegisterDBus()
@@ -338,10 +338,10 @@ void PatchManagerObject::doRegisterDBus()
 
 void PatchManagerObject::doPrepareCacheRoot()
 {
-    // TODO: написать патчинг при включении сервиса
-
+    qWarning() << Q_FUNC_INFO;
+    // TODO: think about security issues here
     for (const QString &patchName : m_appliedPatches) {
-        doPatch({{QStringLiteral("name"), patchName}, {QStringLiteral("dont_notify"), true}}, QDBusMessage(), true);
+        doPatch(patchName, true);
     }
 }
 
@@ -350,6 +350,7 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
     qWarning() << Q_FUNC_INFO << patchName << apply;
 
     if (!m_patchFiles.contains(patchName)) {
+        qWarning() << Q_FUNC_INFO << "Not installed:" << patchName;
         return;
     }
 
@@ -369,6 +370,7 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 
         if (QFileInfo::exists(fakeFileName)) {
             if (apply) {
+                m_originalWatcher->addPath(fileName);
                 continue;
             }
 
@@ -507,7 +509,7 @@ QVariantList PatchManagerObject::listPatches()
     DBUS_GUARD(QVariantList())
     qDebug() << Q_FUNC_INFO;
     setDelayedReply(true);
-    postCustomEvent(PatchManagerEvent::ListPatchesPatchManagerEventType, QVariantMap(), message());
+    QMetaObject::invokeMethod(this, NAME(doListPatches), Qt::QueuedConnection, Q_ARG(QDBusMessage, message()));
     return QVariantList();
 }
 
@@ -536,7 +538,10 @@ bool PatchManagerObject::applyPatch(const QString &patch)
     if (calledFromDBus()) {
         msg = message();
     }
-    postCustomEvent(PatchManagerEvent::ApplyPatchManagerEventType, QVariantMap({{QStringLiteral("name"), patch}}), msg);
+    QMetaObject::invokeMethod(this, NAME(doPatch), Qt::QueuedConnection,
+                              Q_ARG(QVariantMap, QVariantMap({{QStringLiteral("name"), patch}})),
+                              Q_ARG(QDBusMessage, message()),
+                              Q_ARG(bool, true));
     return true;
 
     QVariantMap patchData = m_metadata[patch];
@@ -573,7 +578,10 @@ bool PatchManagerObject::unapplyPatch(const QString &patch)
     if (calledFromDBus()) {
         msg = message();
     }
-    postCustomEvent(PatchManagerEvent::UnapplyPatchManagerEventType, QVariantMap({{QStringLiteral("name"), patch}}), msg);
+    QMetaObject::invokeMethod(this, NAME(doPatch), Qt::QueuedConnection,
+                              Q_ARG(QVariantMap, QVariantMap({{QStringLiteral("name"), patch}})),
+                              Q_ARG(QDBusMessage, message()),
+                              Q_ARG(bool, false));
     return true;
 
     QVariantMap patchData = m_metadata[patch];
@@ -616,42 +624,14 @@ bool PatchManagerObject::unapplyAllPatches()
     return ok;
 }
 
-bool PatchManagerObject::installPatch(const QString &patch, const QString &json, const QString &archive)
+bool PatchManagerObject::installPatch(const QString &patch, const QString &version, const QString &url)
 {
     qDebug() << Q_FUNC_INFO << patch;
-    const QString patchPath = QStringLiteral("%1/%2").arg(PATCHES_DIR, patch);
-    const QString jsonPath = QStringLiteral("%1/%2").arg(patchPath, PATCH_FILE);
-    QFile archiveFile(archive);
-    QDir patchDir(patchPath);
-    bool result = false;
-    if (patchDir.exists()) {
-        patchDir.removeRecursively();
-    }
-    if (archiveFile.exists() && patchDir.mkpath(patchPath)) {
-        QFile jsonFile(jsonPath);
-        if (jsonFile.open(QFile::WriteOnly)) {
-            jsonFile.write(json.toLatin1());
-            jsonFile.close();
-
-            QProcess proc;
-            int ret = 0;
-            if (archive.endsWith(".zip")) {
-                ret = proc.execute("/usr/bin/unzip", QStringList() << archive << "-d" << patchPath);
-            } else {
-                ret = proc.execute("/bin/tar", QStringList() << "xzf" << archive << "-C" << patchPath);
-            }
-            if (ret == 0) {
-                refreshPatchList();
-                result = true;
-            } else {
-                patchDir.removeRecursively();
-            }
-        }
-    }
-    if (archiveFile.exists()) {
-        archiveFile.remove();
-    }
-    return result;
+    setDelayedReply(true);
+    QMetaObject::invokeMethod(this, NAME(doInstallPatch), Qt::QueuedConnection,
+                              Q_ARG(QVariantMap, QVariantMap({{"patch", patch}, {"version", version}, {"url", url}})),
+                              Q_ARG(QDBusMessage, message()));
+    return true;
 }
 
 bool PatchManagerObject::uninstallPatch(const QString &patch)
@@ -662,8 +642,9 @@ bool PatchManagerObject::uninstallPatch(const QString &patch)
     if (m_appliedPatches.contains(patch)) {
         unapplyPatch(patch);
     }
-
-    postCustomEvent(PatchManagerEvent::UninstallPatchManagerEventType, {{"patch", patch}}, message());
+    QMetaObject::invokeMethod(this, NAME(doUninstallPatch), Qt::QueuedConnection,
+                              Q_ARG(QString, patch),
+                              Q_ARG(QDBusMessage, message()));
     return true;
 }
 
@@ -675,8 +656,9 @@ bool PatchManagerObject::resetPatchState(const QString &patch)
     if (m_appliedPatches.contains(patch)) {
         unapplyPatch(patch);
     }
-
-    postCustomEvent(PatchManagerEvent::ResetStatePatchManagerEventType, {{"patch", patch}}, message());
+    QMetaObject::invokeMethod(this, NAME(doResetPatchState), Qt::QueuedConnection,
+                              Q_ARG(QString, patch),
+                              Q_ARG(QDBusMessage, message()));
     return true;
 }
 
@@ -685,21 +667,26 @@ int PatchManagerObject::checkVote(const QString &patch)
     DBUS_GUARD(0)
     qDebug() << Q_FUNC_INFO << patch;
     setDelayedReply(true);
-    postCustomEvent(PatchManagerEvent::CheckVotePatchManagerEventType, {{"patch", patch}}, message());
+    QMetaObject::invokeMethod(this, NAME(doCheckVote), Qt::QueuedConnection,
+                              Q_ARG(QString, patch),
+                              Q_ARG(QDBusMessage, message()));
     return 0;
 }
 
 void PatchManagerObject::votePatch(const QString &patch, int action)
 {
     qDebug() << Q_FUNC_INFO << patch << action;
-    postCustomEvent(PatchManagerEvent::VotePatchManagerEventType, {{"patch", patch}, {"action", action}}, message());
+    QMetaObject::invokeMethod(this, NAME(sendVote), Qt::QueuedConnection,
+                              Q_ARG(QString, patch),
+                              Q_ARG(int, action));
 }
 
 QString PatchManagerObject::checkEaster()
 {
     DBUS_GUARD(QString())
     qDebug() << Q_FUNC_INFO;
-    postCustomEvent(PatchManagerEvent::CheckEasterPatchManagerEventType, QVariantMap(), message());
+    QMetaObject::invokeMethod(this, NAME(doCheckEaster), Qt::QueuedConnection,
+                              Q_ARG(QDBusMessage, message()));
     return QString();
 }
 
@@ -708,7 +695,9 @@ QVariantList PatchManagerObject::downloadCatalog(const QVariantMap &params)
     DBUS_GUARD(QVariantList())
     qDebug() << Q_FUNC_INFO << params;
     setDelayedReply(true);
-    postCustomEvent(PatchManagerEvent::DownloadCatalogPatchManagerEventType, params, message());
+    QMetaObject::invokeMethod(this, NAME(requestDownloadCatalog), Qt::QueuedConnection,
+                              Q_ARG(QVariantMap, params),
+                              Q_ARG(QDBusMessage, message()));
     return QVariantList();
 }
 
@@ -717,7 +706,9 @@ QVariantMap PatchManagerObject::downloadPatchInfo(const QString &name)
     DBUS_GUARD(QVariantMap())
     qDebug() << Q_FUNC_INFO << name;
     setDelayedReply(true);
-    postCustomEvent(PatchManagerEvent::DownloadPatchPatchManagerEventType, {{"name", name}}, message());
+    QMetaObject::invokeMethod(this, NAME(requestDownloadPatchInfo), Qt::QueuedConnection,
+                              Q_ARG(QString, name),
+                              Q_ARG(QDBusMessage, message()));
     return QVariantMap();
 }
 
@@ -725,7 +716,7 @@ void PatchManagerObject::checkForUpdates()
 {
     DBUS_GUARD()
     qDebug() << Q_FUNC_INFO;
-    postCustomEvent(PatchManagerEvent::CheckForUpdatesPatchManagerEventType, QVariantMap(), QDBusMessage());
+    QMetaObject::invokeMethod(this, NAME(requestCheckForUpdates), Qt::QueuedConnection);
 }
 
 //void PatchManagerObject::checkPatches()
@@ -766,84 +757,12 @@ void PatchManagerObject::checkForUpdates()
 //    refreshPatchList();
 //}
 
-void PatchManagerObject::quit()
-{
-    qDebug() << Q_FUNC_INFO;
-    // because QCoreApplication::quit() does note care of us
-    QCoreApplication::postEvent(QCoreApplication::instance(), new QEvent(QEvent::Quit));
-}
-
 bool PatchManagerObject::eventFilter(QObject *watched, QEvent *event)
 {
     if (qEnvironmentVariableIsSet("PM_DEBUG_EVENTFILTER")) {
         qDebug() << watched << event->type();
     }
-    if (event->type() == QEvent::Quit && m_havePendingEvent) {
-        qWarning() << "Ignoring QEvent::Quit because of pending events";
-        return true;
-    }
     return QObject::eventFilter(watched, event);
-}
-
-void PatchManagerObject::customEvent(QEvent *e)
-{
-    if (!s_customEventTypes.contains(e->type())) {
-        return;
-    }
-    if (m_havePendingEvent) {
-        m_havePendingEvent = false;
-    }
-    PatchManagerEvent *pmEvent = static_cast<PatchManagerEvent*>(e);
-    qDebug() << pmEvent->myEventType << pmEvent->myData;
-    switch (pmEvent->myEventType) {
-    case PatchManagerEvent::RegisterDBusServicePatchManagerEventType:
-        doRegisterDBus();
-        break;
-    case PatchManagerEvent::PrepareCacheRootPatchManagerEventType:
-        doPrepareCacheRoot();
-        break;
-    case PatchManagerEvent::RefreshPatchManagerEventType:
-        doRefreshPatchList();
-        break;
-    case PatchManagerEvent::ListPatchesPatchManagerEventType:
-        doListPatches(pmEvent->myMessage);
-        break;
-    case PatchManagerEvent::ApplyPatchManagerEventType:
-        doPatch(pmEvent->myData, pmEvent->myMessage, true);
-        break;
-    case PatchManagerEvent::UnapplyPatchManagerEventType:
-        doPatch(pmEvent->myData, pmEvent->myMessage, false);
-        break;
-    case PatchManagerEvent::UnapplyAllPatchManagerEventType:
-        break;
-    case PatchManagerEvent::UninstallPatchManagerEventType:
-        doUninstallPatch(pmEvent->myData.value(QStringLiteral("patch")).toString(), pmEvent->myMessage);
-        break;
-    case PatchManagerEvent::DownloadCatalogPatchManagerEventType:
-        requestDownloadCatalog(pmEvent->myData, pmEvent->myMessage);
-        break;
-    case PatchManagerEvent::DownloadPatchPatchManagerEventType:
-        requestDownloadPatchInfo(pmEvent->myData.value(QStringLiteral("name")).toString(), pmEvent->myMessage);
-        break;
-    case PatchManagerEvent::CheckForUpdatesPatchManagerEventType:
-        requestCheckForUpdates();
-        break;
-    case PatchManagerEvent::CheckVotePatchManagerEventType:
-        doCheckVote(pmEvent->myData.value(QStringLiteral("patch")).toString(), pmEvent->myMessage);
-        break;
-    case PatchManagerEvent::VotePatchManagerEventType:
-        sendVote(pmEvent->myData.value(QStringLiteral("patch")).toString(), pmEvent->myData.value(QStringLiteral("action")).toInt());
-        break;
-    case PatchManagerEvent::CheckEasterPatchManagerEventType:
-        doCheckEaster(pmEvent->myMessage);
-        break;
-    case PatchManagerEvent::ResetStatePatchManagerEventType:
-        doResetPatchState(pmEvent->myData.value(QStringLiteral("patch")).toString(), pmEvent->myMessage);
-        break;
-    default:
-        qWarning() << "Unhandled event!" << pmEvent->myEventType;
-        break;
-    }
 }
 
 void PatchManagerObject::onLipstickChanged(const QString &, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
@@ -867,6 +786,10 @@ void PatchManagerObject::onTimerAction()
 void PatchManagerObject::startReadingLocalServer()
 {
     QLocalSocket *clientConnection = m_localServer->nextPendingConnection();
+    if (!clientConnection) {
+        qWarning() << Q_FUNC_INFO << "Got empty connection!";
+        return;
+    }
     qDebug() << Q_FUNC_INFO << "Got new connection" << clientConnection << clientConnection->state();
     if (clientConnection->state() != QLocalSocket::ConnectedState) {
         qWarning() << "Socket client is not connected yet!";
@@ -885,27 +808,43 @@ void PatchManagerObject::readFromLocalClient()
     if (!clientConnection) {
         return;
     }
-    if (clientConnection->bytesAvailable() > 0) {
-        QByteArray payload = clientConnection->readAll();
-        qWarning() << Q_FUNC_INFO << "Requested:" << payload << payload.size();
-        const QString fakePath = QStringLiteral("/tmp/patchmanager%1").arg(QString::fromLatin1(payload));
-        if (QFileInfo::exists(fakePath)) {
-            payload = fakePath.toLatin1();
-        }
-
-// TODO: return files from fakeroot
-        qWarning() << Q_FUNC_INFO << "Sending:" << payload;
-        clientConnection->write(payload);
-        clientConnection->flush();
-        clientConnection->waitForBytesWritten();
-    } else {
+    if (clientConnection->bytesAvailable() <= 0) {
         qWarning() << Q_FUNC_INFO << "Nothing to read";
     }
+    QByteArray payload = clientConnection->readAll();
+    qWarning() << Q_FUNC_INFO << "Requested:" << payload;
+    const QString fakePath = QStringLiteral("%1%2").arg(patchmanager_cache_root, QString::fromLatin1(payload));
+    if (QFileInfo::exists(fakePath)) {
+        payload = fakePath.toLatin1();
+    }
+    qWarning() << Q_FUNC_INFO << "Sending:" << payload;
+    clientConnection->write(payload);
+    clientConnection->flush();
+//    clientConnection->waitForBytesWritten();
 }
 
 void PatchManagerObject::onOriginalFileChanged(const QString &path)
 {
     qWarning() << Q_FUNC_INFO << path;
+
+    if (!m_fileToPatch.contains(path)) {
+        return;
+    }
+
+    QStringList patches = m_fileToPatch[path];
+    for (const QString &patch : patches) {
+        if (!m_appliedPatches.contains(patch)) {
+            patches.removeAll(patch);
+        }
+    }
+
+    for (const QString &patch : patches) {
+        doPatch(patch, false);
+    }
+
+    for (const QString &patch : patches) {
+        doPatch(patch, true);
+    }
 }
 
 void PatchManagerObject::doRefreshPatchList()
@@ -918,10 +857,10 @@ void PatchManagerObject::doRefreshPatchList()
     if (file.open(QFile::ReadOnly)) {
         while (!file.atEnd()) {
             const QString line = QString::fromLatin1(file.readLine());
-            qDebug() << line;
             QStringList splitted = line.split(QChar(' '));
             if (splitted.count() == 2) {
                 m_appliedPatches.insert(splitted.first());
+                qDebug() << splitted.first();
             }
         }
         file.close();
@@ -1027,28 +966,40 @@ void PatchManagerObject::doListPatches(const QDBusMessage &message)
     sendMessageReply(message, result);
 }
 
-void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &message, bool apply)
+bool PatchManagerObject::doPatch(const QString &patchName, bool apply)
 {
-    qDebug() << Q_FUNC_INFO << params << apply;
-    const QString &patch = params.value(QStringLiteral("name")).toString();
-
-    doPrepareCache(patch, apply);
-
-    QVariantMap patchData = m_metadata[patch];
-    QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
+    qDebug() << Q_FUNC_INFO << patchName << apply;
+    if (apply) {
+        doPrepareCache(patchName, apply);
+    }
 
     QProcess process;
     process.setProgram(apply ? AUSMT_INSTALL : AUSMT_REMOVE);
 
     QStringList arguments;
-    arguments.append(patch);
+    arguments.append(patchName);
 
     process.setArguments(arguments);
     qDebug() << "Starting:" << process.program() << process.arguments();
     process.start();
     process.waitForFinished(-1);
 
-    bool ok = (process.exitCode() == 0);
+    if (!apply) {
+        doPrepareCache(patchName, apply);
+    }
+
+    return process.exitCode() == 0;
+}
+
+void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &message, bool apply)
+{
+    qDebug() << Q_FUNC_INFO << params << apply;
+    const QString &patch = params.value(QStringLiteral("name")).toString();
+
+    QVariantMap patchData = m_metadata[patch];
+    QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
+
+    bool ok = doPatch(patch, apply);
     qDebug() << "ok:" << ok;
     if (ok) {
         if (apply) {
@@ -1130,6 +1081,129 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
 void PatchManagerObject::doResetPatchState(const QString &patch, const QDBusMessage &message)
 {
     sendMessageReply(message, m_appliedPatches.remove(patch));
+}
+
+void PatchManagerObject::doInstallPatch(const QVariantMap &params, const QDBusMessage &message)
+{
+    qWarning() << Q_FUNC_INFO << params;
+
+    const QString &patch = params.value(QStringLiteral("name")).toString();
+    const QString &version = params.value(QStringLiteral("version")).toString();
+    const QString &jsonUrl = QStringLiteral("%1/%2").arg(CATALOG_URL, PROJECT_PATH);
+
+    QUrl url(jsonUrl);
+    QUrlQuery query;
+    query.addQueryItem("name", patch);
+    query.addQueryItem("version", version);
+    url.setQuery(query);
+
+    QNetworkRequest request(url);
+    QNetworkReply *reply = m_nam->get(request);
+    QObject::connect(reply, &QNetworkReply::finished, [reply, message, params, this](){
+        if (reply->bytesAvailable() <= 0) {
+            sendMessageError(message, QStringLiteral("Cannot get json"));
+            return;
+        }
+        QByteArray json = reply->readAll();
+
+        QJsonParseError error;
+        QJsonDocument::fromJson(json, &error);
+
+        if (error.error != QJsonParseError::NoError) {
+            sendMessageError(message, QStringLiteral("Error parsing json"));
+        }
+        QVariantMap newParams = params;
+        newParams.insert(QStringLiteral("json"), QString::fromUtf8(json));
+        downloadPatchArchive(newParams, message);
+    });
+    QObject::connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), [reply](QNetworkReply::NetworkError networkError){
+        qWarning() << "Download file error:" << networkError << reply->errorString();
+    });
+    QObject::connect(reply, &QNetworkReply::sslErrors, [reply](const QList<QSslError> &errors){
+        for (const QSslError &sslError : errors) {
+            qWarning() << "ignoring ssl error:" << sslError.errorString();
+        }
+        reply->ignoreSslErrors(errors);
+    });
+}
+
+void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const QDBusMessage &message)
+{
+    const QString &url = params.value(QStringLiteral("url")).toString();
+    const QString &patch = params.value(QStringLiteral("name")).toString();
+    const QString &json = params.value(QStringLiteral("json")).toString();
+    const QString &archive = QStringLiteral("/tmp/%1").arg(url.section(QChar('/'), -1));
+
+    QFile *archiveFile = new QFile(archive, this);
+    if (!archiveFile->open(QFile::WriteOnly)) {
+        return;
+    }
+    QNetworkRequest request(url);
+    QNetworkReply *reply = m_nam->get(request);
+    QObject::connect(reply, &QNetworkReply::finished, [message, patch, archiveFile, archive, json, this](){
+        if (!archiveFile) {
+            sendMessageError(message, QStringLiteral("Lost in the wild"));
+            return;
+        }
+        archiveFile->close();
+
+        const QString patchPath = QStringLiteral("%1/%2").arg(PATCHES_DIR, patch);
+        const QString jsonPath = QStringLiteral("%1/%2").arg(patchPath, PATCH_FILE);
+
+        QDir patchDir(patchPath);
+        if (patchDir.exists()) {
+            patchDir.removeRecursively();
+        }
+        if (!archiveFile->exists() || !patchDir.mkpath(patchPath)) {
+            archiveFile->deleteLater();
+            sendMessageError(message, QStringLiteral("Error operating with files"));
+            return;
+        }
+        QFile jsonFile(jsonPath);
+        if (!jsonFile.open(QFile::WriteOnly)) {
+            archiveFile->deleteLater();
+            sendMessageError(message, QStringLiteral("Error saving json"));
+            return;
+        }
+
+        jsonFile.write(json.toLatin1());
+        jsonFile.close();
+
+        QProcess proc;
+        int ret = 0;
+        if (archive.endsWith(QStringLiteral(".zip"))) {
+            ret = proc.execute(QStringLiteral("/usr/bin/unzip"), {archive, QStringLiteral("-d"), patchPath});
+        } else {
+            ret = proc.execute(QStringLiteral("/bin/tar"), {QStringLiteral("xzf"), archive, QStringLiteral("-C"), patchPath});
+        }
+        if (ret == 0) {
+            refreshPatchList();
+        } else {
+            patchDir.removeRecursively();
+        }
+
+        sendMessageReply(message, ret == 0);
+
+        if (archiveFile->exists()) {
+            archiveFile->remove();
+        }
+        archiveFile->deleteLater();
+    });
+    QObject::connect(reply, &QNetworkReply::readyRead, [archiveFile, reply](){
+        if (!archiveFile || !archiveFile->isOpen()) {
+            return;
+        }
+        archiveFile->write(reply->read(reply->bytesAvailable()));
+    });
+    QObject::connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), [reply](QNetworkReply::NetworkError networkError){
+        qWarning() << "Download file error:" << networkError << reply->errorString();
+    });
+    QObject::connect(reply, &QNetworkReply::sslErrors, [reply](const QList<QSslError> &errors){
+        for (const QSslError &sslError : errors) {
+            qWarning() << "ignoring ssl error:" << sslError.errorString();
+        }
+        reply->ignoreSslErrors(errors);
+    });
 }
 
 void PatchManagerObject::doUninstallPatch(const QString &patch, const QDBusMessage &message)
@@ -1233,6 +1307,39 @@ void PatchManagerObject::sendActivation(const QString &patch, const QString &ver
     //QObject::connect(reply, &QNetworkReply::finished, this, &PatchManager::onServerReplied);
 }
 
+void PatchManagerObject::downloadPatch(const QString &patch, const QUrl &url, const QString &file)
+{
+    QFile *f = new QFile(file, this);
+    if (!f->open(QFile::WriteOnly)) {
+        return;
+    }
+    QNetworkRequest request(url);
+    QNetworkReply *reply = m_nam->get(request);
+    QObject::connect(reply, &QNetworkReply::finished, [patch, f](){
+        if (!f) {
+            return;
+        }
+        f->close();
+        f->deleteLater();
+        // TODO emit download complete
+    });
+    QObject::connect(reply, &QNetworkReply::readyRead, [f, reply](){
+        if (!f || !f->isOpen()) {
+            return;
+        }
+        f->write(reply->read(reply->bytesAvailable()));
+    });
+    QObject::connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), [reply](QNetworkReply::NetworkError networkError){
+        qWarning() << "Download file error:" << networkError << reply->errorString();
+    });
+    QObject::connect(reply, &QNetworkReply::sslErrors, [reply](const QList<QSslError> &errors){
+        for (const QSslError &sslError : errors) {
+            qWarning() << "ignoring ssl error:" << sslError.errorString();
+        }
+        reply->ignoreSslErrors(errors);
+    });
+}
+
 void PatchManagerObject::requestDownloadCatalog(const QVariantMap &params, const QDBusMessage &message)
 {
     qDebug() << Q_FUNC_INFO << params;
@@ -1302,12 +1409,6 @@ void PatchManagerObject::requestCheckForUpdates()
     //
 }
 
-void PatchManagerObject::postCustomEvent(PatchManagerEvent::PatchManagerEventType eventType, const QVariantMap &data, const QDBusMessage &message)
-{
-    m_havePendingEvent = true;
-    PatchManagerEvent::post(eventType, this, data, message);
-}
-
 void PatchManagerObject::sendMessageReply(const QDBusMessage &message, const QVariant &result)
 {
     QDBusMessage replyMessage = message.createReply(result);
@@ -1325,34 +1426,11 @@ void PatchManagerObject::sendMessageError(const QDBusMessage &message, const QSt
 void PatchManagerObject::refreshPatchList()
 {
     qDebug() << Q_FUNC_INFO;
-    postCustomEvent(PatchManagerEvent::RefreshPatchManagerEventType, QVariantMap(), QDBusMessage());
+    QMetaObject::invokeMethod(this, NAME(doRefreshPatchList), Qt::QueuedConnection);
 }
 
 void PatchManagerObject::prepareCacheRoot()
 {
     qDebug() << Q_FUNC_INFO;
-    postCustomEvent(PatchManagerEvent::PrepareCacheRootPatchManagerEventType, QVariantMap(), QDBusMessage());
-}
-
-PatchManagerEvent::PatchManagerEvent(PatchManagerEventType eventType, const QVariantMap &data, const QDBusMessage &message)
-    : QEvent(QEvent::Type(PatchManagerEvent::customType(eventType)))
-    , myEventType(eventType)
-    , myData(data)
-    , myMessage(message)
-{
-
-}
-
-QEvent::Type PatchManagerEvent::customType(PatchManagerEventType eventType)
-{
-    if (s_customEventTypes[eventType] == QEvent::None)
-    {
-        s_customEventTypes[eventType] = static_cast<QEvent::Type>(QEvent::registerEventType());
-    }
-    return s_customEventTypes[eventType];
-}
-
-void PatchManagerEvent::post(PatchManagerEventType eventType, QObject *receiver, const QVariantMap &data, const QDBusMessage &message)
-{
-    QCoreApplication::postEvent(receiver, new PatchManagerEvent(eventType, data, message));
+    QMetaObject::invokeMethod(this, NAME(doPrepareCacheRoot), Qt::QueuedConnection);
 }

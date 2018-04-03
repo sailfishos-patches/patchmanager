@@ -30,10 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
  */
 
-# include <QtQml/qqml.h>
-# include <QtQml/QQmlExtensionPlugin>
-# include <QtQml/QQmlContext>
-# include <QtQml/QQmlEngine>
+#include <QtQml/qqml.h>
+#include <QtQml/QQmlExtensionPlugin>
+#include <QtQml/QQmlContext>
+#include <QtQml/QQmlEngine>
 #include "patchmanager.h"
 #include "webpatchesmodel.h"
 #include "webpatchdata.h"
@@ -56,14 +56,14 @@ public:
     {
         Q_ASSERT(strcmp(uri, "org.SfietKonstantin.patchmanager") == 0);
         engine->rootContext()->setContextProperty(QStringLiteral("PAYPAL_DONATE"), PAYPAL_DONATE);
-        Q_UNUSED(uri)
     }
 
     void registerTypes(const char *uri)
     {
         Q_ASSERT(strcmp(uri, "org.SfietKonstantin.patchmanager") == 0);
         qmlRegisterSingletonType<PatchManager>(uri, 2, 0, "PatchManager", patchmanager_singleton);
-        qmlRegisterUncreatableType<WebPatchesModel>(uri, 2, 0, "WebPatchesModel", "WebPatchesModel is not creatable");
+//        qmlRegisterUncreatableType<WebPatchesModel>(uri, 2, 0, "WebPatchesModel", "WebPatchesModel is not creatable"); // TODO move to server
+        qmlRegisterType<WebPatchesModel>(uri, 2, 0, "WebPatchesModel");
         qmlRegisterType<WebPatchData>(uri, 2, 0, "WebPatchData");
 
     }

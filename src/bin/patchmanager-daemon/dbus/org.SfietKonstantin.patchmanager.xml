@@ -23,8 +23,8 @@
         </method>
         <method name="installPatch">
             <arg name="patch" type="s" direction="in" />
-            <arg name="json" type="s" direction="in" />
-            <arg name="archive" type="s" direction="in" />
+            <arg name="version" type="s" direction="in" />
+            <arg name="url" type="s" direction="in" />
             <arg name="ok" type="b" direction="out" />
         </method>
         <method name="uninstallPatch">

@@ -97,9 +97,14 @@ dbus-send --system --type=method_call \
 ;;
 *) echo case "$*" not handled in post
 esac
+if grep libpreloadpatchmanager /etc/ld.so.preload > /dev/null; then
+    echo "Preload already exists"
+else
+    echo /usr/lib/libpreloadpatchmanager.so >> /etc/ld.so.preload
+fi
+/sbin/ldconfig
 systemctl daemon-reload
 systemctl restart dbus-org.SfietKonstantin.patchmanager.service
-/sbin/ldconfig
 
 %postun
 export NO_PM_PRELOAD=1
@@ -116,8 +121,9 @@ dbus-send --system --type=method_call \
 ;;
 *) echo case "$*" not handled in postun
 esac
-systemctl daemon-reload
+sed -i "/libpreloadpatchmanager/ d" /etc/ld.so.preload
 /sbin/ldconfig
+systemctl daemon-reload
 
 %files
 %defattr(-,root,root,-)

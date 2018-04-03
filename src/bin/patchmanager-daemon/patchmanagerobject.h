@@ -43,7 +43,6 @@
 #include <QDBusContext>
 #include <QDBusMessage>
 #include <QDBusVariant>
-#include <QEvent>
 #include <QFileSystemWatcher>
 
 #ifndef SERVER_URL
@@ -63,49 +62,6 @@
 #define CATALOG_URL         SERVER_URL"/"API_PATH
 #define MEDIA_URL           SERVER_URL"/"MEDIA_PATH
 
-class PatchManagerEvent : public QEvent
-{
-    Q_GADGET
-public:
-    enum PatchManagerEventType {
-        RegisterDBusServicePatchManagerEventType,
-        PrepareCacheRootPatchManagerEventType,
-
-        GetVersionPatchManagerEventType,
-
-        RefreshPatchManagerEventType,
-        ListPatchesPatchManagerEventType,
-
-        ApplyPatchManagerEventType,
-        UnapplyPatchManagerEventType,
-        UnapplyAllPatchManagerEventType,
-        ResetStatePatchManagerEventType,
-
-        DownloadCatalogPatchManagerEventType,
-        DownloadPatchPatchManagerEventType,
-        CheckForUpdatesPatchManagerEventType,
-
-        ActivationPatchManagerEventType,
-        CheckVotePatchManagerEventType,
-        VotePatchManagerEventType,
-        CheckEasterPatchManagerEventType,
-
-        InstallPatchManagerEventType,
-        UninstallPatchManagerEventType,
-
-        PatchManagerEventTypeCount
-    };
-    Q_ENUM(PatchManagerEventType)
-
-    explicit PatchManagerEvent(PatchManagerEventType eventType, const QVariantMap &data, const QDBusMessage &message);
-    static QEvent::Type customType(PatchManagerEventType eventType);
-    const PatchManagerEventType myEventType;
-    const QVariantMap myData;
-    const QDBusMessage myMessage;
-
-    static void post(PatchManagerEventType eventType, QObject *receiver, const QVariantMap &data, const QDBusMessage &message);
-};
-
 class QTimer;
 class QSettings;
 class QNetworkAccessManager;
@@ -120,7 +76,6 @@ public:
 
 public slots:
     void process();
-    void quit();
 
     QVariantList listPatches();
     QVariantMap listVersions();
@@ -128,7 +83,7 @@ public slots:
     bool applyPatch(const QString &patch);
     bool unapplyPatch(const QString &patch);
     bool unapplyAllPatches();
-    bool installPatch(const QString &patch, const QString &json, const QString &archive);
+    bool installPatch(const QString &patch, const QString &version, const QString &url);
     bool uninstallPatch(const QString &patch);
     bool resetPatchState(const QString &patch);
 
@@ -143,7 +98,6 @@ public slots:
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
-    void customEvent(QEvent *e);
 
 private slots:
     void onLipstickChanged(const QString &, const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
@@ -154,37 +108,45 @@ private slots:
 
     void onOriginalFileChanged(const QString &path);
 
-private:
-    void registerDBus();
+private slots:
     void doRegisterDBus();
     void doPrepareCacheRoot();
     void doPrepareCache(const QString &patchName, bool apply = true);
 
-    void initialize();
-
-    QString checkRpmPatch(const QString &patch) const;
-
     void doRefreshPatchList();
     void doListPatches(const QDBusMessage &message);
 
+    bool doPatch(const QString &patchName, bool apply);
     void doPatch(const QVariantMap &params, const QDBusMessage &message, bool apply);
     void doResetPatchState(const QString &patch, const QDBusMessage &message);
 
+    void doInstallPatch(const QVariantMap &params, const QDBusMessage &message);
+    void downloadPatchArchive(const QVariantMap &params, const QDBusMessage &message);
+
     void doUninstallPatch(const QString &patch, const QDBusMessage &message);
 
-    int getVote(const QString &patch);
     void doCheckVote(const QString &patch, const QDBusMessage &message);
     void sendVote(const QString &patch, int action);
 
     void doCheckEaster(const QDBusMessage &message);
 
-    void sendActivation(const QString & patch, const QString & version);
-
     void requestDownloadCatalog(const QVariantMap &params, const QDBusMessage &message);
     void requestDownloadPatchInfo(const QString &name, const QDBusMessage &message);
     void requestCheckForUpdates();
 
-    void postCustomEvent(PatchManagerEvent::PatchManagerEventType eventType, const QVariantMap &data, const QDBusMessage &message);
+private:
+    void registerDBus();
+
+    void initialize();
+
+    QString checkRpmPatch(const QString &patch) const;
+
+    int getVote(const QString &patch);
+
+    void sendActivation(const QString & patch, const QString & version);
+
+    void downloadPatch(const QString &patch, const QUrl &url, const QString &file);
+
     void sendMessageReply(const QDBusMessage &message, const QVariant &result);
     void sendMessageError(const QDBusMessage &message, const QString &errorString);
 
@@ -207,7 +169,6 @@ private:
 
     QString m_ssuRelease;
     PatchManagerAdaptor *m_adaptor = nullptr;
-    bool m_havePendingEvent = false;
     QNetworkAccessManager *m_nam;
 
     QFileSystemWatcher *m_originalWatcher;
