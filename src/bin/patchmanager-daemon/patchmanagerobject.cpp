@@ -244,7 +244,7 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
     , m_nam(new QNetworkAccessManager(this))
     , m_originalWatcher(new QFileSystemWatcher(this))
     , m_settings(new QSettings(newConfigLocation, QSettings::IniFormat, this))
-    , m_localServer(new QLocalServer(this))
+    , m_localServer(new QLocalServer(nullptr)) // controlled by separate thread
 {
     if (!QFileInfo::exists(newConfigLocation) && QFileInfo::exists(oldConfigLocation)) {
         QFile::copy(oldConfigLocation, newConfigLocation);
@@ -273,16 +273,31 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
 
     m_localServer->setSocketOptions(QLocalServer::WorldAccessOption);
     m_localServer->setMaxPendingConnections(2147483647);
-    connect(m_localServer, &QLocalServer::newConnection, this, &PatchManagerObject::startReadingLocalServer);
-    bool listening = m_localServer->listen(patchmanager_socket);
-    if (!listening // not listening
-            && m_localServer->serverError() == QAbstractSocket::AddressInUseError // because have error which is matching AddressInUseError
-            && QFileInfo::exists(patchmanager_socket) // socket file already exists
-            && QFile::remove(patchmanager_socket)) { // and successfully removed it
-        qWarning() << Q_FUNC_INFO << "Removed old stuck socket";
-        listening = m_localServer->listen(patchmanager_socket); // try to start lisening again
-    }
-    qDebug() << Q_FUNC_INFO << "Server listening:" << listening;
+
+    QThread *serverThread = new QThread(this);
+    m_localServer->moveToThread(serverThread);
+    connect(serverThread, &QThread::finished, this, [this](){
+        m_localServer->close();
+        m_localServer->deleteLater();
+    });
+    connect(m_localServer, &QLocalServer::newConnection, this, &PatchManagerObject::startReadingLocalServer, Qt::DirectConnection);
+    connect(serverThread, &QThread::started, this, [this](){
+        bool listening = m_localServer->listen(patchmanager_socket);
+        if (!listening // not listening
+                && m_localServer->serverError() == QAbstractSocket::AddressInUseError // because of AddressInUseError
+                && QFileInfo::exists(patchmanager_socket) // socket file already exists
+                && QFile::remove(patchmanager_socket)) { // and successfully removed it
+            qWarning() << "Removed old stuck socket";
+            listening = m_localServer->listen(patchmanager_socket); // try to start lisening again
+        } else {
+            qWarning() << "Server error:" << m_localServer->errorString();
+        }
+        qDebug() << Q_FUNC_INFO << "Server listening:" << listening;
+        if (!listening) {
+            qWarning() << "Server error:" << m_localServer->errorString();
+        }
+    }, Qt::DirectConnection);
+    serverThread->start();
 }
 
 PatchManagerObject::~PatchManagerObject()
@@ -540,7 +555,7 @@ bool PatchManagerObject::applyPatch(const QString &patch)
     }
     QMetaObject::invokeMethod(this, NAME(doPatch), Qt::QueuedConnection,
                               Q_ARG(QVariantMap, QVariantMap({{QStringLiteral("name"), patch}})),
-                              Q_ARG(QDBusMessage, message()),
+                              Q_ARG(QDBusMessage, msg),
                               Q_ARG(bool, true));
     return true;
 
@@ -580,7 +595,7 @@ bool PatchManagerObject::unapplyPatch(const QString &patch)
     }
     QMetaObject::invokeMethod(this, NAME(doPatch), Qt::QueuedConnection,
                               Q_ARG(QVariantMap, QVariantMap({{QStringLiteral("name"), patch}})),
-                              Q_ARG(QDBusMessage, message()),
+                              Q_ARG(QDBusMessage, msg),
                               Q_ARG(bool, false));
     return true;
 
@@ -790,37 +805,33 @@ void PatchManagerObject::startReadingLocalServer()
         qWarning() << Q_FUNC_INFO << "Got empty connection!";
         return;
     }
-    qDebug() << Q_FUNC_INFO << "Got new connection" << clientConnection << clientConnection->state();
     if (clientConnection->state() != QLocalSocket::ConnectedState) {
-        qWarning() << "Socket client is not connected yet!";
         clientConnection->waitForConnected();
     }
-    connect(clientConnection, &QLocalSocket::disconnected, [clientConnection](){
-        qDebug() << "Client disconnected:" << clientConnection;
+    connect(clientConnection, &QLocalSocket::disconnected, this, [clientConnection](){
         clientConnection->deleteLater();
-    });
-    connect(clientConnection, &QLocalSocket::readyRead, this, &PatchManagerObject::readFromLocalClient);
-}
-
-void PatchManagerObject::readFromLocalClient()
-{
-    QLocalSocket *clientConnection = qobject_cast<QLocalSocket*>(sender());
-    if (!clientConnection) {
-        return;
-    }
-    if (clientConnection->bytesAvailable() <= 0) {
-        qWarning() << Q_FUNC_INFO << "Nothing to read";
-    }
-    QByteArray payload = clientConnection->readAll();
-    qWarning() << Q_FUNC_INFO << "Requested:" << payload;
-    const QString fakePath = QStringLiteral("%1%2").arg(patchmanager_cache_root, QString::fromLatin1(payload));
-    if (QFileInfo::exists(fakePath)) {
-        payload = fakePath.toLatin1();
-    }
-    qWarning() << Q_FUNC_INFO << "Sending:" << payload;
-    clientConnection->write(payload);
-    clientConnection->flush();
-//    clientConnection->waitForBytesWritten();
+    }, Qt::DirectConnection);
+    connect(clientConnection, &QLocalSocket::readyRead, this, [clientConnection](){
+        if (!clientConnection) {
+            qWarning() << "Can not get socket!";
+            return;
+        }
+        const qint64 bytes = clientConnection->bytesAvailable();
+        if (bytes <= 0) {
+            clientConnection->disconnectFromServer();
+            return;
+        }
+        QByteArray payload = clientConnection->readAll();
+        qWarning() << Q_FUNC_INFO << "Requested:" << payload;
+        const QString fakePath = QStringLiteral("%1%2").arg(patchmanager_cache_root, QString::fromLatin1(payload));
+        if (QFileInfo::exists(fakePath)) {
+            payload = fakePath.toLatin1();
+        }
+        qWarning() << Q_FUNC_INFO << "Sending:" << payload;
+        clientConnection->write(payload);
+        clientConnection->flush();
+//        clientConnection->waitForBytesWritten();
+    }, Qt::DirectConnection);
 }
 
 void PatchManagerObject::onOriginalFileChanged(const QString &path)
@@ -987,12 +998,13 @@ bool PatchManagerObject::doPatch(const QString &patchName, bool apply)
     qDebug() << "Starting:" << process.program() << process.arguments();
     process.start();
     process.waitForFinished(-1);
+    const bool ret = process.exitCode() == 0;
 
-    if (!apply) {
-        doPrepareCache(patchName, apply);
+    if ((!apply && ret) || (apply && !ret)) {
+        doPrepareCache(patchName, false);
     }
 
-    return process.exitCode() == 0;
+    return ret;
 }
 
 void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &message, bool apply)
@@ -1023,7 +1035,10 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
     }
 
     if (message.isDelayedReply()) {
+        qWarning() << Q_FUNC_INFO << "Sending reply" << ok;
         sendMessageReply(message, ok);
+    } else {
+        qWarning() << Q_FUNC_INFO << "Message is not a delayed";
     }
 
     return;

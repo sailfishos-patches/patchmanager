@@ -104,7 +104,6 @@ private slots:
     void onTimerAction();
 
     void startReadingLocalServer();
-    void readFromLocalClient();
 
     void onOriginalFileChanged(const QString &path);
 
