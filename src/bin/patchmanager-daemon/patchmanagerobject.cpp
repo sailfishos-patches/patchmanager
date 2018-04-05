@@ -372,10 +372,6 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
     for (const QString &fileName : m_patchFiles.value(patchName)) {
         QFileInfo fi(fileName);
 
-        if (!fi.exists()) {
-            qWarning() << Q_FUNC_INFO << "warning!" << fileName << "does not exists!";
-            continue; // TODO: WTF?
-        }
         QDir fakeDir(QStringLiteral("%1%2").arg(patchmanager_cache_root, fi.absoluteDir().absolutePath()));
         if (!fakeDir.exists()) {
             QDir::root().mkpath(fakeDir.absolutePath());
@@ -383,13 +379,24 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 
         const QString fakeFileName = QStringLiteral("%1/%2").arg(fakeDir.absolutePath(), fi.fileName());
 
+        if (!fi.exists() && apply) {
+            qWarning() << Q_FUNC_INFO << "linking" << fileName << "to" << fakeFileName;
+            QFile::link(fakeFileName, fi.absoluteFilePath());
+            continue;
+        }
+
+        if (fi.isSymLink() && !apply) {
+            qWarning() << Q_FUNC_INFO << "Removing symlink" << fileName << "to" << fakeFileName;
+            QFile::remove(fi.absoluteFilePath());
+        }
+
         if (QFileInfo::exists(fakeFileName)) {
             if (apply) {
                 m_originalWatcher->addPath(fileName);
                 continue;
             }
 
-            if (m_fileToPatch.value(fileName).length() > 1) {
+            if (m_fileToPatch.value(fileName).length() > 1) { // TODO: should check only applied patches?
                 continue;
             }
 
