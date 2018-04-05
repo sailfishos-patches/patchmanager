@@ -68,9 +68,9 @@ export NO_PM_PRELOAD=1
 case "$*" in
 0)
 echo Uninstalling package
-if [ -d /var/lib/patchmanager/ausmt/patches/sailfishos-patchmanager-unapplyall ]; then
+#if [ -d /var/lib/patchmanager/ausmt/patches/sailfishos-patchmanager-unapplyall ]; then
 #/usr/sbin/patchmanager -u sailfishos-patchmanager-unapplyall || true
-fi
+#fi
 
 systemctl stop dbus-org.SfietKonstantin.patchmanager.service
 ;;
