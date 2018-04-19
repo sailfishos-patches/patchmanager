@@ -154,6 +154,8 @@ private:
     void notify(const QString &patch, bool apply, bool success);
 
     void getVersion();
+
+    void lateInitialize();
     void refreshPatchList();
     void prepareCacheRoot();
 

@@ -123,21 +123,23 @@ void PatchManagerModel::populateData(const QVariantList &data, const QString &pa
 
         endResetModel();
     } else {
-        for (const QVariant &var : data) {
-            const QVariantMap item = var.toMap();
-            if (item.value(QStringLiteral("patch")).toString() == patch) {
-                if (installed) {
+        if (installed) {
+            for (const QVariant &var : data) {
+                const QVariantMap item = var.toMap();
+                if (item.value(QStringLiteral("patch")).toString() == patch) {
                     beginInsertRows(QModelIndex(), m_modelData.count(), m_modelData.count());
                     PatchObject *o = new PatchObject(item, this);
                     connect(o, &PatchObject::toBeDestroyed, this, &PatchManagerModel::itemRemoved);
                     m_modelData.append(o);
                     m_patchMap[o->details()->value(QStringLiteral("patch")).toString()] = o;
                     endInsertRows();
-                } else if (m_patchMap.contains(patch)) {
-                    PatchObject *o = m_patchMap[patch];
-                    o->deleteLater();
+                    return;
                 }
-                return;
+            }
+        } else {
+            PatchObject *o = m_patchMap[patch];
+            if (!o->details()->value(QStringLiteral("patched")).toBool()) {
+                o->deleteLater();
             }
         }
     }

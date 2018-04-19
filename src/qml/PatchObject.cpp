@@ -75,11 +75,12 @@ void PatchObject::apply()
     if (m_busy) {
         return;
     }
-    setBusy(true);
 
     if (m_details->value("patched").toBool()) {
         return;
     }
+
+    setBusy(true);
     connect(PatchManager::GetInstance()->applyPatch(m_details->value("patch").toString()),
             &QDBusPendingCallWatcher::finished,
             [this](QDBusPendingCallWatcher *watcher){
@@ -100,11 +101,12 @@ void PatchObject::unapply()
     if (m_busy) {
         return;
     }
-    setBusy(true);
 
     if (!m_details->value("patched").toBool()) {
         return;
     }
+
+    setBusy(true);
     connect(PatchManager::GetInstance()->unapplyPatch(m_details->value("patch").toString()),
             &QDBusPendingCallWatcher::finished,
             [this](QDBusPendingCallWatcher *watcher){

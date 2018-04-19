@@ -216,9 +216,41 @@ void PatchManagerObject::getVersion()
     connect(watcher, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher) {
         if (!watcher->isError()) {
             m_ssuRelease = QDBusPendingReply<QString>(*watcher);
+            qDebug() << "Received ssu version:" << m_ssuRelease;
+            lateInitialize();
+        } else {
+            qWarning() << "Ssu version request error!";
+            QCoreApplication::exit(2);
         }
         watcher->deleteLater();
     });
+}
+
+void PatchManagerObject::lateInitialize()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    refreshPatchList();
+    prepareCacheRoot();
+
+    INotifyWatcher *mainWatcher = new INotifyWatcher(this);
+    mainWatcher->addPaths({ PATCHES_DIR });
+    connect(mainWatcher, &INotifyWatcher::contentChanged, [this](const QString &path, bool created) {
+        qDebug() << "contentChanged:" << path << "created:" << created;
+        refreshPatchList();
+        if (m_adaptor) {
+            emit m_adaptor->patchAltered(path, created);
+        }
+    });
+
+//    INotifyWatcher *additionalWatcher = new INotifyWatcher(this);
+//    additionalWatcher->addPaths({ PATCHES_ADDITIONAL_DIR });
+//    connect(additionalWatcher, &INotifyWatcher::contentChanged, [this](const QString &path, bool created) {
+//        qDebug() << "contentChanged:" << path << "created:" << created;
+//        refreshPatchList();
+    //    });
+
+    registerDBus();
 }
 
 QList<QVariantMap> PatchManagerObject::listPatchesFromDir(const QString &dir, QSet<QString> &existingPatches, bool existing)
@@ -270,34 +302,6 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
                                           QStringLiteral("PropertiesChanged"), this, SLOT(onLipstickChanged(QString,QVariantMap,QStringList)));
 
     connect(m_originalWatcher, &QFileSystemWatcher::fileChanged, this, &PatchManagerObject::onOriginalFileChanged);
-
-    m_localServer->setSocketOptions(QLocalServer::WorldAccessOption);
-    m_localServer->setMaxPendingConnections(2147483647);
-
-    QThread *serverThread = new QThread(this);
-    m_localServer->moveToThread(serverThread);
-    connect(serverThread, &QThread::finished, this, [this](){
-        m_localServer->close();
-        m_localServer->deleteLater();
-    });
-    connect(m_localServer, &QLocalServer::newConnection, this, &PatchManagerObject::startReadingLocalServer, Qt::DirectConnection);
-    connect(serverThread, &QThread::started, this, [this](){
-        bool listening = m_localServer->listen(patchmanager_socket);
-        if (!listening // not listening
-                && m_localServer->serverError() == QAbstractSocket::AddressInUseError // because of AddressInUseError
-                && QFileInfo::exists(patchmanager_socket) // socket file already exists
-                && QFile::remove(patchmanager_socket)) { // and successfully removed it
-            qWarning() << "Removed old stuck socket";
-            listening = m_localServer->listen(patchmanager_socket); // try to start lisening again
-        } else {
-            qWarning() << "Server error:" << m_localServer->errorString();
-        }
-        qDebug() << Q_FUNC_INFO << "Server listening:" << listening;
-        if (!listening) {
-            qWarning() << "Server error:" << m_localServer->errorString();
-        }
-    }, Qt::DirectConnection);
-    serverThread->start();
 }
 
 PatchManagerObject::~PatchManagerObject()
@@ -425,26 +429,35 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 
 void PatchManagerObject::initialize()
 {
-    getVersion();
-    refreshPatchList();
-    prepareCacheRoot();
+    m_localServer->setSocketOptions(QLocalServer::WorldAccessOption);
+    m_localServer->setMaxPendingConnections(2147483647);
 
-    INotifyWatcher *mainWatcher = new INotifyWatcher(this);
-    mainWatcher->addPaths({ PATCHES_DIR });
-    connect(mainWatcher, &INotifyWatcher::contentChanged, [this](const QString &path, bool created) {
-        qDebug() << "contentChanged:" << path << "created:" << created;
-        refreshPatchList();
-        if (m_adaptor) {
-            emit m_adaptor->patchAltered(path, created);
-        }
+    QThread *serverThread = new QThread(this);
+    m_localServer->moveToThread(serverThread);
+    connect(serverThread, &QThread::finished, this, [this](){
+        m_localServer->close();
+        m_localServer->deleteLater();
     });
+    connect(m_localServer, &QLocalServer::newConnection, this, &PatchManagerObject::startReadingLocalServer, Qt::DirectConnection);
+    connect(serverThread, &QThread::started, this, [this](){
+        bool listening = m_localServer->listen(patchmanager_socket);
+        if (!listening // not listening
+                && m_localServer->serverError() == QAbstractSocket::AddressInUseError // because of AddressInUseError
+                && QFileInfo::exists(patchmanager_socket) // socket file already exists
+                && QFile::remove(patchmanager_socket)) { // and successfully removed it
+            qWarning() << "Removed old stuck socket";
+            listening = m_localServer->listen(patchmanager_socket); // try to start lisening again
+        } else {
+            qWarning() << "Server error:" << m_localServer->serverError() << m_localServer->errorString();
+        }
+        qDebug() << Q_FUNC_INFO << "Server listening:" << listening;
+        if (!listening) {
+            qWarning() << "Server error:" << m_localServer->serverError() << m_localServer->errorString();
+        }
+    }, Qt::DirectConnection);
+    serverThread->start();
 
-//    INotifyWatcher *additionalWatcher = new INotifyWatcher(this);
-//    additionalWatcher->addPaths({ PATCHES_ADDITIONAL_DIR });
-//    connect(additionalWatcher, &INotifyWatcher::contentChanged, [this](const QString &path, bool created) {
-//        qDebug() << "contentChanged:" << path << "created:" << created;
-//        refreshPatchList();
-    //    });
+    getVersion();
 }
 
 QString PatchManagerObject::checkRpmPatch(const QString &patch) const
@@ -470,8 +483,12 @@ void PatchManagerObject::process()
     qDebug() << Q_FUNC_INFO;
     const QStringList args = QCoreApplication::arguments();
 
-    QDBusConnection connection = QDBusConnection::systemBus();
-    if (connection.interface()->isServiceRegistered(DBUS_SERVICE_NAME)) {
+    if (args.count() == 2 && args.last() == QStringLiteral("--daemon")) {
+        initialize();
+    } else if (args.count() > 1) {
+        QDBusConnection connection = QDBusConnection::systemBus();
+        qDebug() << "Have arguments, sending dbus message and quit";
+
         QString method;
         QVariantList data;
         if (args[1] == QStringLiteral("-a")) {
@@ -502,27 +519,8 @@ void PatchManagerObject::process()
         }
         connection.send(msg);
 
-        QCoreApplication::exit(2);
+        QCoreApplication::exit(0);
         return;
-    }
-
-    initialize();
-    registerDBus();
-
-    if (args[1] == QStringLiteral("-a")) {
-        if (args.length() < 3) {
-            return;
-        } else {
-            applyPatch(args[2]);
-        }
-    } else if (args[1] == QStringLiteral("-u")) {
-        if (args.length() < 3) {
-            return;
-        } else {
-            unapplyPatch(args[2]);
-        }
-    } else if (args[1] == QStringLiteral("--unapply-all")) {
-        unapplyAllPatches();
     }
 }
 
