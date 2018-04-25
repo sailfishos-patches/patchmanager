@@ -113,6 +113,7 @@ case "$*" in
 echo Uninstalling package
 dbus-send --system --type=method_call \
 --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+sed -i "/libpreloadpatchmanager/ d" /etc/ld.so.preload
 ;;
 1)
 echo Upgrading package
@@ -121,7 +122,6 @@ dbus-send --system --type=method_call \
 ;;
 *) echo case "$*" not handled in postun
 esac
-sed -i "/libpreloadpatchmanager/ d" /etc/ld.so.preload
 /sbin/ldconfig
 systemctl daemon-reload
 
