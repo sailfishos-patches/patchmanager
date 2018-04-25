@@ -47,6 +47,16 @@
             <arg name="patch" type="s" direction="in" />
             <arg name="vote" type="i" direction="out" />
         </method>
+        <method name="putSettings">
+            <arg name="name" type="s" direction="in" />
+            <arg name="value" type="v" direction="in" />
+            <arg name="result" type="b" direction="out" />
+        </method>
+        <method name="getSettings">
+            <arg name="name" type="s" direction="in" />
+            <arg name="def" type="v" direction="in" />
+            <arg name="value" type="v" direction="out" />
+        </method>
         <method name="checkEaster">
             <arg name="easter" type="s" direction="out" />
         </method>

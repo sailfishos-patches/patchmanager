@@ -302,6 +302,9 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
                                           QStringLiteral("PropertiesChanged"), this, SLOT(onLipstickChanged(QString,QVariantMap,QStringList)));
 
     connect(m_originalWatcher, &QFileSystemWatcher::fileChanged, this, &PatchManagerObject::onOriginalFileChanged);
+
+    m_localServer->setSocketOptions(QLocalServer::WorldAccessOption);
+    m_localServer->setMaxPendingConnections(2147483647);
 }
 
 PatchManagerObject::~PatchManagerObject()
@@ -359,8 +362,20 @@ void PatchManagerObject::doPrepareCacheRoot()
 {
     qWarning() << Q_FUNC_INFO;
     // TODO: think about security issues here
+
+
+    QStringList order = getSettings("order", QStringList()).toStringList();
+
+    for (const QString &patchName : order) {
+        if (m_appliedPatches.contains(patchName)) {
+            doPatch(patchName, true);
+        }
+    }
+
     for (const QString &patchName : m_appliedPatches) {
-        doPatch(patchName, true);
+        if (!order.contains(patchName)) {
+            doPatch(patchName, true);
+        }
     }
 }
 
@@ -429,9 +444,6 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 
 void PatchManagerObject::initialize()
 {
-    m_localServer->setSocketOptions(QLocalServer::WorldAccessOption);
-    m_localServer->setMaxPendingConnections(2147483647);
-
     QThread *serverThread = new QThread(this);
     m_localServer->moveToThread(serverThread);
     connect(serverThread, &QThread::finished, this, [this](){
@@ -739,6 +751,35 @@ void PatchManagerObject::checkForUpdates()
     QMetaObject::invokeMethod(this, NAME(requestCheckForUpdates), Qt::QueuedConnection);
 }
 
+bool PatchManagerObject::putSettings(const QString &name, const QDBusVariant &value)
+{
+    return putSettings(name, value.variant());
+}
+
+QDBusVariant PatchManagerObject::getSettings(const QString &name, const QDBusVariant &def)
+{
+    return QDBusVariant(getSettings(name, def.variant()));
+}
+
+bool PatchManagerObject::putSettings(const QString &name, const QVariant &value)
+{
+    qDebug() << Q_FUNC_INFO << name << value;
+    QString key = QStringLiteral("settings/%1").arg(name);
+    QVariant old = m_settings->value(key);
+    if (old != value) {
+        m_settings->setValue(key ,value);
+        return true;
+    }
+    return false;
+}
+
+QVariant PatchManagerObject::getSettings(const QString &name, const QVariant &def)
+{
+    qDebug() << Q_FUNC_INFO << name << def;
+    QString key = QStringLiteral("settings/%1").arg(name);
+    return m_settings->value(key, def);
+}
+
 //void PatchManagerObject::checkPatches()
 //{
 //    QList<Patch> patches = listPatches();
@@ -980,9 +1021,25 @@ void PatchManagerObject::doListPatches(const QDBusMessage &message)
 {
     qDebug() << Q_FUNC_INFO;
     QVariantList result;
-    for (const QVariantMap &patch : m_metadata) {
-        result.append(patch);
+    QStringList order = getSettings("order", QStringList()).toStringList();
+    qDebug() << order;
+
+    for (const QString &patchName : order) {
+        if (m_metadata.contains(patchName)) {
+            result.append(m_metadata.value(patchName));
+        }
     }
+
+    for (const QString &patchName : m_metadata.keys()) {
+        if (!order.contains(patchName)) {
+            result.append(m_metadata.value(patchName));
+        }
+    }
+
+//    for (const QVariantMap &patch : m_metadata) {
+
+//        result.append(patch);
+//    }
     sendMessageReply(message, result);
 }
 

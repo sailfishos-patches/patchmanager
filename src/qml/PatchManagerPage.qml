@@ -141,11 +141,12 @@ Page {
 //            id: patchModel
 //        }
         model: PatchManager.installedModel
-        section.criteria: ViewSection.FullString
-        section.delegate: SectionHeader {
-            text: section
-        }
-        section.property: "section"
+
+//        section.criteria: ViewSection.FullString
+//        section.delegate: SectionHeader {
+//            text: section
+//        }
+//        section.property: "section"
 
         property bool busy
         signal unapplyAll
@@ -153,16 +154,134 @@ Page {
         signal applyPatchFinished(string patchName)
         signal unapplyPatchFinished(string patchName)
 
+        add: Transition {
+            SequentialAnimation {
+                NumberAnimation { properties: "z"; to: -1; duration: 1 }
+                NumberAnimation { properties: "opacity"; to: 0.0; duration: 1 }
+                NumberAnimation { properties: "x,y"; duration: 1 }
+                NumberAnimation { properties: "z"; to: 0; duration: 200 }
+                NumberAnimation { properties: "opacity"; from: 0.0; to: 1.0; duration: 100 }
+            }
+        }
+        remove: Transition {
+            ParallelAnimation {
+                NumberAnimation { properties: "z"; to: -1; duration: 1 }
+                NumberAnimation { properties: "x"; to: 0; duration: 100 }
+                NumberAnimation { properties: "opacity"; to: 0.0; duration: 100 }
+            }
+        }
+        displaced: Transition {
+            NumberAnimation { properties: "x,y"; duration: 200 }
+        }
+
         delegate: ListItem {
             id: background
             menu: contextMenu
             contentHeight: content.height
             property bool canApply: true
             property bool applying: !appliedSwitch.enabled
+            property int dragThreshold: width / 3
+            property var pressPosition
+            property int dragIndex: index
+            onDragIndexChanged: {
+                if (drag.target) {
+                    view.model.move(index, dragIndex)
+                }
+            }
             enabled: !view.busy
 
             Component.onCompleted: {
                 console.log("Constructing delegate for:", patchObject.details.patch)
+            }
+
+            onPressed: {
+                pressPosition = Qt.point(mouse.x, mouse.y)
+            }
+
+            onPositionChanged: {
+                var deltaX = pressPosition.x - mouse.x
+                if (drag.target) {
+                    if (content.y < view.contentY && view.contentY > 0) {
+                        sctollTopTimer.start()
+                        sctollBottomTimer.stop()
+                    } else if ((content.y + content.height) > view.height && (view.contentY + view.height) < view.contentHeight) {
+                        sctollBottomTimer.start()
+                        sctollTopTimer.stop()
+                    } else {
+                        sctollTopTimer.stop()
+                        sctollBottomTimer.stop()
+                    }
+                } else {
+                    if (deltaX > dragThreshold) {
+                        var newPos = mapToItem(view.contentItem, mouse.x, mouse.y)
+                        content.parent = view.contentItem
+                        content.x = newPos.x - pressPosition.x
+                        content.y = newPos.y - pressPosition.y
+                        drag.target = content
+                    } else if (deltaX > 0) {
+                        content.x = -deltaX
+                    } else {
+                        content.x = 0
+                    }
+                }
+            }
+
+            Timer {
+                id: sctollTopTimer
+                repeat: true
+                interval: 1
+                onTriggered: {
+                    if (view.contentY > 0) {
+                        view.contentY -= 5
+                        content.y -= 5
+                    } else {
+                        view.contentY = 0
+//                        content.y = 0
+                    }
+                }
+            }
+
+            Timer {
+                id: sctollBottomTimer
+                repeat: true
+                interval: 1
+                onTriggered: {
+                    if ((view.contentY + view.height) < view.contentHeight) {
+                        view.contentY += 5
+                        content.y += 5
+                    } else {
+                        view.contentY = view.contentHeight - view.height
+//                        content.y = view.contentHeight - view.height
+                    }
+                }
+            }
+
+            function reset() {
+                if (!drag.target) {
+                    content.x = 0
+                }
+                view.model.saveLayout()
+                sctollTopTimer.stop()
+                sctollBottomTimer.stop()
+                drag.target = null
+                var ctod = content.mapToItem(background, content.x, content.y)
+                ctod.x = ctod.x - content.x
+                ctod.y = ctod.y - content.y
+                content.parent = background
+                content.x = ctod.x
+                content.y = ctod.y
+                backAnimation.start()
+            }
+
+            onReleased: reset()
+            onCanceled: reset()
+
+            Image {
+                anchors.fill: parent
+                fillMode: Image.Tile
+                source: "image://theme/icon-status-invalid"
+                opacity: background.drag.target ? 0.33 : content.x / dragThreshold / 3
+                smooth: false
             }
 
             Connections {
@@ -303,13 +422,34 @@ Page {
 //                checkApplicability()
 //            }
 
-            Item {
+            Rectangle {
                 id: content
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.leftMargin: Theme.paddingMedium
-                anchors.rightMargin: Theme.horizontalPageMargin
+                width: parent.width
                 height: Theme.itemSizeSmall
+                color: background.drag.target ? Theme.rgba(Theme.highlightBackgroundColor, Theme.highlightBackgroundOpacity / 2)
+                                        : "transparent"
+                border.width: background.drag.target ? 2 : 0
+                border.color: background.drag.target ? Theme.rgba(Theme.highlightdColor, Theme.highlightBackgroundOpacity)
+                                               : "transparent"
+
+                onYChanged: {
+                    if (!background.drag.target) {
+                        return
+                    }
+
+                    var targetIndex = view.indexAt(content.x + content.width / 2, content.y + content.height / 2)
+                    if (targetIndex >= 0) {
+                        background.dragIndex = targetIndex
+                    }
+                }
+
+                NumberAnimation {
+                    id: backAnimation
+                    target: content
+                    properties: "x,y"
+                    to: 0
+                    duration: 200
+                }
 
                 Switch {
                     id: appliedSwitch

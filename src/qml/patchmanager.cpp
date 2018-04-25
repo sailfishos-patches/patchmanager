@@ -204,6 +204,16 @@ QDBusPendingCallWatcher *PatchManager::resetState(const QString &patch)
     return new QDBusPendingCallWatcher(m_interface->resetState(patch), this);
 }
 
+//QDBusPendingCallWatcher *PatchManager::putSettings(const QString &name, const QVariant &value)
+//{
+//    return new QDBusPendingCallWatcher(m_interface->putSettings(name, value), this);
+//}
+
+//QDBusPendingCallWatcher *PatchManager::getSettings(const QString &name, const QVariant &def)
+//{
+//    return new QDBusPendingCallWatcher(m_interface->getSettings(name, def), this);
+//}
+
 void PatchManager::watchCall(QDBusPendingCallWatcher *call, QJSValue callback, QJSValue errorCallback)
 {
     connect(call,
@@ -430,19 +440,33 @@ void PatchManager::errorCall(QJSValue errorCallback, const QString &message)
 
 bool PatchManager::putSettings(const QString &name, const QVariant &value)
 {
-    QString key = QStringLiteral("settings/%1").arg(name);
-    QVariant old = m_settings->value(key);
-    if (old != value) {
-        m_settings->setValue(key ,value);
-        return true;
+    QDBusPendingReply<bool> reply = m_interface->putSettings(name, QDBusVariant(value));
+    reply.waitForFinished();
+    if (reply.isFinished()) {
+        return reply.value();
     }
     return false;
+
+//    QString key = QStringLiteral("settings/%1").arg(name);
+//    QVariant old = m_settings->value(key);
+//    if (old != value) {
+//        m_settings->setValue(key ,value);
+//        return true;
+//    }
+//    return false;
 }
 
 QVariant PatchManager::getSettings(const QString &name, const QVariant &def)
 {
-    QString key = QStringLiteral("settings/%1").arg(name);
-    return m_settings->value(key ,def);
+    QDBusPendingReply<QVariant> reply = m_interface->getSettings(name, QDBusVariant(def));
+    reply.waitForFinished();
+    if (reply.isFinished()) {
+        return unwind(reply.value());
+    }
+    return QVariant();
+
+//    QString key = QStringLiteral("settings/%1").arg(name);
+//    return m_settings->value(key ,def);
 }
 
 QVariant PatchManager::unwind(const QVariant &val, int depth)

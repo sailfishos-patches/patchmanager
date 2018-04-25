@@ -52,6 +52,9 @@ public:
     void populateData(const QVariantList &data, const QString &patch, bool installed);
     void removePatch(const QString &patch);
 
+    Q_INVOKABLE void move(int from, int to);
+    Q_INVOKABLE void saveLayout();
+
 private slots:
     void itemRemoved(PatchObject *object);
 

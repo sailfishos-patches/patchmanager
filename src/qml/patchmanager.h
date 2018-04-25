@@ -78,6 +78,8 @@ public slots:
     QDBusPendingCallWatcher *installPatch(const QString &patch, const QString &version, const QString &url);
     QDBusPendingCallWatcher *uninstallPatch(const QString &patch);
     QDBusPendingCallWatcher *resetState(const QString &patch);
+//    QDBusPendingCallWatcher *putSettings(const QString &name, const QVariant &value);
+//    QDBusPendingCallWatcher *getSettings(const QString &name, const QVariant &def = QVariant());
 
     void patchToggleService(const QString &patch, const QString &code);
     void restartServices();
@@ -91,6 +93,9 @@ public slots:
     QString iconForPatch(const QString &patch);
     QString valueIfExists(const QString & filename);
 
+    bool putSettings(const QString & name, const QVariant & value);
+    QVariant getSettings(const QString & name, const QVariant & def = QVariant());
+
 signals:
     void appsNeedRestartChanged();
     void homescreenNeedRestartChanged();
@@ -103,8 +108,7 @@ private:
     void successCall(QJSValue callback, const QVariant &value);
     void errorCall(QJSValue errorCallback, const QString &message);
 
-    bool putSettings(const QString & name, const QVariant & value);
-    QVariant getSettings(const QString & name, const QVariant & def = QVariant());
+
 
     QVariant unwind(const QVariant &val, int depth = 0);
 

@@ -96,6 +96,12 @@ public slots:
     QVariantMap downloadPatchInfo(const QString &name);
     void checkForUpdates();
 
+    bool putSettings(const QString & name, const QDBusVariant & value);
+    QDBusVariant getSettings(const QString & name, const QDBusVariant & def);
+
+    bool putSettings(const QString & name, const QVariant & value);
+    QVariant getSettings(const QString & name, const QVariant & def);
+
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
 

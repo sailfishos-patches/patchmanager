@@ -32,7 +32,9 @@
 
 #include "PatchObject.hpp"
 #include "patchmanagermodel.h"
+#include "patchmanager.h"
 
+#include <QDBusPendingReply>
 #include <QDebug>
 
 PatchManagerModel::PatchManagerModel(QObject *parent)
@@ -161,6 +163,26 @@ void PatchManagerModel::removePatch(const QString &patch)
     m_modelData.removeAt(index);
     m_patchMap.remove(patch);
     endRemoveRows();
+}
+
+void PatchManagerModel::move(int from, int to)
+{
+    if (from == to) {
+        return;
+    }
+    beginMoveRows(QModelIndex(), from, from, QModelIndex(), to < from ? to : (to + 1));
+    m_modelData.move(from, to);
+    endMoveRows();
+}
+
+void PatchManagerModel::saveLayout()
+{
+    QStringList patches;
+    for (PatchObject *o : m_modelData) {
+        patches.append(o->details()->value(QStringLiteral("patch")).toString());
+    }
+
+    PatchManager::GetInstance()->putSettings("order", patches);
 }
 
 void PatchManagerModel::itemRemoved(PatchObject *object)
