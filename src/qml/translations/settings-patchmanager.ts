@@ -4,29 +4,29 @@
 <context>
     <name></name>
     <message>
-        <location filename="../AboutPage.qml" line="50"/>
+        <location filename="../AboutPage.qml" line="49"/>
         <location filename="../PatchManagerPage.qml" line="111"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AboutPage.qml" line="64"/>
+        <location filename="../AboutPage.qml" line="63"/>
         <source>Patchmanager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AboutPage.qml" line="82"/>
+        <location filename="../AboutPage.qml" line="81"/>
         <source>Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AboutPage.qml" line="93"/>
+        <location filename="../AboutPage.qml" line="92"/>
         <location filename="../WebPatchPage.qml" line="302"/>
         <source>Donate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AboutPage.qml" line="104"/>
+        <location filename="../AboutPage.qml" line="103"/>
         <location filename="../DevelopersPage.qml" line="98"/>
         <source>Developers</source>
         <translation type="unfinished"></translation>
@@ -129,47 +129,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="318"/>
+        <location filename="../PatchManagerPage.qml" line="326"/>
         <source>This patch is not compatible with SailfishOS version!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="365"/>
+        <location filename="../PatchManagerPage.qml" line="373"/>
         <source>Uninstalling patch %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="492"/>
+        <location filename="../PatchManagerPage.qml" line="500"/>
         <source>Compatible with:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="506"/>
+        <location filename="../PatchManagerPage.qml" line="514"/>
         <source>Possible conflicts: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="509"/>
+        <location filename="../PatchManagerPage.qml" line="517"/>
         <source>Unapply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="509"/>
+        <location filename="../PatchManagerPage.qml" line="517"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="514"/>
+        <location filename="../PatchManagerPage.qml" line="522"/>
         <source>Reset state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="519"/>
+        <location filename="../PatchManagerPage.qml" line="527"/>
         <source>Uninstall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="533"/>
+        <location filename="../PatchManagerPage.qml" line="541"/>
         <location filename="../WebCatalogPage.qml" line="188"/>
         <source>No patches available</source>
         <translation type="unfinished"></translation>

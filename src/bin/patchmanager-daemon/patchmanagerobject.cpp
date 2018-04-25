@@ -176,6 +176,8 @@ bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, Q
 
 void PatchManagerObject::notify(const QString &patch, bool apply, bool success)
 {
+    qDebug() << Q_FUNC_INFO << patch << apply << success;
+
     QString summary;
     QString body;
 
@@ -1061,6 +1063,7 @@ bool PatchManagerObject::doPatch(const QString &patchName, bool apply)
     process.start();
     process.waitForFinished(-1);
     const bool ret = process.exitCode() == 0;
+    qDebug() << "Success:" << ret;
 
     if ((!apply && ret) || (apply && !ret)) {
         doPrepareCache(patchName, false);

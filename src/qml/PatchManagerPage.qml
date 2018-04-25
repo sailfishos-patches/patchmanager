@@ -198,7 +198,15 @@ Page {
                 pressPosition = Qt.point(mouse.x, mouse.y)
             }
 
+            onMenuOpenChanged: {
+                content.x = 0
+            }
+
             onPositionChanged: {
+                if (menuOpen) {
+                    return
+                }
+
                 var deltaX = pressPosition.x - mouse.x
                 if (drag.target) {
                     if (content.y < view.contentY && view.contentY > 0) {
@@ -280,7 +288,7 @@ Page {
                 anchors.fill: parent
                 fillMode: Image.Tile
                 source: "image://theme/icon-status-invalid"
-                opacity: background.drag.target ? 0.33 : content.x / dragThreshold / 3
+                opacity: background.drag.target ? 0.33 : Math.abs(content.x) / dragThreshold / 3
                 smooth: false
             }
 

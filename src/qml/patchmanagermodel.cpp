@@ -145,6 +145,7 @@ void PatchManagerModel::populateData(const QVariantList &data, const QString &pa
             }
         }
     }
+    saveLayout();
 }
 
 void PatchManagerModel::removePatch(const QString &patch)
