@@ -197,6 +197,8 @@ void PatchManagerObject::notify(const QString &patch, bool apply, bool success)
         body = qApp->translate("", "Patch %1 removal failed").arg(patch);
     }
 
+    qDebug() << summary << body;
+
     Notification notification;
     notification.setAppName(qApp->translate("", "Patchmanager"));
     notification.setHintValue("x-nemo-icon", "icon-m-patchmanager2");
@@ -207,6 +209,8 @@ void PatchManagerObject::notify(const QString &patch, bool apply, bool success)
     notification.setPreviewBody(body);
     notification.setTimestamp(QDateTime::currentDateTime());
     notification.publish();
+
+    qDebug() << notification.replacesId();
 }
 
 void PatchManagerObject::getVersion()
@@ -253,6 +257,7 @@ void PatchManagerObject::lateInitialize()
     //    });
 
     registerDBus();
+    checkForUpdates();
 }
 
 QList<QVariantMap> PatchManagerObject::listPatchesFromDir(const QString &dir, QSet<QString> &existingPatches, bool existing)
@@ -295,7 +300,7 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
     connect(m_timer, &QTimer::timeout, this, &PatchManagerObject::onTimerAction);
     m_timer->setSingleShot(false);
     m_timer->setTimerType(Qt::VeryCoarseTimer);
-    m_timer->setInterval(15000);
+    m_timer->setInterval(3600000); // 60 min
     m_timer->start();
 
     QDBusConnection::sessionBus().connect(QString(),
@@ -391,24 +396,36 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
     }
 
     for (const QString &fileName : m_patchFiles.value(patchName)) {
+        qDebug() << Q_FUNC_INFO << "processing:" << fileName;
         QFileInfo fi(fileName);
 
         QDir fakeDir(QStringLiteral("%1%2").arg(patchmanager_cache_root, fi.absoluteDir().absolutePath()));
-        if (!fakeDir.exists()) {
+        if (apply && !fakeDir.exists()) {
+            qWarning() << Q_FUNC_INFO << "creating:" << fakeDir.absolutePath();
             QDir::root().mkpath(fakeDir.absolutePath());
+        }
+
+        if (apply && !fi.absoluteDir().exists()) {
+            if (tryToLinkFakeParent(fi.absoluteDir().absolutePath())) {
+                continue;
+            }
+        }
+
+        if (apply && checkIsFakeLinked(fi.absoluteDir().absolutePath())) {
+            continue;
         }
 
         const QString fakeFileName = QStringLiteral("%1/%2").arg(fakeDir.absolutePath(), fi.fileName());
 
-        if (!fi.exists() && apply) {
-            qWarning() << Q_FUNC_INFO << "linking" << fileName << "to" << fakeFileName;
-            QFile::link(fakeFileName, fi.absoluteFilePath());
+        if (apply && !fi.exists()) {
+            bool link_ret = QFile::link(fakeFileName, fi.absoluteFilePath());
+            qWarning() << Q_FUNC_INFO << "linking" << fileName << "to:" << fakeFileName << link_ret;
             continue;
         }
 
-        if (fi.isSymLink() && !apply) {
-            qWarning() << Q_FUNC_INFO << "Removing symlink" << fileName << "to" << fakeFileName;
-            QFile::remove(fi.absoluteFilePath());
+        if (!apply && fi.isSymLink()) {
+            bool remove_ret = QFile::remove(fi.absoluteFilePath());
+            qWarning() << Q_FUNC_INFO << "Removing symlink" << fileName << "to" << fakeFileName << remove_ret;
         }
 
         if (QFileInfo::exists(fakeFileName)) {
@@ -422,9 +439,11 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
             }
 
             m_originalWatcher->removePath(fileName);
-            QFile::remove(fakeFileName);
+            bool remove_ret = QFile::remove(fakeFileName);
+            qWarning() << Q_FUNC_INFO << "Removing" << fakeFileName << remove_ret;
         } else {
             if (!apply) {
+                tryToUnlinkFakeParent(fi.absoluteDir().absolutePath());
                 continue;
             }
 
@@ -434,9 +453,9 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
                 continue;
             }
 
-            qWarning() << Q_FUNC_INFO << "Copying" << fileName << "to" << fakeFileName;
+            bool copy_ret = QFile::copy(fileName, fakeFileName);
+            qWarning() << Q_FUNC_INFO << "Copying" << fileName << "to:" << fakeFileName << copy_ret;
             m_originalWatcher->addPath(fileName);
-            QFile::copy(fileName, fakeFileName);
 
             chmod(fakeFileName.toLatin1().constData(), fileStat.st_mode);
             chown(fakeFileName.toLatin1().constData(), fileStat.st_uid, fileStat.st_gid);
@@ -748,7 +767,6 @@ QVariantMap PatchManagerObject::downloadPatchInfo(const QString &name)
 
 void PatchManagerObject::checkForUpdates()
 {
-    DBUS_GUARD()
     qDebug() << Q_FUNC_INFO;
     QMetaObject::invokeMethod(this, NAME(requestCheckForUpdates), Qt::QueuedConnection);
 }
@@ -780,6 +798,40 @@ QVariant PatchManagerObject::getSettings(const QString &name, const QVariant &de
     qDebug() << Q_FUNC_INFO << name << def;
     QString key = QStringLiteral("settings/%1").arg(name);
     return m_settings->value(key, def);
+}
+
+QString PatchManagerObject::maxVersion(const QString &version1, const QString &version2)
+{
+    const QStringList vnums1 = version1.split(QChar('.'));
+    const QStringList vnums2 = version2.split(QChar('.'));
+
+    if (vnums1.count() < 3 || vnums2.count() < 3) {
+        return version1;
+    }
+
+    for (int i = 0; i < 3; i++) {
+        const QString vnum1 = vnums1.at(i);
+        const QString vnum2 = vnums2.at(i);
+
+        bool ok = false;
+        const int num1 = vnum1.toInt(&ok);
+        if (!ok) {
+            continue;
+        }
+        const int num2 = vnum2.toInt(&ok);
+        if (!ok) {
+            continue;
+        }
+        if (num1 == num2) {
+            continue;
+        }
+        if (num1 > num2) {
+            return version1;
+        }
+        return version2;
+    }
+
+    return version1;
 }
 
 //void PatchManagerObject::checkPatches()
@@ -843,7 +895,7 @@ void PatchManagerObject::onLipstickChanged(const QString &, const QVariantMap &c
 
 void PatchManagerObject::onTimerAction()
 {
-
+    checkForUpdates();
 }
 
 void PatchManagerObject::startReadingLocalServer()
@@ -1500,7 +1552,86 @@ void PatchManagerObject::requestCheckForUpdates()
 {
     qDebug() << Q_FUNC_INFO;
 
-    //
+    QUrl url(CATALOG_URL"/"PROJECTS_PATH);
+    QUrlQuery query;
+    query.addQueryItem("version", m_ssuRelease);
+    url.setQuery(query);
+    QNetworkRequest request(url);
+    QNetworkReply *reply = m_nam->get(request);
+    QObject::connect(reply, &QNetworkReply::finished, [this, reply]() {
+        qDebug() << Q_FUNC_INFO << "Error:" << reply->error() << "Bytes:" << reply->bytesAvailable();
+        if (reply->error() == QNetworkReply::NoError && reply->bytesAvailable()) {
+            const QByteArray json = reply->readAll();
+
+            QJsonParseError error;
+            const QJsonDocument document = QJsonDocument::fromJson(json, &error);
+
+            if (error.error != QJsonParseError::NoError) {
+                qWarning() << Q_FUNC_INFO << "Error parsing json reply";
+                return;
+            }
+
+            const QVariantList projects = document.toVariant().toList();
+            for (const QVariant &projectVar : projects) {
+                const QVariantMap project = projectVar.toMap();
+                const QString projectName = project.value("name").toString();
+                if (!m_metadata.contains(projectName)) {
+                    continue;
+                }
+                if (!m_metadata.value(projectName).value("rpm").toString().isEmpty()) {
+                    continue;
+                }
+
+                const QString patchVersion = m_metadata.value(projectName).value("version").toString();
+                qDebug() << Q_FUNC_INFO << "installed:" << projectName << "version:" << patchVersion;
+
+                QUrl purl(CATALOG_URL"/"PROJECT_PATH);
+                QUrlQuery pquery;
+                pquery.addQueryItem(QStringLiteral("name"), projectName);
+                purl.setQuery(pquery);
+                QNetworkRequest prequest(purl);
+                QNetworkReply *preply = m_nam->get(prequest);
+                QObject::connect(preply, &QNetworkReply::finished, [this, preply, projectName, patchVersion]() {
+                    qDebug() << Q_FUNC_INFO << "Error:" << preply->error() << "Bytes:" << preply->bytesAvailable();
+                    if (preply->error() == QNetworkReply::NoError && preply->bytesAvailable()) {
+                        const QByteArray json = preply->readAll();
+
+                        QJsonParseError error;
+                        const QJsonDocument document = QJsonDocument::fromJson(json, &error);
+
+                        if (error.error != QJsonParseError::NoError) {
+                            qWarning() << Q_FUNC_INFO << "Error parsing json reply";
+                            return;
+                        }
+
+                        const QVariantMap project = document.toVariant().toMap();
+
+                        QString latestVersion = patchVersion;
+
+                        const QVariantList files = project.value("files").toList();
+                        for (const QVariant &fileVar : files) {
+                            const QVariantMap file = fileVar.toMap();
+                            const QStringList compatible = file.value("compatible").toStringList();
+                            if (!compatible.contains(m_ssuRelease)) {
+                                continue;
+                            }
+                            const QString version = file.value("version").toString();
+                            latestVersion = PatchManagerObject::maxVersion(latestVersion, version);
+                        }
+
+                        if (latestVersion == patchVersion) {
+                            return;
+                        }
+                        qDebug() << Q_FUNC_INFO << "available:" << projectName << "version:" << latestVersion;
+
+                        emit updateAvailable(projectName, latestVersion);
+                    }
+                    preply->deleteLater();
+                });
+            }
+        }
+        reply->deleteLater();
+    });
 }
 
 void PatchManagerObject::sendMessageReply(const QDBusMessage &message, const QVariant &result)
@@ -1527,4 +1658,65 @@ void PatchManagerObject::prepareCacheRoot()
 {
     qDebug() << Q_FUNC_INFO;
     QMetaObject::invokeMethod(this, NAME(doPrepareCacheRoot), Qt::QueuedConnection);
+}
+
+bool PatchManagerObject::checkIsFakeLinked(const QString &path)
+{
+    qDebug() << Q_FUNC_INFO << path;
+    const QStringList parts = path.split(QDir::separator(), QString::SkipEmptyParts);
+    QDir trial = QDir::root();
+    for (const QString &part : parts) {
+        if (trial.cd(part)) {
+            const QFileInfo fi(trial.absolutePath());
+            if (fi.isSymLink() && fi.symLinkTarget().startsWith(patchmanager_cache_root)) {
+                qDebug() << Q_FUNC_INFO << path << "already have fake link:" << trial.absolutePath();
+                return true;
+            }
+            continue;
+        }
+    }
+    return false;
+}
+
+bool PatchManagerObject::tryToLinkFakeParent(const QString &path)
+{
+    qDebug() << Q_FUNC_INFO << path;
+    const QStringList parts = path.split(QDir::separator(), QString::SkipEmptyParts);
+    QDir trial = QDir::root();
+    for (const QString &part : parts) {
+        if (trial.cd(part)) {
+            const QFileInfo fi(trial.absolutePath());
+            if (fi.isSymLink() && fi.symLinkTarget().startsWith(patchmanager_cache_root)) {
+                qDebug() << Q_FUNC_INFO << path << "already have fake link:" << trial.absolutePath();
+                return true;
+            }
+            continue;
+        }
+        const QString realPath = QStringLiteral("%1/%2").arg(trial.absolutePath(), part);
+        const QString fakePath = QStringLiteral("%1%2").arg(patchmanager_cache_root, realPath);
+        bool link_ret = QFile::link(fakePath, realPath);
+        qDebug() << Q_FUNC_INFO << "linking" << realPath << "to:" << fakePath << link_ret;
+        return true;
+    }
+    return false;
+}
+
+bool PatchManagerObject::tryToUnlinkFakeParent(const QString &path)
+{
+    qDebug() << Q_FUNC_INFO << path;
+    const QStringList parts = path.split(QDir::separator(), QString::SkipEmptyParts);
+    QDir trial = QDir::root();
+    for (const QString &part : parts) {
+        if (!trial.cd(part)) {
+            qWarning() << Q_FUNC_INFO << "error while trying to cd from" << trial.absolutePath() << "to:" << part;
+            return false;
+        }
+        const QFileInfo fi(trial.absolutePath());
+        if (fi.isSymLink() && fi.symLinkTarget().startsWith(patchmanager_cache_root)) {
+            bool remove_ret = QFile::remove(trial.absolutePath());
+            qDebug() << Q_FUNC_INFO << "removing:" << trial.absolutePath() << remove_ret;
+            return true;
+        }
+    }
+    return false;
 }

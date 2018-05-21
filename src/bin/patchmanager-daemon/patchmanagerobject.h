@@ -102,6 +102,11 @@ public slots:
     bool putSettings(const QString & name, const QVariant & value);
     QVariant getSettings(const QString & name, const QVariant & def);
 
+    static QString maxVersion(const QString &version1, const QString &version2);
+
+signals:
+    void updateAvailable(const QString &patchName, const QString &version);
+
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
 
@@ -164,6 +169,10 @@ private:
     void lateInitialize();
     void refreshPatchList();
     void prepareCacheRoot();
+
+    bool checkIsFakeLinked(const QString &path);
+    bool tryToLinkFakeParent(const QString &path);
+    bool tryToUnlinkFakeParent(const QString &path);
 
     bool m_dbusRegistered = false;
     QSet<QString> m_appliedPatches;
