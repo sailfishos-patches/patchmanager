@@ -1,8 +1,5 @@
 #define _GNU_SOURCE
 
-#define __NR_memfd_create 385
-#define SYS_memfd_create __NR_memfd_create
-
 //#define NO_INTERCEPT
 #define ALLOW_ALL_USERS
 
