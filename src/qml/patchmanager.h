@@ -52,6 +52,8 @@ class PatchManager: public QObject
     Q_PROPERTY(QString serverMediaUrl READ serverMediaUrl CONSTANT)
     Q_PROPERTY(bool developerMode READ developerMode WRITE setDeveloperMode NOTIFY developerModeChanged)
     Q_PROPERTY(PatchManagerModel *installedModel READ installedModel CONSTANT)
+    Q_PROPERTY(QVariantMap updates READ getUpdates NOTIFY updatesChanged)
+    Q_PROPERTY(QStringList updatesNames READ getUpdatesNames NOTIFY updatesChanged)
 
 public:
     explicit PatchManager(QObject *parent = nullptr);
@@ -63,6 +65,8 @@ public:
     void setDeveloperMode(bool developerMode);
     PatchManagerModel *installedModel();
     QString trCategory(const QString &category) const;
+    QVariantMap getUpdates() const;
+    QStringList getUpdatesNames() const;
 
     Q_INVOKABLE void watchCall(QDBusPendingCallWatcher *call, QJSValue callback, QJSValue errorCallback);
 
@@ -96,6 +100,8 @@ public slots:
     bool putSettings(const QString & name, const QVariant & value);
     QVariant getSettings(const QString & name, const QVariant & def = QVariant());
 
+    void onUpdatesAvailable(const QVariantMap &updates);
+
 signals:
     void appsNeedRestartChanged();
     void homescreenNeedRestartChanged();
@@ -103,12 +109,13 @@ signals:
     void serverReply();
     void easterReceived(const QString & easterText);
     void developerModeChanged(bool developerMode);
+    void updatesChanged(const QVariantMap &updates);
 
 private:
     void successCall(QJSValue callback, const QVariant &value);
     void errorCall(QJSValue errorCallback, const QString &message);
 
-
+    QVariantMap m_updates;
 
     QVariant unwind(const QVariant &val, int depth = 0);
 

@@ -174,43 +174,69 @@ bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, Q
     return true;
 }
 
-void PatchManagerObject::notify(const QString &patch, bool apply, bool success)
+void PatchManagerObject::notify(const QString &patch, NotifyAction action)
 {
-    qDebug() << Q_FUNC_INFO << patch << apply << success;
-
-    QString summary;
-    QString body;
-
-    if (apply && success) {
-        // Installing
-        summary = qApp->translate("", "Patch installed");
-        body = qApp->translate("", "Patch %1 installed").arg(patch);
-    } else if (apply) {
-        summary = qApp->translate("", "Failed to install patch");
-        body = qApp->translate("", "Patch %1 installation failed").arg(patch);
-    } else if (success) {
-        // Removing
-        summary = qApp->translate("", "Patch removed");
-        body = qApp->translate("", "Patch %1 removed").arg(patch);
-    } else {
-        summary = qApp->translate("", "Failed to remove patch");
-        body = qApp->translate("", "Patch %1 removal failed").arg(patch);
-    }
-
-    qDebug() << summary << body;
+    qDebug() << Q_FUNC_INFO << patch << action;
 
     Notification notification;
     notification.setAppName(qApp->translate("", "Patchmanager"));
     notification.setHintValue("x-nemo-icon", "icon-m-patchmanager2");
     notification.setHintValue("x-nemo-preview-icon", "icon-m-patchmanager2");
+    notification.setTimestamp(QDateTime::currentDateTime());
+
+    QString summary;
+    QString body;
+    QVariantList remoteActions;
+
+    switch (action) {
+    case NotifyActionSuccessApply:
+        summary = qApp->translate("", "Patch installed");
+        body = qApp->translate("", "Patch %1 installed").arg(patch);
+        break;
+    case NotifyActionSuccessUnapply:
+        summary = qApp->translate("", "Patch removed");
+        body = qApp->translate("", "Patch %1 removed").arg(patch);
+        break;
+    case NotifyActionFailedApply:
+        summary = qApp->translate("", "Failed to install patch");
+        body = qApp->translate("", "Patch %1 installation failed").arg(patch);
+        break;
+    case NotifyActionFailedUnapply:
+        summary = qApp->translate("", "Failed to remove patch");
+        body = qApp->translate("", "Patch %1 removal failed").arg(patch);
+        break;
+    case NotifyActionUpdateAvailable:
+        summary = qApp->translate("", "Update available");
+        body = qApp->translate("", "Patch %1 have update candidate").arg(patch);
+
+        remoteActions << Notification::remoteAction(
+            QStringLiteral("default"),
+            QStringLiteral("patchmanager"),
+            QStringLiteral("com.jolla.settings"),
+            QStringLiteral("/com/jolla/settings/ui"),
+            QStringLiteral("com.jolla.settings.ui"),
+            QStringLiteral("showPage"),
+            { QStringLiteral("system_settings/look_and_feel/patchmanager") }
+        );
+        break;
+    default:
+        qWarning() << Q_FUNC_INFO << "Unhandled action:" << action;
+    }
+
+    qDebug() << Q_FUNC_INFO << summary << body;
+
+    if (!remoteActions.isEmpty()) {
+        qDebug() << Q_FUNC_INFO << remoteActions;
+        notification.setRemoteActions(remoteActions);
+    }
+
     notification.setSummary(summary);
     notification.setBody(body);
     notification.setPreviewSummary(summary);
     notification.setPreviewBody(body);
-    notification.setTimestamp(QDateTime::currentDateTime());
     notification.publish();
 
-    qDebug() << notification.replacesId();
+    qDebug() << Q_FUNC_INFO << notification.replacesId();
 }
 
 void PatchManagerObject::getVersion()
@@ -615,7 +641,7 @@ bool PatchManagerObject::applyPatch(const QString &patch)
         m_appliedPatches.insert(patch);
         refreshPatchList();
     }
-    notify(displayName.toString(), true, ok);
+    notify(displayName.toString(), ok ? NotifyActionSuccessApply : NotifyActionFailedApply);
 
     if (ok) {
 //        emit m_adaptor->applyPatchFinished(patch);
@@ -656,7 +682,7 @@ bool PatchManagerObject::unapplyPatch(const QString &patch)
         m_appliedPatches.remove(patch);
         refreshPatchList();
     }
-    notify(displayName.toString(), false, ok);
+    notify(displayName.toString(), ok ? NotifyActionSuccessUnapply : NotifyActionFailedUnapply);
 
     if (ok) {
 //        emit m_adaptor->unapplyPatchFinished(patch);
@@ -769,6 +795,11 @@ void PatchManagerObject::checkForUpdates()
 {
     qDebug() << Q_FUNC_INFO;
     QMetaObject::invokeMethod(this, NAME(requestCheckForUpdates), Qt::QueuedConnection);
+}
+
+QVariantMap PatchManagerObject::getUpdates() const
+{
+    return m_updates;
 }
 
 bool PatchManagerObject::putSettings(const QString &name, const QDBusVariant &value)
@@ -1144,7 +1175,7 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
     }
 
     if (!params.value(QStringLiteral("dont_notify"), false).toBool()) {
-        notify(displayName.toString(), apply, ok);
+        notify(displayName.toString(), apply ? ok ? NotifyActionSuccessApply : NotifyActionFailedApply : ok ? NotifyActionSuccessUnapply : NotifyActionFailedUnapply);
     }
 
     if (ok) {
@@ -1179,7 +1210,7 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
             m_appliedPatches.insert(patch);
             refreshPatchList();
         }
-        notify(displayName.toString(), true, ok);
+        notify(displayName.toString(), ok ? NotifyActionSuccessApply : NotifyActionFailedApply);
 
         if (ok) {
     //        emit m_adaptor->applyPatchFinished(patch);
@@ -1205,7 +1236,7 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
             m_appliedPatches.remove(patch);
             refreshPatchList();
         }
-        notify(displayName.toString(), false, ok);
+        notify(displayName.toString(), ok ? NotifyActionSuccessUnapply : NotifyActionFailedUnapply);
 
         if (ok) {
     //        emit m_adaptor->unapplyPatchFinished(patch);
@@ -1274,6 +1305,7 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
     const QString &patch = params.value(QStringLiteral("patch")).toString();
     const QString &json = params.value(QStringLiteral("json")).toString();
     const QString &archive = QStringLiteral("/tmp/%1").arg(url.section(QChar('/'), -1));
+    const QString &version = params.value(QStringLiteral("version")).toString();
 
     QFile *archiveFile = new QFile(archive, this);
     if (!archiveFile->open(QFile::WriteOnly)) {
@@ -1283,7 +1315,7 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
     QUrl webUrl(QString(MEDIA_URL"/%1").arg(url));
     QNetworkRequest request(webUrl);
     QNetworkReply *reply = m_nam->get(request);
-    QObject::connect(reply, &QNetworkReply::finished, [reply, message, patch, archiveFile, archive, json, this](){
+    QObject::connect(reply, &QNetworkReply::finished, [reply, message, patch, archiveFile, archive, json, version, this](){
         if (reply->error() != QNetworkReply::NoError) {
             return;
         }
@@ -1323,6 +1355,14 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
             ret = proc.execute(QStringLiteral("/bin/tar"), {QStringLiteral("xzf"), archive, QStringLiteral("-C"), patchPath});
         }
         if (ret == 0) {
+            if (m_updates.contains(patch)) {
+                const QString upVersion = m_updates.value(patch).toString();
+                const QString lastVersion = maxVersion(upVersion, version);
+
+                if (upVersion == version || lastVersion == version) {
+                    m_updates.remove(patch);
+                }
+            }
             refreshPatchList();
         } else {
             patchDir.removeRecursively();
@@ -1572,13 +1612,17 @@ void PatchManagerObject::requestCheckForUpdates()
             }
 
             const QVariantList projects = document.toVariant().toList();
+            qDebug() << Q_FUNC_INFO << "projects count:" << projects.count();
             for (const QVariant &projectVar : projects) {
                 const QVariantMap project = projectVar.toMap();
                 const QString projectName = project.value("name").toString();
+                qDebug() << Q_FUNC_INFO << "processing:" << projectName;
                 if (!m_metadata.contains(projectName)) {
+                    qDebug() << Q_FUNC_INFO << projectName << "patch is not installed";
                     continue;
                 }
                 if (!m_metadata.value(projectName).value("rpm").toString().isEmpty()) {
+                    qDebug() << Q_FUNC_INFO << projectName << "patch installed from rpm";
                     continue;
                 }
 
@@ -1592,7 +1636,7 @@ void PatchManagerObject::requestCheckForUpdates()
                 QNetworkRequest prequest(purl);
                 QNetworkReply *preply = m_nam->get(prequest);
                 QObject::connect(preply, &QNetworkReply::finished, [this, preply, projectName, patchVersion]() {
-                    qDebug() << Q_FUNC_INFO << "Error:" << preply->error() << "Bytes:" << preply->bytesAvailable();
+                    qDebug() << Q_FUNC_INFO << projectName << "Error:" << preply->error() << "Bytes:" << preply->bytesAvailable();
                     if (preply->error() == QNetworkReply::NoError && preply->bytesAvailable()) {
                         const QByteArray json = preply->readAll();
 
@@ -1600,7 +1644,7 @@ void PatchManagerObject::requestCheckForUpdates()
                         const QJsonDocument document = QJsonDocument::fromJson(json, &error);
 
                         if (error.error != QJsonParseError::NoError) {
-                            qWarning() << Q_FUNC_INFO << "Error parsing json reply";
+                            qWarning() << Q_FUNC_INFO << projectName << "Error parsing json reply";
                             return;
                         }
 
@@ -1620,11 +1664,15 @@ void PatchManagerObject::requestCheckForUpdates()
                         }
 
                         if (latestVersion == patchVersion) {
+                            qDebug() << Q_FUNC_INFO << projectName << "versions match";
                             return;
                         }
                         qDebug() << Q_FUNC_INFO << "available:" << projectName << "version:" << latestVersion;
 
-                        emit updateAvailable(projectName, latestVersion);
+                        notify(projectName, NotifyActionUpdateAvailable);
+
+                        m_updates[projectName] = latestVersion;
+                        emit m_adaptor->updatesAvailable(m_updates);
                     }
                     preply->deleteLater();
                 });

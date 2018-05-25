@@ -180,6 +180,17 @@ Page {
                     wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                     maximumLineCount: 3
                 }
+
+                Label {
+                    width: parent.width
+                    text: visible ? qsTranslate("", "Update available: %1").arg(PatchManager.updates[model.name]) : ""
+                    color: background.down ? Theme.secondaryHighlightColor : Theme.secondaryColor
+                    font.bold: true
+                    font.pixelSize: Theme.fontSizeExtraSmall
+                    wrapMode: Text.NoWrap
+                    maximumLineCount: 1
+                    visible: PatchManager.updatesNames.indexOf(model.name) >= 0
+                }
             }
         }
 

@@ -38,10 +38,89 @@ import org.SfietKonstantin.patchmanager 2.0
 Page {
     id: container
 
+    Timer {
+        id : startTimer
+        interval: 1500
+        repeat: false
+        running: true
+        onTriggered: console.log()
+        onRunningChanged: console.log(running)
+    }
+
+    Connections {
+        target: PatchManager
+        onUpdatesChanged: {
+            if (!startTimer.running) {
+                return
+            }
+            if (PatchManager.updatesNames.length === 0) {
+                return
+            }
+            if (pageStack.busy) {
+                pageStack.busyChanged.connect(showUpdates)
+            } else {
+                showUpdates(true)
+            }
+        }
+    }
+
     onStatusChanged: {
-        if (status == PageStatus.Activating
-                && pageStack.currentPage.objectName == "WebPatchPage") {
-            //patchmanagerDbusInterface.listPatches()
+        if (status == PageStatus.Deactivating) {
+            startTimer.stop()
+        }
+    }
+
+    function showUpdates(manual) {
+        if (pageStack.busy) {
+            return
+        }
+        if (!manual) {
+            pageStack.busyChanged.disconnect(showUpdates)
+        }
+
+        pulleyAnimation.start()
+    }
+
+    property real pullDownDistance: Theme.itemSizeLarge
+
+    SequentialAnimation {
+        id: pulleyAnimation
+        PropertyAction {
+            target: view.pullDownMenu
+            property: "_hinting"
+            value: true
+        }
+        PropertyAction {
+            target: view.pullDownMenu
+            property: "active"
+            value: true
+        }
+        NumberAnimation {
+            target: view
+            property: "contentY"
+            to: -pullDownDistance - view.headerItem.height
+            duration: 400*Math.max(1.0, pullDownDistance/Theme.itemSizeLarge)
+            easing.type: Easing.OutCubic
+        }
+        PauseAnimation {
+            duration: 800
+        }
+        NumberAnimation {
+            target: view
+            property: "contentY"
+            to: -view.headerItem.height
+            duration: 400 // Matches bounceback animation duration
+            easing.type: Easing.InOutCubic
+        }
+        PropertyAction {
+            target: view.pullDownMenu
+            property: "active"
+            value: false
+        }
+        PropertyAction {
+            target: view.pullDownMenu
+            property: "_hinting"
+            value: false
         }
     }
 
@@ -122,7 +201,7 @@ Page {
             }
 
             MenuItem {
-                text: qsTranslate("", "Web catalog")
+                text: PatchManager.updatesNames.length > 0 ? qsTranslate("", "Updates available") : qsTranslate("", "Web catalog")
 
                 onClicked: pageStack.push(Qt.resolvedUrl("WebCatalogPage.qml"))
             }
@@ -408,6 +487,8 @@ Page {
             }
 
             onClicked: {
+                pulleyAnimation.start()
+                return
                 var patchName = patchObject.details.patch
                 try {
                     var translator = PatchManager.installTranslator(patchName)
@@ -417,9 +498,13 @@ Page {
                     }
                 }
                 catch(err) {
-                    pageStack.push(Qt.resolvedUrl(patchObject.details.isNewPatch ? "NewPatchPage.qml" : "LegacyPatchPage.qml"),
-                                  {modelData: patchObject.details, delegate: background})
+                    openPatchInfo()
                 }
+            }
+
+            function openPatchInfo() {
+                pageStack.push(Qt.resolvedUrl(patchObject.details.isNewPatch ? "NewPatchPage.qml" : "LegacyPatchPage.qml"),
+                              {modelData: patchObject.details, delegate: background})
             }
 
             function checkApplicability() {
@@ -512,6 +597,10 @@ Page {
                     MenuLabel {
                         visible: patchObject.details.conflicts.length > 0
                         text: qsTranslate("", "Possible conflicts: %1").arg(patchObject.details.conflicts.join(', '))
+                    }
+                    MenuItem {
+                        text: qsTranslate("", "Patch info")
+                        onClicked: background.openPatchInfo()
                     }
                     MenuItem {
                         text: patchObject.details.patched ? qsTranslate("", "Unapply") : qsTranslate("", "Apply")

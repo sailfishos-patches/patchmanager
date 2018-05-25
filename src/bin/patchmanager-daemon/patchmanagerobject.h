@@ -74,6 +74,15 @@ public:
     explicit PatchManagerObject(QObject *parent = nullptr);
     virtual ~PatchManagerObject();
 
+    enum NotifyAction {
+        NotifyActionSuccessApply,
+        NotifyActionSuccessUnapply,
+        NotifyActionFailedApply,
+        NotifyActionFailedUnapply,
+        NotifyActionUpdateAvailable,
+    };
+    Q_ENUM(NotifyAction)
+
 public slots:
     void process();
 
@@ -96,6 +105,8 @@ public slots:
     QVariantMap downloadPatchInfo(const QString &name);
     void checkForUpdates();
 
+    QVariantMap getUpdates() const;
+
     bool putSettings(const QString & name, const QDBusVariant & value);
     QDBusVariant getSettings(const QString & name, const QDBusVariant & def);
 
@@ -103,9 +114,6 @@ public slots:
     QVariant getSettings(const QString & name, const QVariant & def);
 
     static QString maxVersion(const QString &version1, const QString &version2);
-
-signals:
-    void updateAvailable(const QString &patchName, const QString &version);
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
@@ -162,7 +170,7 @@ private:
 
     QList<QVariantMap> listPatchesFromDir(const QString &dir, QSet<QString> &existingPatches, bool existing = true);
     bool makePatch(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available);
-    void notify(const QString &patch, bool apply, bool success);
+    void notify(const QString &patch, PatchManagerObject::NotifyAction action);
 
     void getVersion();
 
@@ -182,6 +190,8 @@ private:
     QMap<QString, QStringList> m_patchFiles;
     QMap<QString, QStringList> m_fileToPatch;
     QStringList m_patchedFiles;
+
+    QVariantMap m_updates;
 
     QString m_ssuRelease;
     PatchManagerAdaptor *m_adaptor = nullptr;

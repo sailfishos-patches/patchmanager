@@ -88,6 +88,24 @@ PatchManager::PatchManager(QObject *parent)
 
     requestListPatches(QString(), false);
     connect(m_interface, &PatchManagerInterface::patchAltered, this, &PatchManager::requestListPatches);
+    connect(m_interface, &PatchManagerInterface::updatesAvailable, this, &PatchManager::onUpdatesAvailable);
+
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(m_interface->getUpdates(), this);
+    connect(watcher, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
+        QDBusPendingReply<QVariantMap> reply = *watcher;
+        if (reply.isError()) {
+            qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
+            return;
+        }
+
+        qDebug() << reply.value();
+
+        const QVariantMap data = unwind(reply.value()).toMap();
+        if (!data.isEmpty()) {
+            onUpdatesAvailable(data);
+        }
+        watcher->deleteLater();
+    });
 }
 
 PatchManager *PatchManager::GetInstance(QObject *parent)
@@ -138,6 +156,16 @@ QString PatchManager::trCategory(const QString &category) const
         return qApp->translate("Sections", "other");
     }
     return section;
+}
+
+QVariantMap PatchManager::getUpdates() const
+{
+    return m_updates;
+}
+
+QStringList PatchManager::getUpdatesNames() const
+{
+    return m_updates.keys();
 }
 
 void PatchManager::onDownloadFinished(const QString &patch, const QString &fileName)
@@ -467,6 +495,18 @@ QVariant PatchManager::getSettings(const QString &name, const QVariant &def)
 
 //    QString key = QStringLiteral("settings/%1").arg(name);
 //    return m_settings->value(key ,def);
+}
+
+void PatchManager::onUpdatesAvailable(const QVariantMap &updates)
+{
+    if (m_updates == updates) {
+        return;
+    }
+
+    qDebug() << Q_FUNC_INFO << updates;
+
+    m_updates = updates;
+    emit updatesChanged(m_updates);
 }
 
 QVariant PatchManager::unwind(const QVariant &val, int depth)

@@ -67,9 +67,13 @@
             <arg name="json" type="a(v)" direction="out" />
         </method>
         <method name="downloadPatchInfo">
-        <arg name="name" type="s" direction="in" />
+            <arg name="name" type="s" direction="in" />
             <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
             <arg name="data" type="a{sv}" direction="out" />
+        </method>
+        <method name="getUpdates">
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+            <arg name="updates" type="a{sv}" direction="out" />
         </method>
         <method name="checkForUpdates" />
         <method name="quit">
@@ -80,6 +84,10 @@
         </signal>
         <signal name="unapplyPatchFinished">
           <arg name="patch" type="s"/>
+        </signal>
+        <signal name="updatesAvailable">
+            <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QVariantMap"/>
+            <arg name="updates" type="a{sv}"/>
         </signal>
         <signal name="patchAltered">
             <arg name="patch" type="s"/>
