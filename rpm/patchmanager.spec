@@ -51,6 +51,9 @@ sed -i 's#%{buildroot}##g' %{buildroot}%{_libdir}/qt5/qml/org/SfietKonstantin/%{
 mkdir -p %{buildroot}/lib/systemd/system/multi-user.target.wants/
 ln -s ../dbus-org.SfietKonstantin.patchmanager.service %{buildroot}/lib/systemd/system/multi-user.target.wants/
 
+mkdir -p %{buildroot}/lib/systemd/system/timers.target.wants/
+ln -s ../checkForUpdates-org.SfietKonstantin.patchmanager.timer %{buildroot}/lib/systemd/system/timers.target.wants/
+
 %pre
 export NO_PM_PRELOAD=1
 case "$*" in
@@ -105,6 +108,7 @@ fi
 /sbin/ldconfig
 systemctl daemon-reload
 systemctl restart dbus-org.SfietKonstantin.patchmanager.service
+systemctl restart checkForUpdates-org.SfietKonstantin.patchmanager.timer
 
 %postun
 export NO_PM_PRELOAD=1
@@ -133,6 +137,9 @@ systemctl daemon-reload
 %{_sysconfdir}/dbus-1/system.d/
 /lib/systemd/system/dbus-org.SfietKonstantin.patchmanager.service
 /lib/systemd/system/multi-user.target.wants/dbus-org.SfietKonstantin.patchmanager.service
+/lib/systemd/system/checkForUpdates-org.SfietKonstantin.patchmanager.service
+/lib/systemd/system/checkForUpdates-org.SfietKonstantin.patchmanager.timer
+/lib/systemd/system/timers.target.wants/checkForUpdates-org.SfietKonstantin.patchmanager.timer
 %{_sharedstatedir}/environment/patchmanager/10-dbus.conf
 %{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/patch.json
 %{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/unified_diff.patch

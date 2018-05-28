@@ -1,0 +1,13 @@
+[Unit]
+Description=Patchmanager check for updates timer
+Requires=dbus.service
+After=dbus.service
+
+[Timer]
+Unit=checkForUpdates-org.SfietKonstantin.patchmanager.service
+OnBootSec=15m
+OnUnitActiveSec=2h
+WakeSystem=true
+
+[Install]
+WantedBy=timers.target

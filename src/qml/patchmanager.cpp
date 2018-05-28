@@ -444,6 +444,11 @@ QString PatchManager::valueIfExists(const QString &filename)
     return QString();
 }
 
+void PatchManager::checkForUpdates()
+{
+    m_interface->checkForUpdates();
+}
+
 void PatchManager::successCall(QJSValue callback, const QVariant &value)
 {
     if (callback.isUndefined() || !callback.isCallable()) {

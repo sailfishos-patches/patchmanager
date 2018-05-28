@@ -5,7 +5,7 @@
     <name></name>
     <message>
         <location filename="../AboutPage.qml" line="49"/>
-        <location filename="../PatchManagerPage.qml" line="111"/>
+        <location filename="../PatchManagerPage.qml" line="190"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
@@ -98,79 +98,89 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="106"/>
+        <location filename="../PatchManagerPage.qml" line="185"/>
         <source>Disable developer mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="106"/>
+        <location filename="../PatchManagerPage.qml" line="185"/>
         <source>Enable developer mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="116"/>
+        <location filename="../PatchManagerPage.qml" line="195"/>
         <source>Unapply all patches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="125"/>
-        <location filename="../WebCatalogPage.qml" line="84"/>
+        <location filename="../PatchManagerPage.qml" line="204"/>
+        <location filename="../WebCatalogPage.qml" line="85"/>
         <source>Web catalog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="131"/>
+        <location filename="../PatchManagerPage.qml" line="204"/>
+        <source>Updates available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PatchManagerPage.qml" line="210"/>
         <source>Restart preloaded services</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="138"/>
+        <location filename="../PatchManagerPage.qml" line="217"/>
         <source>Installed patches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="326"/>
+        <location filename="../PatchManagerPage.qml" line="405"/>
         <source>This patch is not compatible with SailfishOS version!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="373"/>
+        <location filename="../PatchManagerPage.qml" line="452"/>
         <source>Uninstalling patch %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="500"/>
+        <location filename="../PatchManagerPage.qml" line="585"/>
         <source>Compatible with:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="514"/>
+        <location filename="../PatchManagerPage.qml" line="599"/>
         <source>Possible conflicts: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="517"/>
+        <location filename="../PatchManagerPage.qml" line="602"/>
+        <source>Patch info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PatchManagerPage.qml" line="606"/>
         <source>Unapply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="517"/>
+        <location filename="../PatchManagerPage.qml" line="606"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="522"/>
+        <location filename="../PatchManagerPage.qml" line="611"/>
         <source>Reset state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="527"/>
+        <location filename="../PatchManagerPage.qml" line="616"/>
         <source>Uninstall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PatchManagerPage.qml" line="541"/>
-        <location filename="../WebCatalogPage.qml" line="188"/>
+        <location filename="../PatchManagerPage.qml" line="630"/>
+        <location filename="../WebCatalogPage.qml" line="200"/>
         <source>No patches available</source>
         <translation type="unfinished"></translation>
     </message>
@@ -201,23 +211,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../WebCatalogPage.qml" line="73"/>
+        <location filename="../WebCatalogPage.qml" line="74"/>
         <source>Hide search field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../WebCatalogPage.qml" line="73"/>
+        <location filename="../WebCatalogPage.qml" line="74"/>
         <source>Show search field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../WebCatalogPage.qml" line="84"/>
+        <location filename="../WebCatalogPage.qml" line="85"/>
         <source>%1 patches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../WebCatalogPage.qml" line="90"/>
+        <location filename="../WebCatalogPage.qml" line="91"/>
         <source>Tap to enter search query</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../WebCatalogPage.qml" line="187"/>
+        <source>Update available: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -345,7 +360,7 @@
     </message>
     <message>
         <location filename="../patchmanager.cpp" line="67"/>
-        <location filename="../patchmanager.cpp" line="138"/>
+        <location filename="../patchmanager.cpp" line="156"/>
         <source>other</source>
         <translation type="unfinished"></translation>
     </message>

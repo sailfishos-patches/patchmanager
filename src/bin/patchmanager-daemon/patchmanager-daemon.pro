@@ -38,7 +38,10 @@ dbusConf.path = /etc/dbus-1/system.d/
 INSTALLS += dbusConf
 
 # Systemd
-systemd.files = systemd/dbus-org.SfietKonstantin.patchmanager.service
+systemd.files = \
+    systemd/dbus-org.SfietKonstantin.patchmanager.service \
+    systemd/checkForUpdates-org.SfietKonstantin.patchmanager.service \
+    systemd/checkForUpdates-org.SfietKonstantin.patchmanager.timer
 systemd.path = /lib/systemd/system/
 INSTALLS += systemd
 

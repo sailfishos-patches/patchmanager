@@ -97,6 +97,8 @@ public slots:
     QString iconForPatch(const QString &patch);
     QString valueIfExists(const QString & filename);
 
+    void checkForUpdates();
+
     bool putSettings(const QString & name, const QVariant & value);
     QVariant getSettings(const QString & name, const QVariant & def = QVariant());
 

@@ -1670,10 +1670,12 @@ void PatchManagerObject::requestCheckForUpdates()
                         }
                         qDebug() << Q_FUNC_INFO << "available:" << projectName << "version:" << latestVersion;
 
-                        notify(projectName, NotifyActionUpdateAvailable);
+                        if (!m_updates.contains(projectName) || m_updates.value(projectName) != latestVersion) {
+                            notify(projectName, NotifyActionUpdateAvailable);
 
-                        m_updates[projectName] = latestVersion;
-                        emit m_adaptor->updatesAvailable(m_updates);
+                            m_updates[projectName] = latestVersion;
+                            emit m_adaptor->updatesAvailable(m_updates);
+                        }
                     }
                     preply->deleteLater();
                 });
