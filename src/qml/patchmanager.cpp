@@ -506,7 +506,7 @@ void PatchManager::onUpdatesAvailable(const QVariantMap &updates)
     qDebug() << Q_FUNC_INFO << updates;
 
     m_updates = updates;
-    emit updatesChanged(m_updates);
+    emit updatesChanged();
 }
 
 QVariant PatchManager::unwind(const QVariant &val, int depth)

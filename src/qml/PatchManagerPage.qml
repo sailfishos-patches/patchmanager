@@ -81,7 +81,7 @@ Page {
         pulleyAnimation.start()
     }
 
-    property real pullDownDistance: Theme.itemSizeLarge
+    property real pullDownDistance: Theme.itemSizeHuge
 
     SequentialAnimation {
         id: pulleyAnimation

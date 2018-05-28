@@ -109,7 +109,7 @@ signals:
     void serverReply();
     void easterReceived(const QString & easterText);
     void developerModeChanged(bool developerMode);
-    void updatesChanged(const QVariantMap &updates);
+    void updatesChanged();
 
 private:
     void successCall(QJSValue callback, const QVariant &value);

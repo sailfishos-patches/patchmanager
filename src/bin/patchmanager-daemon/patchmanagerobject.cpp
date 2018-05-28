@@ -1361,6 +1361,7 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
 
                 if (upVersion == version || lastVersion == version) {
                     m_updates.remove(patch);
+                    emit m_adaptor->updatesAvailable(m_updates);
                 }
             }
             refreshPatchList();
