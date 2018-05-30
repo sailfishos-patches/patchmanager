@@ -32,6 +32,8 @@
 
 #include "webpatchesmodel.h"
 #include "webcatalog.h"
+#include "patchmanager.h"
+#include <QDBusPendingReply>
 #include <QDebug>
 
 WebPatchesModel::WebPatchesModel(QObject * parent)
@@ -88,18 +90,21 @@ void WebPatchesModel::componentComplete()
         endRemoveRows();
     }
 
-    QUrl url(CATALOG_URL"/"PROJECTS_PATH);
-    QUrlQuery query;
-    foreach (const QString & key, _queryParams.keys()) {
-        query.addQueryItem(key, _queryParams.value(key).toString());
-    }
-    url.setQuery(query);
-    QNetworkRequest request(url);
-    QNetworkReply * reply = _nam->get(request);
-    QObject::connect(reply, &QNetworkReply::finished, this, &WebPatchesModel::serverReply);
-    QObject::connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), this, &WebPatchesModel::onError);
+    QDBusPendingCallWatcher *watcher = PatchManager::GetInstance()->downloadCatalog(_queryParams);
+    connect(watcher, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
+        QDBusPendingReply<QVariantList> reply = *watcher;
+        if (!reply.isError()) {
+            const QVariantList catalog = PatchManager::unwind(reply.value()).toList();
+            qDebug() << Q_FUNC_INFO << catalog.count();
 
-    _completed = true;
+            beginInsertRows(QModelIndex(), 0, catalog.count() - 1);
+            _modelData = catalog;
+            endInsertRows();
+        }
+        watcher->deleteLater();
+
+        _completed = true;
+    });
 }
 
 int WebPatchesModel::rowCount(const QModelIndex & parent) const
@@ -114,32 +119,4 @@ QVariant WebPatchesModel::data(const QModelIndex & index, int role) const
     if (row < 0 || row >= _modelData.size())
         return QVariant();
     return _modelData[index.row()].toMap()[_roles[role]];
-}
-
-void WebPatchesModel::serverReply()
-{
-    QNetworkReply * reply = qobject_cast<QNetworkReply *>(sender());
-    if (reply) {
-        if (reply->error() == QNetworkReply::NoError) {
-            if (reply->bytesAvailable()) {
-                QByteArray json = reply->readAll();
-
-                QJsonParseError error;
-                QJsonDocument document = QJsonDocument::fromJson(json, &error);
-
-                if (error.error == QJsonParseError::NoError) {
-                    QVariantList data = document.toVariant().toList();
-                    beginInsertRows(QModelIndex(), 0, data.count() - 1);
-                    _modelData = data;
-                    endInsertRows();
-                }
-            }
-        }
-        reply->deleteLater();
-    }
-}
-
-void WebPatchesModel::onError(QNetworkReply::NetworkError error)
-{
-    qDebug() << error;
 }

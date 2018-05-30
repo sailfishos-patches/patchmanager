@@ -70,10 +70,6 @@ private:
     QHash<int, QByteArray> _roles;
     QVariantList _modelData;
 
-private slots:
-    void serverReply();
-    void onError(QNetworkReply::NetworkError error);
-
 signals:
     void queryParamsChanged(const QVariantMap & queryParams);
 

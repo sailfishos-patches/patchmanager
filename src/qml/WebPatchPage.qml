@@ -32,17 +32,12 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import org.nemomobile.dbus 2.0
 import org.SfietKonstantin.patchmanager 2.0
 
 Page {
     id: container
     objectName: "WebPatchPage"
     property var modelData
-    property QtObject delegate
-
-    property string jsonData
-    property string archFile
 
     property var versions
     property string release
@@ -51,73 +46,23 @@ Page {
 
     property bool isInstalled: !!container.versions && typeof(container.versions[modelData.name]) != "undefined"
 
+    property var patchData
+    property bool fetching: true
+
     onStatusChanged: {
         if (status == PageStatus.Active) {
-            patchmanagerDbusInterface.listVersions()
             voteAction = PatchManager.checkVote(modelData.name)
-        }
-    }
+            console.log("versions:", JSON.stringify(versions))
 
-    onJsonDataChanged: {
-        if (jsonData && archFile) {
-            doPatchInstall()
-        }
-    }
-
-    onArchFileChanged: {
-        if (jsonData && archFile) {
-            doPatchInstall()
-        }
-    }
-
-    function doPatchInstall() {
-        patchmanagerDbusInterface.typedCall("installPatch", [{"type": "s", "value": patchData.value.name},
-                                                             {"type": "s", "value": container.jsonData},
-                                                             {"type": "s", "value": container.archFile}],
-                                            function(ok) {
-                                                console.log("Attempt to install patch", patchData.value.name, JSON.parse(container.jsonData).version, ok)
-                                                if (ok) {
-                                                    container.versions[patchData.value.name] = JSON.parse(container.jsonData).version
-                                                    container.versionsChanged()
-                                                }
-                                            })
-    }
-
-    Connections {
-        target: PatchManager
-        onServerReply: {
-            patchData.reload()
-        }
-    }
-
-    WebPatchData {
-        id: patchData
-        name: modelData.name
-        onJsonReceived: {
-            jsonData = json
-        }
-        onJsonError: console.log('### json error')
-    }
-
-    Connections {
-        target: PatchManager
-        onDownloadFinished: {
-            if (patch == patchData.value.name) {
-                archFile = fileName
-            }
-        }
-    }
-
-    DBusInterface {
-        id: patchmanagerDbusInterface
-        service: "org.SfietKonstantin.patchmanager"
-        path: "/org/SfietKonstantin/patchmanager"
-        iface: "org.SfietKonstantin.patchmanager"
-        bus: DBus.SystemBus
-        function listVersions() {
-            typedCall("listVersions", [], function (patches) {
-                container.versions = patches
-            })
+            PatchManager.watchCall(PatchManager.downloadPatchInfo(modelData.name),
+                                   function(d) {
+                                       patchData = d
+                                       fetching = false
+                                   },
+                                   function(e) {
+                                       consolw.warn(e)
+                                       fetching = false
+                                   })
         }
     }
 
@@ -127,8 +72,8 @@ Page {
         contentHeight: content.height
 
         ViewPlaceholder {
-            enabled: !patchData.value
-            text: qsTranslate("", "Problem in fetching patch data")
+            enabled: !patchData
+            text: fetching ? qsTranslate("", "Fetching patch information...") : qsTranslate("", "Problem in fetching patch data")
         }
 
         Column {
@@ -150,13 +95,13 @@ Page {
                 }
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeLarge
-                text: patchData.value && patchData.value.display_name ? patchData.value.display_name : ""
+                text: patchData && patchData.display_name ? patchData.display_name : ""
             }
 
             Item {
                 width: parent.width
                 height: Theme.itemSizeSmall
-                visible: patchData.value
+                visible: patchData
 
                 Image {
                     id: activationsIcon
@@ -171,7 +116,7 @@ Page {
                     anchors.left: activationsIcon.right
                     anchors.leftMargin: Theme.paddingSmall
                     anchors.verticalCenter: parent.verticalCenter
-                    text: patchData.value && patchData.value.total_activations ? patchData.value.total_activations : "0"
+                    text: patchData && patchData.total_activations ? patchData.total_activations : "0"
                 }
 
                 Image {
@@ -187,7 +132,7 @@ Page {
                     anchors.left: likeIcon.right
                     anchors.leftMargin: Theme.paddingSmall
                     anchors.verticalCenter: parent.verticalCenter
-                    text: patchData.value && patchData.value.rating ? patchData.value.rating : "0"
+                    text: patchData && patchData.rating ? patchData.rating : "0"
                 }
 
                 IconButton {
@@ -229,7 +174,7 @@ Page {
                 height: Theme.itemSizeExtraSmall
 
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("WebCatalogPage.qml"), {'author': patchData.value.author})
+                    pageStack.push(Qt.resolvedUrl("WebCatalogPage.qml"), {'author': patchData.author})
                 }
 
                 Label {
@@ -241,7 +186,7 @@ Page {
                         verticalCenter: parent.verticalCenter
                     }
                     font.pixelSize: Theme.fontSizeSmall
-                    text: patchData.value && patchData.value.author ? qsTranslate("", "Author: %1").arg(patchData.value.author) : ""
+                    text: patchData && patchData.author ? qsTranslate("", "Author: %1").arg(patchData.author) : ""
                 }
             }
 
@@ -253,21 +198,21 @@ Page {
                     margins: Theme.horizontalPageMargin
                 }
                 wrapMode: Text.WordWrap
-                text: patchData.value && patchData.value.description ? patchData.value.description : ""
+                text: patchData && patchData.description ? patchData.description : ""
             }
 
             SectionHeader {
                 text: qsTranslate("", "Links")
-                visible: patchData.value && (!!patchData.value.discussion || !!patchData.value.donations || !!patchData.value.sources)
+                visible: patchData && (!!patchData.discussion || !!patchData.donations || !!patchData.sources)
             }
 
             BackgroundItem {
                 width: parent.width
                 height: Theme.itemSizeExtraSmall
-                visible: !!patchData.value && !!patchData.value.discussion
+                visible: patchData && !!patchData.discussion
 
                 onClicked: {
-                    Qt.openUrlExternally(patchData.value.discussion)
+                    Qt.openUrlExternally(patchData.discussion)
                 }
 
                 Label {
@@ -278,17 +223,17 @@ Page {
                         margins: Theme.horizontalPageMargin
                         verticalCenter: parent.verticalCenter
                     }
-                    text: patchData.value && patchData.value.discussion ? qsTranslate("", "Open discussion link") : ""
+                    text: patchData && patchData.discussion ? qsTranslate("", "Open discussion link") : ""
                 }
             }
 
             BackgroundItem {
                 width: parent.width
                 height: Theme.itemSizeExtraSmall
-                visible: !!patchData.value && !!patchData.value.donations
+                visible: patchData && !!patchData.donations
 
                 onClicked: {
-                    Qt.openUrlExternally(patchData.value.donations)
+                    Qt.openUrlExternally(patchData.donations)
                 }
 
                 Label {
@@ -299,14 +244,14 @@ Page {
                         margins: Theme.horizontalPageMargin
                         verticalCenter: parent.verticalCenter
                     }
-                    text: patchData.value && patchData.value.donations ? qsTranslate("", "Donate") : ""
+                    text: patchData && patchData.donations ? qsTranslate("", "Donate") : ""
                 }
             }
 
             BackgroundItem {
                 width: parent.width
                 height: Theme.itemSizeExtraSmall
-                visible: !!patchData.value && !!patchData.value.sources
+                visible: patchData && patchData.sources
 
                 onClicked: {
                     Qt.openUrlExternally(patchData.value.sources)
@@ -320,13 +265,13 @@ Page {
                         margins: Theme.horizontalPageMargin
                         verticalCenter: parent.verticalCenter
                     }
-                    text: patchData.value && patchData.value.sources ? qsTranslate("", "Sources") : ""
+                    text: patchData && patchData.sources ? qsTranslate("", "Sources") : ""
                 }
             }
 
             SectionHeader {
                 text: qsTranslate("", "Screenshots")
-                visible: !!patchData.value && !!patchData.value.screenshots && patchData.value.screenshots.length > 0
+                visible: patchData && !!patchData.screenshots && patchData.screenshots.length > 0
             }
 
             Flickable {
@@ -335,14 +280,14 @@ Page {
                 contentHeight: height
                 contentWidth: contentRow.width
                 flickableDirection: Flickable.HorizontalFlick
-                visible: !!patchData.value && !!patchData.value.screenshots && patchData.value.screenshots.length > 0
+                visible: patchData && patchData.screenshots && patchData.screenshots.length > 0
                 boundsBehavior: Flickable.StopAtBounds
 
                 Row {
                     id: contentRow
                     height: Screen.height / 4
                     Repeater {
-                        model: patchData.value && patchData.value.screenshots ? patchData.value.screenshots : 0
+                        model: patchData && patchData.screenshots ? patchData.screenshots : 0
                         delegate: MouseArea {
                             anchors.verticalCenter: parent.verticalCenter
                             width: imgItem.width * imgItem.scale
@@ -351,7 +296,7 @@ Page {
                             onClicked: {
                                 pageStack.push(Qt.resolvedUrl("ScreenshotsPage.qml"),
                                                {
-                                                   model: patchData.value.screenshots,
+                                                   model: patchData.screenshots,
                                                    currentIndex: index
                                                })
                             }
@@ -372,45 +317,45 @@ Page {
 
             SectionHeader {
                 text: qsTranslate("", "Files")
-                visible: !!patchData.value && !!patchData.value.files
+                visible: patchData && patchData.files
             }
 
             Repeater {
-                model: patchData.value && patchData.value.files ? patchData.value.files : 0
+                model: patchData && patchData.files ? patchData.files : 0
                 delegate: ListItem {
                     id: fileDelegate
                     width: parent.width
-                    height: contentHeight
                     contentHeight: filesContent.height
                     property bool isInstalled: !!container.versions && container.versions[modelData.project] == modelData.version
                     property bool isCompatible: modelData.compatible.indexOf(release) >= 0
+                    menu: contextMenu
+//                    showMenuOnPressAndHold: isInstalled
 
                     onClicked: {
                         if (!PatchManager.developerMode && !isCompatible) {
                             errorMesageComponent.createObject(fileDelegate, {text: qsTranslate("", "This file is not compatible with SailfishOS version!")})
                         } else if (!fileDelegate.isInstalled) {
-                            remorseAction(qsTranslate("", "Install patch %1").arg(patchData.value.display_name), installPatch)
+                            remorseAction(qsTranslate("", "Install patch %1").arg(patchData.display_name), installPatch)
                         }
                     }
 
+                    function removeAction() {
+                        console.log("###")
+                    }
+
                     function installPatch() {
-//                        patchData.getJson(modelData.version)
-//                        var patchUrl = modelData.document
-//                        var fName = patchUrl.substr(patchUrl.lastIndexOf("/") + 1)
-//                        PatchManager.downloadPatch(patchData.value.name, '/tmp/%1'.arg(fName), patchUrl)
                         PatchManager.watchCall(PatchManager.installPatch(modelData.project, modelData.version, modelData.document),
                                                function(ok) {
                                                    if (!ok) {
                                                        console.warn("Unsuccessful installation!")
                                                        return
                                                    }
-                                                   container.versions[patchData.value.name] = modelData.version
+                                                   container.versions[patchData.name] = modelData.version
                                                    container.versionsChanged()
                                                },
                                                function(error) {
                                                    console.log(error)
                                                })
-//                        PatchManager.installPatch(modelData.name, modelData.version, modelData.document)
                     }
 
                     Column {
@@ -459,7 +404,7 @@ Page {
 
                         Label {
                             width: parent.width
-                            text: qsTranslate("", "Compatible: %1").arg(modelData.compatible)
+                            text: qsTranslate("", "Compatible: %1").arg(modelData.compatible.join(", "))
                             font.pixelSize: Theme.fontSizeExtraSmall
                             color: fileDelegate.isCompatible ? Theme.highlightColor : Qt.tint(Theme.highlightColor, "red")
                             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -479,6 +424,17 @@ Page {
                         ItemErrorComponent {}
                     }
                 }
+            }
+        }
+    }
+
+    Component {
+        id: contextMenu
+        ContextMenu {
+            id: cMenu
+            MenuItem {
+                text: qsTranslate("", "Uninstall")
+                onClicked: cMenu.parent.removeAction()
             }
         }
     }

@@ -37,7 +37,7 @@ import org.SfietKonstantin.patchmanager 2.0
 
 Dialog {
     id: container
-    onAccepted: PatchManager.restartServices()
+    onAccepted: PatchManager.call(PatchManager.restartServices())
 
     SilicaFlickable {
         anchors.fill: parent
@@ -49,22 +49,11 @@ Dialog {
             }
 
             Label {
-                function getText() {
-                    if (PatchManager.appsNeedRestart && PatchManager.homescreenNeedRestart) {
-                        return qsTranslate("", "Both preloaded services (dialer, messages) and the homescreen will now be restarted. Your device might be unusable for a short moment.")
-                    } else if (PatchManager.appsNeedRestart) {
-                        return qsTranslate("", "Preloaded services (dialer, messages) will now be restarted. These application might take time to load for a short moment.")
-                    } else if (PatchManager.homescreenNeedRestart) {
-                        return qsTranslate("", "The homescreen will now be restarted. Your device might be unusable for a short moment.")
-                    }
-                    return ""
-                }
-
                 anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
                 anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
                 wrapMode: Text.WordWrap
                 color: Theme.highlightColor
-                text: getText()
+                text: qsTranslate("", "Some services will now be restarted. Phone interface might take time to load for a short moment.")
             }
         }
     }

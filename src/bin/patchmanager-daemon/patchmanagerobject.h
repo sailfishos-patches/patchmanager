@@ -115,6 +115,9 @@ public slots:
 
     static QString maxVersion(const QString &version1, const QString &version2);
 
+    void restartServices();
+    void patchToggleService(const QString &patch, bool activate);
+
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
 
@@ -202,6 +205,8 @@ private:
     QSettings *m_settings;
 
     QLocalServer *m_localServer;
+
+    QHash<QString, QStringList> m_toggleServices; // category => patches
 };
 
 #endif // PATCHMANAGEROBJECT_H

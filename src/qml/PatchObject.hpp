@@ -54,8 +54,8 @@ signals:
     void toBeDestroyed(PatchObject *object);
 
 public slots:
-    void apply();
-    void unapply();
+    void apply(QJSValue callback = QJSValue::UndefinedValue);
+    void unapply(QJSValue callback = QJSValue::UndefinedValue);
     void uninstall();
     void resetState();
 

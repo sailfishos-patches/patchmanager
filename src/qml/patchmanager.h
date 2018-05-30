@@ -47,19 +47,16 @@ class PatchManagerInterface;
 class PatchManager: public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(bool appsNeedRestart READ isAppsNeedRestart NOTIFY appsNeedRestartChanged)
-    Q_PROPERTY(bool homescreenNeedRestart READ isHomescreenNeedRestart NOTIFY homescreenNeedRestartChanged)
     Q_PROPERTY(QString serverMediaUrl READ serverMediaUrl CONSTANT)
     Q_PROPERTY(bool developerMode READ developerMode WRITE setDeveloperMode NOTIFY developerModeChanged)
     Q_PROPERTY(PatchManagerModel *installedModel READ installedModel CONSTANT)
     Q_PROPERTY(QVariantMap updates READ getUpdates NOTIFY updatesChanged)
     Q_PROPERTY(QStringList updatesNames READ getUpdatesNames NOTIFY updatesChanged)
+    Q_PROPERTY(bool appsNeedRestart READ toggleServices NOTIFY toggleServicesChanged)
 
 public:
     explicit PatchManager(QObject *parent = nullptr);
     static PatchManager *GetInstance(QObject *parent = nullptr);
-    bool isAppsNeedRestart() const;
-    bool isHomescreenNeedRestart() const;
     QString serverMediaUrl();
     bool developerMode();
     void setDeveloperMode(bool developerMode);
@@ -68,10 +65,16 @@ public:
     QVariantMap getUpdates() const;
     QStringList getUpdatesNames() const;
 
-    Q_INVOKABLE void watchCall(QDBusPendingCallWatcher *call, QJSValue callback, QJSValue errorCallback);
+    bool toggleServices() const;
+
+    Q_INVOKABLE void call(QDBusPendingCallWatcher *call);
+    Q_INVOKABLE void watchCall(QDBusPendingCallWatcher *call,
+                               QJSValue callback = QJSValue::UndefinedValue,
+                               QJSValue errorCallback = QJSValue::UndefinedValue);
+
+    static QVariant unwind(const QVariant &val, int depth = 0);
 
 private slots:
-    void onDownloadFinished(const QString & patch, const QString & fileName);
     void onServerReplied();
 
     void requestListPatches(const QString &patch, bool installed);
@@ -85,9 +88,11 @@ public slots:
 //    QDBusPendingCallWatcher *putSettings(const QString &name, const QVariant &value);
 //    QDBusPendingCallWatcher *getSettings(const QString &name, const QVariant &def = QVariant());
 
-    void patchToggleService(const QString &patch, const QString &code);
-    void restartServices();
-    void downloadPatch(const QString & patch, const QString & destination, const QString & patchUrl);
+    QDBusPendingCallWatcher *downloadCatalog(const QVariantMap &params);
+    QDBusPendingCallWatcher *downloadPatchInfo(const QString &name);
+    QDBusPendingCallWatcher *listVersions();
+    QDBusPendingCallWatcher *restartServices();
+
     bool installTranslator(const QString & patch);
     bool removeTranslator(const QString & patch);
     void activation(const QString & patch, const QString & version);
@@ -103,23 +108,20 @@ public slots:
     QVariant getSettings(const QString & name, const QVariant & def = QVariant());
 
     void onUpdatesAvailable(const QVariantMap &updates);
+    void onToggleServicesChanged(bool toggle);
 
 signals:
-    void appsNeedRestartChanged();
-    void homescreenNeedRestartChanged();
-    void downloadFinished(const QString & patch, const QString & fileName);
     void serverReply();
     void easterReceived(const QString & easterText);
     void developerModeChanged(bool developerMode);
     void updatesChanged();
+    void toggleServicesChanged(bool toggleServices);
 
 private:
     void successCall(QJSValue callback, const QVariant &value);
     void errorCall(QJSValue errorCallback, const QString &message);
 
     QVariantMap m_updates;
-
-    QVariant unwind(const QVariant &val, int depth = 0);
 
     QSet<QString> m_homescreenPatches;
     QSet<QString> m_voiceCallPatches;
@@ -132,6 +134,8 @@ private:
 
     PatchManagerModel *m_installedModel;
     PatchManagerInterface *m_interface;
+
+    bool m_toggleServices = false;
 };
 
 #endif // PATCHMANAGER_H

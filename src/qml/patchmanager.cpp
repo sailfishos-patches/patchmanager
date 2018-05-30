@@ -78,8 +78,6 @@ static void toggleSet(QSet<QString> &set, const QString &entry)
 
 PatchManager::PatchManager(QObject *parent)
     : QObject(parent)
-    , m_appsNeedRestart(false)
-    , m_homescreenNeedRestart(false)
     , m_installedModel(new PatchManagerModel(this))
     , m_interface(new PatchManagerInterface(DBUS_SERVICE_NAME, DBUS_PATH_NAME, QDBusConnection::systemBus(), this))
     , m_nam(new QNetworkAccessManager(this))
@@ -89,9 +87,10 @@ PatchManager::PatchManager(QObject *parent)
     requestListPatches(QString(), false);
     connect(m_interface, &PatchManagerInterface::patchAltered, this, &PatchManager::requestListPatches);
     connect(m_interface, &PatchManagerInterface::updatesAvailable, this, &PatchManager::onUpdatesAvailable);
+    connect(m_interface, &PatchManagerInterface::toggleServicesChanged, this, &PatchManager::onToggleServicesChanged);
 
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(m_interface->getUpdates(), this);
-    connect(watcher, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
+    QDBusPendingCallWatcher *watchGetUpdates = new QDBusPendingCallWatcher(m_interface->getUpdates(), this);
+    connect(watchGetUpdates, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
         QDBusPendingReply<QVariantMap> reply = *watcher;
         if (reply.isError()) {
             qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
@@ -100,10 +99,25 @@ PatchManager::PatchManager(QObject *parent)
 
         qDebug() << reply.value();
 
-        const QVariantMap data = unwind(reply.value()).toMap();
-        if (!data.isEmpty()) {
-            onUpdatesAvailable(data);
+        const QVariantMap data = PatchManager::unwind(reply.value()).toMap();
+        onUpdatesAvailable(data);
+
+        watcher->deleteLater();
+    });
+
+    QDBusPendingCallWatcher *watchGetToggleServices = new QDBusPendingCallWatcher(m_interface->getToggleServices(), this);
+    connect(watchGetToggleServices, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
+        QDBusPendingReply<bool> reply = *watcher;
+        if (reply.isError()) {
+            qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
+            return;
         }
+
+        qDebug() << reply.value();
+
+        const bool toggleServices = reply.value();
+        onToggleServicesChanged(toggleServices);
+
         watcher->deleteLater();
     });
 }
@@ -115,16 +129,6 @@ PatchManager *PatchManager::GetInstance(QObject *parent)
         lsSingleton = new PatchManager(parent);
     }
     return lsSingleton;
-}
-
-bool PatchManager::isAppsNeedRestart() const
-{
-    return m_appsNeedRestart;
-}
-
-bool PatchManager::isHomescreenNeedRestart() const
-{
-    return m_homescreenNeedRestart;
 }
 
 QString PatchManager::serverMediaUrl()
@@ -168,13 +172,18 @@ QStringList PatchManager::getUpdatesNames() const
     return m_updates.keys();
 }
 
-void PatchManager::onDownloadFinished(const QString &patch, const QString &fileName)
+bool PatchManager::toggleServices() const
 {
-    WebDownloader * download = qobject_cast<WebDownloader*>(sender());
-    if (download) {
-        download->deleteLater();
-    }
-    emit downloadFinished(patch, fileName);
+    return m_toggleServices;
+}
+
+void PatchManager::call(QDBusPendingCallWatcher *call)
+{
+    connect(call,
+            &QDBusPendingCallWatcher::finished,
+            [](QDBusPendingCallWatcher *watcher) {
+        watcher->deleteLater();
+    });
 }
 
 void PatchManager::onServerReplied()
@@ -201,7 +210,7 @@ void PatchManager::requestListPatches(const QString &patch, bool installed)
             qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
-        const QVariantList data = unwind(reply.value()).toList();
+        const QVariantList data = PatchManager::unwind(reply.value()).toList();
         m_installedModel->populateData(data, patch, installed);
         watcher->deleteLater();
     });
@@ -232,6 +241,26 @@ QDBusPendingCallWatcher *PatchManager::resetState(const QString &patch)
     return new QDBusPendingCallWatcher(m_interface->resetState(patch), this);
 }
 
+QDBusPendingCallWatcher *PatchManager::downloadCatalog(const QVariantMap &params)
+{
+    return new QDBusPendingCallWatcher(m_interface->downloadCatalog(params), this);
+}
+
+QDBusPendingCallWatcher *PatchManager::downloadPatchInfo(const QString &name)
+{
+    return new QDBusPendingCallWatcher(m_interface->downloadPatchInfo(name), this);
+}
+
+QDBusPendingCallWatcher *PatchManager::listVersions()
+{
+    return new QDBusPendingCallWatcher(m_interface->listVersions(), this);
+}
+
+QDBusPendingCallWatcher *PatchManager::restartServices()
+{
+    return new QDBusPendingCallWatcher(m_interface->restartServices(), this);
+}
+
 //QDBusPendingCallWatcher *PatchManager::putSettings(const QString &name, const QVariant &value)
 //{
 //    return new QDBusPendingCallWatcher(m_interface->putSettings(name, value), this);
@@ -258,7 +287,7 @@ void PatchManager::watchCall(QDBusPendingCallWatcher *call, QJSValue callback, Q
         } else {
             if (callback.isCallable()) {
                 const QDBusMessage message = reply.reply();
-                const QVariantList arguments = message.arguments();
+                const QVariantList arguments = PatchManager::unwind(message.arguments()).toList();
                 QJSValueList callbackArguments;
                 for (const QVariant &argument : arguments) {
                     callbackArguments << callback.engine()->toScriptValue<QVariant>(argument);
@@ -268,73 +297,6 @@ void PatchManager::watchCall(QDBusPendingCallWatcher *call, QJSValue callback, Q
         }
         watcher->deleteLater();
     });
-}
-
-void PatchManager::patchToggleService(const QString &patch, const QString &code)
-{
-    if (code == HOMESCREEN_CODE || code == SILICA_CODE) {
-        toggleSet(m_homescreenPatches, patch);
-    } else if (code == MESSAGES_CODE) {
-        toggleSet(m_messagesPatches, patch);
-    } else if (code == PHONE_CODE) {
-        toggleSet(m_voiceCallPatches, patch);
-    }
-
-    bool newAppsNeedRestart = (!m_messagesPatches.isEmpty() || !m_voiceCallPatches.isEmpty());
-    bool newHomescreenNeedRestart = !m_homescreenPatches.isEmpty();
-
-    if (m_appsNeedRestart != newAppsNeedRestart) {
-        m_appsNeedRestart = newAppsNeedRestart;
-        emit appsNeedRestartChanged();
-    }
-
-    if (m_homescreenNeedRestart != newHomescreenNeedRestart) {
-        m_homescreenNeedRestart = newHomescreenNeedRestart;
-        emit homescreenNeedRestartChanged();
-    }
-}
-
-void PatchManager::restartServices()
-{
-    if (!m_messagesPatches.isEmpty()) {
-        QStringList arguments;
-        arguments << "jolla-messages";
-        QProcess::execute("killall", arguments);
-        m_messagesPatches.clear();
-    }
-
-    if (!m_voiceCallPatches.isEmpty()) {
-        QStringList arguments;
-        arguments << "voicecall-ui";
-        QProcess::execute("killall", arguments);
-        m_voiceCallPatches.clear();
-    }
-
-    if (m_appsNeedRestart) {
-        m_appsNeedRestart = false;
-        emit appsNeedRestartChanged();
-    }
-
-    if (m_homescreenNeedRestart) {
-        QDBusMessage m = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
-                                                        QStringLiteral("/org/freedesktop/systemd1/unit/lipstick_2eservice"),
-                                                        QStringLiteral("org.freedesktop.systemd1.Unit"),
-                                                        QStringLiteral("Restart"));
-        m.setArguments({ QStringLiteral("replace") });
-        QDBusConnection::sessionBus().send(m);
-        m_homescreenNeedRestart = false;
-        emit homescreenNeedRestartChanged();
-    }
-}
-
-void PatchManager::downloadPatch(const QString &patch, const QString &destination, const QString &patchUrl)
-{
-    WebDownloader * download = new WebDownloader(this);
-    download->patch = patch;
-    download->url = patchUrl;
-    download->destination = destination;
-    QObject::connect(download, SIGNAL(downloadFinished(QString,QString)), this, SLOT(onDownloadFinished(QString,QString)));
-    download->start();
 }
 
 bool PatchManager::installTranslator(const QString &patch)
@@ -365,19 +327,6 @@ bool PatchManager::removeTranslator(const QString &patch)
     return true;
 }
 
-void PatchManager::activation(const QString &patch, const QString &version)
-{
-    QUrl url(CATALOG_URL"/"PROJECT_PATH);
-    QUrlQuery query;
-    query.addQueryItem("name", patch);
-    query.addQueryItem("version", version);
-    query.addQueryItem("action", "activation");
-    url.setQuery(query);
-    QNetworkRequest request(url);
-    QNetworkReply * reply = m_nam->get(request);
-    QObject::connect(reply, &QNetworkReply::finished, this, &PatchManager::onServerReplied);
-}
-
 int PatchManager::checkVote(const QString &patch)
 {
     QString key = QStringLiteral("votes/%1").arg(patch);
@@ -386,6 +335,8 @@ int PatchManager::checkVote(const QString &patch)
 
 void PatchManager::doVote(const QString &patch, int action)
 {
+    qDebug() << Q_FUNC_INFO << patch << action;
+
     if (checkVote(patch) == action) {
         return;
     }
@@ -494,7 +445,7 @@ QVariant PatchManager::getSettings(const QString &name, const QVariant &def)
     QDBusPendingReply<QVariant> reply = m_interface->getSettings(name, QDBusVariant(def));
     reply.waitForFinished();
     if (reply.isFinished()) {
-        return unwind(reply.value());
+        return PatchManager::unwind(reply.value());
     }
     return QVariant();
 
@@ -512,6 +463,16 @@ void PatchManager::onUpdatesAvailable(const QVariantMap &updates)
 
     m_updates = updates;
     emit updatesChanged();
+}
+
+void PatchManager::onToggleServicesChanged(bool toggle)
+{
+    if (m_toggleServices == toggle) {
+        return;
+    }
+
+    m_toggleServices = toggle;
+    emit toggleServicesChanged(m_toggleServices);
 }
 
 QVariant PatchManager::unwind(const QVariant &val, int depth)
@@ -539,7 +500,7 @@ QVariant PatchManager::unwind(const QVariant &val, int depth)
          * to variant list and unwind each item separately */
         QVariantList list;
         for (const QVariant &var: val.toList()) {
-            list.append(unwind(var, depth));
+            list.append(PatchManager::unwind(var, depth));
         }
         res = list;
     }
@@ -557,7 +518,7 @@ QVariant PatchManager::unwind(const QVariant &val, int depth)
         res = val;
     } else if (type == qMetaTypeId<QDBusVariant>()) {
         /* Convert QDBusVariant to QVariant */
-        res = unwind(val.value<QDBusVariant>().variant(), depth);
+        res = PatchManager::unwind(val.value<QDBusVariant>().variant(), depth);
     } else if (type == qMetaTypeId<QDBusObjectPath>()) {
         /* Convert QDBusObjectPath to QString */
         res = val.value<QDBusObjectPath>().path();
@@ -575,12 +536,12 @@ QVariant PatchManager::unwind(const QVariant &val, int depth)
         case QDBusArgument::BasicType:
             /* Most of the basic types should be convertible to QVariant.
              * Recurse anyway to deal with object paths and the like. */
-            res = unwind(arg.asVariant(), depth);
+            res = PatchManager::unwind(arg.asVariant(), depth);
             break;
 
         case QDBusArgument::VariantType:
             /* Try to convert to QVariant. Recurse to check content */
-            res = unwind(arg.asVariant().value<QDBusVariant>().variant(),
+            res = PatchManager::unwind(arg.asVariant().value<QDBusVariant>().variant(),
                          depth);
             break;
 
@@ -591,7 +552,7 @@ QVariant PatchManager::unwind(const QVariant &val, int depth)
                 arg.beginArray();
                 while (!arg.atEnd()) {
                     QVariant tmp = arg.asVariant();
-                    list.append(unwind(tmp, depth));
+                    list.append(PatchManager::unwind(tmp, depth));
                 }
                 arg.endArray();
                 res = list;
@@ -605,7 +566,7 @@ QVariant PatchManager::unwind(const QVariant &val, int depth)
                 arg.beginStructure();
                 while (!arg.atEnd()) {
                     QVariant tmp = arg.asVariant();
-                    list.append(unwind(tmp, depth));
+                    list.append(PatchManager::unwind(tmp, depth));
                 }
                 arg.endStructure();
                 res = QVariant::fromValue(list);
@@ -621,8 +582,8 @@ QVariant PatchManager::unwind(const QVariant &val, int depth)
                     arg.beginMapEntry();
                     QVariant key = arg.asVariant();
                     QVariant val = arg.asVariant();
-                    map.insert(unwind(key, depth).toString(),
-                               unwind(val, depth));
+                    map.insert(PatchManager::unwind(key, depth).toString(),
+                               PatchManager::unwind(val, depth));
                     arg.endMapEntry();
                 }
                 arg.endMap();

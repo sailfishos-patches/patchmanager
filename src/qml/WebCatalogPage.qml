@@ -45,22 +45,32 @@ Page {
 
     onStatusChanged: {
         if (status == PageStatus.Active) {
-            patchmanagerDbusInterface.listVersions()
+            PatchManager.watchCall(PatchManager.listVersions(),
+                function(patches) {
+                    console.log(patches)
+                    container.versions = patches
+                },
+                function(error) {
+                    console.log(error)
+                }
+            )
+//            patchmanagerDbusInterface.listVersions()
+            PatchManager.checkForUpdates()
         }
     }
 
-    DBusInterface {
-        id: patchmanagerDbusInterface
-        service: "org.SfietKonstantin.patchmanager"
-        path: "/org/SfietKonstantin/patchmanager"
-        iface: "org.SfietKonstantin.patchmanager"
-        bus: DBus.SystemBus
-        function listVersions() {
-            typedCall("listVersions", [], function (patches) {
-                container.versions = patches
-            })
-        }
-    }
+//    DBusInterface {
+//        id: patchmanagerDbusInterface
+//        service: "org.SfietKonstantin.patchmanager"
+//        path: "/org/SfietKonstantin/patchmanager"
+//        iface: "org.SfietKonstantin.patchmanager"
+//        bus: DBus.SystemBus
+//        function listVersions() {
+//            typedCall("listVersions", [], function (patches) {
+//                container.versions = patches
+//            })
+//        }
+//    }
 
     SilicaListView {
         id: view
@@ -140,7 +150,12 @@ Page {
 
             onClicked: {
                 pageStack.push(Qt.resolvedUrl("WebPatchPage.qml"),
-                               {modelData: model, delegate: background, release: release})
+                               {
+                                   modelData: model,
+                                   delegate: background,
+                                   release: release,
+                                   versions: versions
+                               })
             }
 
             Column {

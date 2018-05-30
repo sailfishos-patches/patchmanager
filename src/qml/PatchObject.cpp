@@ -35,6 +35,7 @@
 #include <QDebug>
 #include <QDBusPendingCallWatcher>
 #include <QDBusPendingReply>
+#include <QJSEngine>
 
 PatchObject::PatchObject(const QVariantMap &data, QObject *parent)
     : QObject(parent)
@@ -69,7 +70,7 @@ bool PatchObject:: busy() const
     return m_busy;
 }
 
-void PatchObject::apply()
+void PatchObject::apply(QJSValue callback)
 {
     qDebug() << Q_FUNC_INFO;
     if (m_busy) {
@@ -83,7 +84,7 @@ void PatchObject::apply()
     setBusy(true);
     connect(PatchManager::GetInstance()->applyPatch(m_details->value("patch").toString()),
             &QDBusPendingCallWatcher::finished,
-            [this](QDBusPendingCallWatcher *watcher){
+            [this, callback](QDBusPendingCallWatcher *watcher) mutable {
         QDBusPendingReply<bool> reply = *watcher;
         if (reply.isError()) {
             qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
@@ -92,10 +93,16 @@ void PatchObject::apply()
         }
         setBusy(false);
         watcher->deleteLater();
+
+        if (callback.isCallable()) {
+            QJSValueList callbackArguments;
+            callbackArguments << callback.engine()->toScriptValue<bool>(!reply.isError() && reply.value());
+            callback.call(callbackArguments);
+        }
     });
 }
 
-void PatchObject::unapply()
+void PatchObject::unapply(QJSValue callback)
 {
     qDebug() << Q_FUNC_INFO;
     if (m_busy) {
@@ -109,7 +116,7 @@ void PatchObject::unapply()
     setBusy(true);
     connect(PatchManager::GetInstance()->unapplyPatch(m_details->value("patch").toString()),
             &QDBusPendingCallWatcher::finished,
-            [this](QDBusPendingCallWatcher *watcher){
+            [this, callback](QDBusPendingCallWatcher *watcher) mutable {
         QDBusPendingReply<bool> reply = *watcher;
         if (reply.isError()) {
             qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
@@ -118,6 +125,12 @@ void PatchObject::unapply()
         }
         setBusy(false);
         watcher->deleteLater();
+
+        if (callback.isCallable()) {
+            QJSValueList callbackArguments;
+            callbackArguments << callback.engine()->toScriptValue<bool>(!reply.isError() && reply.value());
+            callback.call(callbackArguments);
+        }
     });
 }
 

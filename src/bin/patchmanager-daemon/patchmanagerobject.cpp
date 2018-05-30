@@ -618,7 +618,8 @@ bool PatchManagerObject::applyPatch(const QString &patch)
         msg = message();
     }
     QMetaObject::invokeMethod(this, NAME(doPatch), Qt::QueuedConnection,
-                              Q_ARG(QVariantMap, QVariantMap({{QStringLiteral("name"), patch}})),
+                              Q_ARG(QVariantMap, QVariantMap({{QStringLiteral("name"), patch},
+                                                              {QStringLiteral("user_request"), true}})),
                               Q_ARG(QDBusMessage, msg),
                               Q_ARG(bool, true));
     return true;
@@ -863,6 +864,101 @@ QString PatchManagerObject::maxVersion(const QString &version1, const QString &v
     }
 
     return version1;
+}
+
+void PatchManagerObject::restartServices()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    if (m_toggleServices.isEmpty()) {
+        return;
+    }
+
+    for (const QString &category : m_toggleServices.keys()) {
+        /*
+static const QString BROWSER_CODE = QStringLiteral("browser");
+static const QString CAMERA_CODE = QStringLiteral("camera");
+static const QString CALENDAR_CODE = QStringLiteral("calendar");
+static const QString CLOCK_CODE = QStringLiteral("clock");
+static const QString CONTACTS_CODE = QStringLiteral("contacts");
+static const QString EMAIL_CODE = QStringLiteral("email");
+static const QString GALLERY_CODE = QStringLiteral("gallery");
+static const QString HOMESCREEN_CODE = QStringLiteral("homescreen");
+static const QString MEDIA_CODE = QStringLiteral("media");
+static const QString MESSAGES_CODE = QStringLiteral("messages");
+static const QString PHONE_CODE = QStringLiteral("phone");
+static const QString SILICA_CODE = QStringLiteral("silica");
+static const QString SETTINGS_CODE = QStringLiteral("settings");
+*/
+        if (category == HOMESCREEN_CODE || category == SILICA_CODE) {
+            QDBusMessage m = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
+                                                            QStringLiteral("/org/freedesktop/systemd1/unit/lipstick_2eservice"),
+                                                            QStringLiteral("org.freedesktop.systemd1.Unit"),
+                                                            QStringLiteral("Restart"));
+            m.setArguments({ QStringLiteral("replace") });
+            QDBusConnection::sessionBus().send(m);
+        } else {
+            QHash<QString, QString> categoryToProcess = {
+                { BROWSER_CODE, QStringLiteral("sailfish-browser") },
+                { CAMERA_CODE, QStringLiteral("jolla-camera") },
+                { CALENDAR_CODE, QStringLiteral("jolla-calendar") },
+                { CLOCK_CODE, QStringLiteral("jolla-clock") },
+                { CONTACTS_CODE, QStringLiteral("jolla-contacts") },
+                { EMAIL_CODE, QStringLiteral("jolla-email") },
+                { GALLERY_CODE, QStringLiteral("jolla-gallery") },
+                { MEDIA_CODE, QStringLiteral("jolla-mediaplayer") },
+                { MESSAGES_CODE, QStringLiteral("jolla-messages") },
+                { PHONE_CODE, QStringLiteral("voicecall-ui") },
+                { SETTINGS_CODE, QStringLiteral("jolla-settings") },
+            };
+
+            if (!categoryToProcess.contains(category)) {
+                return;
+            }
+
+            QStringList arguments;
+            arguments << categoryToProcess[category];
+            QProcess::execute(QStringLiteral("killall"), arguments);
+        }
+    }
+
+    m_toggleServices.clear();
+    emit m_adaptor->toggleServicesChanged(false);
+}
+
+void PatchManagerObject::patchToggleService(const QString &patch, bool activate)
+{
+    qDebug() << Q_FUNC_INFO << patch << activate;
+
+    if (!m_metadata.contains(patch)) {
+        return;
+    }
+
+    const QString &category = m_metadata[patch][CATEGORY_KEY].toString();
+
+    if (activate) {
+        if (!m_toggleServices.contains(category) || !m_toggleServices[category].contains(patch)) {
+            QStringList patches = m_toggleServices[category];
+            patches.append(patch);
+            m_toggleServices[category] = patches;
+
+            emit m_adaptor->toggleServicesChanged(true);
+        }
+    } else {
+        if (m_toggleServices.contains(category) && m_toggleServices[category].contains(patch)) {
+            if (m_toggleServices[category].count() == 1) {
+                m_toggleServices.remove(category);
+            } else {
+                QStringList patches = m_toggleServices[category];
+                patches.removeOne(patch);
+                m_toggleServices[category] = patches;
+            }
+
+            if (m_toggleServices.isEmpty()) {
+                emit m_adaptor->toggleServicesChanged(false);
+            }
+        }
+    }
 }
 
 //void PatchManagerObject::checkPatches()
@@ -1159,6 +1255,7 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
 {
     qDebug() << Q_FUNC_INFO << params << apply;
     const QString &patch = params.value(QStringLiteral("name")).toString();
+    const bool user_request = params.value(QStringLiteral("user_request"), false).toBool();
 
     QVariantMap patchData = m_metadata[patch];
     QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
@@ -1168,6 +1265,10 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
     if (ok) {
         if (apply) {
             m_appliedPatches.insert(patch);
+            const QString rpmPatch = m_metadata[patch][RPM_KEY].toString();
+            if (rpmPatch.isEmpty() && user_request) {
+                sendActivation(patch, m_metadata[patch][VERSION_KEY].toString());
+            }
         } else {
             m_appliedPatches.remove(patch);
         }

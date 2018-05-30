@@ -32,7 +32,6 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import org.nemomobile.dbus 2.0
 import org.SfietKonstantin.patchmanager 2.0
 
 Page {
@@ -124,56 +123,6 @@ Page {
         }
     }
 
-//    DBusInterface {
-//        id: patchmanagerDbusInterface
-//        service: "org.SfietKonstantin.patchmanager"
-//        path: "/org/SfietKonstantin/patchmanager"
-//        iface: "org.SfietKonstantin.patchmanager"
-//        bus: DBus.SystemBus
-//        signalsEnabled: true
-//        function listPatches() {
-//            typedCall("listPatches", [], function (patches) {
-//                indicator.visible = false
-//                patchModel.clear()
-//                for (var i = 0; i < patches.length; i++) {
-//                    var patch = patches[i]
-//                    if (patch.compatible) {
-//                        patch.compatible = patch.compatible.join(", ")
-//                    } else {
-//                        patch.compatible = "0.0.0"
-//                    }
-//                    patchModel.append(patch)
-//                }
-//            })
-//        }
-//        function applyPatch(patch, cb) {
-//            patchmanagerDbusInterface.typedCall("applyPatch",
-//                                                [{"type": "s", "value": patch}],
-//                                                cb)
-//        }
-//        function unapplyPatch(patch, cb) {
-//            patchmanagerDbusInterface.typedCall("unapplyPatch",
-//                                                [{"type": "s", "value": patch}],
-//                                                cb)
-//        }
-//        function unapplyAllPatches() {
-//            patchmanagerDbusInterface.typedCall("unapplyAllPatches", [])
-//        }
-//        function applyPatchFinished(patch) {
-//            console.log(patch)
-//            view.applyPatchFinished(patch)
-//        }
-//        function unapplyPatchFinished(patch) {
-//            console.log(patch)
-//            view.unapplyPatchFinished(patch)
-//        }
-//        function unapplyAllPatchesFinished() {
-//            console.log()
-//            view.unapplyAllFinished()
-//            view.busy = false
-//        }
-//    }
-
     SilicaListView {
         id: view
         anchors.fill: parent
@@ -208,7 +157,7 @@ Page {
 
             MenuItem {
                 text: qsTranslate("", "Restart preloaded services")
-                visible: PatchManager.appsNeedRestart || PatchManager.homescreenNeedRestart
+                visible: PatchManager.appsNeedRestart
                 onClicked: pageStack.push(Qt.resolvedUrl("RestartServicesDialog.qml"))
             }
         }
@@ -216,9 +165,6 @@ Page {
         header: PageHeader {
             title: qsTranslate("", "Installed patches")
         }
-//        model: ListModel {
-//            id: patchModel
-//        }
         model: PatchManager.installedModel
 
 //        section.criteria: ViewSection.FullString
@@ -257,7 +203,6 @@ Page {
             id: background
             menu: contextMenu
             contentHeight: content.height
-            property bool canApply: true
             property bool applying: !appliedSwitch.enabled
             property int dragThreshold: width / 3
             property var pressPosition
@@ -388,7 +333,9 @@ Page {
             function doPatch() {
                 if (!patchObject.details.patched) {
                     if (PatchManager.developerMode || patchObject.details.isCompatible) {
-                        patchObject.apply()
+                        patchObject.apply(function(ok) {
+
+                        })
 //                        patchmanagerDbusInterface.applyPatch(model.patch,
 //                        function (ok) {
 //                            if (ok) {
@@ -454,41 +401,21 @@ Page {
 
             function doUninstall() {
                 patchObject.uninstall()
-//                if (patchObject.details.isNewPatch) {
-
-////                    patchmanagerDbusInterface.typedCall("uninstallPatch",
-////                                                      [{"type": "s", "value": model.patch}],
-////                        function(ok) {
-////                            if (ok) {
-////                                patchModel.remove(index)
-////                            }
-////                        })
-//                } else {
-//                    if (PatchManager.callUninstallOldPatch(patchObject.details.patch)) {
-//                        //patchModel.remove(index)
-//                    }
-//                }
             }
 
             function doRemove() {
                 if (patchObject.details.patched) {
-                    //appliedSwitch.busy = true
-//                    patchmanagerDbusInterface.unapplyPatch(model.patch,
-//                    function (ok) {
-//                        appliedSwitch.busy = false
-//                        PatchManager.patchToggleService(model.patch, model.categoryCode)
-//                        if (ok) {
-//                            doUninstall()
-//                        }
-//                    })
+                    patchObject.unapply(function(ok) {
+                        if (ok) {
+                            doUninstall()
+                        }
+                    })
                 } else {
                     doUninstall();
                 }
             }
 
             onClicked: {
-                pulleyAnimation.start()
-                return
                 var patchName = patchObject.details.patch
                 try {
                     var translator = PatchManager.installTranslator(patchName)
@@ -506,14 +433,6 @@ Page {
                 pageStack.push(Qt.resolvedUrl(patchObject.details.isNewPatch ? "NewPatchPage.qml" : "LegacyPatchPage.qml"),
                               {modelData: patchObject.details, delegate: background})
             }
-
-            function checkApplicability() {
-                //appliedSwitch.enabled = background.canApply
-            }
-
-//            Component.onCompleted: {
-//                checkApplicability()
-//            }
 
             Rectangle {
                 id: content
