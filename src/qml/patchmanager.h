@@ -75,8 +75,6 @@ public:
     static QVariant unwind(const QVariant &val, int depth = 0);
 
 private slots:
-    void onServerReplied();
-
     void requestListPatches(const QString &patch, bool installed);
 
 public slots:
@@ -104,14 +102,20 @@ public slots:
 
     void checkForUpdates();
 
-    bool putSettings(const QString & name, const QVariant & value);
-    QVariant getSettings(const QString & name, const QVariant & def = QVariant());
+    bool putSettingsSync(const QString & name, const QVariant & value);
+    void putSettingsAsync(const QString & name, const QVariant & value,
+                          QJSValue callback = QJSValue::UndefinedValue,
+                          QJSValue errorCallback = QJSValue::UndefinedValue);
+
+    QVariant getSettingsSync(const QString & name, const QVariant & def = QVariant());
+    void getSettingsAsync(const QString & name, const QVariant & def = QVariant(),
+                          QJSValue callback = QJSValue::UndefinedValue,
+                          QJSValue errorCallback = QJSValue::UndefinedValue);
 
     void onUpdatesAvailable(const QVariantMap &updates);
     void onToggleServicesChanged(bool toggle);
 
 signals:
-    void serverReply();
     void easterReceived(const QString & easterText);
     void developerModeChanged(bool developerMode);
     void updatesChanged();
@@ -123,14 +127,8 @@ private:
 
     QVariantMap m_updates;
 
-    QSet<QString> m_homescreenPatches;
-    QSet<QString> m_voiceCallPatches;
-    QSet<QString> m_messagesPatches;
     QHash<QString, QTranslator*> m_translators;
-    bool m_appsNeedRestart;
-    bool m_homescreenNeedRestart;
     QNetworkAccessManager *m_nam;
-    QSettings *m_settings;
 
     PatchManagerModel *m_installedModel;
     PatchManagerInterface *m_interface;

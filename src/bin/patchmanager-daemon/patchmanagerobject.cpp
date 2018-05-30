@@ -961,6 +961,11 @@ void PatchManagerObject::patchToggleService(const QString &patch, bool activate)
     }
 }
 
+bool PatchManagerObject::getToggleServices()
+{
+    return !m_toggleServices.isEmpty();
+}
+
 //void PatchManagerObject::checkPatches()
 //{
 //    QList<Patch> patches = listPatches();
@@ -1273,6 +1278,7 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
             m_appliedPatches.remove(patch);
         }
         refreshPatchList();
+        patchToggleService(patch, apply);
     }
 
     if (!params.value(QStringLiteral("dont_notify"), false).toBool()) {

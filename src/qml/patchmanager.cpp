@@ -45,11 +45,6 @@
 #include "webcatalog.h"
 #include "patchmanager_interface.h"
 
-static const char *HOMESCREEN_CODE = "homescreen";
-static const char *MESSAGES_CODE = "messages";
-static const char *PHONE_CODE = "phone";
-static const char *SILICA_CODE = "silica";
-
 static const char *noop_strings[] = {
     QT_TRANSLATE_NOOP("Sections", "browser"),
     QT_TRANSLATE_NOOP("Sections", "camera"),
@@ -67,21 +62,11 @@ static const char *noop_strings[] = {
     QT_TRANSLATE_NOOP("Sections", "other"),
 };
 
-static void toggleSet(QSet<QString> &set, const QString &entry)
-{
-    if (set.contains(entry)) {
-        set.remove(entry);
-    } else {
-        set.insert(entry);
-    }
-}
-
 PatchManager::PatchManager(QObject *parent)
     : QObject(parent)
+    , m_nam(new QNetworkAccessManager(this))
     , m_installedModel(new PatchManagerModel(this))
     , m_interface(new PatchManagerInterface(DBUS_SERVICE_NAME, DBUS_PATH_NAME, QDBusConnection::systemBus(), this))
-    , m_nam(new QNetworkAccessManager(this))
-    , m_settings(new QSettings(QStringLiteral("/home/nemo/.config/patchmanager2.conf"), QSettings::IniFormat, this))
 {
 
     requestListPatches(QString(), false);
@@ -138,12 +123,12 @@ QString PatchManager::serverMediaUrl()
 
 bool PatchManager::developerMode()
 {
-    return getSettings("developerMode", false).toBool();
+    return getSettingsSync("developerMode", false).toBool();
 }
 
 void PatchManager::setDeveloperMode(bool developerMode)
 {
-    if (putSettings("developerMode", developerMode)) {
+    if (putSettingsSync("developerMode", developerMode)) {
         emit developerModeChanged(developerMode);
     }
 }
@@ -184,15 +169,6 @@ void PatchManager::call(QDBusPendingCallWatcher *call)
             [](QDBusPendingCallWatcher *watcher) {
         watcher->deleteLater();
     });
-}
-
-void PatchManager::onServerReplied()
-{
-    QNetworkReply * reply = qobject_cast<QNetworkReply *>(sender());
-    if (reply) {
-        reply->deleteLater();
-        emit serverReply();
-    }
 }
 
 void PatchManager::requestListPatches(const QString &patch, bool installed)
@@ -329,8 +305,7 @@ bool PatchManager::removeTranslator(const QString &patch)
 
 int PatchManager::checkVote(const QString &patch)
 {
-    QString key = QStringLiteral("votes/%1").arg(patch);
-    return m_settings->value(key, 0).toInt();
+    return getSettingsSync(QStringLiteral("votes/%1").arg(patch), 0).toInt();
 }
 
 void PatchManager::doVote(const QString &patch, int action)
@@ -341,25 +316,9 @@ void PatchManager::doVote(const QString &patch, int action)
         return;
     }
 
-    QUrl url(CATALOG_URL"/"PROJECT_PATH);
-    QUrlQuery query;
-    query.addQueryItem("name", patch);
-    if (action == 0) {
-        query.addQueryItem("action", checkVote(patch) == 1 ? "upvote" : "downvote");
-    } else {
-        query.addQueryItem("action", action == 1 ? "downvote" : "upvote");
-        if (checkVote(patch) > 0) {
-            query.addQueryItem("twice", "true");
-        }
-    }
-    url.setQuery(query);
-    QNetworkRequest request(url);
-    QNetworkReply * reply = m_nam->get(request);
-    QObject::connect(reply, &QNetworkReply::finished, this, &PatchManager::onServerReplied);
+    m_interface->votePatch(patch, action);
 
-    QString key = QStringLiteral("votes/%1").arg(patch);
-    m_settings->setValue(key, action);
-    m_settings->sync();
+    putSettingsSync(QStringLiteral("votes/%1").arg(patch), action);
 }
 
 void PatchManager::checkEaster()
@@ -400,6 +359,36 @@ void PatchManager::checkForUpdates()
     m_interface->checkForUpdates();
 }
 
+bool PatchManager::putSettingsSync(const QString &name, const QVariant &value)
+{
+    QDBusPendingReply<bool> reply = m_interface->putSettings(name, QDBusVariant(value));
+    reply.waitForFinished();
+    if (reply.isFinished()) {
+        return reply.value();
+    }
+    return false;
+}
+
+void PatchManager::putSettingsAsync(const QString &name, const QVariant &value, QJSValue callback, QJSValue errorCallback)
+{
+    watchCall(new QDBusPendingCallWatcher(m_interface->putSettings(name, QDBusVariant(value)), this), callback, errorCallback);
+}
+
+QVariant PatchManager::getSettingsSync(const QString &name, const QVariant &def)
+{
+    QDBusPendingReply<QVariant> reply = m_interface->getSettings(name, QDBusVariant(def));
+    reply.waitForFinished();
+    if (reply.isFinished()) {
+        return PatchManager::unwind(reply.value());
+    }
+    return QVariant();
+}
+
+void PatchManager::getSettingsAsync(const QString &name, const QVariant &def, QJSValue callback, QJSValue errorCallback)
+{
+    watchCall(new QDBusPendingCallWatcher(m_interface->getSettings(name, QDBusVariant(def)), this), callback, errorCallback);
+}
+
 void PatchManager::successCall(QJSValue callback, const QVariant &value)
 {
     if (callback.isUndefined() || !callback.isCallable()) {
@@ -420,37 +409,6 @@ void PatchManager::errorCall(QJSValue errorCallback, const QString &message)
     QJSValueList callbackArguments;
     callbackArguments << QJSValue(message);
     errorCallback.call(callbackArguments);
-}
-
-bool PatchManager::putSettings(const QString &name, const QVariant &value)
-{
-    QDBusPendingReply<bool> reply = m_interface->putSettings(name, QDBusVariant(value));
-    reply.waitForFinished();
-    if (reply.isFinished()) {
-        return reply.value();
-    }
-    return false;
-
-//    QString key = QStringLiteral("settings/%1").arg(name);
-//    QVariant old = m_settings->value(key);
-//    if (old != value) {
-//        m_settings->setValue(key ,value);
-//        return true;
-//    }
-//    return false;
-}
-
-QVariant PatchManager::getSettings(const QString &name, const QVariant &def)
-{
-    QDBusPendingReply<QVariant> reply = m_interface->getSettings(name, QDBusVariant(def));
-    reply.waitForFinished();
-    if (reply.isFinished()) {
-        return PatchManager::unwind(reply.value());
-    }
-    return QVariant();
-
-//    QString key = QStringLiteral("settings/%1").arg(name);
-//    return m_settings->value(key ,def);
 }
 
 void PatchManager::onUpdatesAvailable(const QVariantMap &updates)

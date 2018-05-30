@@ -183,7 +183,7 @@ void PatchManagerModel::saveLayout()
         patches.append(o->details()->value(QStringLiteral("patch")).toString());
     }
 
-    PatchManager::GetInstance()->putSettings("order", patches);
+    PatchManager::GetInstance()->putSettingsAsync("order", patches);
 }
 
 void PatchManagerModel::itemRemoved(PatchObject *object)

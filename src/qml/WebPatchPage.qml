@@ -328,8 +328,6 @@ Page {
                     contentHeight: filesContent.height
                     property bool isInstalled: !!container.versions && container.versions[modelData.project] == modelData.version
                     property bool isCompatible: modelData.compatible.indexOf(release) >= 0
-                    menu: contextMenu
-//                    showMenuOnPressAndHold: isInstalled
 
                     onClicked: {
                         if (!PatchManager.developerMode && !isCompatible) {
@@ -424,17 +422,6 @@ Page {
                         ItemErrorComponent {}
                     }
                 }
-            }
-        }
-    }
-
-    Component {
-        id: contextMenu
-        ContextMenu {
-            id: cMenu
-            MenuItem {
-                text: qsTranslate("", "Uninstall")
-                onClicked: cMenu.parent.removeAction()
             }
         }
     }

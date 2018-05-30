@@ -118,6 +118,8 @@ public slots:
     void restartServices();
     void patchToggleService(const QString &patch, bool activate);
 
+    bool getToggleServices();
+
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
 
