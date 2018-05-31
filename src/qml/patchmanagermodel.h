@@ -55,6 +55,8 @@ public:
     Q_INVOKABLE void move(int from, int to);
     Q_INVOKABLE void saveLayout();
 
+    QString patchName(const QString &patch) const;
+
 private slots:
     void itemRemoved(PatchObject *object);
 

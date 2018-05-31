@@ -264,6 +264,7 @@ void PatchManagerObject::lateInitialize()
 
     refreshPatchList();
     prepareCacheRoot();
+    startLocalServer();
 
     INotifyWatcher *mainWatcher = new INotifyWatcher(this);
     mainWatcher->addPaths({ PATCHES_DIR });
@@ -353,6 +354,12 @@ void PatchManagerObject::registerDBus()
 {
     qDebug() << Q_FUNC_INFO;
     QMetaObject::invokeMethod(this, NAME(doRegisterDBus), Qt::QueuedConnection);
+}
+
+void PatchManagerObject::startLocalServer()
+{
+    qDebug() << Q_FUNC_INFO;
+    QMetaObject::invokeMethod(this, NAME(doStartLocalServer), Qt::QueuedConnection);
 }
 
 void PatchManagerObject::doRegisterDBus()
@@ -487,10 +494,11 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
             chown(fakeFileName.toLatin1().constData(), fileStat.st_uid, fileStat.st_gid);
         }
     }
- }
+}
 
-void PatchManagerObject::initialize()
+void PatchManagerObject::doStartLocalServer()
 {
+    qDebug() << Q_FUNC_INFO;
     QThread *serverThread = new QThread(this);
     m_localServer->moveToThread(serverThread);
     connect(serverThread, &QThread::finished, this, [this](){
@@ -506,8 +514,6 @@ void PatchManagerObject::initialize()
                 && QFile::remove(patchmanager_socket)) { // and successfully removed it
             qWarning() << "Removed old stuck socket";
             listening = m_localServer->listen(patchmanager_socket); // try to start lisening again
-        } else {
-            qWarning() << "Server error:" << m_localServer->serverError() << m_localServer->errorString();
         }
         qDebug() << Q_FUNC_INFO << "Server listening:" << listening;
         if (!listening) {
@@ -515,6 +521,11 @@ void PatchManagerObject::initialize()
         }
     }, Qt::DirectConnection);
     serverThread->start();
+}
+
+void PatchManagerObject::initialize()
+{
+    qDebug() << Q_FUNC_INFO;
 
     getVersion();
 }
@@ -1053,13 +1064,16 @@ void PatchManagerObject::startReadingLocalServer()
             clientConnection->disconnectFromServer();
             return;
         }
-        QByteArray payload = clientConnection->readAll();
-        qWarning() << Q_FUNC_INFO << "Requested:" << payload;
-        const QString fakePath = QStringLiteral("%1%2").arg(patchmanager_cache_root, QString::fromLatin1(payload));
+        const QByteArray request = clientConnection->readAll();
+        QByteArray payload;
+        const QString fakePath = QStringLiteral("%1%2").arg(patchmanager_cache_root, QString::fromLatin1(request));
         if (QFileInfo::exists(fakePath)) {
             payload = fakePath.toLatin1();
+            qWarning() << Q_FUNC_INFO << "Requested:" << request << "Sending:" << payload;
+        } else {
+            payload = request;
+            qWarning() << Q_FUNC_INFO << "Requested:" << request << "Not changing";
         }
-        qWarning() << Q_FUNC_INFO << "Sending:" << payload;
         clientConnection->write(payload);
         clientConnection->flush();
 //        clientConnection->waitForBytesWritten();
@@ -1103,7 +1117,7 @@ void PatchManagerObject::doRefreshPatchList()
             QStringList splitted = line.split(QChar(' '));
             if (splitted.count() == 2) {
                 m_appliedPatches.insert(splitted.first());
-                qDebug() << splitted.first();
+                qDebug() << Q_FUNC_INFO << splitted.first();
             }
         }
         file.close();

@@ -237,6 +237,11 @@ QDBusPendingCallWatcher *PatchManager::restartServices()
     return new QDBusPendingCallWatcher(m_interface->restartServices(), this);
 }
 
+QString PatchManager::patchName(const QString &patch) const
+{
+    return m_installedModel->patchName(patch);
+}
+
 //QDBusPendingCallWatcher *PatchManager::putSettings(const QString &name, const QVariant &value)
 //{
 //    return new QDBusPendingCallWatcher(m_interface->putSettings(name, value), this);

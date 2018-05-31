@@ -135,6 +135,7 @@ private slots:
     void doRegisterDBus();
     void doPrepareCacheRoot();
     void doPrepareCache(const QString &patchName, bool apply = true);
+    void doStartLocalServer();
 
     void doRefreshPatchList();
     void doListPatches(const QDBusMessage &message);
@@ -160,6 +161,7 @@ private slots:
 private:
     void registerDBus();
 
+    void startLocalServer();
     void initialize();
 
     QString checkRpmPatch(const QString &patch) const;

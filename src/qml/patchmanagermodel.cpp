@@ -186,6 +186,15 @@ void PatchManagerModel::saveLayout()
     PatchManager::GetInstance()->putSettingsAsync("order", patches);
 }
 
+QString PatchManagerModel::patchName(const QString &patch) const
+{
+    if (!m_patchMap.contains(patch)) {
+        return patch;
+    }
+
+    return m_patchMap[patch]->details()->value(QStringLiteral("display_name")).toString();
+}
+
 void PatchManagerModel::itemRemoved(PatchObject *object)
 {
     qDebug() << Q_FUNC_INFO << object;

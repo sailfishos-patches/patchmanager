@@ -91,6 +91,8 @@ public slots:
     QDBusPendingCallWatcher *listVersions();
     QDBusPendingCallWatcher *restartServices();
 
+    QString patchName(const QString &patch) const;
+
     bool installTranslator(const QString & patch);
     bool removeTranslator(const QString & patch);
     void activation(const QString & patch, const QString & version);

@@ -32,6 +32,7 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import org.SfietKonstantin.patchmanager 2.0
 
 Page {
     id: container
@@ -88,6 +89,21 @@ Page {
                 anchors.margins: Theme.horizontalPageMargin
                 wrapMode: Text.WordWrap
                 text: modelData.author
+            }
+
+            SectionHeader {
+                visible: modelData.conflicts.length > 0
+                text: qsTranslate("", "Possible conflicts")
+            }
+
+            Label {
+                color: Theme.highlightColor
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: Theme.horizontalPageMargin
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                text: modelData.conflicts.map(function(i) { return PatchManager.patchName(i) }).join("\n")
+                visible: modelData.conflicts.length > 0
             }
 
             SectionHeader {

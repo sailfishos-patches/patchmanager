@@ -291,8 +291,9 @@ Page {
             function reset() {
                 if (!drag.target) {
                     content.x = 0
+                } else {
+                    view.model.saveLayout()
                 }
-                view.model.saveLayout()
                 sctollTopTimer.stop()
                 sctollBottomTimer.stop()
                 drag.target = null
@@ -515,7 +516,7 @@ Page {
                     }
                     MenuLabel {
                         visible: patchObject.details.conflicts.length > 0
-                        text: qsTranslate("", "Possible conflicts: %1").arg(patchObject.details.conflicts.join(', '))
+                        text: qsTranslate("", "Have possible conflicts")
                     }
                     MenuItem {
                         text: qsTranslate("", "Patch info")

@@ -59,9 +59,18 @@ export NO_PM_PRELOAD=1
 case "$*" in
 1)
 echo Installing package
+// unapply patches if pm2 is installed
+if [ "$(rpm -q --qf "%{VERSION}" patchmanager | head -c 1)" == "2" ]
+then
+    for patch in $(ls /var/lib/patchmanager/ausmt/patches)
+    do
+        /usr/sbin/patchmanager -u $patch
+    done
+fi
 ;;
 2)
 echo Upgrading package
+
 ;;
 *) echo case "$*" not handled in pre
 esac
@@ -118,6 +127,8 @@ echo Uninstalling package
 dbus-send --system --type=method_call \
 --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 sed -i "/libpreloadpatchmanager/ d" /etc/ld.so.preload
+rm -rf /tmp/patchmanager |:
+rm -f /tmp/patchmanager-socket |:
 ;;
 1)
 echo Upgrading package
@@ -141,8 +152,8 @@ systemctl daemon-reload
 /lib/systemd/system/checkForUpdates-org.SfietKonstantin.patchmanager.timer
 /lib/systemd/system/timers.target.wants/checkForUpdates-org.SfietKonstantin.patchmanager.timer
 %{_sharedstatedir}/environment/patchmanager/10-dbus.conf
-%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/patch.json
-%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/unified_diff.patch
+#%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/patch.json
+#%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/unified_diff.patch
 %{_libdir}/libpreload%{name}.so
 
 %{_libdir}/qt5/qml/org/SfietKonstantin/%{name}
