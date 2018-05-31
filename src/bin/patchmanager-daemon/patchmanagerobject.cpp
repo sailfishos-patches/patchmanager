@@ -335,6 +335,11 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
                                           QStringLiteral("org.freedesktop.DBus.Properties"),
                                           QStringLiteral("PropertiesChanged"), this, SLOT(onLipstickChanged(QString,QVariantMap,QStringList)));
 
+    QDBusConnection::sessionBus().connect(QString(),
+                                          QStringLiteral("/StoreClient"),
+                                          QStringLiteral("com.jolla.jollastore"),
+                                          QStringLiteral("osUpdateProgressChanged"), this, SLOT(onOsUpdateProgress(int)));
+
     connect(m_originalWatcher, &QFileSystemWatcher::fileChanged, this, &PatchManagerObject::onOriginalFileChanged);
 
     m_localServer->setSocketOptions(QLocalServer::WorldAccessOption);
@@ -623,9 +628,9 @@ bool PatchManagerObject::isPatchApplied(const QString &patch)
 bool PatchManagerObject::applyPatch(const QString &patch)
 {
     qDebug() << Q_FUNC_INFO << patch;
-    setDelayedReply(true);
     QDBusMessage msg;
     if (calledFromDBus()) {
+        setDelayedReply(true);
         msg = message();
     }
     QMetaObject::invokeMethod(this, NAME(doPatch), Qt::QueuedConnection,
@@ -634,39 +639,14 @@ bool PatchManagerObject::applyPatch(const QString &patch)
                               Q_ARG(QDBusMessage, msg),
                               Q_ARG(bool, true));
     return true;
-
-    QVariantMap patchData = m_metadata[patch];
-    QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
-
-    QProcess process;
-    process.setProgram(AUSMT_INSTALL);
-
-    QStringList arguments;
-    arguments.append(patch);
-
-    process.setArguments(arguments);
-    process.start();
-    process.waitForFinished(-1);
-
-    bool ok = (process.exitCode() == 0);
-    if (ok) {
-        m_appliedPatches.insert(patch);
-        refreshPatchList();
-    }
-    notify(displayName.toString(), ok ? NotifyActionSuccessApply : NotifyActionFailedApply);
-
-    if (ok) {
-//        emit m_adaptor->applyPatchFinished(patch);
-    }
-    return ok;
 }
 
 bool PatchManagerObject::unapplyPatch(const QString &patch)
 {
     qDebug() << Q_FUNC_INFO << patch;
-    setDelayedReply(true);
     QDBusMessage msg;
     if (calledFromDBus()) {
+        setDelayedReply(true);
         msg = message();
     }
     QMetaObject::invokeMethod(this, NAME(doPatch), Qt::QueuedConnection,
@@ -674,51 +654,41 @@ bool PatchManagerObject::unapplyPatch(const QString &patch)
                               Q_ARG(QDBusMessage, msg),
                               Q_ARG(bool, false));
     return true;
-
-    QVariantMap patchData = m_metadata[patch];
-    QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
-
-    QProcess process;
-    process.setProgram(AUSMT_REMOVE);
-
-    QStringList arguments;
-    arguments.append(patch);
-
-    process.setArguments(arguments);
-    process.start();
-    process.waitForFinished(-1);
-
-    bool ok = (process.exitCode() == 0);
-    qDebug() << "ok:" << ok;
-    if (ok) {
-        m_appliedPatches.remove(patch);
-        refreshPatchList();
-    }
-    notify(displayName.toString(), ok ? NotifyActionSuccessUnapply : NotifyActionFailedUnapply);
-
-    if (ok) {
-//        emit m_adaptor->unapplyPatchFinished(patch);
-    }
-    return ok;
 }
 
 bool PatchManagerObject::unapplyAllPatches()
 {
     qDebug() << Q_FUNC_INFO;
-    return true;
 
     bool ok = true;
-    for (const QString &patch : m_appliedPatches.toList()) {
-        ok &= unapplyPatch(patch);
+
+    QStringList order = getSettings("order", QStringList()).toStringList();
+    std::reverse(std::begin(order), std::end(order));
+
+    QStringList patches = m_appliedPatches.toList();
+    std::reverse(std::begin(patches), std::end(patches));
+
+    for (const QString &patchName : patches) {
+        if (!order.contains(patchName)) {
+            ok &= unapplyPatch(patchName);
+        }
     }
-//    emit m_adaptor->unapplyAllPatchesFinished();
+
+    for (const QString &patchName : order) {
+        if (patches.contains(patchName)) {
+            ok &= unapplyPatch(patchName);
+        }
+    }
+
     return ok;
 }
 
 bool PatchManagerObject::installPatch(const QString &patch, const QString &version, const QString &url)
 {
     qDebug() << Q_FUNC_INFO << patch;
-    setDelayedReply(true);
+    if (calledFromDBus()) {
+        setDelayedReply(true);
+    }
     QMetaObject::invokeMethod(this, NAME(doInstallPatch), Qt::QueuedConnection,
                               Q_ARG(QVariantMap, QVariantMap({{"patch", patch}, {"version", version}, {"url", url}})),
                               Q_ARG(QDBusMessage, message()));
@@ -728,7 +698,9 @@ bool PatchManagerObject::installPatch(const QString &patch, const QString &versi
 bool PatchManagerObject::uninstallPatch(const QString &patch)
 {
     qDebug() << Q_FUNC_INFO << patch;
-    setDelayedReply(true);
+    if (calledFromDBus()) {
+        setDelayedReply(true);
+    }
 
     if (m_appliedPatches.contains(patch)) {
         unapplyPatch(patch);
@@ -742,7 +714,9 @@ bool PatchManagerObject::uninstallPatch(const QString &patch)
 bool PatchManagerObject::resetPatchState(const QString &patch)
 {
     qDebug() << Q_FUNC_INFO << patch;
-    setDelayedReply(true);
+    if (calledFromDBus()) {
+        setDelayedReply(true);
+    }
 
     if (m_appliedPatches.contains(patch)) {
         unapplyPatch(patch);
@@ -1031,9 +1005,19 @@ void PatchManagerObject::onLipstickChanged(const QString &, const QVariantMap &c
 
     const QString activeState = changedProperties.value(QStringLiteral("ActiveState"), QStringLiteral("unknown")).toString();
     if (activeState == QStringLiteral("failed")) {
-        qWarning() << "Detected lipstick crash, deactivating all patches";
+        qWarning() << Q_FUNC_INFO << "Detected lipstick crash, deactivating all patches";
         unapplyAllPatches();
     }
+}
+
+void PatchManagerObject::onOsUpdateProgress(int progress)
+{
+    if (progress <= 0) {
+        return;
+    }
+
+    qWarning() << Q_FUNC_INFO << "Detected os update, disabling patches!";
+    unapplyAllPatches();
 }
 
 void PatchManagerObject::onTimerAction()
@@ -1299,10 +1283,6 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
         notify(displayName.toString(), apply ? ok ? NotifyActionSuccessApply : NotifyActionFailedApply : ok ? NotifyActionSuccessUnapply : NotifyActionFailedUnapply);
     }
 
-    if (ok) {
-//        emit m_adaptor->applyPatchFinished(patch);
-    }
-
     if (message.isDelayedReply()) {
         qWarning() << Q_FUNC_INFO << "Sending reply" << ok;
         sendMessageReply(message, ok);
@@ -1332,11 +1312,6 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
             refreshPatchList();
         }
         notify(displayName.toString(), ok ? NotifyActionSuccessApply : NotifyActionFailedApply);
-
-        if (ok) {
-    //        emit m_adaptor->applyPatchFinished(patch);
-        }
-    //    return ok;
     } else {
         QVariantMap patchData = m_metadata[patch];
         QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
@@ -1358,11 +1333,6 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
             refreshPatchList();
         }
         notify(displayName.toString(), ok ? NotifyActionSuccessUnapply : NotifyActionFailedUnapply);
-
-        if (ok) {
-    //        emit m_adaptor->unapplyPatchFinished(patch);
-        }
-    //    return ok;
     }
 }
 

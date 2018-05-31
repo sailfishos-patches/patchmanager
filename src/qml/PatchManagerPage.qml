@@ -332,6 +332,7 @@ Page {
             }
 
             function doPatch() {
+                view.model.saveLayout()
                 if (!patchObject.details.patched) {
                     if (PatchManager.developerMode || patchObject.details.isCompatible) {
                         patchObject.apply(function(ok) {

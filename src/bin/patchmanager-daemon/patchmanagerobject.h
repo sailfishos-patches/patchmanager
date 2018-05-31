@@ -125,6 +125,7 @@ protected:
 
 private slots:
     void onLipstickChanged(const QString &, const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
+    void onOsUpdateProgress(int progress);
     void onTimerAction();
 
     void startReadingLocalServer();
