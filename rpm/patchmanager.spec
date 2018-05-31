@@ -59,18 +59,18 @@ export NO_PM_PRELOAD=1
 case "$*" in
 1)
 echo Installing package
-// unapply patches if pm2 is installed
-if [ "$(rpm -q --qf "%{VERSION}" patchmanager | head -c 1)" == "2" ]
-then
-    for patch in $(ls /var/lib/patchmanager/ausmt/patches)
-    do
-        /usr/sbin/patchmanager -u $patch
-    done
-fi
 ;;
 2)
 echo Upgrading package
-
+// unapply patches if pm2 is installed
+if [ "$(rpm -q --qf "%{VERSION}" patchmanager | head -c 1)" == "2" ]
+then
+    if [ "$(ls -A /var/lib/patchmanager/ausmt/patches/)" ]
+    then
+        echo "Unapply all patches before upgrade!"
+        exit 1
+    fi
+fi
 ;;
 *) echo case "$*" not handled in pre
 esac
