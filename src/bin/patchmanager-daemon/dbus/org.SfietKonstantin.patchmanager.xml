@@ -75,15 +75,26 @@
             <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
             <arg name="updates" type="a{sv}" direction="out" />
         </method>
-        <method name="restartServices" />
+        <method name="restartServices">
+            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+        </method>
         <method name="patchToggleService">
+            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
             <arg name="patch" type="s" direction="in" />
             <arg name="activate" type="b" direction="in" />
         </method>
         <method name="getToggleServices">
             <arg name="toggle" type="b" direction="out" />
         </method>
-        <method name="checkForUpdates" />
+        <method name="getFailure">
+            <arg name="failure" type="b" direction="out" />
+        </method>
+        <method name="resolveFailure">
+            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+        </method>
+        <method name="checkForUpdates">
+            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+        </method>
         <method name="quit">
             <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
         </method>
@@ -106,5 +117,8 @@
         </signal>
         <signal name="listPatchesChanged" />
         <signal name="unapplyAllPatchesFinished" />
+        <signal name="failureChanged">
+            <arg name="failure" type="b"/>
+        </signal>
     </interface>
 </node>

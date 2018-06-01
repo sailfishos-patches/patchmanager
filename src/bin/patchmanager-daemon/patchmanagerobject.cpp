@@ -116,15 +116,6 @@ static const QString oldConfigLocation = QStringLiteral("/home/nemo/.config/patc
 static const QString patchmanager_socket = QStringLiteral("/tmp/patchmanager-socket");
 static const QString patchmanager_cache_root = QStringLiteral("/tmp/patchmanager");
 
-static bool patchSort(const QVariantMap &patch1, const QVariantMap &patch2)
-{
-    if (patch1[CATEGORY_KEY].toString() == patch2[CATEGORY_KEY].toString()) {
-        return patch1[NAME_KEY].toString() < patch2[NAME_KEY].toString();
-    }
-
-    return patch1[CATEGORY_KEY].toString() < patch2[CATEGORY_KEY].toString();
-}
-
 bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available)
 {
     QDir patchDir(root);
@@ -310,7 +301,9 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
     , m_nam(new QNetworkAccessManager(this))
     , m_originalWatcher(new QFileSystemWatcher(this))
     , m_settings(new QSettings(newConfigLocation, QSettings::IniFormat, this))
+    , m_serverThread(new QThread(this))
     , m_localServer(new QLocalServer(nullptr)) // controlled by separate thread
+    , m_journal(new Journal(this))
 {
     if (!QFileInfo::exists(newConfigLocation) && QFileInfo::exists(oldConfigLocation)) {
         QFile::copy(oldConfigLocation, newConfigLocation);
@@ -344,6 +337,29 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
 
     m_localServer->setSocketOptions(QLocalServer::WorldAccessOption);
     m_localServer->setMaxPendingConnections(2147483647);
+    m_localServer->moveToThread(m_serverThread);
+
+    connect(m_serverThread, &QThread::finished, this, [this](){
+        m_localServer->close();
+    });
+    connect(m_localServer, &QLocalServer::newConnection, this, &PatchManagerObject::startReadingLocalServer, Qt::DirectConnection);
+    connect(m_serverThread, &QThread::started, this, [this](){
+        bool listening = m_localServer->listen(patchmanager_socket);
+        if (!listening // not listening
+                && m_localServer->serverError() == QAbstractSocket::AddressInUseError // because of AddressInUseError
+                && QFileInfo::exists(patchmanager_socket) // socket file already exists
+                && QFile::remove(patchmanager_socket)) { // and successfully removed it
+            qWarning() << "Removed old stuck socket";
+            listening = m_localServer->listen(patchmanager_socket); // try to start lisening again
+        }
+        qDebug() << Q_FUNC_INFO << "Server listening:" << listening;
+        if (!listening) {
+            qWarning() << "Server error:" << m_localServer->serverError() << m_localServer->errorString();
+        }
+    }, Qt::DirectConnection);
+
+    connect(m_journal, &Journal::matchFound, this, &PatchManagerObject::onFailureOccured);
+    m_journal->init();
 }
 
 PatchManagerObject::~PatchManagerObject()
@@ -504,28 +520,7 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 void PatchManagerObject::doStartLocalServer()
 {
     qDebug() << Q_FUNC_INFO;
-    QThread *serverThread = new QThread(this);
-    m_localServer->moveToThread(serverThread);
-    connect(serverThread, &QThread::finished, this, [this](){
-        m_localServer->close();
-        m_localServer->deleteLater();
-    });
-    connect(m_localServer, &QLocalServer::newConnection, this, &PatchManagerObject::startReadingLocalServer, Qt::DirectConnection);
-    connect(serverThread, &QThread::started, this, [this](){
-        bool listening = m_localServer->listen(patchmanager_socket);
-        if (!listening // not listening
-                && m_localServer->serverError() == QAbstractSocket::AddressInUseError // because of AddressInUseError
-                && QFileInfo::exists(patchmanager_socket) // socket file already exists
-                && QFile::remove(patchmanager_socket)) { // and successfully removed it
-            qWarning() << "Removed old stuck socket";
-            listening = m_localServer->listen(patchmanager_socket); // try to start lisening again
-        }
-        qDebug() << Q_FUNC_INFO << "Server listening:" << listening;
-        if (!listening) {
-            qWarning() << "Server error:" << m_localServer->serverError() << m_localServer->errorString();
-        }
-    }, Qt::DirectConnection);
-    serverThread->start();
+    m_serverThread->start();
 }
 
 void PatchManagerObject::initialize()
@@ -533,6 +528,16 @@ void PatchManagerObject::initialize()
     qDebug() << Q_FUNC_INFO;
 
     getVersion();
+}
+
+void PatchManagerObject::restartLipstick()
+{
+    QDBusMessage m = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
+                                                    QStringLiteral("/org/freedesktop/systemd1/unit/lipstick_2eservice"),
+                                                    QStringLiteral("org.freedesktop.systemd1.Unit"),
+                                                    QStringLiteral("Restart"));
+    m.setArguments({ QStringLiteral("replace") });
+    QDBusConnection::sessionBus().send(m);
 }
 
 QString PatchManagerObject::checkRpmPatch(const QString &patch) const
@@ -876,12 +881,7 @@ static const QString SILICA_CODE = QStringLiteral("silica");
 static const QString SETTINGS_CODE = QStringLiteral("settings");
 */
         if (category == HOMESCREEN_CODE || category == SILICA_CODE) {
-            QDBusMessage m = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
-                                                            QStringLiteral("/org/freedesktop/systemd1/unit/lipstick_2eservice"),
-                                                            QStringLiteral("org.freedesktop.systemd1.Unit"),
-                                                            QStringLiteral("Restart"));
-            m.setArguments({ QStringLiteral("replace") });
-            QDBusConnection::sessionBus().send(m);
+            restartLipstick();
         } else {
             QHash<QString, QString> categoryToProcess = {
                 { BROWSER_CODE, QStringLiteral("sailfish-browser") },
@@ -946,9 +946,30 @@ void PatchManagerObject::patchToggleService(const QString &patch, bool activate)
     }
 }
 
-bool PatchManagerObject::getToggleServices()
+bool PatchManagerObject::getToggleServices() const
 {
     return !m_toggleServices.isEmpty();
+}
+
+bool PatchManagerObject::getFailure() const
+{
+    return m_failed;
+}
+
+void PatchManagerObject::resolveFailure()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    if (!m_failed) {
+        return;
+    }
+
+    if (m_serverThread->isRunning()) {
+        startLocalServer();
+    }
+
+    m_failed = false;
+    emit m_adaptor->failureChanged(m_failed);
 }
 
 //void PatchManagerObject::checkPatches()
@@ -1038,7 +1059,7 @@ void PatchManagerObject::startReadingLocalServer()
     connect(clientConnection, &QLocalSocket::disconnected, this, [clientConnection](){
         clientConnection->deleteLater();
     }, Qt::DirectConnection);
-    connect(clientConnection, &QLocalSocket::readyRead, this, [clientConnection](){
+    connect(clientConnection, &QLocalSocket::readyRead, this, [this, clientConnection](){
         if (!clientConnection) {
             qWarning() << "Can not get socket!";
             return;
@@ -1086,6 +1107,25 @@ void PatchManagerObject::onOriginalFileChanged(const QString &path)
     for (const QString &patch : patches) {
         doPatch(patch, true);
     }
+}
+
+void PatchManagerObject::onFailureOccured()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    if (m_failed) {
+        return;
+    }
+
+    if (m_serverThread->isRunning()) {
+        m_serverThread->quit();
+    }
+
+    m_failed = true;
+    emit m_adaptor->failureChanged(m_failed);
+
+    unapplyAllPatches();
+    QMetaObject::invokeMethod(this, NAME(restartLipstick), Qt::QueuedConnection);
 }
 
 void PatchManagerObject::doRefreshPatchList()

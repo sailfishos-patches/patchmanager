@@ -33,6 +33,8 @@
 #ifndef PATCHMANAGEROBJECT_H
 #define PATCHMANAGEROBJECT_H
 
+#include "journal.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QSet>
 #include <QtCore/QStringList>
@@ -44,6 +46,8 @@
 #include <QDBusMessage>
 #include <QDBusVariant>
 #include <QFileSystemWatcher>
+
+#include <systemd/sd-journal.h>
 
 #ifndef SERVER_URL
 #define SERVER_URL          "https://coderus.openrepos.net"
@@ -118,7 +122,9 @@ public slots:
     void restartServices();
     void patchToggleService(const QString &patch, bool activate);
 
-    bool getToggleServices();
+    bool getToggleServices() const;
+    bool getFailure() const;
+    void resolveFailure();
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
@@ -132,7 +138,8 @@ private slots:
 
     void onOriginalFileChanged(const QString &path);
 
-private slots:
+    void onFailureOccured();
+
     void doRegisterDBus();
     void doPrepareCacheRoot();
     void doPrepareCache(const QString &patchName, bool apply = true);
@@ -158,6 +165,8 @@ private slots:
     void requestDownloadCatalog(const QVariantMap &params, const QDBusMessage &message);
     void requestDownloadPatchInfo(const QString &name, const QDBusMessage &message);
     void requestCheckForUpdates();
+
+    void restartLipstick();
 
 private:
     void registerDBus();
@@ -209,9 +218,13 @@ private:
 
     QSettings *m_settings;
 
+    QThread *m_serverThread;
     QLocalServer *m_localServer;
 
     QHash<QString, QStringList> m_toggleServices; // category => patches
+
+    Journal *m_journal;
+    bool m_failed = false;
 };
 
 #endif // PATCHMANAGEROBJECT_H

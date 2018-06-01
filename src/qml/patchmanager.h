@@ -53,6 +53,7 @@ class PatchManager: public QObject
     Q_PROPERTY(QVariantMap updates READ getUpdates NOTIFY updatesChanged)
     Q_PROPERTY(QStringList updatesNames READ getUpdatesNames NOTIFY updatesChanged)
     Q_PROPERTY(bool appsNeedRestart READ toggleServices NOTIFY toggleServicesChanged)
+    Q_PROPERTY(bool failure READ failure NOTIFY failureChanged)
 
 public:
     explicit PatchManager(QObject *parent = nullptr);
@@ -66,6 +67,7 @@ public:
     QStringList getUpdatesNames() const;
 
     bool toggleServices() const;
+    bool failure() const;
 
     Q_INVOKABLE void call(QDBusPendingCallWatcher *call);
     Q_INVOKABLE void watchCall(QDBusPendingCallWatcher *call,
@@ -89,7 +91,7 @@ public slots:
     QDBusPendingCallWatcher *downloadCatalog(const QVariantMap &params);
     QDBusPendingCallWatcher *downloadPatchInfo(const QString &name);
     QDBusPendingCallWatcher *listVersions();
-    QDBusPendingCallWatcher *restartServices();
+    void restartServices();
 
     QString patchName(const QString &patch) const;
 
@@ -116,12 +118,16 @@ public slots:
 
     void onUpdatesAvailable(const QVariantMap &updates);
     void onToggleServicesChanged(bool toggle);
+    void onFailureChanged(bool failed);
+
+    void resolveFailure();
 
 signals:
     void easterReceived(const QString & easterText);
     void developerModeChanged(bool developerMode);
     void updatesChanged();
     void toggleServicesChanged(bool toggleServices);
+    void failureChanged(bool failed);
 
 private:
     void successCall(QJSValue callback, const QVariant &value);
@@ -136,6 +142,7 @@ private:
     PatchManagerInterface *m_interface;
 
     bool m_toggleServices = false;
+    bool m_failed = false;
 };
 
 #endif // PATCHMANAGER_H

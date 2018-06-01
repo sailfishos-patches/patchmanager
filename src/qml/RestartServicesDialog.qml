@@ -37,7 +37,7 @@ import org.SfietKonstantin.patchmanager 2.0
 
 Dialog {
     id: container
-    onAccepted: PatchManager.call(PatchManager.restartServices())
+    onAccepted: PatchManager.restartServices()
 
     SilicaFlickable {
         anchors.fill: parent

@@ -4,16 +4,19 @@ TARGET = patchmanager
 QT = core dbus network
 CONFIG += link_pkgconfig
 PKGCONFIG += nemonotifications-qt5
+PKGCONFIG += libsystemd-journal
 
 HEADERS += \
     patchmanagerobject.h \
     patchmanager_include.h \
-    inotifywatcher.h
+    inotifywatcher.h \
+    journal.h
 
 SOURCES += \
     main.cpp \
     patchmanagerobject.cpp \
-    inotifywatcher.cpp
+    inotifywatcher.cpp \
+    journal.cpp
 
 OTHER_FILES += dbus/org.SfietKonstantin.patchmanager.xml \
     dbus/org.SfietKonstantin.patchmanager.service \

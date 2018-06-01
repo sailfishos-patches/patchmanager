@@ -34,6 +34,8 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <QTranslator>
+#include <QLocale>
 
 #include <QtCore/QCoreApplication>
 #include "patchmanagerobject.h"
@@ -52,6 +54,27 @@ void help()
     std::cout << "  patchmanager-daemon --daemon       : daemonize" << std::endl;
 }
 
+QString getLang()
+{
+    QString lang = QStringLiteral("en_US.utf8");
+
+    QFile localeConfig(QStringLiteral("/var/lib/environment/nemo/locale.conf"));
+
+    if (!localeConfig.exists() || !localeConfig.open(QFile::ReadOnly)) {
+        return lang;
+    }
+
+    while (!localeConfig.atEnd()) {
+        QString line = localeConfig.readLine().trimmed();
+        if (line.startsWith(QStringLiteral("LANG="))) {
+             lang = line.mid(5);
+             break;
+        }
+    }
+
+    return lang;
+}
+
 int main(int argc, char **argv)
 {
     qputenv("NO_PM_PRELOAD", "1");
@@ -66,6 +89,11 @@ int main(int argc, char **argv)
         help();
         return 0;
     }
+
+    QTranslator translator;
+    translator.load(QLocale(getLang()), QStringLiteral("patchmanager"), "-", QStringLiteral("/usr/share/translations/"), ".qm");
+
+    app.installTranslator(&translator);
 
     PatchManagerObject patchManager;
     app.installEventFilter(&patchManager);

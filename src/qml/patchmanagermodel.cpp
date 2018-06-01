@@ -105,7 +105,7 @@ void PatchManagerModel::setPatches(const QList<PatchObject *> &patches)
 void PatchManagerModel::populateData(const QVariantList &data, const QString &patch, bool installed)
 {
     qDebug() << Q_FUNC_INFO << data.length();
-    qDebug() << "Altered:" << patch << "installed:" << installed;
+    qDebug() << Q_FUNC_INFO << "Altered:" << patch << "installed:" << installed;
 
     if (data.isEmpty()) {
         return;
@@ -198,6 +198,11 @@ QString PatchManagerModel::patchName(const QString &patch) const
 void PatchManagerModel::itemRemoved(PatchObject *object)
 {
     qDebug() << Q_FUNC_INFO << object;
+
+    if (!object) {
+        return;
+    }
+
     if (!m_modelData.contains(object)) {
         return;
     }

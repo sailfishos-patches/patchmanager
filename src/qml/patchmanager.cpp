@@ -73,6 +73,7 @@ PatchManager::PatchManager(QObject *parent)
     connect(m_interface, &PatchManagerInterface::patchAltered, this, &PatchManager::requestListPatches);
     connect(m_interface, &PatchManagerInterface::updatesAvailable, this, &PatchManager::onUpdatesAvailable);
     connect(m_interface, &PatchManagerInterface::toggleServicesChanged, this, &PatchManager::onToggleServicesChanged);
+    connect(m_interface, &PatchManagerInterface::failureChanged, this, &PatchManager::onFailureChanged);
 
     QDBusPendingCallWatcher *watchGetUpdates = new QDBusPendingCallWatcher(m_interface->getUpdates(), this);
     connect(watchGetUpdates, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
@@ -102,6 +103,22 @@ PatchManager::PatchManager(QObject *parent)
 
         const bool toggleServices = reply.value();
         onToggleServicesChanged(toggleServices);
+
+        watcher->deleteLater();
+    });
+
+    QDBusPendingCallWatcher *watchGetFailure = new QDBusPendingCallWatcher(m_interface->getFailure(), this);
+    connect(watchGetFailure, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
+        QDBusPendingReply<bool> reply = *watcher;
+        if (reply.isError()) {
+            qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
+            return;
+        }
+
+        qDebug() << reply.value();
+
+        const bool failure = reply.value();
+        onFailureChanged(failure);
 
         watcher->deleteLater();
     });
@@ -160,6 +177,11 @@ QStringList PatchManager::getUpdatesNames() const
 bool PatchManager::toggleServices() const
 {
     return m_toggleServices;
+}
+
+bool PatchManager::failure() const
+{
+    return m_failed;
 }
 
 void PatchManager::call(QDBusPendingCallWatcher *call)
@@ -232,9 +254,9 @@ QDBusPendingCallWatcher *PatchManager::listVersions()
     return new QDBusPendingCallWatcher(m_interface->listVersions(), this);
 }
 
-QDBusPendingCallWatcher *PatchManager::restartServices()
+void PatchManager::restartServices()
 {
-    return new QDBusPendingCallWatcher(m_interface->restartServices(), this);
+    m_interface->restartServices();
 }
 
 QString PatchManager::patchName(const QString &patch) const
@@ -436,6 +458,21 @@ void PatchManager::onToggleServicesChanged(bool toggle)
 
     m_toggleServices = toggle;
     emit toggleServicesChanged(m_toggleServices);
+}
+
+void PatchManager::onFailureChanged(bool failed)
+{
+    if (m_failed == failed) {
+        return;
+    }
+
+    m_failed = failed;
+    emit failureChanged(m_failed);
+}
+
+void PatchManager::resolveFailure()
+{
+    m_interface->resolveFailure();
 }
 
 QVariant PatchManager::unwind(const QVariant &val, int depth)

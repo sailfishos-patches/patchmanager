@@ -148,7 +148,7 @@ void PatchObject::uninstall()
         if (reply.isError()) {
             qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
         } else if (reply.value()) {
-            this->deleteLater();
+//            this->deleteLater();
         }
         setBusy(false);
         watcher->deleteLater();

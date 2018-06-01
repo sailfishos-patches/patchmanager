@@ -160,6 +160,12 @@ Page {
                 visible: PatchManager.appsNeedRestart
                 onClicked: pageStack.push(Qt.resolvedUrl("RestartServicesDialog.qml"))
             }
+
+            MenuItem {
+                text: qsTranslate("", "Resolve failure")
+                visible: PatchManager.failure
+                onClicked: PatchManager.resolveFailure()
+            }
         }
 
         header: PageHeader {
@@ -291,6 +297,7 @@ Page {
             function reset() {
                 if (!drag.target) {
                     content.x = 0
+                    return
                 } else {
                     view.model.saveLayout()
                 }
@@ -527,15 +534,15 @@ Page {
                         text: patchObject.details.patched ? qsTranslate("", "Unapply") : qsTranslate("", "Apply")
                         onClicked: background.doPatch()
                     }
-                    MenuItem {
-                        visible: PatchManager.developerMode && patchObject.details.patched
-                        text: qsTranslate("", "Reset state")
-                        onClicked: patchObject.resetState()
-                    }
+//                    MenuItem {
+//                        visible: PatchManager.developerMode && patchObject.details.patched
+//                        text: qsTranslate("", "Reset state")
+//                        onClicked: patchObject.resetState()
+//                    }
                     MenuItem {
                         visible: !patchObject.details.patched && patchObject.details.patch != "sailfishos-patchmanager-unapplyall"
                         text: qsTranslate("", "Uninstall")
-                        onClicked: removeAction()
+                        onClicked: background.removeAction()
                     }
                 }
             }

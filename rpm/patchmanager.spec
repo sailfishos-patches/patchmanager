@@ -29,6 +29,7 @@ BuildRequires:  pkgconfig(sailfishapp) >= 0.0.10
 BuildRequires:  sailfish-svg2png >= 0.1.5
 BuildRequires:  pkgconfig(nemonotifications-qt5)
 BuildRequires:  qt5-qtdeclarative-devel-tools
+BuildRequires:  pkgconfig(libsystemd-journal)
 
 %description
 patchmanager allows managing Sailfish OS patches
