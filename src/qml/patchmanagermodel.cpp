@@ -129,6 +129,10 @@ void PatchManagerModel::populateData(const QVariantList &data, const QString &pa
             for (const QVariant &var : data) {
                 const QVariantMap item = var.toMap();
                 if (item.value(QStringLiteral("patch")).toString() == patch) {
+                    if (m_patchMap.contains((patch))) {
+                        m_patchMap[patch]->setData(item);
+                        return;
+                    }
                     beginInsertRows(QModelIndex(), m_modelData.count(), m_modelData.count());
                     PatchObject *o = new PatchObject(item, this);
                     connect(o, &PatchObject::toBeDestroyed, this, &PatchManagerModel::itemRemoved);

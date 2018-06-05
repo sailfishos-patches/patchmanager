@@ -40,7 +40,6 @@ Page {
     property var modelData
 
     property var versions
-    property string release
 
     property int voteAction
 
@@ -327,7 +326,7 @@ Page {
                     width: parent.width
                     contentHeight: filesContent.height
                     property bool isInstalled: !!container.versions && container.versions[modelData.project] == modelData.version
-                    property bool isCompatible: modelData.compatible.indexOf(release) >= 0
+                    property bool isCompatible: modelData.compatible.indexOf(PatchManager.ssuVersion) >= 0
 
                     onClicked: {
                         if (!PatchManager.developerMode && !isCompatible) {

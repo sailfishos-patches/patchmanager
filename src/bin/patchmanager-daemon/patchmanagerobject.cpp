@@ -49,6 +49,8 @@
 #include <QtCore/QUrlQuery>
 #include <QtCore/QVector>
 
+#include <QProcessEnvironment>
+
 #include <QtDBus/QDBusArgument>
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusInterface>
@@ -233,7 +235,10 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
 void PatchManagerObject::getVersion()
 {
     qDebug() << Q_FUNC_INFO;
-    QDBusMessage msg = QDBusMessage::createMethodCall("org.nemo.ssu", "/org/nemo/ssu", "org.nemo.ssu", "release");
+    QDBusMessage msg = QDBusMessage::createMethodCall(QStringLiteral("org.nemo.ssu"),
+                                                      QStringLiteral("/org/nemo/ssu"),
+                                                      QStringLiteral("org.nemo.ssu"),
+                                                      QStringLiteral("release"));
     msg.setArguments({ QVariant::fromValue(false) });
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(QDBusConnection::systemBus().asyncCall(msg), this);
     connect(watcher, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher) {
@@ -305,6 +310,24 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
     , m_localServer(new QLocalServer(nullptr)) // controlled by separate thread
     , m_journal(new Journal(this))
 {
+    qDebug() << Q_FUNC_INFO << "Environment:";
+
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    for (const QString &key : env.keys()) {
+        qDebug() << Q_FUNC_INFO << key << "=" << env.value(key);
+    }
+
+    QFile preload(QStringLiteral("/etc/ld.so.preload"));
+    if (preload.exists()) {
+        qDebug() << Q_FUNC_INFO << "ld.so.preload:";
+        if (!preload.open(QFile::ReadOnly)) {
+            qWarning() << Q_FUNC_INFO << "Can't open ld.so.preload!";
+        }
+        qDebug().noquote() << Q_FUNC_INFO << preload.readAll();
+    } else {
+        qWarning() << Q_FUNC_INFO << "ld.so.preload does not exists!";
+    }
+
     if (!QFileInfo::exists(newConfigLocation) && QFileInfo::exists(oldConfigLocation)) {
         QFile::copy(oldConfigLocation, newConfigLocation);
     }
@@ -315,6 +338,8 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
 
     if (qEnvironmentVariableIsEmpty("DBUS_SESSION_BUS_ADDRESS")) {
         qWarning() << "Session bus address is not set! Please check environment configuration!";
+        qDebug() << "Injecting DBUS_SESSION_BUS_ADDRESS...";
+        qputenv("DBUS_SESSION_BUS_ADDRESS", QByteArrayLiteral("unix:path=/run/user/100000/dbus/user_bus_socket"));
     }
 
     connect(m_timer, &QTimer::timeout, this, &PatchManagerObject::onTimerAction);
@@ -665,6 +690,23 @@ bool PatchManagerObject::unapplyAllPatches()
 {
     qDebug() << Q_FUNC_INFO;
 
+    eraseRecursively(patchmanager_cache_root);
+    qDebug() << Q_FUNC_INFO << "Directory" << patchmanager_cache_root << "is empty:" <<
+    QDir::root().rmpath(patchmanager_cache_root);
+
+    qDebug() << Q_FUNC_INFO << "Making clean cache:" <<
+    QDir::root().mkpath(patchmanager_cache_root);
+
+    qDebug() << Q_FUNC_INFO << "Removing packages cache:" <<
+    QFile::remove(AUSMT_INSTALLED_LIST_FILE);
+
+    qDebug() << Q_FUNC_INFO << "Resetting variables...";
+    m_appliedPatches.clear();
+
+    emit m_adaptor->listPatchesChanged();
+
+    return true;
+
     bool ok = true;
 
     QStringList order = getSettings("order", QStringList()).toStringList();
@@ -858,7 +900,7 @@ QString PatchManagerObject::maxVersion(const QString &version1, const QString &v
 
 void PatchManagerObject::restartServices()
 {
-    qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO << m_toggleServices;
 
     if (m_toggleServices.isEmpty()) {
         return;
@@ -970,6 +1012,16 @@ void PatchManagerObject::resolveFailure()
 
     m_failed = false;
     emit m_adaptor->failureChanged(m_failed);
+}
+
+QString PatchManagerObject::getPatchmanagerVersion() const
+{
+    return QCoreApplication::applicationVersion();
+}
+
+QString PatchManagerObject::getSsuVersion() const
+{
+    return m_ssuRelease;
 }
 
 //void PatchManagerObject::checkPatches()
@@ -1840,6 +1892,23 @@ void PatchManagerObject::prepareCacheRoot()
 {
     qDebug() << Q_FUNC_INFO;
     QMetaObject::invokeMethod(this, NAME(doPrepareCacheRoot), Qt::QueuedConnection);
+}
+
+void PatchManagerObject::eraseRecursively(const QString &path)
+{
+    qDebug() << Q_FUNC_INFO << path;
+
+    QDir cacheDir(path);
+    for (const QFileInfo &info : cacheDir.entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot, QDir::DirsLast)) {
+        if (info.isDir() && !info.isSymLink()) {
+            eraseRecursively(info.absoluteFilePath());
+            qDebug() << Q_FUNC_INFO << "Directory" << info.absoluteFilePath() << "is empty:" <<
+            QDir::root().rmpath(info.absoluteFilePath());
+        } else if (info.isFile() || info.isSymLink()) {
+            QFile::remove(info.absoluteFilePath());
+        }
+    }
+
 }
 
 bool PatchManagerObject::checkIsFakeLinked(const QString &path)

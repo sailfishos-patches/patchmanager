@@ -20,6 +20,8 @@ Conflicts:  jolla-settings-%{name}
 Obsoletes:  jolla-settings-%{name}
 Conflicts:  %{name}-ui
 Obsoletes:  %{name}-ui
+Conflicts:  prepatch
+Obsoletes:  prepatch
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Qml)
@@ -39,7 +41,7 @@ on your device easily.
 %setup -q -n %{name}-%{version}
 
 %build
-%qtc_qmake5
+%qtc_qmake5 "PROJECT_PACKAGE_VERSION=%{version}"
 %qtc_make %{?_smp_mflags}
 
 %install

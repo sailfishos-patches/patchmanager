@@ -39,7 +39,6 @@ Page {
     id: container
     property string author
     property var versions
-    property string release
     property string search
     property bool searchVisible
 
@@ -153,7 +152,6 @@ Page {
                                {
                                    modelData: model,
                                    delegate: background,
-                                   release: release,
                                    versions: versions
                                })
             }

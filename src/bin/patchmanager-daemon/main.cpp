@@ -41,6 +41,7 @@
 #include "patchmanagerobject.h"
 #include <iostream>
 #include <QTimer>
+#include <QDebug>
 
 void help()
 {
@@ -72,6 +73,8 @@ QString getLang()
         }
     }
 
+    qDebug() << Q_FUNC_INFO << lang;
+
     return lang;
 }
 
@@ -90,10 +93,18 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    QTranslator translator;
-    translator.load(QLocale(getLang()), QStringLiteral("patchmanager"), "-", QStringLiteral("/usr/share/translations/"), ".qm");
+#ifdef BUILD_VERSION
+    app.setApplicationVersion(QStringLiteral(BUILD_VERSION));
+#else
+    app.setApplicationVersion(QStringLiteral("3.9.9"));
+#endif
 
-    app.installTranslator(&translator);
+    QTranslator translator;
+    bool success = translator.load(QLocale(getLang()), QStringLiteral("settings-patchmanager"), "-", QStringLiteral("/usr/share/translations/"), ".qm");
+    qDebug() << Q_FUNC_INFO << "Translator loaded:" << success;
+
+    success = app.installTranslator(&translator);
+    qDebug() << Q_FUNC_INFO << "Translator installed:" << success;
 
     PatchManagerObject patchManager;
     app.installEventFilter(&patchManager);

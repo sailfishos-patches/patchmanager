@@ -6,6 +6,15 @@ CONFIG += link_pkgconfig
 PKGCONFIG += nemonotifications-qt5
 PKGCONFIG += libsystemd-journal
 
+isEmpty(PROJECT_PACKAGE_VERSION) {
+    BUILD_VERSION = "3.0.0"
+} else {
+    BUILD_VERSION = $$PROJECT_PACKAGE_VERSION
+}
+message("Version: $$BUILD_VERSION")
+
+DEFINES += BUILD_VERSION=\\\"$$BUILD_VERSION\\\"
+
 HEADERS += \
     patchmanagerobject.h \
     patchmanager_include.h \

@@ -63,13 +63,13 @@ Page {
                     text: qsTranslate("", "Patchmanager")
                 }
 
-//                Label {
-//                    anchors.horizontalCenter: parent.horizontalCenter
-//                    font.pixelSize: Theme.fontSizeExtraSmall
-//                    color: Theme.secondaryColor
-//                    wrapMode: Text.WordWrap
-//                    text: "Version XXXXX"
-//                }
+                Label {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    font.pixelSize: Theme.fontSizeExtraSmall
+                    color: Theme.secondaryColor
+                    wrapMode: Text.WordWrap
+                    text: qsTranslate("", "Version: %1").arg(PatchManager.patchmanagerVersion)
+                }
             }
 
             Label {

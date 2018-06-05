@@ -82,6 +82,15 @@ Page {
             twitter: "https://twitter.com/iAncelad"
             website: ""
         }
+        ListElement {
+            icon: "/usr/share/patchmanager/data/jakibaki.jpeg"
+            category: "Thanks to"
+            name: "Jakob Dietrich"
+            nickname: "Jakibaki"
+            description: "Prepatch developer"
+            twitter: ""
+            website: "https://github.com/jakibaki"
+        }
     }
 
 

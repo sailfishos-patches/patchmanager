@@ -107,6 +107,19 @@ Page {
             }
 
             SectionHeader {
+                text: qsTranslate("", "Version")
+            }
+
+            Label {
+                color: Theme.highlightColor
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: Theme.horizontalPageMargin
+                wrapMode: Text.WordWrap
+                text: modelData.version
+            }
+
+            SectionHeader {
                 text: qsTranslate("", "Compatible")
             }
 

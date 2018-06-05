@@ -70,6 +70,20 @@ bool PatchObject:: busy() const
     return m_busy;
 }
 
+void PatchObject::setData(const QVariantMap &data)
+{
+    for (const QString &key : data.keys()) {
+        m_details->setProperty(key.toUtf8().constData(), data.value(key));
+        m_details->setProperty("section",
+                               PatchManager::GetInstance()->trCategory(m_details->value(QStringLiteral("category")).toString()));
+        bool isNewPatch = data.contains(QStringLiteral("display_name"));
+        m_details->setProperty("isNewPatch", isNewPatch);
+        if (!isNewPatch) {
+            m_details->setProperty("display_name", m_details->value(QStringLiteral("name")));
+        }
+    }
+}
+
 void PatchObject::apply(QJSValue callback)
 {
     qDebug() << Q_FUNC_INFO;

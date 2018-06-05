@@ -60,6 +60,12 @@
         <method name="checkEaster">
             <arg name="easter" type="s" direction="out" />
         </method>
+        <method name="getSsuVersion">
+            <arg name="version" type="s" direction="out" />
+        </method>
+        <method name="getPatchmanagerVersion">
+            <arg name="version" type="s" direction="out" />
+        </method>
         <method name="downloadCatalog">
             <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QVariantMap"/>
             <arg name="params" type="a{sv}" direction="in" />

@@ -49,6 +49,8 @@ public:
     QQmlPropertyMap *details();
     bool busy() const;
 
+    void setData(const QVariantMap &data);
+
 signals:
     void busyChanged(bool busy);
     void toBeDestroyed(PatchObject *object);

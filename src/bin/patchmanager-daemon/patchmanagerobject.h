@@ -126,6 +126,9 @@ public slots:
     bool getFailure() const;
     void resolveFailure();
 
+    QString getPatchmanagerVersion() const;
+    QString getSsuVersion() const;
+
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
 
@@ -194,6 +197,8 @@ private:
     void lateInitialize();
     void refreshPatchList();
     void prepareCacheRoot();
+
+    void eraseRecursively(const QString &path);
 
     bool checkIsFakeLinked(const QString &path);
     bool tryToLinkFakeParent(const QString &path);

@@ -122,6 +122,40 @@ PatchManager::PatchManager(QObject *parent)
 
         watcher->deleteLater();
     });
+
+    QDBusPendingCallWatcher *watchGetPmVersion = new QDBusPendingCallWatcher(m_interface->getPatchmanagerVersion(), this);
+    connect(watchGetPmVersion, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
+        QDBusPendingReply<QString> reply = *watcher;
+        if (reply.isError()) {
+            qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
+            return;
+        }
+
+        qDebug() << reply.value();
+
+        const QString patchmanagerVersion = reply.value();
+        m_patchmanagerVersion = patchmanagerVersion;
+        emit patchmanagerVersionChanged(m_patchmanagerVersion);
+
+        watcher->deleteLater();
+    });
+
+    QDBusPendingCallWatcher *watchGetSsuVersion = new QDBusPendingCallWatcher(m_interface->getSsuVersion(), this);
+    connect(watchGetSsuVersion, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
+        QDBusPendingReply<QString> reply = *watcher;
+        if (reply.isError()) {
+            qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
+            return;
+        }
+
+        qDebug() << reply.value();
+
+        const QString ssuVersion = reply.value();
+        m_ssuVersion = ssuVersion;
+        emit ssuVersionChanged(m_ssuVersion);
+
+        watcher->deleteLater();
+    });
 }
 
 PatchManager *PatchManager::GetInstance(QObject *parent)
@@ -172,6 +206,16 @@ QVariantMap PatchManager::getUpdates() const
 QStringList PatchManager::getUpdatesNames() const
 {
     return m_updates.keys();
+}
+
+QString PatchManager::patchmanagerVersion() const
+{
+    return m_patchmanagerVersion;
+}
+
+QString PatchManager::ssuVersion() const
+{
+    return m_ssuVersion;
 }
 
 bool PatchManager::toggleServices() const
@@ -252,6 +296,11 @@ QDBusPendingCallWatcher *PatchManager::downloadPatchInfo(const QString &name)
 QDBusPendingCallWatcher *PatchManager::listVersions()
 {
     return new QDBusPendingCallWatcher(m_interface->listVersions(), this);
+}
+
+QDBusPendingCallWatcher *PatchManager::unapplyAllPatches()
+{
+    return new QDBusPendingCallWatcher(m_interface->unapplyAllPatches(), this);
 }
 
 void PatchManager::restartServices()

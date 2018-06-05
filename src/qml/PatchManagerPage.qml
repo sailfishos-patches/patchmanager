@@ -143,9 +143,7 @@ Page {
             MenuItem {
                 text: qsTranslate("", "Unapply all patches")
                 onClicked: {
-                    //patchmanagerDbusInterface.unapplyAllPatches()
-                    view.unapplyAll()
-                    view.busy = true
+                    PatchManager.call(PatchManager.unapplyAllPatches())
                 }
             }
 
