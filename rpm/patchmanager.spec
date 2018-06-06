@@ -1,5 +1,7 @@
 %define theme sailfish-default
 
+%define txapikey 1/c31fb6b82c9e24377a218f228c0c3d738dd1628d
+
 %{!?qtc_qmake:%define qtc_qmake %qmake}
 %{!?qtc_qmake5:%define qtc_qmake5 %qmake5}
 %{!?qtc_make:%define qtc_make make}
@@ -32,6 +34,7 @@ BuildRequires:  sailfish-svg2png >= 0.1.5
 BuildRequires:  pkgconfig(nemonotifications-qt5)
 BuildRequires:  qt5-qtdeclarative-devel-tools
 BuildRequires:  pkgconfig(libsystemd-journal)
+BuildRequires:  curl
 
 %description
 patchmanager allows managing Sailfish OS patches
@@ -41,11 +44,18 @@ on your device easily.
 %setup -q -n %{name}-%{version}
 
 %build
+
+for lang in {ca,zh_CN,nl_BE,en_FI,fi,fi_FI,fr_FR,de,de_AT,de_DE,hu,it,ja,pl,pt_BR,ru,sl,sl_SI,es,sv}
+do
+  curl -s --user api:%{txapikey} -o "translations/settings-patchmanager-${lang}.ts" -X GET "https://www.transifex.com/api/2/project/patchmanager3/resource/settings-patchmanagerts/translation/${lang}/?file"
+done
+
 %qtc_qmake5 "PROJECT_PACKAGE_VERSION=%{version}"
 %qtc_make %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
+
 %qmake5_install
 
 /usr/lib/qt5/bin/qmlplugindump -v -noinstantiate -nonrelocatable org.SfietKonstantin.patchmanager 2.0 %{buildroot}%{_libdir}/qt5/qml > %{buildroot}%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}/plugin.qmltypes

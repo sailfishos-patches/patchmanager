@@ -3,9 +3,7 @@ SUBDIRS = src
 
 OTHER_FILES += rpm/patchmanager.spec
 
-TRANSLATIONS += \
-    translations/settings-$${TARGET}-ru.ts
-    translations/settings-$${TARGET}-en.ts
+TRANSLATIONS += translations/settings-$${TARGET}-*.ts
 
 TS_FILE = $${_PRO_FILE_PWD_}/translations/settings-$${TARGET}.ts
 HAVE_TRANSLATIONS = 0
@@ -31,10 +29,8 @@ qm.path = /usr/share/translations
 qm.CONFIG += no_check_exist
 
 # update the ts files in the src dir and then copy them to the out dir
-qm.commands += lupdate -noobsolete $${TRANSLATION_SOURCES} -ts $${TS_FILE} $$TRANSLATIONS_IN && \
-    mkdir -p translations && \
-    [ \"$${OUT_PWD}\" != \"$${_PRO_FILE_PWD_}\" -a $$HAVE_TRANSLATIONS -eq 1 ] && \
-    cp -af $${TRANSLATIONS_IN} $${OUT_PWD}/translations || :
+qm.commands += lupdate -noobsolete $${TRANSLATION_SOURCES} -ts $${TS_FILE} && \
+    mkdir -p translations || :
 
 # create the qm files
 qm.commands += ; [ $$HAVE_TRANSLATIONS -eq 1 ] && lrelease -nounfinished $${TRANSLATIONS_OUT} || :
