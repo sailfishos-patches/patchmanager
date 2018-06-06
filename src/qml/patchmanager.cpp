@@ -71,6 +71,9 @@ PatchManager::PatchManager(QObject *parent)
 
     requestListPatches(QString(), false);
     connect(m_interface, &PatchManagerInterface::patchAltered, this, &PatchManager::requestListPatches);
+    connect(m_interface, &PatchManagerInterface::listPatchesChanged, [this] {
+        requestListPatches(QString(), false);
+    });
     connect(m_interface, &PatchManagerInterface::updatesAvailable, this, &PatchManager::onUpdatesAvailable);
     connect(m_interface, &PatchManagerInterface::toggleServicesChanged, this, &PatchManager::onToggleServicesChanged);
     connect(m_interface, &PatchManagerInterface::failureChanged, this, &PatchManager::onFailureChanged);

@@ -1,7 +1,5 @@
 %define theme sailfish-default
 
-%define txapikey 1/c31fb6b82c9e24377a218f228c0c3d738dd1628d
-
 %{!?qtc_qmake:%define qtc_qmake %qmake}
 %{!?qtc_qmake5:%define qtc_qmake5 %qmake5}
 %{!?qtc_make:%define qtc_make make}
@@ -45,16 +43,18 @@ on your device easily.
 
 %build
 
-for lang in {ca,zh_CN,nl_BE,en_FI,fi,fi_FI,fr_FR,de,de_AT,de_DE,hu,it,ja,pl,pt_BR,ru,sl,sl_SI,es,sv}
-do
-  curl -s --user api:%{txapikey} -o "translations/settings-patchmanager-${lang}.ts" -X GET "https://www.transifex.com/api/2/project/patchmanager3/resource/settings-patchmanagerts/translation/${lang}/?file"
-done
-
 %qtc_qmake5 "PROJECT_PACKAGE_VERSION=%{version}"
 %qtc_make %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
+
+%if %{defined txapikey}
+for lang in {ca,zh_CN,nl_BE,en_FI,fi,fi_FI,fr_FR,de,de_AT,de_DE,hu,it,ja,pl,pt_BR,ru,sl,sl_SI,es,sv}
+do
+  curl -s --user api:%{txapikey} -o "translations/settings-patchmanager-${lang}.ts" -X GET "https://www.transifex.com/api/2/project/patchmanager3/resource/settings-patchmanagerts/translation/${lang}/?file"
+done
+%endif
 
 %qmake5_install
 

@@ -696,11 +696,20 @@ bool PatchManagerObject::unapplyAllPatches()
     qDebug() << Q_FUNC_INFO << "Directory" << patchmanager_cache_root << "is empty:" <<
     QDir::root().rmpath(patchmanager_cache_root);
 
+    eraseRecursively(PATCHES_ADDITIONAL_DIR);
+    qDebug() << Q_FUNC_INFO << "Directory" << PATCHES_ADDITIONAL_DIR << "is empty:" <<
+    QDir::root().rmpath(PATCHES_ADDITIONAL_DIR);
+
     qDebug() << Q_FUNC_INFO << "Making clean cache:" <<
     QDir::root().mkpath(patchmanager_cache_root);
 
     qDebug() << Q_FUNC_INFO << "Removing packages cache:" <<
     QFile::remove(AUSMT_INSTALLED_LIST_FILE);
+
+    qDebug() << Q_FUNC_INFO << "Toggle restart services...";
+    for (const QString &appliedPatch : m_appliedPatches) {
+        patchToggleService(appliedPatch, false);
+    }
 
     qDebug() << Q_FUNC_INFO << "Resetting variables...";
     m_appliedPatches.clear();

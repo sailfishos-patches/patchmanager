@@ -112,18 +112,52 @@ void PatchManagerModel::populateData(const QVariantList &data, const QString &pa
     }
 
     if (patch.isEmpty()) {
-        beginResetModel();
-        m_modelData.clear();
+        QMap<QString, QVariantMap> patches;
 
         for (const QVariant &var : data) {
             const QVariantMap item = var.toMap();
-            PatchObject *o = new PatchObject(item, this);
-            connect(o, &PatchObject::toBeDestroyed, this, &PatchManagerModel::itemRemoved);
-            m_modelData.append(o);
-            m_patchMap[o->details()->value(QStringLiteral("patch")).toString()] = o;
+            const QString patchName = item.value(QStringLiteral("patch")).toString();
+            patches.insert(patchName, item);
         }
 
-        endResetModel();
+        for (const QString &existing : m_patchMap.keys()) {
+            PatchObject *o = m_patchMap[existing];
+            const int idx = m_modelData.indexOf(o);
+            if (!patches.contains(existing)) {
+                beginRemoveRows(QModelIndex(), idx, idx);
+                o->deleteLater();
+                endRemoveRows();
+            } else {
+                o->setData(patches[existing]);
+                dataChanged(index(idx), index(idx));
+            }
+        }
+
+        for (const QString &changed : patches.keys()) {
+            if (m_patchMap.contains(changed)) {
+                continue;
+            }
+
+            beginInsertRows(QModelIndex(), m_modelData.length(), m_modelData.length());
+            PatchObject *o = new PatchObject(patches[changed], this);
+            connect(o, &PatchObject::toBeDestroyed, this, &PatchManagerModel::itemRemoved);
+            m_modelData.append(o);
+            m_patchMap[changed] = o;
+            endInsertRows();
+        }
+
+//        beginResetModel();
+//        m_modelData.clear();
+
+//        for (const QVariant &var : data) {
+//            const QVariantMap item = var.toMap();
+//            PatchObject *o = new PatchObject(item, this);
+//            connect(o, &PatchObject::toBeDestroyed, this, &PatchManagerModel::itemRemoved);
+//            m_modelData.append(o);
+//            m_patchMap[o->details()->value(QStringLiteral("patch")).toString()] = o;
+//        }
+
+//        endResetModel();
     } else {
         if (installed) {
             for (const QVariant &var : data) {
