@@ -928,7 +928,7 @@ void PatchManagerObject::restartServices()
             };
 
             if (!categoryToProcess.contains(category)) {
-                qWarning() << Q_FUNC_INFO << "Invalid category:" < <category;
+                qWarning() << Q_FUNC_INFO << "Invalid category:" << category;
                 continue;
             }
 
