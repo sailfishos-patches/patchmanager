@@ -557,6 +557,8 @@ void PatchManagerObject::initialize()
 
 void PatchManagerObject::restartLipstick()
 {
+    qDebug() << Q_FUNC_INFO;
+
     QDBusMessage m = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
                                                     QStringLiteral("/org/freedesktop/systemd1/unit/lipstick_2eservice"),
                                                     QStringLiteral("org.freedesktop.systemd1.Unit"),
@@ -703,7 +705,7 @@ bool PatchManagerObject::unapplyAllPatches()
     qDebug() << Q_FUNC_INFO << "Resetting variables...";
     m_appliedPatches.clear();
 
-    emit m_adaptor->listPatchesChanged();
+    refreshPatchList();
 
     return true;
 
@@ -907,21 +909,7 @@ void PatchManagerObject::restartServices()
     }
 
     for (const QString &category : m_toggleServices.keys()) {
-        /*
-static const QString BROWSER_CODE = QStringLiteral("browser");
-static const QString CAMERA_CODE = QStringLiteral("camera");
-static const QString CALENDAR_CODE = QStringLiteral("calendar");
-static const QString CLOCK_CODE = QStringLiteral("clock");
-static const QString CONTACTS_CODE = QStringLiteral("contacts");
-static const QString EMAIL_CODE = QStringLiteral("email");
-static const QString GALLERY_CODE = QStringLiteral("gallery");
-static const QString HOMESCREEN_CODE = QStringLiteral("homescreen");
-static const QString MEDIA_CODE = QStringLiteral("media");
-static const QString MESSAGES_CODE = QStringLiteral("messages");
-static const QString PHONE_CODE = QStringLiteral("phone");
-static const QString SILICA_CODE = QStringLiteral("silica");
-static const QString SETTINGS_CODE = QStringLiteral("settings");
-*/
+        qDebug() << Q_FUNC_INFO << category;
         if (category == HOMESCREEN_CODE || category == SILICA_CODE) {
             restartLipstick();
         } else {
@@ -940,7 +928,8 @@ static const QString SETTINGS_CODE = QStringLiteral("settings");
             };
 
             if (!categoryToProcess.contains(category)) {
-                return;
+                qWarning() << Q_FUNC_INFO << "Invalid category:" < <category;
+                continue;
             }
 
             QStringList arguments;
