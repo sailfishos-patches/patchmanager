@@ -30,7 +30,9 @@ qm.CONFIG += no_check_exist
 
 # update the ts files in the src dir and then copy them to the out dir
 qm.commands += lupdate -noobsolete $${TRANSLATION_SOURCES} -ts $${TS_FILE} && \
-    mkdir -p translations || :
+    mkdir -p translations && \
+    [ \"$${OUT_PWD}\" != \"$${_PRO_FILE_PWD_}\" -a $$HAVE_TRANSLATIONS -eq 1 ] && \
+    cp -af $${TRANSLATIONS_IN} $${OUT_PWD}/translations || :
 
 # create the qm files
 qm.commands += ; [ $$HAVE_TRANSLATIONS -eq 1 ] && lrelease -nounfinished $${TRANSLATIONS_OUT} || :

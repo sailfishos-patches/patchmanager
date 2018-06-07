@@ -32,7 +32,6 @@ BuildRequires:  sailfish-svg2png >= 0.1.5
 BuildRequires:  pkgconfig(nemonotifications-qt5)
 BuildRequires:  qt5-qtdeclarative-devel-tools
 BuildRequires:  pkgconfig(libsystemd-journal)
-BuildRequires:  curl
 
 %description
 patchmanager allows managing Sailfish OS patches
@@ -48,15 +47,6 @@ on your device easily.
 
 %install
 rm -rf %{buildroot}
-
-%if %{defined txapikey}
-echo $(pwd)
-mkdir -p translations
-for lang in {ca,zh_CN,nl_BE,en_FI,fi,fi_FI,fr_FR,de,de_AT,de_DE,hu,it,ja,pl,pt_BR,ru,sl,sl_SI,es,sv}
-do
-  curl -s --user api:%{txapikey} -o "translations/settings-patchmanager-${lang}.ts" -X GET "https://www.transifex.com/api/2/project/patchmanager3/resource/settings-patchmanagerts/translation/${lang}/?file"
-done
-%endif
 
 %qmake5_install
 
