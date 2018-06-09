@@ -13,6 +13,7 @@ EnvironmentFile=-/var/lib/environment/patchmanager/*.conf
 ExecStart=/usr/sbin/patchmanager --daemon
 Restart=always
 RestartSec=5
+TimeoutSec=infinity
 
 [Install]
 WantedBy=multi-user.target
