@@ -11,9 +11,9 @@ SupplementaryGroups=inet
 User=root
 EnvironmentFile=-/var/lib/environment/patchmanager/*.conf
 ExecStart=/usr/sbin/patchmanager --daemon
+TimeoutStartSec=600
 Restart=always
 RestartSec=5
-TimeoutSec=infinity
 
 [Install]
 WantedBy=multi-user.target
