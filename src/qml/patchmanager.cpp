@@ -68,6 +68,7 @@ PatchManager::PatchManager(QObject *parent)
     , m_installedModel(new PatchManagerModel(this))
     , m_interface(new PatchManagerInterface(DBUS_SERVICE_NAME, DBUS_PATH_NAME, QDBusConnection::systemBus(), this))
 {
+    qDebug() << Q_FUNC_INFO;
 
     requestListPatches(QString(), false);
     connect(m_interface, &PatchManagerInterface::patchAltered, this, &PatchManager::requestListPatches);
@@ -82,11 +83,11 @@ PatchManager::PatchManager(QObject *parent)
     connect(watchGetUpdates, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
         QDBusPendingReply<QVariantMap> reply = *watcher;
         if (reply.isError()) {
-            qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
+            qWarning() << Q_FUNC_INFO << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
 
-        qDebug() << reply.value();
+        qDebug() << Q_FUNC_INFO << reply.value();
 
         const QVariantMap data = PatchManager::unwind(reply.value()).toMap();
         onUpdatesAvailable(data);
@@ -98,11 +99,11 @@ PatchManager::PatchManager(QObject *parent)
     connect(watchGetToggleServices, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
         QDBusPendingReply<bool> reply = *watcher;
         if (reply.isError()) {
-            qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
+            qWarning() << Q_FUNC_INFO << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
 
-        qDebug() << reply.value();
+        qDebug() << Q_FUNC_INFO << reply.value();
 
         const bool toggleServices = reply.value();
         onToggleServicesChanged(toggleServices);
@@ -114,11 +115,11 @@ PatchManager::PatchManager(QObject *parent)
     connect(watchGetFailure, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
         QDBusPendingReply<bool> reply = *watcher;
         if (reply.isError()) {
-            qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
+            qWarning() << Q_FUNC_INFO << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
 
-        qDebug() << reply.value();
+        qDebug() << Q_FUNC_INFO << reply.value();
 
         const bool failure = reply.value();
         onFailureChanged(failure);
@@ -130,11 +131,11 @@ PatchManager::PatchManager(QObject *parent)
     connect(watchGetPmVersion, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
         QDBusPendingReply<QString> reply = *watcher;
         if (reply.isError()) {
-            qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
+            qWarning() << Q_FUNC_INFO << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
 
-        qDebug() << reply.value();
+        qDebug() << Q_FUNC_INFO << reply.value();
 
         const QString patchmanagerVersion = reply.value();
         m_patchmanagerVersion = patchmanagerVersion;
@@ -147,11 +148,11 @@ PatchManager::PatchManager(QObject *parent)
     connect(watchGetSsuVersion, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
         QDBusPendingReply<QString> reply = *watcher;
         if (reply.isError()) {
-            qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
+            qWarning() << Q_FUNC_INFO << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
 
-        qDebug() << reply.value();
+        qDebug() << Q_FUNC_INFO << reply.value();
 
         const QString ssuVersion = reply.value();
         m_ssuVersion = ssuVersion;
@@ -177,12 +178,12 @@ QString PatchManager::serverMediaUrl()
 
 bool PatchManager::developerMode()
 {
-    return getSettingsSync("developerMode", false).toBool();
+    return getSettingsSync(QStringLiteral("developerMode"), false).toBool();
 }
 
 void PatchManager::setDeveloperMode(bool developerMode)
 {
-    if (putSettingsSync("developerMode", developerMode)) {
+    if (putSettingsSync(QStringLiteral("developerMode"), developerMode)) {
         emit developerModeChanged(developerMode);
     }
 }
@@ -263,51 +264,71 @@ void PatchManager::requestListPatches(const QString &patch, bool installed)
 
 QDBusPendingCallWatcher* PatchManager::applyPatch(const QString &patch)
 {
+    qDebug() << Q_FUNC_INFO;
+
     return new QDBusPendingCallWatcher(m_interface->applyPatch(patch), this);
 }
 
 QDBusPendingCallWatcher* PatchManager::unapplyPatch(const QString &patch)
 {
+    qDebug() << Q_FUNC_INFO;
+
     return new QDBusPendingCallWatcher(m_interface->unapplyPatch(patch), this);
 }
 
 QDBusPendingCallWatcher *PatchManager::installPatch(const QString &patch, const QString &version, const QString &url)
 {
+    qDebug() << Q_FUNC_INFO;
+
     return new QDBusPendingCallWatcher(m_interface->installPatch(patch, version, url), this);
 }
 
 QDBusPendingCallWatcher *PatchManager::uninstallPatch(const QString &patch)
 {
+    qDebug() << Q_FUNC_INFO;
+
     return new QDBusPendingCallWatcher(m_interface->uninstallPatch(patch), this);
 }
 
 QDBusPendingCallWatcher *PatchManager::resetState(const QString &patch)
 {
+    qDebug() << Q_FUNC_INFO;
+
     return new QDBusPendingCallWatcher(m_interface->resetState(patch), this);
 }
 
 QDBusPendingCallWatcher *PatchManager::downloadCatalog(const QVariantMap &params)
 {
+    qDebug() << Q_FUNC_INFO;
+
     return new QDBusPendingCallWatcher(m_interface->downloadCatalog(params), this);
 }
 
 QDBusPendingCallWatcher *PatchManager::downloadPatchInfo(const QString &name)
 {
+    qDebug() << Q_FUNC_INFO;
+
     return new QDBusPendingCallWatcher(m_interface->downloadPatchInfo(name), this);
 }
 
 QDBusPendingCallWatcher *PatchManager::listVersions()
 {
+    qDebug() << Q_FUNC_INFO;
+
     return new QDBusPendingCallWatcher(m_interface->listVersions(), this);
 }
 
 QDBusPendingCallWatcher *PatchManager::unapplyAllPatches()
 {
+    qDebug() << Q_FUNC_INFO;
+
     return new QDBusPendingCallWatcher(m_interface->unapplyAllPatches(), this);
 }
 
 void PatchManager::restartServices()
 {
+    qDebug() << Q_FUNC_INFO;
+
     m_interface->restartServices();
 }
 
@@ -356,6 +377,8 @@ void PatchManager::watchCall(QDBusPendingCallWatcher *call, QJSValue callback, Q
 
 bool PatchManager::installTranslator(const QString &patch)
 {
+    qDebug() << Q_FUNC_INFO << patch;
+
     if (!m_translators.contains(patch)) {
         QTranslator * translator = new QTranslator(this);
         translator->load(QLocale::system(),
@@ -374,6 +397,8 @@ bool PatchManager::installTranslator(const QString &patch)
 
 bool PatchManager::removeTranslator(const QString &patch)
 {
+    qDebug() << Q_FUNC_INFO << patch;
+
     if (m_translators.contains(patch)) {
         QTranslator * translator = m_translators.take(patch);
         translator->deleteLater();
@@ -384,6 +409,8 @@ bool PatchManager::removeTranslator(const QString &patch)
 
 int PatchManager::checkVote(const QString &patch)
 {
+    qDebug() << Q_FUNC_INFO << patch;
+
     return getSettingsSync(QStringLiteral("votes/%1").arg(patch), 0).toInt();
 }
 
@@ -402,6 +429,8 @@ void PatchManager::doVote(const QString &patch, int action)
 
 void PatchManager::checkEaster()
 {
+    qDebug() << Q_FUNC_INFO;
+
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(m_interface->checkEaster(), this);
     connect(watcher, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
         QDBusPendingReply<QString> reply = *watcher;
@@ -435,6 +464,8 @@ QString PatchManager::valueIfExists(const QString &filename)
 
 void PatchManager::checkForUpdates()
 {
+    qDebug() << Q_FUNC_INFO;
+
     m_interface->checkForUpdates();
 }
 
@@ -504,6 +535,8 @@ void PatchManager::onUpdatesAvailable(const QVariantMap &updates)
 
 void PatchManager::onToggleServicesChanged(bool toggle)
 {
+    qDebug() << Q_FUNC_INFO << toggle;
+
     if (m_toggleServices == toggle) {
         return;
     }
@@ -514,6 +547,8 @@ void PatchManager::onToggleServicesChanged(bool toggle)
 
 void PatchManager::onFailureChanged(bool failed)
 {
+    qDebug() << Q_FUNC_INFO << failed;
+
     if (m_failed == failed) {
         return;
     }
@@ -524,6 +559,8 @@ void PatchManager::onFailureChanged(bool failed)
 
 void PatchManager::resolveFailure()
 {
+    qDebug() << Q_FUNC_INFO;
+
     m_interface->resolveFailure();
 }
 

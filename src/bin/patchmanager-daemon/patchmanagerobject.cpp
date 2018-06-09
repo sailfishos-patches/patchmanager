@@ -265,7 +265,7 @@ void PatchManagerObject::lateInitialize()
     INotifyWatcher *mainWatcher = new INotifyWatcher(this);
     mainWatcher->addPaths({ PATCHES_DIR });
     connect(mainWatcher, &INotifyWatcher::contentChanged, [this](const QString &path, bool created) {
-        qDebug() << "contentChanged:" << path << "created:" << created;
+        qDebug() << Q_FUNC_INFO << "contentChanged:" << path << "created:" << created;
         refreshPatchList();
         if (m_adaptor) {
             emit m_adaptor->patchAltered(path, created);
@@ -337,8 +337,8 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
     }
 
     if (qEnvironmentVariableIsEmpty("DBUS_SESSION_BUS_ADDRESS")) {
-        qWarning() << "Session bus address is not set! Please check environment configuration!";
-        qDebug() << "Injecting DBUS_SESSION_BUS_ADDRESS...";
+        qWarning() << Q_FUNC_INFO << "Session bus address is not set! Please check environment configuration!";
+        qDebug() << Q_FUNC_INFO << "Injecting DBUS_SESSION_BUS_ADDRESS...";
         qputenv("DBUS_SESSION_BUS_ADDRESS", QByteArrayLiteral("unix:path=/run/user/100000/dbus/user_bus_socket"));
     }
 
@@ -374,12 +374,12 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
                 && m_localServer->serverError() == QAbstractSocket::AddressInUseError // because of AddressInUseError
                 && QFileInfo::exists(patchmanager_socket) // socket file already exists
                 && QFile::remove(patchmanager_socket)) { // and successfully removed it
-            qWarning() << "Removed old stuck socket";
+            qWarning() << Q_FUNC_INFO << "Removed old stuck socket";
             listening = m_localServer->listen(patchmanager_socket); // try to start lisening again
         }
         qDebug() << Q_FUNC_INFO << "Server listening:" << listening;
         if (!listening) {
-            qWarning() << "Server error:" << m_localServer->serverError() << m_localServer->errorString();
+            qWarning() << Q_FUNC_INFO << "Server error:" << m_localServer->serverError() << m_localServer->errorString();
         }
     }, Qt::DirectConnection);
 
@@ -418,20 +418,20 @@ void PatchManagerObject::doRegisterDBus()
     QDBusConnection connection = QDBusConnection::systemBus();
 
     if (connection.interface()->isServiceRegistered(DBUS_SERVICE_NAME)) {
-        qWarning() << "Service already registered:" << DBUS_SERVICE_NAME;
+        qWarning() << Q_FUNC_INFO << "Service already registered:" << DBUS_SERVICE_NAME;
         return;
     }
 
     if (!connection.registerObject(DBUS_PATH_NAME, this)) {
-        qCritical() << "Cannot register object:" << DBUS_PATH_NAME;
+        qCritical() << Q_FUNC_INFO << "Cannot register object:" << DBUS_PATH_NAME;
         QCoreApplication::quit();
         return;
     }
 
-    qWarning() << "Object registered:" << DBUS_PATH_NAME;
+    qWarning() << Q_FUNC_INFO << "Object registered:" << DBUS_PATH_NAME;
 
     if (!connection.registerService(DBUS_SERVICE_NAME)) {
-        qCritical() << "Cannot register D-Bus service:" << DBUS_SERVICE_NAME;
+        qCritical() << Q_FUNC_INFO << "Cannot register D-Bus service:" << DBUS_SERVICE_NAME;
         QCoreApplication::quit();
         return;
     }
@@ -440,7 +440,7 @@ void PatchManagerObject::doRegisterDBus()
     if (qEnvironmentVariableIsSet("PM_DEBUG_EVENTFILTER")) {
         m_adaptor->installEventFilter(this);
     }
-    qWarning() << "Service registered:" << DBUS_SERVICE_NAME;
+    qWarning() << Q_FUNC_INFO << "Service registered:" << DBUS_SERVICE_NAME;
     m_dbusRegistered = true;
 }
 
@@ -594,7 +594,7 @@ void PatchManagerObject::process()
         initialize();
     } else if (args.count() > 1) {
         QDBusConnection connection = QDBusConnection::systemBus();
-        qDebug() << "Have arguments, sending dbus message and quit";
+        qDebug() << Q_FUNC_INFO << "Have arguments, sending dbus message and quit";
 
         QString method;
         QVariantList data;
@@ -1063,7 +1063,7 @@ QString PatchManagerObject::getSsuVersion() const
 bool PatchManagerObject::eventFilter(QObject *watched, QEvent *event)
 {
     if (qEnvironmentVariableIsSet("PM_DEBUG_EVENTFILTER")) {
-        qDebug() << watched << event->type();
+        qDebug() << Q_FUNC_INFO << watched << event->type();
     }
     return QObject::eventFilter(watched, event);
 }
@@ -1296,7 +1296,7 @@ void PatchManagerObject::doListPatches(const QDBusMessage &message)
     qDebug() << Q_FUNC_INFO;
     QVariantList result;
     QStringList order = getSettings("order", QStringList()).toStringList();
-    qDebug() << order;
+    qDebug() << Q_FUNC_INFO << order;
 
     for (const QString &patchName : order) {
         if (m_metadata.contains(patchName)) {
@@ -1331,11 +1331,11 @@ bool PatchManagerObject::doPatch(const QString &patchName, bool apply)
     arguments.append(patchName);
 
     process.setArguments(arguments);
-    qDebug() << "Starting:" << process.program() << process.arguments();
+    qDebug() << Q_FUNC_INFO << "Starting:" << process.program() << process.arguments();
     process.start();
     process.waitForFinished(-1);
     const bool ret = process.exitCode() == 0;
-    qDebug() << "Success:" << ret;
+    qDebug() << Q_FUNC_INFO << "Success:" << ret;
 
     if ((!apply && ret) || (apply && !ret)) {
         doPrepareCache(patchName, false);
@@ -1354,7 +1354,7 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
     QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
 
     bool ok = doPatch(patch, apply);
-    qDebug() << "ok:" << ok;
+    qDebug() << Q_FUNC_INFO << "ok:" << ok;
     if (ok) {
         if (apply) {
             m_appliedPatches.insert(patch);
@@ -1378,51 +1378,6 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
         sendMessageReply(message, ok);
     } else {
         qWarning() << Q_FUNC_INFO << "Message is not a delayed";
-    }
-
-    return;
-
-    if (apply) {
-        QVariantMap patchData = m_metadata[patch];
-        QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
-
-        QProcess process;
-        process.setProgram(AUSMT_INSTALL);
-
-        QStringList arguments;
-        arguments.append(patch);
-
-        process.setArguments(arguments);
-        process.start();
-        process.waitForFinished(-1);
-
-        bool ok = (process.exitCode() == 0);
-        if (ok) {
-            m_appliedPatches.insert(patch);
-            refreshPatchList();
-        }
-        notify(displayName.toString(), ok ? NotifyActionSuccessApply : NotifyActionFailedApply);
-    } else {
-        QVariantMap patchData = m_metadata[patch];
-        QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
-
-        QProcess process;
-        process.setProgram(AUSMT_REMOVE);
-
-        QStringList arguments;
-        arguments.append(patch);
-
-        process.setArguments(arguments);
-        process.start();
-        process.waitForFinished(-1);
-
-        bool ok = (process.exitCode() == 0);
-        qDebug() << "ok:" << ok;
-        if (ok) {
-            m_appliedPatches.remove(patch);
-            refreshPatchList();
-        }
-        notify(displayName.toString(), ok ? NotifyActionSuccessUnapply : NotifyActionFailedUnapply);
     }
 }
 
@@ -1466,13 +1421,15 @@ void PatchManagerObject::doInstallPatch(const QVariantMap &params, const QDBusMe
         QVariantMap newParams = params;
         newParams.insert(QStringLiteral("json"), QString::fromUtf8(json));
         downloadPatchArchive(newParams, message);
+
+        reply->deleteLater();
     });
     QObject::connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), [reply](QNetworkReply::NetworkError networkError){
-        qWarning() << "Download file error:" << networkError << reply->errorString();
+        qWarning() << Q_FUNC_INFO << "Download file error:" << networkError << reply->errorString();
     });
     QObject::connect(reply, &QNetworkReply::sslErrors, [reply](const QList<QSslError> &errors){
         for (const QSslError &sslError : errors) {
-            qWarning() << "ignoring ssl error:" << sslError.errorString();
+            qWarning() << Q_FUNC_INFO << "ignoring ssl error:" << sslError.errorString();
         }
         reply->ignoreSslErrors(errors);
     });
@@ -1556,6 +1513,8 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
             archiveFile->remove();
         }
         archiveFile->deleteLater();
+
+        reply->deleteLater();
     });
     QObject::connect(reply, &QNetworkReply::readyRead, [archiveFile, reply](){
         if (!archiveFile || !archiveFile->isOpen()) {
@@ -1564,11 +1523,11 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
         archiveFile->write(reply->read(reply->bytesAvailable()));
     });
     QObject::connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), [reply](QNetworkReply::NetworkError networkError){
-        qWarning() << "Download file error:" << networkError << reply->errorString();
+        qWarning() << Q_FUNC_INFO << "Download file error:" << networkError << reply->errorString();
     });
     QObject::connect(reply, &QNetworkReply::sslErrors, [reply](const QList<QSslError> &errors){
         for (const QSslError &sslError : errors) {
-            qWarning() << "ignoring ssl error:" << sslError.errorString();
+            qWarning() << Q_FUNC_INFO << "ignoring ssl error:" << sslError.errorString();
         }
         reply->ignoreSslErrors(errors);
     });
@@ -1576,6 +1535,8 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
 
 void PatchManagerObject::doUninstallPatch(const QString &patch, const QDBusMessage &message)
 {
+    qDebug() << Q_FUNC_INFO << patch;
+
     bool removeSuccess = false;
     const QString rpmPatch = m_metadata[patch][RPM_KEY].toString();
     if (rpmPatch.isEmpty()) {
@@ -1603,11 +1564,15 @@ int PatchManagerObject::getVote(const QString &patch)
 
 void PatchManagerObject::doCheckVote(const QString &patch, const QDBusMessage &message)
 {
+    qDebug() << Q_FUNC_INFO << patch;
+
     sendMessageReply(message, getVote(patch));
 }
 
 void PatchManagerObject::sendVote(const QString &patch, int action)
 {
+    qDebug() << Q_FUNC_INFO << patch << action;
+
     if (getVote(patch) == action) {
         return;
     }
@@ -1627,7 +1592,9 @@ void PatchManagerObject::sendVote(const QString &patch, int action)
     QNetworkRequest request(url);
     QNetworkReply *reply = m_nam->get(request);
     // TODO server should return new votes count
-    //QObject::connect(reply, &QNetworkReply::finished, this, &PatchManager::onServerReplied);
+    QObject::connect(reply, &QNetworkReply::finished, [reply]() {
+        reply->deleteLater();
+    });
 
     QString key = QString("votes/%1").arg(patch);
     m_settings->setValue(key, action);
@@ -1636,6 +1603,8 @@ void PatchManagerObject::sendVote(const QString &patch, int action)
 
 void PatchManagerObject::doCheckEaster(const QDBusMessage &message)
 {
+    qDebug() << Q_FUNC_INFO;
+
     QUrl url(CATALOG_URL"/easter");
     QNetworkRequest request(url);
     QNetworkReply *reply = m_nam->get(request);
@@ -1655,6 +1624,8 @@ void PatchManagerObject::doCheckEaster(const QDBusMessage &message)
         } else {
             sendMessageError(message, error.errorString());
         }
+
+        reply->deleteLater();
     });
     QObject::connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), [this, message, reply](QNetworkReply::NetworkError) {
         sendMessageError(message, reply->errorString());
@@ -1663,6 +1634,8 @@ void PatchManagerObject::doCheckEaster(const QDBusMessage &message)
 
 void PatchManagerObject::sendActivation(const QString &patch, const QString &version)
 {
+    qDebug() << Q_FUNC_INFO << patch << version;
+
     QUrl url(CATALOG_URL"/"PROJECT_PATH);
     QUrlQuery query;
     query.addQueryItem("name", patch);
@@ -1672,7 +1645,9 @@ void PatchManagerObject::sendActivation(const QString &patch, const QString &ver
     QNetworkRequest request(url);
     QNetworkReply * reply = m_nam->get(request);
     // TODO return current count of activations (or emit)
-    //QObject::connect(reply, &QNetworkReply::finished, this, &PatchManager::onServerReplied);
+    QObject::connect(reply, &QNetworkReply::finished, [reply]() {
+        reply->deleteLater();
+    });
 }
 
 void PatchManagerObject::downloadPatch(const QString &patch, const QUrl &url, const QString &file)
@@ -1683,12 +1658,13 @@ void PatchManagerObject::downloadPatch(const QString &patch, const QUrl &url, co
     }
     QNetworkRequest request(url);
     QNetworkReply *reply = m_nam->get(request);
-    QObject::connect(reply, &QNetworkReply::finished, [patch, f](){
+    QObject::connect(reply, &QNetworkReply::finished, [patch, f, reply](){
         if (!f) {
             return;
         }
         f->close();
         f->deleteLater();
+        reply->deleteLater();
         // TODO emit download complete
     });
     QObject::connect(reply, &QNetworkReply::readyRead, [f, reply](){
@@ -1698,11 +1674,11 @@ void PatchManagerObject::downloadPatch(const QString &patch, const QUrl &url, co
         f->write(reply->read(reply->bytesAvailable()));
     });
     QObject::connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), [reply](QNetworkReply::NetworkError networkError){
-        qWarning() << "Download file error:" << networkError << reply->errorString();
+        qWarning() << Q_FUNC_INFO << "Download file error:" << networkError << reply->errorString();
     });
     QObject::connect(reply, &QNetworkReply::sslErrors, [reply](const QList<QSslError> &errors){
         for (const QSslError &sslError : errors) {
-            qWarning() << "ignoring ssl error:" << sslError.errorString();
+            qWarning() << Q_FUNC_INFO << "ignoring ssl error:" << sslError.errorString();
         }
         reply->ignoreSslErrors(errors);
     });
