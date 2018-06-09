@@ -94,8 +94,11 @@ int main(int argc, char **argv)
     }
 
 #ifdef BUILD_VERSION
-    app.setApplicationVersion(QStringLiteral(BUILD_VERSION));
+    const QString version = QStringLiteral(BUILD_VERSION);
+    qDebug() << Q_FUNC_INFO << "Patchmanager:" << version;
+    app.setApplicationVersion(version);
 #else
+    qDebug() << Q_FUNC_INFO << "Patchmanager version unknown!";
     app.setApplicationVersion(QStringLiteral("3.9.9"));
 #endif
 
