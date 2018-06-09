@@ -802,6 +802,8 @@ bool PatchManagerObject::unapplyAllPatches()
     m_appliedPatches.clear();
 
     refreshPatchList();
+
+    return true;
 }
 
 bool PatchManagerObject::installPatch(const QString &patch, const QString &version, const QString &url)
