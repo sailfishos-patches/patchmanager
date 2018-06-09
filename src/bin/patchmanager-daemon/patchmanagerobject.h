@@ -63,8 +63,8 @@
 #define FILES_PATH          "files"
 #define MEDIA_PATH          "media"
 
-#define CATALOG_URL         SERVER_URL"/"API_PATH
-#define MEDIA_URL           SERVER_URL"/"MEDIA_PATH
+#define CATALOG_URL         SERVER_URL "/" API_PATH
+#define MEDIA_URL           SERVER_URL "/" MEDIA_PATH
 
 class QTimer;
 class QSettings;
@@ -172,6 +172,8 @@ private slots:
     void restartLipstick();
 
 private:
+    void resetSystem();
+
     void registerDBus();
 
     void startLocalServer();

@@ -567,6 +567,90 @@ void PatchManagerObject::restartLipstick()
     QDBusConnection::sessionBus().send(m);
 }
 
+void PatchManagerObject::resetSystem()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    unapplyAllPatches();
+
+    QStringList patchedFiles;
+    QDir patchesDir(PATCHES_DIR);
+    for (const QString &patchFolder : patchesDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+        qDebug() << Q_FUNC_INFO << "Processing patch:" << patchFolder;
+        QFile patchFile(QStringLiteral("%1/%2/unified_diff.patch").arg(PATCHES_DIR, patchFolder));
+        if (!patchFile.exists() || !patchFile.open(QFile::ReadOnly)) {
+            continue;
+        }
+        while (!patchFile.atEnd()) {
+            QByteArray line = patchFile.readLine();
+            if (!line.startsWith(QByteArrayLiteral("+++ "))) {
+                continue;
+            }
+            QString toPatch = QString::fromLatin1(line.split(' ')[1].split('\t')[0].split('\n')[0]);
+            QString path = toPatch;
+            while (!QFileInfo::exists(path) && path.count('/') > 1) {
+                path = path.mid(path.indexOf('/', 1));
+            }
+            if (!QFileInfo::exists(path)) {
+                if (toPatch.startsWith(QChar('/'))) {
+                    path = toPatch;
+                } else {
+                    path = toPatch.mid(toPatch.indexOf('/', 1));
+                }
+            }
+            if (!patchedFiles.contains(path)) {
+                qDebug() << Q_FUNC_INFO << "Found patched file:" << path;
+                patchedFiles.append(path);
+            }
+        }
+    }
+
+    QStringList packages;
+    for (const QString &file : patchedFiles) {
+        qDebug() << Q_FUNC_INFO << "Processing file:" << file;
+
+        QProcess rpmProc;
+        rpmProc.start(QStringLiteral("/bin/rpm"), { QStringLiteral("-qf"), QStringLiteral("--qf"), QStringLiteral("%{NAME}"), file });
+        if (!rpmProc.waitForFinished(5000) || rpmProc.exitCode() != 0) {
+            continue;
+        }
+        const QString package = QString::fromLatin1(rpmProc.readAllStandardOutput());
+        if (package.isEmpty()) {
+            continue;
+        } else if (!packages.contains(package)) {
+            qDebug() << Q_FUNC_INFO << "Found package to reinstall:" << package;
+            packages.append(package);
+        }
+    }
+
+    if (packages.isEmpty()) {
+        qDebug() << Q_FUNC_INFO << "Nothing to reinstall!";
+        QCoreApplication::exit(0);
+        return;
+    }
+
+    qDebug() << Q_FUNC_INFO << "Refreshing repositories...";
+    QProcess refreshProc;
+    refreshProc.start(QStringLiteral("/usr/bin/pkcon"), { QStringLiteral("refresh") });
+    refreshProc.waitForFinished(-1);
+
+    for (const QString &package : packages) {
+        qDebug() << Q_FUNC_INFO << "Reinstalling:" << package;
+
+        QProcess pkconProc;
+        pkconProc.start(QStringLiteral("/usr/bin/pkcon"), { QStringLiteral("install"), package });
+        pkconProc.waitForFinished(-1);
+
+        if (pkconProc.exitCode() == 0) {
+            qDebug() << Q_FUNC_INFO << "Reinstalled!";
+        } else {
+            qDebug() << Q_FUNC_INFO << "Problem while reinstalling!";
+        }
+    }
+
+    QCoreApplication::exit(0);
+}
+
 QString PatchManagerObject::checkRpmPatch(const QString &patch) const
 {
     QString patchPath = QStringLiteral("/usr/share/patchmanager/patches/%1/unified_diff.patch").arg(patch);
@@ -590,8 +674,11 @@ void PatchManagerObject::process()
     qDebug() << Q_FUNC_INFO;
     const QStringList args = QCoreApplication::arguments();
 
-    if (args.count() == 2 && args.last() == QStringLiteral("--daemon")) {
+    if (args.count() == 2 && args[1] == QStringLiteral("--daemon")) {
         initialize();
+    } else if (args[1] == QStringLiteral("--reset-system")) {
+         resetSystem();
+         return;
     } else if (args.count() > 1) {
         QDBusConnection connection = QDBusConnection::systemBus();
         qDebug() << Q_FUNC_INFO << "Have arguments, sending dbus message and quit";
@@ -715,30 +802,6 @@ bool PatchManagerObject::unapplyAllPatches()
     m_appliedPatches.clear();
 
     refreshPatchList();
-
-    return true;
-
-    bool ok = true;
-
-    QStringList order = getSettings("order", QStringList()).toStringList();
-    std::reverse(std::begin(order), std::end(order));
-
-    QStringList patches = m_appliedPatches.toList();
-    std::reverse(std::begin(patches), std::end(patches));
-
-    for (const QString &patchName : patches) {
-        if (!order.contains(patchName)) {
-            ok &= unapplyPatch(patchName);
-        }
-    }
-
-    for (const QString &patchName : order) {
-        if (patches.contains(patchName)) {
-            ok &= unapplyPatch(patchName);
-        }
-    }
-
-    return ok;
 }
 
 bool PatchManagerObject::installPatch(const QString &patch, const QString &version, const QString &url)
@@ -1403,10 +1466,14 @@ void PatchManagerObject::doInstallPatch(const QVariantMap &params, const QDBusMe
     QNetworkRequest request(url);
     QNetworkReply *reply = m_nam->get(request);
     QObject::connect(reply, &QNetworkReply::finished, [reply, message, params, this](){
+        reply->deleteLater();
         if (reply->error() != QNetworkReply::NoError) {
+            qDebug() << Q_FUNC_INFO << "Error:" << reply->error();
+            sendMessageError(message, reply->errorString());
             return;
         }
         if (reply->bytesAvailable() <= 0) {
+            qDebug() << Q_FUNC_INFO << "Cannot get json";
             sendMessageError(message, QStringLiteral("Cannot get json"));
             return;
         }
@@ -1421,8 +1488,6 @@ void PatchManagerObject::doInstallPatch(const QVariantMap &params, const QDBusMe
         QVariantMap newParams = params;
         newParams.insert(QStringLiteral("json"), QString::fromUtf8(json));
         downloadPatchArchive(newParams, message);
-
-        reply->deleteLater();
     });
     QObject::connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), [reply](QNetworkReply::NetworkError networkError){
         qWarning() << Q_FUNC_INFO << "Download file error:" << networkError << reply->errorString();
@@ -1454,7 +1519,10 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
     QNetworkRequest request(webUrl);
     QNetworkReply *reply = m_nam->get(request);
     QObject::connect(reply, &QNetworkReply::finished, [reply, message, patch, archiveFile, archive, json, version, this](){
+        reply->deleteLater();
         if (reply->error() != QNetworkReply::NoError) {
+            qDebug() << Q_FUNC_INFO << "Error:" << reply->error();
+            sendMessageError(message, reply->errorString());
             return;
         }
         if (!archiveFile) {
@@ -1513,8 +1581,6 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
             archiveFile->remove();
         }
         archiveFile->deleteLater();
-
-        reply->deleteLater();
     });
     QObject::connect(reply, &QNetworkReply::readyRead, [archiveFile, reply](){
         if (!archiveFile || !archiveFile->isOpen()) {
@@ -1577,7 +1643,7 @@ void PatchManagerObject::sendVote(const QString &patch, int action)
         return;
     }
 
-    QUrl url(CATALOG_URL"/"PROJECT_PATH);
+    QUrl url(QStringLiteral(CATALOG_URL "/" PROJECT_PATH));
     QUrlQuery query;
     query.addQueryItem("name", patch);
     if (action == 0) {
@@ -1594,6 +1660,9 @@ void PatchManagerObject::sendVote(const QString &patch, int action)
     // TODO server should return new votes count
     QObject::connect(reply, &QNetworkReply::finished, [reply]() {
         reply->deleteLater();
+        if (reply->error() != QNetworkReply::NoError) {
+            qDebug() << Q_FUNC_INFO << "Error:" << reply->error();
+        }
     });
 
     QString key = QString("votes/%1").arg(patch);
@@ -1609,6 +1678,18 @@ void PatchManagerObject::doCheckEaster(const QDBusMessage &message)
     QNetworkRequest request(url);
     QNetworkReply *reply = m_nam->get(request);
     QObject::connect(reply, &QNetworkReply::finished, [this, reply, message](){
+        reply->deleteLater();
+        if (reply->error() != QNetworkReply::NoError) {
+            qDebug() << Q_FUNC_INFO << "Error:" << reply->error();
+            sendMessageError(message, reply->errorString());
+            return;
+        }
+        if (!reply->bytesAvailable()) {
+            qWarning() << Q_FUNC_INFO << "Received empty reply!";
+            sendMessageError(message, QStringLiteral("Received empty reply!"));
+            return;
+        }
+
         const QByteArray json = reply->readAll();
 
         QJsonParseError error;
@@ -1624,8 +1705,6 @@ void PatchManagerObject::doCheckEaster(const QDBusMessage &message)
         } else {
             sendMessageError(message, error.errorString());
         }
-
-        reply->deleteLater();
     });
     QObject::connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), [this, message, reply](QNetworkReply::NetworkError) {
         sendMessageError(message, reply->errorString());
@@ -1636,7 +1715,7 @@ void PatchManagerObject::sendActivation(const QString &patch, const QString &ver
 {
     qDebug() << Q_FUNC_INFO << patch << version;
 
-    QUrl url(CATALOG_URL"/"PROJECT_PATH);
+    QUrl url(QStringLiteral(CATALOG_URL "/" PROJECT_PATH));
     QUrlQuery query;
     query.addQueryItem("name", patch);
     query.addQueryItem("version", version);
@@ -1647,6 +1726,9 @@ void PatchManagerObject::sendActivation(const QString &patch, const QString &ver
     // TODO return current count of activations (or emit)
     QObject::connect(reply, &QNetworkReply::finished, [reply]() {
         reply->deleteLater();
+        if (reply->error() != QNetworkReply::NoError) {
+            qDebug() << Q_FUNC_INFO << "Error:" << reply->error();
+        }
     });
 }
 
@@ -1659,12 +1741,16 @@ void PatchManagerObject::downloadPatch(const QString &patch, const QUrl &url, co
     QNetworkRequest request(url);
     QNetworkReply *reply = m_nam->get(request);
     QObject::connect(reply, &QNetworkReply::finished, [patch, f, reply](){
+        reply->deleteLater();
         if (!f) {
+            return;
+        }
+        if (reply->error() != QNetworkReply::NoError) {
+            qDebug() << Q_FUNC_INFO << "Error:" << reply->error();
             return;
         }
         f->close();
         f->deleteLater();
-        reply->deleteLater();
         // TODO emit download complete
     });
     QObject::connect(reply, &QNetworkReply::readyRead, [f, reply](){
@@ -1687,7 +1773,7 @@ void PatchManagerObject::downloadPatch(const QString &patch, const QUrl &url, co
 void PatchManagerObject::requestDownloadCatalog(const QVariantMap &params, const QDBusMessage &message)
 {
     qDebug() << Q_FUNC_INFO << params;
-    QUrl url(CATALOG_URL"/"PROJECTS_PATH);
+    QUrl url(QStringLiteral(CATALOG_URL "/" PROJECTS_PATH));
     QUrlQuery query;
     for (const QString &key : params.keys()) {
         query.addQueryItem(key, params.value(key).toString());
@@ -1696,20 +1782,27 @@ void PatchManagerObject::requestDownloadCatalog(const QVariantMap &params, const
     QNetworkRequest request(url);
     QNetworkReply *reply = m_nam->get(request);
     QObject::connect(reply, &QNetworkReply::finished, [this, message, reply]() {
-        qDebug() << Q_FUNC_INFO << "Error:" << reply->error() << "Bytes:" << reply->bytesAvailable();
-        if (reply->error() == QNetworkReply::NoError && reply->bytesAvailable()) {
-            const QByteArray json = reply->readAll();
-
-            QJsonParseError error;
-            const QJsonDocument document = QJsonDocument::fromJson(json, &error);
-
-            if (error.error == QJsonParseError::NoError) {
-                sendMessageReply(message, document.toVariant());
-            } else {
-                sendMessageError(message, error.errorString());
-            }
-        }
         reply->deleteLater();
+        if (reply->error() != QNetworkReply::NoError) {
+            qDebug() << Q_FUNC_INFO << "Error:" << reply->error();
+            sendMessageError(message, reply->errorString());
+            return;
+        }
+        if (!reply->bytesAvailable()) {
+            qWarning() << Q_FUNC_INFO << "Received empty reply!";
+            sendMessageError(message, QStringLiteral("Received empty reply!"));
+            return;
+        }
+        const QByteArray json = reply->readAll();
+
+        QJsonParseError error;
+        const QJsonDocument document = QJsonDocument::fromJson(json, &error);
+
+        if (error.error == QJsonParseError::NoError) {
+            sendMessageReply(message, document.toVariant());
+        } else {
+            sendMessageError(message, error.errorString());
+        }
     });
     QObject::connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), [this, message, reply](QNetworkReply::NetworkError) {
         sendMessageError(message, reply->errorString());
@@ -1719,27 +1812,34 @@ void PatchManagerObject::requestDownloadCatalog(const QVariantMap &params, const
 void PatchManagerObject::requestDownloadPatchInfo(const QString &name, const QDBusMessage &message)
 {
     qDebug() << Q_FUNC_INFO << name;
-    QUrl url(CATALOG_URL"/"PROJECT_PATH);
+    QUrl url(QStringLiteral(CATALOG_URL "/" PROJECT_PATH));
     QUrlQuery query;
     query.addQueryItem(QStringLiteral("name"), name);
     url.setQuery(query);
     QNetworkRequest request(url);
     QNetworkReply *reply = m_nam->get(request);
     QObject::connect(reply, &QNetworkReply::finished, [this, message, reply]() {
-        qDebug() << Q_FUNC_INFO << "Error:" << reply->error() << "Bytes:" << reply->bytesAvailable();
-        if (reply->error() == QNetworkReply::NoError && reply->bytesAvailable()) {
-            const QByteArray json = reply->readAll();
-
-            QJsonParseError error;
-            const QJsonDocument document = QJsonDocument::fromJson(json, &error);
-
-            if (error.error == QJsonParseError::NoError) {
-                sendMessageReply(message, document.toVariant());
-            } else {
-                sendMessageError(message, error.errorString());
-            }
-        }
         reply->deleteLater();
+        if (reply->error() != QNetworkReply::NoError) {
+            qDebug() << Q_FUNC_INFO << "Error:" << reply->error();
+            sendMessageError(message, reply->errorString());
+            return;
+        }
+        if (!reply->bytesAvailable()) {
+            qWarning() << Q_FUNC_INFO << "Received empty reply!";
+            sendMessageError(message, QStringLiteral("Received empty reply!"));
+            return;
+        }
+        const QByteArray json = reply->readAll();
+
+        QJsonParseError error;
+        const QJsonDocument document = QJsonDocument::fromJson(json, &error);
+
+        if (error.error == QJsonParseError::NoError) {
+            sendMessageReply(message, document.toVariant());
+        } else {
+            sendMessageError(message, error.errorString());
+        }
     });
     QObject::connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), [this, message, reply](QNetworkReply::NetworkError) {
         sendMessageError(message, reply->errorString());
@@ -1750,95 +1850,105 @@ void PatchManagerObject::requestCheckForUpdates()
 {
     qDebug() << Q_FUNC_INFO;
 
-    QUrl url(CATALOG_URL"/"PROJECTS_PATH);
+    QUrl url(QStringLiteral(CATALOG_URL "/" PROJECTS_PATH));
     QUrlQuery query;
     query.addQueryItem("version", m_ssuRelease);
     url.setQuery(query);
     QNetworkRequest request(url);
     QNetworkReply *reply = m_nam->get(request);
     QObject::connect(reply, &QNetworkReply::finished, [this, reply]() {
-        qDebug() << Q_FUNC_INFO << "Error:" << reply->error() << "Bytes:" << reply->bytesAvailable();
-        if (reply->error() == QNetworkReply::NoError && reply->bytesAvailable()) {
-            const QByteArray json = reply->readAll();
-
-            QJsonParseError error;
-            const QJsonDocument document = QJsonDocument::fromJson(json, &error);
-
-            if (error.error != QJsonParseError::NoError) {
-                qWarning() << Q_FUNC_INFO << "Error parsing json reply";
-                return;
-            }
-
-            const QVariantList projects = document.toVariant().toList();
-            qDebug() << Q_FUNC_INFO << "projects count:" << projects.count();
-            for (const QVariant &projectVar : projects) {
-                const QVariantMap project = projectVar.toMap();
-                const QString projectName = project.value("name").toString();
-                qDebug() << Q_FUNC_INFO << "processing:" << projectName;
-                if (!m_metadata.contains(projectName)) {
-                    qDebug() << Q_FUNC_INFO << projectName << "patch is not installed";
-                    continue;
-                }
-                if (!m_metadata.value(projectName).value("rpm").toString().isEmpty()) {
-                    qDebug() << Q_FUNC_INFO << projectName << "patch installed from rpm";
-                    continue;
-                }
-
-                const QString patchVersion = m_metadata.value(projectName).value("version").toString();
-                qDebug() << Q_FUNC_INFO << "installed:" << projectName << "version:" << patchVersion;
-
-                QUrl purl(CATALOG_URL"/"PROJECT_PATH);
-                QUrlQuery pquery;
-                pquery.addQueryItem(QStringLiteral("name"), projectName);
-                purl.setQuery(pquery);
-                QNetworkRequest prequest(purl);
-                QNetworkReply *preply = m_nam->get(prequest);
-                QObject::connect(preply, &QNetworkReply::finished, [this, preply, projectName, patchVersion]() {
-                    qDebug() << Q_FUNC_INFO << projectName << "Error:" << preply->error() << "Bytes:" << preply->bytesAvailable();
-                    if (preply->error() == QNetworkReply::NoError && preply->bytesAvailable()) {
-                        const QByteArray json = preply->readAll();
-
-                        QJsonParseError error;
-                        const QJsonDocument document = QJsonDocument::fromJson(json, &error);
-
-                        if (error.error != QJsonParseError::NoError) {
-                            qWarning() << Q_FUNC_INFO << projectName << "Error parsing json reply";
-                            return;
-                        }
-
-                        const QVariantMap project = document.toVariant().toMap();
-
-                        QString latestVersion = patchVersion;
-
-                        const QVariantList files = project.value("files").toList();
-                        for (const QVariant &fileVar : files) {
-                            const QVariantMap file = fileVar.toMap();
-                            const QStringList compatible = file.value("compatible").toStringList();
-                            if (!compatible.contains(m_ssuRelease)) {
-                                continue;
-                            }
-                            const QString version = file.value("version").toString();
-                            latestVersion = PatchManagerObject::maxVersion(latestVersion, version);
-                        }
-
-                        if (latestVersion == patchVersion) {
-                            qDebug() << Q_FUNC_INFO << projectName << "versions match";
-                            return;
-                        }
-                        qDebug() << Q_FUNC_INFO << "available:" << projectName << "version:" << latestVersion;
-
-                        if (!m_updates.contains(projectName) || m_updates.value(projectName) != latestVersion) {
-                            notify(projectName, NotifyActionUpdateAvailable);
-
-                            m_updates[projectName] = latestVersion;
-                            emit m_adaptor->updatesAvailable(m_updates);
-                        }
-                    }
-                    preply->deleteLater();
-                });
-            }
-        }
         reply->deleteLater();
+        if (reply->error() != QNetworkReply::NoError) {
+            qDebug() << Q_FUNC_INFO << "Error:" << reply->error();
+            return;
+        }
+        if (!reply->bytesAvailable()) {
+            qWarning() << Q_FUNC_INFO << "Received empty reply!";
+            return;
+        }
+        const QByteArray json = reply->readAll();
+
+        QJsonParseError error;
+        const QJsonDocument document = QJsonDocument::fromJson(json, &error);
+
+        if (error.error != QJsonParseError::NoError) {
+            qWarning() << Q_FUNC_INFO << "Error parsing json reply";
+            return;
+        }
+
+        const QVariantList projects = document.toVariant().toList();
+        qDebug() << Q_FUNC_INFO << "projects count:" << projects.count();
+        for (const QVariant &projectVar : projects) {
+            const QVariantMap project = projectVar.toMap();
+            const QString projectName = project.value("name").toString();
+            qDebug() << Q_FUNC_INFO << "processing:" << projectName;
+            if (!m_metadata.contains(projectName)) {
+                qDebug() << Q_FUNC_INFO << projectName << "patch is not installed";
+                continue;
+            }
+            if (!m_metadata.value(projectName).value("rpm").toString().isEmpty()) {
+                qDebug() << Q_FUNC_INFO << projectName << "patch installed from rpm";
+                continue;
+            }
+
+            const QString patchVersion = m_metadata.value(projectName).value("version").toString();
+            qDebug() << Q_FUNC_INFO << "installed:" << projectName << "version:" << patchVersion;
+
+            QUrl purl(QStringLiteral(CATALOG_URL "/" PROJECT_PATH));
+            QUrlQuery pquery;
+            pquery.addQueryItem(QStringLiteral("name"), projectName);
+            purl.setQuery(pquery);
+            QNetworkRequest prequest(purl);
+            QNetworkReply *preply = m_nam->get(prequest);
+            QObject::connect(preply, &QNetworkReply::finished, [this, preply, projectName, patchVersion]() {
+                preply->deleteLater();
+                if (preply->error() != QNetworkReply::NoError) {
+                    qDebug() << Q_FUNC_INFO << "Error:" << preply->error();
+                    return;
+                }
+                if (!preply->bytesAvailable()) {
+                    qWarning() << Q_FUNC_INFO << "Received empty reply!";
+                    return;
+                }
+                const QByteArray json = preply->readAll();
+
+                QJsonParseError error;
+                const QJsonDocument document = QJsonDocument::fromJson(json, &error);
+
+                if (error.error != QJsonParseError::NoError) {
+                    qWarning() << Q_FUNC_INFO << projectName << "Error parsing json reply";
+                    return;
+                }
+
+                const QVariantMap project = document.toVariant().toMap();
+
+                QString latestVersion = patchVersion;
+
+                const QVariantList files = project.value("files").toList();
+                for (const QVariant &fileVar : files) {
+                    const QVariantMap file = fileVar.toMap();
+                    const QStringList compatible = file.value("compatible").toStringList();
+                    if (!compatible.contains(m_ssuRelease)) {
+                        continue;
+                    }
+                    const QString version = file.value("version").toString();
+                    latestVersion = PatchManagerObject::maxVersion(latestVersion, version);
+                }
+
+                if (latestVersion == patchVersion) {
+                    qDebug() << Q_FUNC_INFO << projectName << "versions match";
+                    return;
+                }
+                qDebug() << Q_FUNC_INFO << "available:" << projectName << "version:" << latestVersion;
+
+                if (!m_updates.contains(projectName) || m_updates.value(projectName) != latestVersion) {
+                    notify(projectName, NotifyActionUpdateAvailable);
+
+                    m_updates[projectName] = latestVersion;
+                    emit m_adaptor->updatesAvailable(m_updates);
+                }
+            });
+        }
     });
 }
 
