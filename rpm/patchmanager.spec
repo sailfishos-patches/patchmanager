@@ -162,6 +162,9 @@ systemctl daemon-reload
 #%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/unified_diff.patch
 %{_libdir}/libpreload%{name}.so
 
+%{_libexecdir}/pm_apply
+%{_libexecdir}/pm_unapply
+
 %{_libdir}/qt5/qml/org/SfietKonstantin/%{name}
 %{_datadir}/%{name}/data
 %{_datadir}/translations

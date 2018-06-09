@@ -95,8 +95,8 @@ static const QString ISCOMPATIBLE_KEY = QStringLiteral("isCompatible");
 static const QString CONFLICTS_KEY = QStringLiteral("conflicts");
 
 static const QString AUSMT_INSTALLED_LIST_FILE = QStringLiteral("/var/lib/patchmanager/ausmt/packages");
-static const QString AUSMT_INSTALL = QStringLiteral("/opt/ausmt/ausmt-install");
-static const QString AUSMT_REMOVE = QStringLiteral("/opt/ausmt/ausmt-remove");
+static const QString AUSMT_INSTALL = QStringLiteral("/usr/libexec/pm_apply");
+static const QString AUSMT_REMOVE = QStringLiteral("/usr/libexec/pm_unapply");
 
 static const QString BROWSER_CODE = QStringLiteral("browser");
 static const QString CAMERA_CODE = QStringLiteral("camera");
