@@ -173,6 +173,8 @@ void PatchManagerModel::populateData(const QVariantList &data, const QString &pa
                     m_modelData.append(o);
                     m_patchMap[o->details()->value(QStringLiteral("patch")).toString()] = o;
                     endInsertRows();
+
+                    saveLayout();
                     return;
                 }
             }
@@ -202,6 +204,8 @@ void PatchManagerModel::removePatch(const QString &patch)
     m_modelData.removeAt(index);
     m_patchMap.remove(patch);
     endRemoveRows();
+
+    saveLayout();
 }
 
 void PatchManagerModel::move(int from, int to)
@@ -221,7 +225,7 @@ void PatchManagerModel::saveLayout()
         patches.append(o->details()->value(QStringLiteral("patch")).toString());
     }
 
-    PatchManager::GetInstance()->putSettingsAsync("order", patches);
+    PatchManager::GetInstance()->putSettingsAsync(QStringLiteral("order"), patches);
 }
 
 QString PatchManagerModel::patchName(const QString &patch) const

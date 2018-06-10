@@ -1360,7 +1360,7 @@ void PatchManagerObject::doListPatches(const QDBusMessage &message)
 {
     qDebug() << Q_FUNC_INFO;
     QVariantList result;
-    QStringList order = getSettings("order", QStringList()).toStringList();
+    QStringList order = getSettings(QStringLiteral("order"), QStringList()).toStringList();
     qDebug() << Q_FUNC_INFO << order;
 
     for (const QString &patchName : order) {
@@ -1401,6 +1401,9 @@ bool PatchManagerObject::doPatch(const QString &patchName, bool apply)
     process.waitForFinished(-1);
     const bool ret = process.exitCode() == 0;
     qDebug() << Q_FUNC_INFO << "Success:" << ret;
+    if (ret != 0) {
+        qDebug() << Q_FUNC_INFO << process.readAllStandardOutput();
+    }
 
     if ((!apply && ret) || (apply && !ret)) {
         doPrepareCache(patchName, false);
@@ -1609,14 +1612,22 @@ void PatchManagerObject::doUninstallPatch(const QString &patch, const QDBusMessa
     const QString rpmPatch = m_metadata[patch][RPM_KEY].toString();
     if (rpmPatch.isEmpty()) {
         QDir patchDir(QStringLiteral("%1/%2").arg(PATCHES_DIR, patch));
+        qDebug() << Q_FUNC_INFO << "Removing patch files" << patchDir.absolutePath();
         if (patchDir.exists()) {
             removeSuccess = patchDir.removeRecursively();
         }
     } else {
-        QDBusInterface iface("com.jolla.jollastore", "/StoreClient", "com.jolla.jollastore", QDBusConnection::sessionBus());
-        iface.call(QDBus::NoBlock, "removePackage", rpmPatch, true);
+        qDebug() << Q_FUNC_INFO << "Removing patch package" << rpmPatch;
+        QDBusMessage removePackage = QDBusMessage::createMethodCall(QStringLiteral("com.jolla.jollastore"),
+                                                                    QStringLiteral("/StoreClient"),
+                                                                    QStringLiteral("com.jolla.jollastore"),
+                                                                    QStringLiteral("removePackage"));
+        removePackage.setArguments({ rpmPatch, QVariant::fromValue(false) });
+        QDBusConnection::sessionBus().call(removePackage, QDBus::NoBlock);
         removeSuccess = true;
     }
+
+    qDebug() << Q_FUNC_INFO << "Success:" << removeSuccess;
 
     if (removeSuccess) {
         // TODO: gracefully update models
