@@ -52,9 +52,6 @@ Page {
                 enabled: !container.delegate.applying
                 onClicked: {
                     container.delegate.doPatch()
-                    if (!container.available) {
-                        pageStack.pop()
-                    }
                 }
             }
         }
@@ -140,10 +137,16 @@ Page {
                 color: Theme.highlightColor
                 anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
                 anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
-                wrapMode: Text.WordWrap
+                wrapMode: Text.WrapAnywhere
                 text: modelData.log
                 font.family: "Courier"
+                font.pixelSize: Theme.fontSizeTiny
                 visible: PatchManager.developerMode
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: Clipboard.text = modelData.log
+                }
             }
         }
     }

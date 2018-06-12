@@ -1403,7 +1403,7 @@ bool PatchManagerObject::doPatch(const QString &patchName, bool apply, QString *
     qDebug() << Q_FUNC_INFO << "Success:" << ret;
     if (ret != 0) {
         const QString log = QString::fromUtf8(process.readAllStandardOutput());
-        qDebug() << Q_FUNC_INFO << log;
+        qDebug().noquote() << Q_FUNC_INFO << log;
         if (patchLog) {
             *patchLog = log;
         }
