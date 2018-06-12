@@ -744,7 +744,7 @@ bool PatchManagerObject::isPatchApplied(const QString &patch)
     return m_appliedPatches.contains(patch);
 }
 
-bool PatchManagerObject::applyPatch(const QString &patch)
+QVariantMap PatchManagerObject::applyPatch(const QString &patch)
 {
     qDebug() << Q_FUNC_INFO << patch;
     QDBusMessage msg;
@@ -757,10 +757,10 @@ bool PatchManagerObject::applyPatch(const QString &patch)
                                                               {QStringLiteral("user_request"), true}})),
                               Q_ARG(QDBusMessage, msg),
                               Q_ARG(bool, true));
-    return true;
+    return QVariantMap();
 }
 
-bool PatchManagerObject::unapplyPatch(const QString &patch)
+QVariantMap PatchManagerObject::unapplyPatch(const QString &patch)
 {
     qDebug() << Q_FUNC_INFO << patch;
     QDBusMessage msg;
@@ -772,7 +772,7 @@ bool PatchManagerObject::unapplyPatch(const QString &patch)
                               Q_ARG(QVariantMap, QVariantMap({{QStringLiteral("name"), patch}})),
                               Q_ARG(QDBusMessage, msg),
                               Q_ARG(bool, false));
-    return true;
+    return QVariantMap();
 }
 
 bool PatchManagerObject::unapplyAllPatches()
@@ -1382,7 +1382,7 @@ void PatchManagerObject::doListPatches(const QDBusMessage &message)
     sendMessageReply(message, result);
 }
 
-bool PatchManagerObject::doPatch(const QString &patchName, bool apply)
+bool PatchManagerObject::doPatch(const QString &patchName, bool apply, QString *patchLog)
 {
     qDebug() << Q_FUNC_INFO << patchName << apply;
     if (apply) {
@@ -1402,7 +1402,11 @@ bool PatchManagerObject::doPatch(const QString &patchName, bool apply)
     const bool ret = process.exitCode() == 0;
     qDebug() << Q_FUNC_INFO << "Success:" << ret;
     if (ret != 0) {
-        qDebug() << Q_FUNC_INFO << process.readAllStandardOutput();
+        const QString log = QString::fromUtf8(process.readAllStandardOutput());
+        qDebug() << Q_FUNC_INFO << log;
+        if (patchLog) {
+            *patchLog = log;
+        }
     }
 
     if ((!apply && ret) || (apply && !ret)) {
@@ -1421,7 +1425,8 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
     QVariantMap patchData = m_metadata[patch];
     QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
 
-    bool ok = doPatch(patch, apply);
+    QString log;
+    bool ok = doPatch(patch, apply, &log);
     qDebug() << Q_FUNC_INFO << "ok:" << ok;
     if (ok) {
         if (apply) {
@@ -1442,8 +1447,9 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
     }
 
     if (message.isDelayedReply()) {
-        qWarning() << Q_FUNC_INFO << "Sending reply" << ok;
-        sendMessageReply(message, ok);
+        QVariantMap reply = {{ QStringLiteral("ok"), ok }, { QStringLiteral("log"), log }};
+        qWarning() << Q_FUNC_INFO << "Sending reply" << reply;
+        sendMessageReply(message, reply);
     } else {
         qWarning() << Q_FUNC_INFO << "Message is not a delayed";
     }

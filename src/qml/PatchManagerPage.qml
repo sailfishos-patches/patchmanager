@@ -340,67 +340,14 @@ Page {
                 view.model.saveLayout()
                 if (!patchObject.details.patched) {
                     if (PatchManager.developerMode || patchObject.details.isCompatible) {
-                        patchObject.apply(function(ok) {
-
-                        })
-//                        patchmanagerDbusInterface.applyPatch(model.patch,
-//                        function (ok) {
-//                            if (ok) {
-//                                if (patchObject.details.isNewPatch) {
-//                                    PatchManager.activation(model.name, model.version)
-//                                }
-//                                background.applied = true
-//                            }
-//                            appliedSwitch.busy = false
-//                            PatchManager.patchToggleService(model.patch, model.categoryCode)
-//                            checkApplicability()
-//                        })
+                        patchObject.apply()
                     } else {
                         errorMesageComponent.createObject(background, {text: qsTranslate("", "This patch is not compatible with SailfishOS version!")})
                     }
                 } else {
                     patchObject.unapply()
-//                    patchmanagerDbusInterface.unapplyPatch(model.patch,
-//                    function (ok) {
-//                        if (ok) {
-//                            background.applied = false
-//                        }
-//                        appliedSwitch.busy = false
-//                        PatchManager.patchToggleService(model.patch, model.categoryCode)
-//                        if (!model.available) {
-//                            patchModel.remove(model.index)
-//                        } else {
-//                            checkApplicability()
-//                        }
-//                    })
                 }
             }
-
-//            Connections {
-//                target: view
-//                onUnapplyAll: {
-//                    if (patchObject.details.patched) {
-//                        //appliedSwitch.busy = true
-//                    }
-//                }
-//                onUnapplyPatchFinished: {
-//                    if (patchName !== patchObject.details.patch) {
-//                        return
-//                    }
-//                    if (!view.busy) {
-//                        return
-//                    }
-
-//                    //background.applied = false
-//                    //appliedSwitch.busy = false
-//                    PatchManager.patchToggleService(patchObject.details.patch, patchObject.details.categoryCode)
-//                    if (!patchObject.details.available) {
-//                        //patchModel.remove(model.index)
-//                    } else {
-//                        checkApplicability()
-//                    }
-//                }
-//            }
 
             function removeAction() {
                 remorseAction(qsTranslate("", "Uninstalling patch %1").arg(name), doRemove)
@@ -412,8 +359,8 @@ Page {
 
             function doRemove() {
                 if (patchObject.details.patched) {
-                    patchObject.unapply(function(ok) {
-                        if (ok) {
+                    patchObject.unapply(function(result) {
+                        if (result.ok) {
                             doUninstall()
                         }
                     })
@@ -532,11 +479,6 @@ Page {
                         text: patchObject.details.patched ? qsTranslate("", "Unapply") : qsTranslate("", "Apply")
                         onClicked: background.doPatch()
                     }
-//                    MenuItem {
-//                        visible: PatchManager.developerMode && patchObject.details.patched
-//                        text: qsTranslate("", "Reset state")
-//                        onClicked: patchObject.resetState()
-//                    }
                     MenuItem {
                         visible: !patchObject.details.patched && patchObject.details.patch != "sailfishos-patchmanager-unapplyall"
                         text: qsTranslate("", "Uninstall")

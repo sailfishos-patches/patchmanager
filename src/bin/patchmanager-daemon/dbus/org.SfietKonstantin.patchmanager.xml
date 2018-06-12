@@ -15,11 +15,13 @@
         </method>
         <method name="applyPatch">
             <arg name="patch" type="s" direction="in" />
-            <arg name="ok" type="b" direction="out" />
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+            <arg name="result" type="a{sv}" direction="out" />
         </method>
         <method name="unapplyPatch">
             <arg name="patch" type="s" direction="in" />
-            <arg name="ok" type="b" direction="out" />
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+            <arg name="result" type="a{sv}" direction="out" />
         </method>
         <method name="installPatch">
             <arg name="patch" type="s" direction="in" />

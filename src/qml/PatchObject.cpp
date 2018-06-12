@@ -50,6 +50,7 @@ PatchObject::PatchObject(const QVariantMap &data, QObject *parent)
         if (!isNewPatch) {
             m_details->insert(QStringLiteral("display_name"), m_details->value(QStringLiteral("name")));
         }
+        m_details->insert(QStringLiteral("log"), QString());
     }
     setObjectName(m_details->value(QStringLiteral("patch")).toString());
 }
@@ -99,18 +100,23 @@ void PatchObject::apply(QJSValue callback)
     connect(PatchManager::GetInstance()->applyPatch(m_details->value("patch").toString()),
             &QDBusPendingCallWatcher::finished,
             [this, callback](QDBusPendingCallWatcher *watcher) mutable {
-        QDBusPendingReply<bool> reply = *watcher;
+        QDBusPendingReply<QVariantMap> reply = *watcher;
+        QVariantMap result;
         if (reply.isError()) {
             qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
+            result[QStringLiteral("ok")] = false;
+            result[QStringLiteral("log")] = reply.error().message();
         } else {
-            m_details->setProperty("patched", reply.value());
+            result = reply.value();
+            m_details->setProperty("patched", result.value(QStringLiteral("ok")).toBool());
+            m_details->setProperty("log", result.value(QStringLiteral("log")).toString());
         }
         setBusy(false);
         watcher->deleteLater();
 
         if (callback.isCallable()) {
             QJSValueList callbackArguments;
-            callbackArguments << callback.engine()->toScriptValue<bool>(!reply.isError() && reply.value());
+            callbackArguments << callback.engine()->toScriptValue<QVariantMap>(result);
             callback.call(callbackArguments);
         }
     });
@@ -131,18 +137,23 @@ void PatchObject::unapply(QJSValue callback)
     connect(PatchManager::GetInstance()->unapplyPatch(m_details->value("patch").toString()),
             &QDBusPendingCallWatcher::finished,
             [this, callback](QDBusPendingCallWatcher *watcher) mutable {
-        QDBusPendingReply<bool> reply = *watcher;
+        QDBusPendingReply<QVariantMap> reply = *watcher;
+        QVariantMap result;
         if (reply.isError()) {
             qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
+            result[QStringLiteral("ok")] = false;
+            result[QStringLiteral("log")] = reply.error().message();
         } else {
-            m_details->setProperty("patched", !reply.value());
+            result = reply.value();
+            m_details->setProperty("patched", !result.value(QStringLiteral("ok")).toBool());
+            m_details->setProperty("log", result.value(QStringLiteral("log")).toString());
         }
         setBusy(false);
         watcher->deleteLater();
 
         if (callback.isCallable()) {
             QJSValueList callbackArguments;
-            callbackArguments << callback.engine()->toScriptValue<bool>(!reply.isError() && reply.value());
+            callbackArguments << callback.engine()->toScriptValue<QVariantMap>(result);
             callback.call(callbackArguments);
         }
     });

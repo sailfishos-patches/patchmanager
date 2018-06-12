@@ -130,6 +130,21 @@ Page {
                 wrapMode: Text.WordWrap
                 text: modelData.description
             }
+
+            SectionHeader {
+                text: qsTranslate("", "Patch log")
+                visible: PatchManager.developerMode
+            }
+
+            Label {
+                color: Theme.highlightColor
+                anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
+                anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
+                wrapMode: Text.WordWrap
+                text: modelData.log
+                font.family: "Courier"
+                visible: PatchManager.developerMode
+            }
         }
     }
 }
