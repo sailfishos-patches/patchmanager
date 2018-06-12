@@ -11,7 +11,7 @@
         <location filename="../src/qml/AboutPage.qml" line="63"/>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="175"/>
         <source>Patchmanager</source>
-        <translation>Korrigeringshanterare</translation>
+        <translation>Patchmanager</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="71"/>
@@ -21,7 +21,7 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="81"/>
         <source>Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.</source>
-        <translation>Korrigeringshanteraren möjliggör systemändringar via korrigeringsfiler. Den tillhandahåller en systemtjänst som ansvarar för att utföra dessa korrigeringar, samt ett grafiskt gränssnitt för att kontrollera dessa åtgärder och installation/avinstallation av korrigeringsfiler.</translation>
+        <translation>Patchmanager möjliggör systemändringar via korrigeringsfiler. Den tillhandahåller en systemtjänst som ansvarar för att utföra dessa korrigeringar, samt ett grafiskt gränssnitt för att kontrollera dessa åtgärder och installation/avinstallation av korrigeringsfiler.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="92"/>
@@ -202,7 +202,7 @@
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="56"/>
         <source>Some services will now be restarted. Phone interface might take time to load for a short moment.</source>
-        <translation>Vissa tjänster kommer att startas om. Det kan ta en kort stund att läsa in elefonens gränssnitt igen.</translation>
+        <translation>Vissa tjänster kommer att startas om. Det kan ta en kort stund att läsa in telefonens gränssnitt igen.</translation>
     </message>
     <message>
         <location filename="../src/qml/ScreenshotsPage.qml" line="71"/>

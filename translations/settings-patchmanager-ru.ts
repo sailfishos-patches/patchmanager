@@ -115,7 +115,7 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="134"/>
         <source>Enable developer mode</source>
-        <translation>ключить режим бога</translation>
+        <translation>Включить режим бога</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="144"/>
