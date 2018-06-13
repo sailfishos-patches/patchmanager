@@ -1,0 +1,9 @@
+[Unit]
+Description=Patchmanager startup dialog
+Requires=dbus.service booster-qt5.service
+
+[Service]
+Type=dbus
+BusName=org.SfietKonstantin.patchmanager
+EnvironmentFile=-/var/lib/environment/patchmanager-dialog/*.conf
+ExecStart=/usr/bin/invoker -o -s --type=silica-qt5 /usr/bin/patchmanager-dialog

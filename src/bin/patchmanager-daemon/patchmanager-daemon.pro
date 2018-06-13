@@ -27,10 +27,6 @@ SOURCES += \
     inotifywatcher.cpp \
     journal.cpp
 
-OTHER_FILES += dbus/org.SfietKonstantin.patchmanager.xml \
-    dbus/org.SfietKonstantin.patchmanager.service \
-    dbus/org.SfietKonstantin.patchmanager.conf
-
 target.path = /usr/sbin
 INSTALLS += target
 

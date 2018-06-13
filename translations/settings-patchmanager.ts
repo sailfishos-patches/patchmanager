@@ -10,6 +10,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="19"/>
+        <source>Apply patches</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="27"/>
+        <source>Patchmanager will automatically apply patches in 10 seconds.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="40"/>
+        <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="52"/>
+        <source>Applying patches</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="86"/>
         <location filename="../src/qml/AboutPage.qml" line="63"/>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="175"/>
         <source>Patchmanager</source>
@@ -66,57 +87,57 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="68"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="65"/>
         <location filename="../src/qml/WebPatchPage.qml" line="85"/>
         <source>Patch information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="78"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="78"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="75"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="75"/>
         <source>This patch is no available anymore. You won&apos;t be able to reinstall it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="82"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="79"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="96"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="93"/>
         <source>Maintainer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="110"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="96"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="107"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="93"/>
         <source>Possible conflicts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="123"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="136"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="120"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="133"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="135"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="149"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="132"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="146"/>
         <source>Patch log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/NewPatchPage.qml" line="82"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="79"/>
         <source>Author</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/NewPatchPage.qml" line="110"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="107"/>
         <source>Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/NewPatchPage.qml" line="123"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="120"/>
         <source>Compatible</source>
         <translation type="unfinished"></translation>
     </message>

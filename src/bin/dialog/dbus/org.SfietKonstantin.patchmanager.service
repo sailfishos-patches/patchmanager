@@ -1,0 +1,5 @@
+[D-BUS Service]
+Interface=org.SfietKonstantin.patchmanager
+Name=org.SfietKonstantin.patchmanager
+Exec=/bin/false
+SystemdService=dbus-org.SfietKonstantin.patchmanager.service

@@ -77,7 +77,7 @@ if (!calledFromDBus()) {\
 }
 
 static const QString PATCHES_DIR = QStringLiteral("/usr/share/patchmanager/patches");
-static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("/var/lib/patchmanager/ausmt/patches");
+static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("/var/lib/patchmanager3/patches");
 static const QString PATCH_FILE = QStringLiteral("patch.json");
 
 static const QString NAME_KEY = QStringLiteral("name");
@@ -94,9 +94,11 @@ static const QString COMPATIBLE_KEY = QStringLiteral("compatible");
 static const QString ISCOMPATIBLE_KEY = QStringLiteral("isCompatible");
 static const QString CONFLICTS_KEY = QStringLiteral("conflicts");
 
+static const QString AUSMT_BACKUP_DIR = QStringLiteral("/var/lib/patchmanager/ausmt/patches");
 static const QString AUSMT_INSTALLED_LIST_FILE = QStringLiteral("/var/lib/patchmanager/ausmt/packages");
-static const QString AUSMT_INSTALL = QStringLiteral("/usr/libexec/pm_apply");
-static const QString AUSMT_REMOVE = QStringLiteral("/usr/libexec/pm_unapply");
+
+static const QString PM_APPLY = QStringLiteral("/usr/libexec/pm_apply");
+static const QString PM_UNAPPLY = QStringLiteral("/usr/libexec/pm_unapply");
 
 static const QString BROWSER_CODE = QStringLiteral("browser");
 static const QString CAMERA_CODE = QStringLiteral("camera");
@@ -258,7 +260,38 @@ void PatchManagerObject::lateInitialize()
 {
     qDebug() << Q_FUNC_INFO;
 
-    refreshPatchList();
+    QFile file (AUSMT_INSTALLED_LIST_FILE);
+    if (file.exists()) {
+        qWarning() << Q_FUNC_INFO << "Found existing ausmt package list, importing applied patches list";
+        if (file.open(QFile::ReadOnly)) {
+            while (!file.atEnd()) {
+                const QString line = QString::fromLatin1(file.readLine());
+                QStringList splitted = line.split(QChar(' '));
+                if (splitted.count() == 2) {
+                    m_appliedPatches.insert(splitted.first());
+                    qDebug() << Q_FUNC_INFO << splitted.first();
+                }
+            }
+            file.close();
+        }
+        qWarning() << Q_FUNC_INFO << "Removing ausmt package list" <<
+        file.remove();
+        putSettings(QStringLiteral("applied"), m_appliedPatches.toList());
+    }
+
+    QDir ausmtBackup(AUSMT_BACKUP_DIR);
+    if (ausmtBackup.exists()) {
+        qWarning() << Q_FUNC_INFO << "Found ausmt backup directory, preforming force unapply";
+
+        ausmtBackup.removeRecursively();
+        QSet<QString> patches = m_appliedPatches;
+        unapplyAllPatches();
+        m_appliedPatches = patches;
+        putSettings(QStringLiteral("applied"), m_appliedPatches.toList());
+    } else {
+        refreshPatchList();
+    }
+
     prepareCacheRoot();
     startLocalServer();
 
@@ -450,18 +483,31 @@ void PatchManagerObject::doPrepareCacheRoot()
     // TODO: think about security issues here
 
 
-    QStringList order = getSettings("order", QStringList()).toStringList();
+    QStringList order = getSettings(QStringLiteral("order"), QStringList()).toStringList();
+
+    bool success = true;
 
     for (const QString &patchName : order) {
         if (m_appliedPatches.contains(patchName)) {
-            doPatch(patchName, true);
+            if (!doPatch(patchName, true)) {
+                m_appliedPatches.remove(patchName);
+                success = false;
+            }
         }
     }
 
     for (const QString &patchName : m_appliedPatches) {
         if (!order.contains(patchName)) {
-            doPatch(patchName, true);
+            if (!doPatch(patchName, true)) {
+                m_appliedPatches.remove(patchName);
+                success = false;
+            }
         }
+    }
+
+    if (!success) {
+        putSettings(QStringLiteral("applied"), m_appliedPatches.toList());
+        refreshPatchList();
     }
 }
 
@@ -790,9 +836,6 @@ bool PatchManagerObject::unapplyAllPatches()
     qDebug() << Q_FUNC_INFO << "Making clean cache:" <<
     QDir::root().mkpath(patchmanager_cache_root);
 
-    qDebug() << Q_FUNC_INFO << "Removing packages cache:" <<
-    QFile::remove(AUSMT_INSTALLED_LIST_FILE);
-
     qDebug() << Q_FUNC_INFO << "Toggle restart services...";
     for (const QString &appliedPatch : m_appliedPatches) {
         patchToggleService(appliedPatch, false);
@@ -800,6 +843,7 @@ bool PatchManagerObject::unapplyAllPatches()
 
     qDebug() << Q_FUNC_INFO << "Resetting variables...";
     m_appliedPatches.clear();
+    putSettings(QStringLiteral("applied"), QStringList());
 
     refreshPatchList();
 
@@ -1215,12 +1259,42 @@ void PatchManagerObject::onOriginalFileChanged(const QString &path)
         }
     }
 
-    for (const QString &patch : patches) {
-        doPatch(patch, false);
+    qDebug() << Q_FUNC_INFO << patches;
+
+    QStringList order = getSettings(QStringLiteral("order"), QStringList()).toStringList();
+    std::reverse(std::begin(order), std::end(order));
+
+    bool success = true;
+
+    for (const QString &patch : order) {
+        if (patches.contains(patch)) {
+            success &= doPatch(patch, false);
+        }
     }
 
     for (const QString &patch : patches) {
-        doPatch(patch, true);
+        if (!order.contains(patch)) {
+            success &= doPatch(patch, false);
+        }
+    }
+
+    std::reverse(std::begin(order), std::end(order));
+
+    for (const QString &patch : order) {
+        if (patches.contains(patch)) {
+            success &= doPatch(patch, true);
+        }
+    }
+
+    for (const QString &patch : patches) {
+        if (!order.contains(patch)) {
+            success &= doPatch(patch, true);
+        }
+    }
+
+    if (!success) {
+        unapplyAllPatches();
+        doPrepareCacheRoot();
     }
 }
 
@@ -1248,19 +1322,7 @@ void PatchManagerObject::doRefreshPatchList()
     qDebug() << Q_FUNC_INFO;
 
     // load applied patches
-
-    QFile file (AUSMT_INSTALLED_LIST_FILE);
-    if (file.open(QFile::ReadOnly)) {
-        while (!file.atEnd()) {
-            const QString line = QString::fromLatin1(file.readLine());
-            QStringList splitted = line.split(QChar(' '));
-            if (splitted.count() == 2) {
-                m_appliedPatches.insert(splitted.first());
-                qDebug() << Q_FUNC_INFO << splitted.first();
-            }
-        }
-        file.close();
-    }
+    m_appliedPatches = getSettings(QStringLiteral("applied"), QStringList()).toStringList().toSet();
 
     // scan all patches
     // collect conflicts per file
@@ -1390,7 +1452,7 @@ bool PatchManagerObject::doPatch(const QString &patchName, bool apply, QString *
     }
 
     QProcess process;
-    process.setProgram(apply ? AUSMT_INSTALL : AUSMT_REMOVE);
+    process.setProgram(apply ? PM_APPLY : PM_UNAPPLY);
 
     QStringList arguments;
     arguments.append(patchName);
@@ -1438,6 +1500,7 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
         } else {
             m_appliedPatches.remove(patch);
         }
+        putSettings(QStringLiteral("applied"), m_appliedPatches.toList());
         refreshPatchList();
         patchToggleService(patch, apply);
     }
@@ -1457,7 +1520,11 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
 
 void PatchManagerObject::doResetPatchState(const QString &patch, const QDBusMessage &message)
 {
-    sendMessageReply(message, m_appliedPatches.remove(patch));
+    bool success = m_appliedPatches.remove(patch);
+    if (success) {
+        putSettings(QStringLiteral("applied"), m_appliedPatches.toList());
+    }
+    sendMessageReply(message, success);
 }
 
 void PatchManagerObject::doInstallPatch(const QVariantMap &params, const QDBusMessage &message)

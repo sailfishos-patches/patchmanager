@@ -14,7 +14,6 @@ Group:      Qt/Qt
 License:    TODO
 URL:        https://github.com/sailfishos-patches/patchmanager
 Source0:    %{name}-%{version}.tar.bz2
-Requires:   ausmt >= 1.4.0
 Requires:   unzip
 Conflicts:  jolla-settings-%{name}
 Obsoletes:  jolla-settings-%{name}
@@ -148,6 +147,7 @@ systemctl daemon-reload
 
 %files
 %defattr(-,root,root,-)
+%{_bindir}/%{name}-dialog
 %{_sbindir}/%{name}
 %{_datadir}/%{name}/tools
 %{_datadir}/dbus-1/
@@ -160,6 +160,7 @@ systemctl daemon-reload
 %{_sharedstatedir}/environment/patchmanager/10-dbus.conf
 #%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/patch.json
 #%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/unified_diff.patch
+%{_libdir}/systemd/user/dbus-org.SfietKonstantin.patchmanager.service
 %{_libdir}/libpreload%{name}.so
 
 %{_libexecdir}/pm_apply

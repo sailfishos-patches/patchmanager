@@ -5,26 +5,21 @@
 #
 
 # Root
-AUSMT_VAR_DIR=/var/lib/patchmanager/ausmt
+PM_VAR_DIR=/var/lib/patchmanager3
 PATCH_ROOT_DIR=/usr/share/patchmanager/patches
 
 # Paths / Files
-AUSMT_CONTROL_DIR=${AUSMT_VAR_DIR}/control
 PATCH_DIR=${PATCH_ROOT_DIR}/${1}
 
-AUSMT_LOG_FILE=${AUSMT_VAR_DIR}/ausmt.log
-AUSMT_PACKAGES_LIST_FILE=${AUSMT_VAR_DIR}/packages
-AUSMT_CACHE_FILE=${AUSMT_VAR_DIR}/packages.cache
-AUSMT_PATCH_BACKUP_ROOT_DIR=${AUSMT_VAR_DIR}/patches
-AUSMT_PATCH_BACKUP_DIR=${AUSMT_PATCH_BACKUP_ROOT_DIR}/${1}
+PM_LOG_FILE=${PM_VAR_DIR}/patchmanager.log
+PM_PATCH_BACKUP_ROOT_DIR=${PM_VAR_DIR}/patches
+PM_PATCH_BACKUP_DIR=${PM_PATCH_BACKUP_ROOT_DIR}/${1}
 
 # Constants
 PATCH_NAME=unified_diff.patch
-VERSION=ausmt-sailfishos-1
 
 # Applications
 PATCH_EXEC=/usr/bin/patch
-LSDIFF_EXEC=/usr/bin/lsdiff
 
 #
 # Here starts the part where all the magic happens
@@ -34,35 +29,29 @@ LSDIFF_EXEC=/usr/bin/lsdiff
 # Helper functions that do all the needed heavy work
 #
 
-failure_unpatch() {
-  ${PATCH_EXEC} -s -p1 -R -d /tmp/patchmanager --dry-run < ${patch_file} | tee -a $PATCH_LOG 1>&2
+log() {
+  echo "$@" |& tee -a ${PM_LOG_FILE}
 }
 
 failure() {
-  failure_unpatch
-
-  echo | tee -a ${AUSMT_LOG_FILE}
-  echo "*** FAILED ***" | tee -a ${AUSMT_LOG_FILE}
-  echo | tee -a ${AUSMT_LOG_FILE}
-
-  rm -f $AUSMT_CACHE_FILE >/dev/null 2>&1
+  log
+  log "*** FAILED ***"
+  log
 
   exit 1
 }
 
 success() {
-  echo | tee -a ${AUSMT_LOG_FILE}
-  echo "*** SUCCESS ***" | tee -a ${AUSMT_LOG_FILE}
-  echo | tee -a ${AUSMT_LOG_FILE}
-
-  rm -f $AUSMT_CACHE_FILE >/dev/null 2>&1
+  log
+  log "*** SUCCESS ***"
+  log
 
   exit 0
 }
 
 find_patch_file() {
-  if [ -f ${AUSMT_PATCH_BACKUP_DIR}/${PATCH_NAME} ]; then
-    patch_file=${AUSMT_PATCH_BACKUP_DIR}/${PATCH_NAME}
+  if [ -f ${PM_PATCH_BACKUP_DIR}/${PATCH_NAME} ]; then
+    patch_file=${PM_PATCH_BACKUP_DIR}/${PATCH_NAME}
   else
     patch_file=${PATCH_DIR}/${PATCH_NAME}
   fi
@@ -70,97 +59,76 @@ find_patch_file() {
 
 verify_text_patch() {
   if [ -f ${patch_file} ]; then
-    echo >> ${AUSMT_LOG_FILE}
-    echo "----------------------------------" >> ${AUSMT_LOG_FILE}
-    echo "Dry running patch" >> ${AUSMT_LOG_FILE}
-    echo "----------------------------------" >> ${AUSMT_LOG_FILE}
-    echo >> ${AUSMT_LOG_FILE}
+    log
+    log "----------------------------------"
+    log "Dry running patch"
+    log "----------------------------------"
+    log
 
-    ${PATCH_EXEC} -f -R -p 1 -d /tmp/patchmanager --dry-run < ${patch_file} 2>&1 >> ${AUSMT_LOG_FILE}
-
-    if [ ${?} -ne 0 ]; then
-      patch_already_unapplied="yes"
-    fi
+    ${PATCH_EXEC} -R -p 1 -d /tmp/patchmanager --dry-run < ${patch_file} |& tee -a ${PM_LOG_FILE}
   fi
 }
 
 remove_text_patch() {
   if [ -f ${patch_file} ]; then
-    if [ "${patch_already_unapplied}" != "yes" ]; then
-      echo | tee -a ${AUSMT_LOG_FILE}
-      echo "----------------------------------" | tee -a ${AUSMT_LOG_FILE}
-      echo "Unapplying text patch" | tee -a ${AUSMT_LOG_FILE}
-      echo "----------------------------------" | tee -a ${AUSMT_LOG_FILE}
-      echo | tee -a ${AUSMT_LOG_FILE}
+      log
+      log "----------------------------------"
+      log "Unapplying text patch"
+      log "----------------------------------"
+      log
 
-      ${PATCH_EXEC} -R -p 1 -d /tmp/patchmanager --no-backup-if-mismatch < ${patch_file} 2>&1 >> ${AUSMT_LOG_FILE}
-
-      if [ ${?} -ne 0 ]; then
-        for file in `${LSDIFF_EXEC} --addprefix=/ --strip=1 ${patch_file}` ; do
-          if [ -f ${file}.rej ]; then
-            rm -f ${file}.rej
-          fi
-        done
-      fi
+      ${PATCH_EXEC} -R -p 1 -d /tmp/patchmanager --no-backup-if-mismatch < ${patch_file} |& tee -a ${PM_LOG_FILE}
     fi
   fi
 }
 
 clean_backup_patch() {
-  echo >> ${AUSMT_LOG_FILE}
-  echo "----------------------------------" >> ${AUSMT_LOG_FILE}
-  echo "Cleaning backup patch" >> ${AUSMT_LOG_FILE}
-  echo "----------------------------------" >> ${AUSMT_LOG_FILE}
-  echo >> ${AUSMT_LOG_FILE}
+  log
+  log "----------------------------------"
+  log "Cleaning backup patch"
+  log "----------------------------------"
+  log
 
-  rm -fr ${AUSMT_PATCH_BACKUP_DIR} > /dev/null 2>&1
-  echo "Removed backup" >>${AUSMT_LOG_FILE}
-  echo "  backup: ${AUSMT_PATCH_BACKUP_DIR}" >>${AUSMT_LOG_FILE}
-  sed -i -e /"^`basename ${PATCH_DIR}` "/d ${AUSMT_PACKAGES_LIST_FILE}
+  rm -fr ${PM_PATCH_BACKUP_DIR} > /dev/null 2>&1
+  log "Removed backup"
+  log "  backup: ${PM_PATCH_BACKUP_DIR}"
 }
 
 #
 # Bunch of safety checks and required initializations
 #
 
-if [ ! -f ${AUSMT_LOG_FILE} ]; then
-  echo "*** Patch Log Created by Remove $(date) ***" > ${AUSMT_LOG_FILE}
+if [ ! -f ${PM_LOG_FILE} ]; then
+  log "*** Patch Log Created by Remove $(date) ***"
 fi
 
 find_patch_file
 
-# mount -o rw,remount / | tee -a ${AUSMT_LOG_FILE} 1>&2
+# mount -o rw,remount / | tee -a ${PM_LOG_FILE} 1>&2
 
-echo >> ${AUSMT_LOG_FILE}
-echo "------------------------------------------------------" >> ${AUSMT_LOG_FILE}
-echo "AUSMT REMOVE $(date)" >> ${AUSMT_LOG_FILE}
-echo "------------------------------------------------------" >> ${AUSMT_LOG_FILE}
-echo >> ${AUSMT_LOG_FILE}
+log
+log "------------------------------------------------------"
+log "PM UNAPPLY $(date)"
+log "------------------------------------------------------"
+log
 
-echo `basename ${PATCH_DIR}` >> ${AUSMT_LOG_FILE}
+log $(basename ${PATCH_DIR})
 
 if [ -f ${patch_file} ]; then
-  echo "  contains text patch" >> ${AUSMT_LOG_FILE}
+  log "  contains text patch"
 fi
 
-echo >> ${AUSMT_LOG_FILE}
+log
 
 if [ ! -x ${PATCH_EXEC} ]; then
-  echo "ERROR: Cannot find ${PATCH_EXEC}" | tee -a ${AUSMT_LOG_FILE} 1>&2
-  failure
-fi
-
-if [ ! -x ${LSDIFF_EXEC} ]; then
-  echo "ERROR: Cannot find ${LSDIFF_EXEC}" | tee -a ${AUSMT_LOG_FILE} 1>&2
+  log "ERROR: Cannot find ${PATCH_EXEC}"
   failure
 fi
 
 if [ ! -f ${patch_file} ]; then
-  echo "ERROR: Cannot find patch file !" | tee -a ${AUSMT_LOG_FILE} 1>&2
+  log "ERROR: Cannot find patch file !"
   failure
 fi
-
-rm -f $AUSMT_CACHE_FILE >/dev/null 2>&1
 
 #
 # The main function that controls all the magic stuff
