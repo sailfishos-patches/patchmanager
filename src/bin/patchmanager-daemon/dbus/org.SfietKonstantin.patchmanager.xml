@@ -97,7 +97,13 @@
         <method name="getFailure">
             <arg name="failure" type="b" direction="out" />
         </method>
+        <method name="getLoaded">
+            <arg name="loaded" type="b" direction="out" />
+        </method>
         <method name="resolveFailure">
+            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+        </method>
+        <method name="loadRequest">
             <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
         </method>
         <method name="checkForUpdates">
@@ -127,6 +133,9 @@
         <signal name="unapplyAllPatchesFinished" />
         <signal name="failureChanged">
             <arg name="failure" type="b"/>
+        </signal>
+        <signal name="loadedChanged">
+            <arg name="loaded" type="b"/>
         </signal>
     </interface>
 </node>

@@ -5,21 +5,24 @@
 #
 
 # Root
-PM_VAR_DIR=/var/lib/patchmanager3
-PATCH_ROOT_DIR=/usr/share/patchmanager/patches
+PM_VAR_DIR="/var/lib/patchmanager3"
+PATCH_ROOT_DIR="/usr/share/patchmanager/patches"
 
 # Paths / Files
-PATCH_DIR=${PATCH_ROOT_DIR}/${1}
+PATCH_DIR="$PATCH_ROOT_DIR/$1"
 
-PM_LOG_FILE=${PM_VAR_DIR}/patchmanager.log
-PM_PATCH_BACKUP_ROOT_DIR=${PM_VAR_DIR}/patches
-PM_PATCH_BACKUP_DIR=${PM_PATCH_BACKUP_ROOT_DIR}/${1}
+PM_LOG_FILE="$PM_VAR_DIR/patchmanager.log"
+PM_PATCH_BACKUP_ROOT_DIR="$PM_VAR_DIR/patches"
+PM_PATCH_BACKUP_DIR="$PM_PATCH_BACKUP_ROOT_DIR/$1"
 
 # Constants
-PATCH_NAME=unified_diff.patch
+PATCH_NAME="unified_diff.patch"
+PATCH_PATH="$PATCH_DIR/$PATCH_NAME"
+
+ROOT_DIR="/tmp/patchmanager"
 
 # Applications
-PATCH_EXEC=/usr/bin/patch
+PATCH_EXEC="/usr/bin/patch"
 
 #
 # Here starts the part where all the magic happens
@@ -30,7 +33,7 @@ PATCH_EXEC=/usr/bin/patch
 #
 
 log() {
-  echo "$@" |& tee -a ${PM_LOG_FILE}
+  echo "$@" | tee -a "$PM_LOG_FILE"
 }
 
 failure() {
@@ -50,30 +53,30 @@ success() {
 }
 
 verify_text_patch() {
-  if [ -f ${PATCH_DIR}/${PATCH_NAME} ]; then
+  if [ -f "$PATCH_PATH" ]; then
     log
     log "----------------------------------"
     log "Dry running patch"
     log "----------------------------------"
     log
 
-    ${PATCH_EXEC} -p 1 -d /tmp/patchmanager --dry-run < ${PATCH_DIR}/${PATCH_NAME} |& tee -a ${PM_LOG_FILE}
+    $PATCH_EXEC -p 1 -d "$ROOT_DIR" --dry-run < "$PATCH_PATH" 2>&1 | tee -a "$PM_LOG_FILE" ; test ${PIPESTATUS[0]} -eq 0
 
-    if [ ${?} -ne 0 ]; then
+    if [ $? -ne 0 ]; then
       failure
     fi
   fi
 }
 
 install_text_patch() {
-  if [ -f ${PATCH_DIR}/${PATCH_NAME} ]; then
+  if [ -f "$PATCH_PATH" ]; then
     log
     log "----------------------------------"
     log "Applying text patch"
     log "----------------------------------"
     log
 
-    ${PATCH_EXEC} -p 1 -d /tmp/patchmanager --no-backup-if-mismatch < ${PATCH_DIR}/${PATCH_NAME} |& tee -a ${PM_LOG_FILE}
+    $PATCH_EXEC -p 1 -d "$ROOT_DIR" --no-backup-if-mismatch < "$PATCH_PATH" 2>&1 | tee -a "$PM_LOG_FILE" ; test ${PIPESTATUS[0]} -eq 0
   fi
 }
 
@@ -84,52 +87,52 @@ create_backup_patch() {
   log "----------------------------------"
   log
 
-  mkdir -p ${PM_PATCH_BACKUP_ROOT_DIR} > /dev/null 2>&1
-  cp -fr ${PATCH_DIR} ${PM_PATCH_BACKUP_DIR} > /dev/null 2>&1
+  mkdir -p "$PM_PATCH_BACKUP_ROOT_DIR" > /dev/null 2>&1
+  cp -f "$PATCH_DIR/$PATCH_NAME" "$PM_PATCH_BACKUP_DIR" > /dev/null 2>&1
   log "Created backup"
-  log "  backup: ${PM_PATCH_BACKUP_DIR}"
+  log "  backup: $PM_PATCH_BACKUP_DIR"
 }
 
 #
 # Bunch of safety checks and required initializations
 #
 
-mkdir -p ${PM_VAR_DIR} > /dev/null 2>&1
+mkdir -p "$PM_VAR_DIR" > /dev/null 2>&1
 
-if [ ! -f ${PM_LOG_FILE} ]; then
-  log "*** Patch Log Created by Install $(date) ***"
+if [ ! -f "$PM_LOG_FILE" ]; then
+  log "*** Patch Log Created by Apply $(date) ***"
 fi
 
 log
-log "------------------------------------------------------"
+log "----------------------------------"
 log "PM APPLY $(date)"
-log "------------------------------------------------------"
+log "----------------------------------"
 log
 
-log $(basename ${PATCH_DIR})
+log $(basename "$PATCH_DIR")
 
-if [ -f ${PATCH_DIR}/${PATCH_NAME} ]; then
+if [ -f "$PATCH_PATH" ]; then
   log "  contains text patch"
 fi
 
 log
 
-if [ ! -x ${PATCH_EXEC} ]; then
-  log "ERROR: Cannot find ${PATCH_EXEC}"
+if [ ! -x "$PATCH_EXEC" ]; then
+  log "ERROR: Cannot find $PATCH_EXEC"
   failure
 fi
 
-if [ -z ${PATCH_DIR} ]; then
+if [ -z "$PATCH_DIR" ]; then
   log "ERROR: PATCH_DIR must be given for installing"
   failure
 fi
 
-if [ ! -d ${PATCH_DIR} ]; then
-  log "ERROR: ${PATCH_DIR} is not a directory or does not exist!"
+if [ ! -d "$PATCH_DIR" ]; then
+  log "ERROR: $PATCH_DIR is not a directory or does not exist!"
   failure
 fi
 
-if [ ! -f ${PATCH_DIR}/${PATCH_NAME} ]; then
+if [ ! -f "$PATCH_PATH" ]; then
   log "ERROR: Cannot find patch file !"
   failure
 fi

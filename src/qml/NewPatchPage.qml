@@ -48,8 +48,8 @@ Page {
         PullDownMenu {
             enabled: !container.delegate.applying || active
             MenuItem {
-                text: container.delegate.applying ? qsTranslate("", "Patch being applied") : (container.delegate.applied ? qsTranslate("", "Unapply patch") : qsTranslate("", "Apply patch"))
-                enabled: !container.delegate.applying
+                text: container.delegate.applying ? qsTranslate("", "Patch being applied") : (modelData.patched ? qsTranslate("", "Unapply patch") : qsTranslate("", "Apply patch"))
+                enabled: !container.delegate.applying && PatchManager.loaded
                 onClicked: {
                     container.delegate.doPatch()
                 }

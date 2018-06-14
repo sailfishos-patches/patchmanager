@@ -66,8 +66,8 @@ void Journal::process()
         const void *data;
         size_t length;
         if (sd_journal_get_data(m_sdj, "MESSAGE", &data, &length) == 0) {
-            const QString &message = QString::fromUtf8((const char *)data, length).section('=', 1);
-            if (message.contains(QRegExp("Type \\w+ unavailable"))) {
+            const QString &message = QString::fromUtf8((const char *)data, length).section(QChar('='), 1);
+            if (message.contains(QRegExp("Type.\\w+.unavailable"))) {
                 emit matchFound();
             }
         }

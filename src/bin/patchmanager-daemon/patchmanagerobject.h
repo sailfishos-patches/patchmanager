@@ -115,7 +115,7 @@ public slots:
     QDBusVariant getSettings(const QString & name, const QDBusVariant & def);
 
     bool putSettings(const QString & name, const QVariant & value);
-    QVariant getSettings(const QString & name, const QVariant & def);
+    QVariant getSettings(const QString & name, const QVariant & def) const;
 
     static QString maxVersion(const QString &version1, const QString &version2);
 
@@ -124,7 +124,9 @@ public slots:
 
     bool getToggleServices() const;
     bool getFailure() const;
+    bool getLoaded() const;
     void resolveFailure();
+    void loadRequest();
 
     QString getPatchmanagerVersion() const;
     QString getSsuVersion() const;
@@ -173,8 +175,10 @@ private slots:
 
 private:
     void resetSystem();
+    void clearFakeroot();
 
     void registerDBus();
+    void waitForLipstick();
 
     void startLocalServer();
     void initialize();
@@ -193,6 +197,9 @@ private:
     QList<QVariantMap> listPatchesFromDir(const QString &dir, QSet<QString> &existingPatches, bool existing = true);
     bool makePatch(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available);
     void notify(const QString &patch, PatchManagerObject::NotifyAction action);
+
+    QSet<QString> getAppliedPatches() const;
+    void setAppliedPatches(const QSet<QString> &patches);
 
     void getVersion();
 
@@ -232,6 +239,7 @@ private:
 
     Journal *m_journal;
     bool m_failed = false;
+    bool m_loaded = false;
 };
 
 #endif // PATCHMANAGEROBJECT_H

@@ -1,9 +1,34 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import Nemo.DBus 2.0
 
 ApplicationWindow {
     id: appWindow
     property var remorseItem
+
+    DBusAdaptor {
+        service: 'org.SfietKonstantin.patchmanager'
+        iface: 'org.SfietKonstantin.patchmanager'
+        path: '/'
+
+        xml: '  <interface name="org.SfietKonstantin.patchmanager">\n' +
+             '    <method name="show" />\n' +
+             '  </interface>\n'
+
+        function show() {
+            console.log("Show called!")
+        }
+    }
+
+    DBusInterface {
+        id: dbusPm
+
+        service: 'org.SfietKonstantin.patchmanager'
+        iface: 'org.SfietKonstantin.patchmanager'
+        path: '/org/SfietKonstantin/patchmanager'
+
+        bus: DBus.SystemBus
+    }
 
     initialPage: Component {
         Page {
@@ -51,6 +76,7 @@ ApplicationWindow {
                             Component.onCompleted: {
                                 remorse.execute(button, qsTranslate("", "Applying patches"), function() {
                                     console.log("hahaha!")
+                                    dbusPm.typedCall("loadRequest", {})
                                 }, 10000)
                                 appWindow.remorseItem = remorse
                             }

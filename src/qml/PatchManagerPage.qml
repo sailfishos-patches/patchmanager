@@ -207,7 +207,7 @@ Page {
             id: background
             menu: contextMenu
             contentHeight: content.height
-            property bool applying: !appliedSwitch.enabled
+            property bool applying: !appliedSwitch.busy
             property int dragThreshold: width / 3
             property var pressPosition
             property int dragIndex: index
@@ -423,7 +423,7 @@ Page {
                     automaticCheck: false
                     checked: patchObject.details.patched
                     onClicked: background.doPatch()
-                    enabled: !busy
+                    enabled: !busy && PatchManager.loaded
                     busy: patchObject.busy
                 }
 

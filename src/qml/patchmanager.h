@@ -49,20 +49,24 @@ class PatchManager: public QObject
     Q_OBJECT
     Q_PROPERTY(QString serverMediaUrl READ serverMediaUrl CONSTANT)
     Q_PROPERTY(bool developerMode READ developerMode WRITE setDeveloperMode NOTIFY developerModeChanged)
+    Q_PROPERTY(bool applyOnBoot READ applyOnBoot WRITE setApplyOnBoot NOTIFY applyOnBootChanged)
     Q_PROPERTY(PatchManagerModel *installedModel READ installedModel CONSTANT)
     Q_PROPERTY(QVariantMap updates READ getUpdates NOTIFY updatesChanged)
     Q_PROPERTY(QStringList updatesNames READ getUpdatesNames NOTIFY updatesChanged)
     Q_PROPERTY(bool appsNeedRestart READ toggleServices NOTIFY toggleServicesChanged)
     Q_PROPERTY(bool failure READ failure NOTIFY failureChanged)
+    Q_PROPERTY(bool loaded READ loaded NOTIFY loadedChanged)
     Q_PROPERTY(QString patchmanagerVersion READ patchmanagerVersion NOTIFY patchmanagerVersionChanged)
     Q_PROPERTY(QString ssuVersion READ ssuVersion NOTIFY ssuVersionChanged)
 
 public:
     explicit PatchManager(QObject *parent = nullptr);
     static PatchManager *GetInstance(QObject *parent = nullptr);
-    QString serverMediaUrl();
-    bool developerMode();
+    QString serverMediaUrl() const;
+    bool developerMode() const;
     void setDeveloperMode(bool developerMode);
+    bool applyOnBoot() const;
+    void setApplyOnBoot(bool applyOnBoot);
     PatchManagerModel *installedModel();
     QString trCategory(const QString &category) const;
     QVariantMap getUpdates() const;
@@ -72,6 +76,7 @@ public:
 
     bool toggleServices() const;
     bool failure() const;
+    bool loaded() const;
 
     Q_INVOKABLE void call(QDBusPendingCallWatcher *call);
     Q_INVOKABLE void watchCall(QDBusPendingCallWatcher *call,
@@ -103,11 +108,11 @@ public slots:
     bool installTranslator(const QString & patch);
     bool removeTranslator(const QString & patch);
     void activation(const QString & patch, const QString & version);
-    int checkVote(const QString &patch);
+    int checkVote(const QString &patch) const;
     void doVote(const QString &patch, int action);
     void checkEaster();
-    QString iconForPatch(const QString &patch);
-    QString valueIfExists(const QString & filename);
+    QString iconForPatch(const QString &patch) const;
+    QString valueIfExists(const QString & filename) const;
 
     void checkForUpdates();
 
@@ -116,7 +121,7 @@ public slots:
                           QJSValue callback = QJSValue::UndefinedValue,
                           QJSValue errorCallback = QJSValue::UndefinedValue);
 
-    QVariant getSettingsSync(const QString & name, const QVariant & def = QVariant());
+    QVariant getSettingsSync(const QString & name, const QVariant & def = QVariant()) const;
     void getSettingsAsync(const QString & name, const QVariant & def = QVariant(),
                           QJSValue callback = QJSValue::UndefinedValue,
                           QJSValue errorCallback = QJSValue::UndefinedValue);
@@ -124,15 +129,18 @@ public slots:
     void onUpdatesAvailable(const QVariantMap &updates);
     void onToggleServicesChanged(bool toggle);
     void onFailureChanged(bool failed);
+    void onLoadedChanged(bool loaded);
 
     void resolveFailure();
 
 signals:
     void easterReceived(const QString & easterText);
     void developerModeChanged(bool developerMode);
+    void applyOnBootChanged(bool applyOnBoot);
     void updatesChanged();
     void toggleServicesChanged(bool toggleServices);
     void failureChanged(bool failed);
+    void loadedChanged(bool loaded);
     void patchmanagerVersionChanged(const QString &patchmanagerVersion);
     void ssuVersionChanged(const QString &ssuVersion);
 
@@ -150,6 +158,7 @@ private:
 
     bool m_toggleServices = false;
     bool m_failed = false;
+    bool m_loaded = false;
 
     QString m_patchmanagerVersion;
     QString m_ssuVersion;
