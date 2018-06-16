@@ -42,7 +42,7 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="163"/>
         <location filename="../src/qml/AboutPage.qml" line="63"/>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="177"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="179"/>
         <source>Patchmanager</source>
         <translation type="unfinished"></translation>
     </message>
@@ -341,52 +341,52 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="188"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="190"/>
         <source>Patch installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="189"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="191"/>
         <source>Patch %1 installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="192"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="194"/>
         <source>Patch removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="193"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="195"/>
         <source>Patch %1 removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="196"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="198"/>
         <source>Failed to install patch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="197"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="199"/>
         <source>Patch %1 installation failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="200"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="202"/>
         <source>Failed to remove patch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="201"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="203"/>
         <source>Patch %1 removal failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="204"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="206"/>
         <source>Update available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="205"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="207"/>
         <source>Patch %1 have update candidate</source>
         <translation type="unfinished"></translation>
     </message>
@@ -402,7 +402,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="22"/>
+        <location filename="../src/qml/SettingsPage.qml" line="25"/>
         <source>Developer mode</source>
         <translation type="unfinished"></translation>
     </message>

@@ -513,13 +513,13 @@ Page {
         VerticalScrollDecorator {}
     }
 
-    BusyIndicator {
-        id: indicator
-        running: visible
-        visible: view.count == 0
-        anchors.centerIn: parent
-        size: BusyIndicatorSize.Large
-    }
+//    BusyIndicator {
+//        id: indicator
+//        running: visible
+//        visible: view.count == 0
+//        anchors.centerIn: parent
+//        size: BusyIndicatorSize.Large
+//    }
 }
 
 

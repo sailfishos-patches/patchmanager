@@ -9,7 +9,6 @@ HEADERS += \
     patchmanager.h \
     webcatalog.h \
     webpatchesmodel.h \
-    webpatchdata.h \
     webdownloader.h \
     patchmanagermodel.h \
     PatchObject.hpp
@@ -18,7 +17,6 @@ SOURCES += \
     plugin.cpp \
     patchmanager.cpp \
     webpatchesmodel.cpp \
-    webpatchdata.cpp \
     webdownloader.cpp \
     patchmanagermodel.cpp \
     PatchObject.cpp

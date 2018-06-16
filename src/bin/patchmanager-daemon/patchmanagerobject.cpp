@@ -120,6 +120,8 @@ static const QString s_oldConfigLocation = QStringLiteral("/home/nemo/.config/pa
 static const QString s_patchmanagerSocket = QStringLiteral("/tmp/patchmanager-socket");
 static const QString s_patchmanagerCacheRoot = QStringLiteral("/tmp/patchmanager");
 
+static const QString s_sessionBusConnection = QStringLiteral("pm3connection");
+
 bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available)
 {
     QDir patchDir(root);
@@ -353,6 +355,8 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
     , m_serverThread(new QThread(this))
     , m_localServer(new QLocalServer(nullptr)) // controlled by separate thread
     , m_journal(new Journal(this))
+    , m_sessionBusConnector(new QTimer(this))
+    , m_sbus(s_sessionBusConnection)
 {
     qDebug() << Q_FUNC_INFO << "Environment:";
 
@@ -392,15 +396,31 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
     m_timer->setInterval(60 * 60 * 1000); // 60 min
     m_timer->start();
 
-    QDBusConnection::sessionBus().connect(QString(),
-                                          QStringLiteral("/org/freedesktop/systemd1/unit/lipstick_2eservice"),
-                                          QStringLiteral("org.freedesktop.DBus.Properties"),
-                                          QStringLiteral("PropertiesChanged"), this, SLOT(onLipstickChanged(QString,QVariantMap,QStringList)));
+    connect(m_sessionBusConnector, &QTimer::timeout, this, [this](){
+        QDBusConnection test = QDBusConnection::connectToBus(QDBusConnection::SessionBus, s_sessionBusConnection);
+        if (!test.isConnected()) {
+            QDBusConnection::disconnectFromBus(s_sessionBusConnection);
+        } else {
+            m_sbus = test;
+            m_sessionBusConnector->stop();
+            qDebug() << Q_FUNC_INFO << "Connected to session bus!";
 
-    QDBusConnection::sessionBus().connect(QString(),
-                                          QStringLiteral("/StoreClient"),
-                                          QStringLiteral("com.jolla.jollastore"),
-                                          QStringLiteral("osUpdateProgressChanged"), this, SLOT(onOsUpdateProgress(int)));
+
+            m_sbus.connect(QString(),
+                           QStringLiteral("/org/freedesktop/systemd1/unit/lipstick_2eservice"),
+                           QStringLiteral("org.freedesktop.DBus.Properties"),
+                           QStringLiteral("PropertiesChanged"), this, SLOT(onLipstickChanged(QString,QVariantMap,QStringList)));
+
+            m_sbus.connect(QString(),
+                           QStringLiteral("/StoreClient"),
+                           QStringLiteral("com.jolla.jollastore"),
+                           QStringLiteral("osUpdateProgressChanged"), this, SLOT(onOsUpdateProgress(int)));
+        }
+    });
+    m_sessionBusConnector->setSingleShot(false);
+    m_sessionBusConnector->setTimerType(Qt::VeryCoarseTimer);
+    m_sessionBusConnector->setInterval(1000); // 1 second
+    m_sessionBusConnector->start();
 
     connect(m_originalWatcher, &QFileSystemWatcher::fileChanged, this, &PatchManagerObject::onOriginalFileChanged);
 
@@ -503,13 +523,19 @@ void PatchManagerObject::doPrepareCacheRoot()
 
     bool success = true;
 
-    emit m_adaptor->autoApplyingStarted(m_appliedPatches.count());
+    if (m_adaptor) {
+        emit m_adaptor->autoApplyingStarted(m_appliedPatches.count());
+    }
 
     for (const QString &patchName : order) {
         if (m_appliedPatches.contains(patchName)) {
-            emit m_adaptor->autoApplyingPatch(getPatchName(patchName));
+            if (m_adaptor) {
+                emit m_adaptor->autoApplyingPatch(getPatchName(patchName));
+            }
             if (!doPatch(patchName, true)) {
-                emit m_adaptor->autoApplyingFailed(getPatchName(patchName));
+                if (m_adaptor) {
+                    emit m_adaptor->autoApplyingFailed(getPatchName(patchName));
+                }
                 m_appliedPatches.remove(patchName);
                 success = false;
             }
@@ -518,16 +544,22 @@ void PatchManagerObject::doPrepareCacheRoot()
 
     for (const QString &patchName : m_appliedPatches) {
         if (!order.contains(patchName)) {
-            emit m_adaptor->autoApplyingPatch(getPatchName(patchName));
+            if (m_adaptor) {
+                emit m_adaptor->autoApplyingPatch(getPatchName(patchName));
+            }
             if (!doPatch(patchName, true)) {
-                emit m_adaptor->autoApplyingFailed(getPatchName(patchName));
+                if (m_adaptor) {
+                    emit m_adaptor->autoApplyingFailed(getPatchName(patchName));
+                }
                 m_appliedPatches.remove(patchName);
                 success = false;
             }
         }
     }
 
-    emit m_adaptor->autoApplyingFinished(success);
+    if (m_adaptor) {
+        emit m_adaptor->autoApplyingFinished(success);
+    }
 
     if (!success) {
         setAppliedPatches(m_appliedPatches);
@@ -618,7 +650,9 @@ void PatchManagerObject::doStartLocalServer()
 
     if (!getLoaded()) {
         m_serverThread->start();
-        emit m_adaptor->loadedChanged(true);
+        if (m_adaptor) {
+            emit m_adaptor->loadedChanged(true);
+        }
     }
 }
 
@@ -643,12 +677,23 @@ void PatchManagerObject::restartLipstick()
 {
     qDebug() << Q_FUNC_INFO;
 
+    QMetaObject::invokeMethod(this, NAME(doRestartLipstick), Qt::QueuedConnection);
+}
+
+void PatchManagerObject::doRestartLipstick()
+{
+    qDebug() << Q_FUNC_INFO;
+
     QDBusMessage m = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
                                                     QStringLiteral("/org/freedesktop/systemd1/unit/lipstick_2eservice"),
                                                     QStringLiteral("org.freedesktop.systemd1.Unit"),
                                                     QStringLiteral("Restart"));
     m.setArguments({ QStringLiteral("replace") });
-    QDBusConnection::sessionBus().send(m);
+    if (!m_sbus.send(m)) {
+        qWarning() << Q_FUNC_INFO << "Error sending message";
+        qWarning() << Q_FUNC_INFO << "Invoking systemctl:" <<
+                    QProcess::execute(QStringLiteral("/bin/systemctl-user"), { QStringLiteral("--no-block"), QStringLiteral("restart"), QStringLiteral("lipstick") });
+    }
 }
 
 void PatchManagerObject::resetSystem()
@@ -1103,7 +1148,10 @@ void PatchManagerObject::restartServices()
     }
 
     m_toggleServices.clear();
-    emit m_adaptor->toggleServicesChanged(false);
+
+    if (m_adaptor) {
+        emit m_adaptor->toggleServicesChanged(false);
+    }
 }
 
 void PatchManagerObject::patchToggleService(const QString &patch, bool activate)
@@ -1122,7 +1170,9 @@ void PatchManagerObject::patchToggleService(const QString &patch, bool activate)
             patches.append(patch);
             m_toggleServices[category] = patches;
 
-            emit m_adaptor->toggleServicesChanged(true);
+            if (m_adaptor) {
+                emit m_adaptor->toggleServicesChanged(true);
+            }
         }
     } else {
         if (m_toggleServices.contains(category) && m_toggleServices[category].contains(patch)) {
@@ -1135,7 +1185,9 @@ void PatchManagerObject::patchToggleService(const QString &patch, bool activate)
             }
 
             if (m_toggleServices.isEmpty()) {
-                emit m_adaptor->toggleServicesChanged(false);
+                if (m_adaptor) {
+                    emit m_adaptor->toggleServicesChanged(false);
+                }
             }
         }
     }
@@ -1169,7 +1221,9 @@ void PatchManagerObject::resolveFailure()
     }
 
     m_failed = false;
-    emit m_adaptor->failureChanged(m_failed);
+    if (m_adaptor) {
+        emit m_adaptor->failureChanged(m_failed);
+    }
 }
 
 void PatchManagerObject::loadRequest(bool apply)
@@ -1188,6 +1242,10 @@ void PatchManagerObject::loadRequest(bool apply)
     }
 
     startLocalServer();
+
+    if (apply) {
+        restartLipstick();
+    }
 }
 
 void PatchManagerObject::lipstickChanged(const QString &state)
@@ -1196,12 +1254,12 @@ void PatchManagerObject::lipstickChanged(const QString &state)
 
     if (!getLoaded() && !m_failed && !getSettings(QStringLiteral("applyOnBoot"), false).toBool()) {
         qDebug() << Q_FUNC_INFO << "Calling patch applier after boot";
-        QTimer::singleShot(20000, this, [](){
+        QTimer::singleShot(20000, this, [this](){
             QDBusMessage showPatcher = QDBusMessage::createMethodCall(QStringLiteral("org.SfietKonstantin.patchmanager"),
                                                                       QStringLiteral("/"),
                                                                       QStringLiteral("org.SfietKonstantin.patchmanager"),
                                                                       QStringLiteral("show"));
-            QDBusConnection::sessionBus().call(showPatcher, QDBus::NoBlock);
+            m_sbus.call(showPatcher, QDBus::NoBlock);
         });
     }
 }
@@ -1276,12 +1334,12 @@ void PatchManagerObject::onLipstickChanged(const QString &, const QVariantMap &c
         unapplyAllPatches();
     } else if (activeState == QStringLiteral("active") && !getLoaded() && !m_failed && !getSettings(QStringLiteral("applyOnBoot"), false).toBool()) {
         qDebug() << Q_FUNC_INFO << "Calling patch applier after boot";
-        QTimer::singleShot(5000, this, [](){
+        QTimer::singleShot(5000, this, [this](){
             QDBusMessage showPatcher = QDBusMessage::createMethodCall(QStringLiteral("org.SfietKonstantin.patchmanager"),
                                                                       QStringLiteral("/"),
                                                                       QStringLiteral("org.SfietKonstantin.patchmanager"),
                                                                       QStringLiteral("show"));
-            QDBusConnection::sessionBus().call(showPatcher, QDBus::NoBlock);
+            m_sbus.call(showPatcher, QDBus::NoBlock);
         });
     }
 }
@@ -1298,6 +1356,7 @@ void PatchManagerObject::onOsUpdateProgress(int progress)
 
 void PatchManagerObject::onTimerAction()
 {
+    qDebug() << Q_FUNC_INFO;
     checkForUpdates();
 }
 
@@ -1411,12 +1470,14 @@ void PatchManagerObject::onFailureOccured()
     }
 
     m_failed = true;
-    emit m_adaptor->failureChanged(m_failed);
+    if (m_adaptor) {
+        emit m_adaptor->failureChanged(m_failed);
+    }
 
     putSettings(QStringLiteral("applyOnBoot"), false);
 
     unapplyAllPatches();
-    QMetaObject::invokeMethod(this, NAME(restartLipstick), Qt::QueuedConnection);
+    restartLipstick();
 }
 
 void PatchManagerObject::doRefreshPatchList()
@@ -1747,7 +1808,9 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
 
                 if (upVersion == version || lastVersion == version) {
                     m_updates.remove(patch);
-                    emit m_adaptor->updatesAvailable(m_updates);
+                    if (m_adaptor) {
+                        emit m_adaptor->updatesAvailable(m_updates);
+                    }
                 }
             }
             refreshPatchList();
@@ -1797,7 +1860,7 @@ void PatchManagerObject::doUninstallPatch(const QString &patch, const QDBusMessa
                                                                     QStringLiteral("com.jolla.jollastore"),
                                                                     QStringLiteral("removePackage"));
         removePackage.setArguments({ rpmPatch, QVariant::fromValue(false) });
-        QDBusConnection::sessionBus().call(removePackage, QDBus::NoBlock);
+        m_sbus.call(removePackage, QDBus::NoBlock);
         removeSuccess = true;
     }
 
@@ -2131,7 +2194,9 @@ void PatchManagerObject::requestCheckForUpdates()
                     notify(projectName, NotifyActionUpdateAvailable);
 
                     m_updates[projectName] = latestVersion;
-                    emit m_adaptor->updatesAvailable(m_updates);
+                    if (m_adaptor) {
+                        emit m_adaptor->updatesAvailable(m_updates);
+                    }
                 }
             });
         }

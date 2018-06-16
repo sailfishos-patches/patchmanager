@@ -42,6 +42,7 @@
 #include <QtCore/QVariantList>
 #include <QtCore/QDir>
 
+#include <QDBusConnection>
 #include <QDBusContext>
 #include <QDBusMessage>
 #include <QDBusVariant>
@@ -174,6 +175,7 @@ private slots:
     void requestCheckForUpdates();
 
     void restartLipstick();
+    void doRestartLipstick();
 
 private:
     void resetSystem();
@@ -243,6 +245,9 @@ private:
 
     Journal *m_journal;
     bool m_failed = false;
+
+    QTimer *m_sessionBusConnector;
+    QDBusConnection m_sbus;
 };
 
 #endif // PATCHMANAGEROBJECT_H

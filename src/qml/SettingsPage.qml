@@ -16,6 +16,9 @@ Page {
 
             TextSwitch {
                 text: qsTranslate("", "Apply on boot")
+                checked: PatchManager.applyOnBoot
+                onClicked: PatchManager.applyOnBoot = !PatchManager.applyOnBoot
+                automaticCheck: false
             }
 
             TextSwitch {

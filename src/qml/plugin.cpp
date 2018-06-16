@@ -37,7 +37,6 @@
 #include <QDBusPendingCallWatcher>
 #include "patchmanager.h"
 #include "webpatchesmodel.h"
-#include "webpatchdata.h"
 
 // TODO: ask for paypal.me
 static QString PAYPAL_DONATE = QStringLiteral("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R6AJV4U2G33XG");
@@ -63,9 +62,7 @@ public:
     {
         Q_ASSERT(strcmp(uri, "org.SfietKonstantin.patchmanager") == 0);
         qmlRegisterSingletonType<PatchManager>(uri, 2, 0, "PatchManager", patchmanager_singleton);
-//        qmlRegisterUncreatableType<WebPatchesModel>(uri, 2, 0, "WebPatchesModel", "WebPatchesModel is not creatable"); // TODO move to server
         qmlRegisterType<WebPatchesModel>(uri, 2, 0, "WebPatchesModel");
-        qmlRegisterType<WebPatchData>(uri, 2, 0, "WebPatchData");
         qmlRegisterUncreatableType<QDBusPendingCallWatcher>(uri, 2, 0, "QDBusPendingCallWatcher", "Compatibility import");
     }
 };
