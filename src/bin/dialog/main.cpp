@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QLocale>
 #include <QTranslator>
+#include <QSettings>
 
 QString getLang()
 {
