@@ -126,7 +126,9 @@ public slots:
     bool getFailure() const;
     bool getLoaded() const;
     void resolveFailure();
-    void loadRequest();
+    void loadRequest(bool apply);
+
+    void lipstickChanged(const QString &state);
 
     QString getPatchmanagerVersion() const;
     QString getSsuVersion() const;
@@ -182,6 +184,8 @@ private:
 
     void startLocalServer();
     void initialize();
+
+    QString getPatchName(const QString patch) const;
 
     QString checkRpmPatch(const QString &patch) const;
 
@@ -239,7 +243,6 @@ private:
 
     Journal *m_journal;
     bool m_failed = false;
-    bool m_loaded = false;
 };
 
 #endif // PATCHMANAGEROBJECT_H

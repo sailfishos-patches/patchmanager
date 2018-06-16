@@ -105,12 +105,17 @@
         </method>
         <method name="loadRequest">
             <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+            <arg name="apply" type="b" direction="in" />
         </method>
         <method name="checkForUpdates">
             <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
         </method>
         <method name="quit">
             <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+        </method>
+        <method name="lipstickChanged">
+            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+            <arg name="state" type="s" direction="in" />
         </method>
         <signal name="applyPatchFinished">
           <arg name="patch" type="s"/>
@@ -119,7 +124,7 @@
           <arg name="patch" type="s"/>
         </signal>
         <signal name="updatesAvailable">
-            <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QVariantMap"/>
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
             <arg name="updates" type="a{sv}"/>
         </signal>
         <signal name="toggleServicesChanged">
@@ -136,6 +141,18 @@
         </signal>
         <signal name="loadedChanged">
             <arg name="loaded" type="b"/>
+        </signal>
+        <signal name="autoApplyingStarted">
+            <arg name="count" type="i"/>
+        </signal>
+        <signal name="autoApplyingPatch">
+            <arg name="name" type="s"/>
+        </signal>
+        <signal name="autoApplyingFailed">
+            <arg name="name" type="s"/>
+        </signal>
+        <signal name="autoApplyingFinished">
+            <arg name="success" type="b"/>
         </signal>
     </interface>
 </node>

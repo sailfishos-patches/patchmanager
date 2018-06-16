@@ -59,6 +59,9 @@ ln -s ../dbus-org.SfietKonstantin.patchmanager.service %{buildroot}/lib/systemd/
 mkdir -p %{buildroot}/lib/systemd/system/timers.target.wants/
 ln -s ../checkForUpdates-org.SfietKonstantin.patchmanager.timer %{buildroot}/lib/systemd/system/timers.target.wants/
 
+mkdir -p %{buildroot}/usr/lib/systemd/user/lipstick.service.wants/
+ln -s ../lipstick-patchmanager.service %{buildroot}/usr/lib/systemd/user/lipstick.service.wants/
+
 %pre
 export NO_PM_PRELOAD=1
 case "$*" in
@@ -70,6 +73,10 @@ echo Upgrading package
 // unapply patches if pm2 is installed
 if [ "$(rpm -q --qf "%{VERSION}" patchmanager | head -c 1)" == "2" ]
 then
+    if [ ! -d /var/lib/patchmanager/ausmt/patches/ ]
+    then
+        exit 0
+    fi
     if [ "$(ls -A /var/lib/patchmanager/ausmt/patches/)" ]
     then
         echo "Unapply all patches before upgrade!"
@@ -102,14 +109,10 @@ export NO_PM_PRELOAD=1
 case "$*" in
 1)
 echo Installing package
-dbus-send --system --type=method_call \
---dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 #/usr/sbin/patchmanager -a sailfishos-patchmanager-unapplyall || true
 ;;
 2)
 echo Upgrading package
-dbus-send --system --type=method_call \
---dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 #/usr/sbin/patchmanager -a sailfishos-patchmanager-unapplyall || true
 ;;
 *) echo case "$*" not handled in post
@@ -120,7 +123,10 @@ else
     echo /usr/lib/libpreloadpatchmanager.so >> /etc/ld.so.preload
 fi
 /sbin/ldconfig
+dbus-send --system --type=method_call \
+--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 systemctl daemon-reload
+systemctl-user daemon-reload
 systemctl restart dbus-org.SfietKonstantin.patchmanager.service
 systemctl restart checkForUpdates-org.SfietKonstantin.patchmanager.timer
 
@@ -129,21 +135,20 @@ export NO_PM_PRELOAD=1
 case "$*" in
 0)
 echo Uninstalling package
-dbus-send --system --type=method_call \
---dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 sed -i "/libpreloadpatchmanager/ d" /etc/ld.so.preload
 rm -rf /tmp/patchmanager |:
 rm -f /tmp/patchmanager-socket |:
 ;;
 1)
 echo Upgrading package
-dbus-send --system --type=method_call \
---dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 ;;
 *) echo case "$*" not handled in postun
 esac
 /sbin/ldconfig
+dbus-send --system --type=method_call \
+--dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 systemctl daemon-reload
+systemctl-user daemon-reload
 
 %files
 %defattr(-,root,root,-)
@@ -161,10 +166,12 @@ systemctl daemon-reload
 #%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/patch.json
 #%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/unified_diff.patch
 %{_libdir}/systemd/user/dbus-org.SfietKonstantin.patchmanager.service
+%{_libdir}/systemd/user/lipstick-patchmanager.service
+%{_libdir}/systemd/user/lipstick.service.wants/lipstick-patchmanager.service
 %{_libdir}/libpreload%{name}.so
 
-%{_libexecdir}/pm_apply
-%{_libexecdir}/pm_unapply
+%attr(755,root,root-) %{_libexecdir}/pm_apply
+%attr(755,root,root-) %{_libexecdir}/pm_unapply
 
 %{_libdir}/qt5/qml/org/SfietKonstantin/%{name}
 %{_datadir}/%{name}/data

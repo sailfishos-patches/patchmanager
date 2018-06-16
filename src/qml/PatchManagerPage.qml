@@ -127,12 +127,15 @@ Page {
         id: view
         anchors.fill: parent
 
+        readonly property int topmostY: -view.headerItem.height
+        readonly property int bottommostY: view.contentHeight - view.height - view.headerItem.height
+
         PullDownMenu {
             busy: view.busy
             enabled: !busy
             MenuItem {
-                text: PatchManager.developerMode ? qsTranslate("", "Disable developer mode") : qsTranslate("", "Enable developer mode")
-                onClicked: PatchManager.developerMode = !PatchManager.developerMode
+                text: qsTranslate("", "Settings")
+                onClicked: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
             }
 
             MenuItem {
@@ -142,9 +145,14 @@ Page {
 
             MenuItem {
                 text: qsTranslate("", "Unapply all patches")
-                onClicked: {
-                    PatchManager.call(PatchManager.unapplyAllPatches())
-                }
+                onClicked: PatchManager.call(PatchManager.unapplyAllPatches())
+                visible: PatchManager.loaded
+            }
+
+            MenuItem {
+                text: qsTranslate("", "Load engine")
+                onClicked: PatchManager.call(PatchManager.loadRequest(true))
+                visible: !PatchManager.loaded
             }
 
             MenuItem {
@@ -230,6 +238,9 @@ Page {
                 content.x = 0
             }
 
+            readonly property bool isBelowBottom: drag.target ? (content.y + content.height - view.contentY) > view.height : false
+            readonly property bool isAboveTop: drag.target ? content.y < view.contentY : false
+
             onPositionChanged: {
                 if (menuOpen) {
                     return
@@ -237,15 +248,15 @@ Page {
 
                 var deltaX = pressPosition.x - mouse.x
                 if (drag.target) {
-                    if (content.y < view.contentY && view.contentY > 0) {
+                    if (isAboveTop) {
                         sctollTopTimer.start()
                         sctollBottomTimer.stop()
-                    } else if ((content.y + content.height) > view.height && (view.contentY + view.height) < view.contentHeight) {
+                    } else if (isBelowBottom) {
                         sctollBottomTimer.start()
                         sctollTopTimer.stop()
                     } else {
-                        sctollTopTimer.stop()
                         sctollBottomTimer.stop()
+                        sctollTopTimer.stop()
                     }
                 } else {
                     if (deltaX > dragThreshold) {
@@ -267,11 +278,11 @@ Page {
                 repeat: true
                 interval: 1
                 onTriggered: {
-                    if (view.contentY > 0) {
+                    if (view.contentY > view.topmostY) {
                         view.contentY -= 5
                         content.y -= 5
                     } else {
-                        view.contentY = 0
+                        view.contentY = view.topmostY
 //                        content.y = 0
                     }
                 }
@@ -282,11 +293,12 @@ Page {
                 repeat: true
                 interval: 1
                 onTriggered: {
-                    if ((view.contentY + view.height) < view.contentHeight) {
+                    // c.y: 1195.81005859375 c.h: 100 cY: 220 cH: 1638 vH: 1280 hH: 138
+                    if (view.contentY < view.bottommostY) {
                         view.contentY += 5
                         content.y += 5
                     } else {
-                        view.contentY = view.contentHeight - view.height
+                        view.contentY = view.bottommostY
 //                        content.y = view.contentHeight - view.height
                     }
                 }

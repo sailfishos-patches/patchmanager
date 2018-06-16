@@ -101,6 +101,8 @@ public slots:
     QDBusPendingCallWatcher *downloadPatchInfo(const QString &name);
     QDBusPendingCallWatcher *listVersions();
     QDBusPendingCallWatcher *unapplyAllPatches();
+
+    void loadRequest(bool apply);
     void restartServices();
 
     QString patchName(const QString &patch) const;

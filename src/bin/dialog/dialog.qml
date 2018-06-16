@@ -1,10 +1,10 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import Nemo.DBus 2.0
+import org.nemomobile.dbus 2.0
 
 ApplicationWindow {
     id: appWindow
-    property var remorseItem
+    property var remorseItem: null
 
     DBusAdaptor {
         service: 'org.SfietKonstantin.patchmanager'
@@ -19,19 +19,18 @@ ApplicationWindow {
             console.log("Show called!")
         }
     }
-
-    DBusInterface {
-        id: dbusPm
-
-        service: 'org.SfietKonstantin.patchmanager'
-        iface: 'org.SfietKonstantin.patchmanager'
-        path: '/org/SfietKonstantin/patchmanager'
-
-        bus: DBus.SystemBus
-    }
-
     initialPage: Component {
         Page {
+            onStatusChanged: {
+                if (status == PageStatus.Active && !appWindow.remorseItem) {
+                    remorse.execute(button, qsTranslate("", "Applying patches"), function() {
+                        console.log("Accepted patch applying!")
+                        dbusPm.call("loadRequest", [true])
+                    }, 10000)
+                    appWindow.remorseItem = remorse
+                }
+            }
+
             SilicaFlickable {
                 anchors.fill: parent
                 contentHeight: content.height
@@ -69,19 +68,71 @@ ApplicationWindow {
                             RemorseItem {
                                 id: remorse
                                 onCanceled: {
+                                    console.log("Cancelled patches applying!")
+                                    dbusPm.call("loadRequest", [false])
                                     Qt.quit()
                                 }
                             }
+                        }
+                    }
 
-                            Component.onCompleted: {
-                                remorse.execute(button, qsTranslate("", "Applying patches"), function() {
-                                    console.log("hahaha!")
-                                    dbusPm.typedCall("loadRequest", {})
-                                }, 10000)
-                                appWindow.remorseItem = remorse
+                    ProgressBar {
+                        id: progress
+                        width: parent.width
+                        visible: false
+                        Behavior on value {
+                            NumberAnimation {
+                                duration: 150
                             }
                         }
                     }
+
+                    Label {
+                        id: failed
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.margins: Theme.horizontalPageMargin
+                        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                        visible: text.length > 0
+                    }
+                }
+            }
+
+            DBusInterface {
+                id: dbusPm
+
+                service: 'org.SfietKonstantin.patchmanager'
+                iface: 'org.SfietKonstantin.patchmanager'
+                path: '/org/SfietKonstantin/patchmanager'
+
+                bus: DBus.SystemBus
+
+                signalsEnabled: true
+
+                function autoApplyingStarted(count) {
+                    console.log(count)
+                    progress.maximumValue = count
+                    progress.minimumValue = 0
+                    progress.value = 0
+                    progress.visible = true
+                }
+
+                function autoApplyingPatch(patch) {
+                    console.log(patch)
+                    progress.value += 1
+                    progress.label = patch
+                }
+
+                function autoApplyingFailed(patch) {
+                    console.log(patch)
+                    failed.text += "%1\n".arg(patch)
+                }
+
+                function autoApplyingFinished(success) {
+                    console.log(success)
+                    button.enabled = true
+                    progress.label = success ? qsTranslate("", "Appled successfully!")
+                                             : qsTranslate("", "Failed applying patches!")
                 }
             }
         }
@@ -113,6 +164,7 @@ ApplicationWindow {
             }
 
             CoverActionList {
+                enabled: appWindow.remorseItem.pending
                 CoverAction {
                     iconSource: "image://theme/icon-cover-cancel"
                     onTriggered: {

@@ -114,11 +114,11 @@ static const QString PHONE_CODE = QStringLiteral("phone");
 static const QString SILICA_CODE = QStringLiteral("silica");
 static const QString SETTINGS_CODE = QStringLiteral("settings");
 
-static const QString newConfigLocation = QStringLiteral("/etc/patchmanager2.conf");
-static const QString oldConfigLocation = QStringLiteral("/home/nemo/.config/patchmanager2.conf");
+static const QString s_newConfigLocation = QStringLiteral("/etc/patchmanager2.conf");
+static const QString s_oldConfigLocation = QStringLiteral("/home/nemo/.config/patchmanager2.conf");
 
-static const QString patchmanager_socket = QStringLiteral("/tmp/patchmanager-socket");
-static const QString patchmanager_cache_root = QStringLiteral("/tmp/patchmanager");
+static const QString s_patchmanagerSocket = QStringLiteral("/tmp/patchmanager-socket");
+static const QString s_patchmanagerCacheRoot = QStringLiteral("/tmp/patchmanager");
 
 bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available)
 {
@@ -276,7 +276,7 @@ void PatchManagerObject::lateInitialize()
         if (file.open(QFile::ReadOnly)) {
             while (!file.atEnd()) {
                 const QString line = QString::fromLatin1(file.readLine());
-                QStringList splitted = line.split(QChar(' '));
+                const QStringList splitted = line.split(QChar(' '));
                 if (splitted.count() == 2) {
                     m_appliedPatches.insert(splitted.first());
                     qDebug() << Q_FUNC_INFO << splitted.first();
@@ -330,14 +330,16 @@ QList<QVariantMap> PatchManagerObject::listPatchesFromDir(const QString &dir, QS
     QList<QVariantMap> patches;
     QDir root (dir);
     for (const QString &patchPath : root.entryList(QDir::AllDirs | QDir::NoDotAndDotDot)) {
-        if (!existingPatches.contains(patchPath)) {
-            QVariantMap patch;
-            bool ok = makePatch(root, patchPath, patch, existing);
-            if (ok) {
-                patches.append(patch);
-                existingPatches.insert(patchPath);
-            }
+        if (existingPatches.contains(patchPath)) {
+            continue;
         }
+        QVariantMap patch;
+        bool ok = makePatch(root, patchPath, patch, existing);
+        if (!ok) {
+            continue;
+        }
+        patches.append(patch);
+        existingPatches.insert(patchPath);
     }
     return patches;
 }
@@ -347,7 +349,7 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
     , m_timer(new QTimer(this))
     , m_nam(new QNetworkAccessManager(this))
     , m_originalWatcher(new QFileSystemWatcher(this))
-    , m_settings(new QSettings(newConfigLocation, QSettings::IniFormat, this))
+    , m_settings(new QSettings(s_newConfigLocation, QSettings::IniFormat, this))
     , m_serverThread(new QThread(this))
     , m_localServer(new QLocalServer(nullptr)) // controlled by separate thread
     , m_journal(new Journal(this))
@@ -370,8 +372,8 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
         qWarning() << Q_FUNC_INFO << "ld.so.preload does not exists!";
     }
 
-    if (!QFileInfo::exists(newConfigLocation) && QFileInfo::exists(oldConfigLocation)) {
-        QFile::copy(oldConfigLocation, newConfigLocation);
+    if (!QFileInfo::exists(s_newConfigLocation) && QFileInfo::exists(s_oldConfigLocation)) {
+        QFile::copy(s_oldConfigLocation, s_newConfigLocation);
     }
 
     if (qEnvironmentVariableIsSet("PM_DEBUG_EVENTFILTER")) {
@@ -387,7 +389,7 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
     connect(m_timer, &QTimer::timeout, this, &PatchManagerObject::onTimerAction);
     m_timer->setSingleShot(false);
     m_timer->setTimerType(Qt::VeryCoarseTimer);
-    m_timer->setInterval(3600000); // 60 min
+    m_timer->setInterval(60 * 60 * 1000); // 60 min
     m_timer->start();
 
     QDBusConnection::sessionBus().connect(QString(),
@@ -411,13 +413,13 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
     });
     connect(m_localServer, &QLocalServer::newConnection, this, &PatchManagerObject::startReadingLocalServer, Qt::DirectConnection);
     connect(m_serverThread, &QThread::started, this, [this](){
-        bool listening = m_localServer->listen(patchmanager_socket);
+        bool listening = m_localServer->listen(s_patchmanagerSocket);
         if (!listening // not listening
                 && m_localServer->serverError() == QAbstractSocket::AddressInUseError // because of AddressInUseError
-                && QFileInfo::exists(patchmanager_socket) // socket file already exists
-                && QFile::remove(patchmanager_socket)) { // and successfully removed it
+                && QFileInfo::exists(s_patchmanagerSocket) // socket file already exists
+                && QFile::remove(s_patchmanagerSocket)) { // and successfully removed it
             qWarning() << Q_FUNC_INFO << "Removed old stuck socket";
-            listening = m_localServer->listen(patchmanager_socket); // try to start lisening again
+            listening = m_localServer->listen(s_patchmanagerSocket); // try to start lisening again
         }
         qDebug() << Q_FUNC_INFO << "Server listening:" << listening;
         if (!listening) {
@@ -433,8 +435,8 @@ PatchManagerObject::~PatchManagerObject()
 {
     if (m_dbusRegistered) {
         QDBusConnection connection = QDBusConnection::systemBus();
-        connection.unregisterObject(DBUS_PATH_NAME);
         connection.unregisterService(DBUS_SERVICE_NAME);
+        connection.unregisterObject(DBUS_PATH_NAME);
     }
 }
 
@@ -501,9 +503,13 @@ void PatchManagerObject::doPrepareCacheRoot()
 
     bool success = true;
 
+    emit m_adaptor->autoApplyingStarted(m_appliedPatches.count());
+
     for (const QString &patchName : order) {
         if (m_appliedPatches.contains(patchName)) {
+            emit m_adaptor->autoApplyingPatch(getPatchName(patchName));
             if (!doPatch(patchName, true)) {
+                emit m_adaptor->autoApplyingFailed(getPatchName(patchName));
                 m_appliedPatches.remove(patchName);
                 success = false;
             }
@@ -512,12 +518,16 @@ void PatchManagerObject::doPrepareCacheRoot()
 
     for (const QString &patchName : m_appliedPatches) {
         if (!order.contains(patchName)) {
+            emit m_adaptor->autoApplyingPatch(getPatchName(patchName));
             if (!doPatch(patchName, true)) {
+                emit m_adaptor->autoApplyingFailed(getPatchName(patchName));
                 m_appliedPatches.remove(patchName);
                 success = false;
             }
         }
     }
+
+    emit m_adaptor->autoApplyingFinished(success);
 
     if (!success) {
         setAppliedPatches(m_appliedPatches);
@@ -538,7 +548,7 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
         qDebug() << Q_FUNC_INFO << "processing:" << fileName;
         QFileInfo fi(fileName);
 
-        QDir fakeDir(QStringLiteral("%1%2").arg(patchmanager_cache_root, fi.absoluteDir().absolutePath()));
+        QDir fakeDir(QStringLiteral("%1%2").arg(s_patchmanagerCacheRoot, fi.absoluteDir().absolutePath()));
         if (apply && !fakeDir.exists()) {
             qWarning() << Q_FUNC_INFO << "creating:" << fakeDir.absolutePath();
             QDir::root().mkpath(fakeDir.absolutePath());
@@ -605,7 +615,11 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 void PatchManagerObject::doStartLocalServer()
 {
     qDebug() << Q_FUNC_INFO;
-    m_serverThread->start();
+
+    if (!getLoaded()) {
+        m_serverThread->start();
+        emit m_adaptor->loadedChanged(true);
+    }
 }
 
 void PatchManagerObject::initialize()
@@ -613,6 +627,16 @@ void PatchManagerObject::initialize()
     qDebug() << Q_FUNC_INFO;
 
     getVersion();
+}
+
+QString PatchManagerObject::getPatchName(const QString patch) const
+{
+    if (!m_metadata.contains(patch)) {
+        return patch;
+    }
+
+    const QVariantMap patchData = m_metadata[patch];
+    return (patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY]).toString();
 }
 
 void PatchManagerObject::restartLipstick()
@@ -698,7 +722,7 @@ void PatchManagerObject::resetSystem()
         qDebug() << Q_FUNC_INFO << "Reinstalling:" << package;
 
         QProcess pkconProc;
-        pkconProc.start(QStringLiteral("/usr/bin/pkcon"), { QStringLiteral("install"), package });
+        pkconProc.start(QStringLiteral("/usr/bin/pkcon"), { QStringLiteral("install"), QStringLiteral("-y"), package });
         pkconProc.waitForFinished(-1);
 
         if (pkconProc.exitCode() == 0) {
@@ -715,16 +739,16 @@ void PatchManagerObject::clearFakeroot()
 {
     qDebug() << Q_FUNC_INFO;
 
-    eraseRecursively(patchmanager_cache_root);
-    qDebug() << Q_FUNC_INFO << "Directory" << patchmanager_cache_root << "is empty:" <<
-    QDir::root().rmpath(patchmanager_cache_root);
+    eraseRecursively(s_patchmanagerCacheRoot);
+    qDebug() << Q_FUNC_INFO << "Directory" << s_patchmanagerCacheRoot << "is empty:" <<
+    QDir::root().rmpath(s_patchmanagerCacheRoot);
 
     eraseRecursively(PATCHES_ADDITIONAL_DIR);
     qDebug() << Q_FUNC_INFO << "Directory" << PATCHES_ADDITIONAL_DIR << "is empty:" <<
     QDir::root().rmpath(PATCHES_ADDITIONAL_DIR);
 
     qDebug() << Q_FUNC_INFO << "Making clean cache:" <<
-    QDir::root().mkpath(patchmanager_cache_root);
+    QDir::root().mkpath(s_patchmanagerCacheRoot);
 }
 
 QString PatchManagerObject::checkRpmPatch(const QString &patch) const
@@ -754,6 +778,7 @@ void PatchManagerObject::process()
         initialize();
     } else if (args[1] == QStringLiteral("--reset-system")) {
          resetSystem();
+         QCoreApplication::exit(2);
          return;
     } else if (args.count() > 1) {
         QDBusConnection connection = QDBusConnection::systemBus();
@@ -1128,7 +1153,7 @@ bool PatchManagerObject::getFailure() const
 
 bool PatchManagerObject::getLoaded() const
 {
-    return m_loaded;
+    return m_serverThread->isRunning();
 }
 
 void PatchManagerObject::resolveFailure()
@@ -1139,7 +1164,7 @@ void PatchManagerObject::resolveFailure()
         return;
     }
 
-    if (!m_serverThread->isRunning()) {
+    if (!getLoaded()) {
         startLocalServer();
     }
 
@@ -1147,22 +1172,38 @@ void PatchManagerObject::resolveFailure()
     emit m_adaptor->failureChanged(m_failed);
 }
 
-void PatchManagerObject::loadRequest()
+void PatchManagerObject::loadRequest(bool apply)
 {
-    qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO << apply;
 
-    if (m_loaded) {
-        qWarning() << Q_FUNC_INFO << "Already loaded!";
-        return;
-    }
-
-    if (m_serverThread->isRunning()) {
+    if (getLoaded()) {
         qWarning() << Q_FUNC_INFO << "Server thread already working!";
         return;
     }
 
-    prepareCacheRoot();
+    if (apply) {
+        prepareCacheRoot();
+    } else {
+        unapplyAllPatches();
+    }
+
     startLocalServer();
+}
+
+void PatchManagerObject::lipstickChanged(const QString &state)
+{
+    qDebug() << Q_FUNC_INFO << state;
+
+    if (!getLoaded() && !m_failed && !getSettings(QStringLiteral("applyOnBoot"), false).toBool()) {
+        qDebug() << Q_FUNC_INFO << "Calling patch applier after boot";
+        QTimer::singleShot(20000, this, [](){
+            QDBusMessage showPatcher = QDBusMessage::createMethodCall(QStringLiteral("org.SfietKonstantin.patchmanager"),
+                                                                      QStringLiteral("/"),
+                                                                      QStringLiteral("org.SfietKonstantin.patchmanager"),
+                                                                      QStringLiteral("show"));
+            QDBusConnection::sessionBus().call(showPatcher, QDBus::NoBlock);
+        });
+    }
 }
 
 QString PatchManagerObject::getPatchmanagerVersion() const
@@ -1223,6 +1264,7 @@ bool PatchManagerObject::eventFilter(QObject *watched, QEvent *event)
 
 void PatchManagerObject::onLipstickChanged(const QString &, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {
+    qDebug() << Q_FUNC_INFO << changedProperties << invalidatedProperties;
     if (invalidatedProperties.contains(QStringLiteral("ActiveState"))) {
         return;
     }
@@ -1232,7 +1274,7 @@ void PatchManagerObject::onLipstickChanged(const QString &, const QVariantMap &c
     if (activeState == QStringLiteral("failed")) {
         qWarning() << Q_FUNC_INFO << "Detected lipstick crash, deactivating all patches";
         unapplyAllPatches();
-    } else if (activeState == QStringLiteral("active") && !m_loaded && !m_failed && getSettings(QStringLiteral("applyOnBoot"), false).toBool()) {
+    } else if (activeState == QStringLiteral("active") && !getLoaded() && !m_failed && !getSettings(QStringLiteral("applyOnBoot"), false).toBool()) {
         qDebug() << Q_FUNC_INFO << "Calling patch applier after boot";
         QTimer::singleShot(5000, this, [](){
             QDBusMessage showPatcher = QDBusMessage::createMethodCall(QStringLiteral("org.SfietKonstantin.patchmanager"),
@@ -1284,7 +1326,7 @@ void PatchManagerObject::startReadingLocalServer()
         }
         const QByteArray request = clientConnection->readAll();
         QByteArray payload;
-        const QString fakePath = QStringLiteral("%1%2").arg(patchmanager_cache_root, QString::fromLatin1(request));
+        const QString fakePath = QStringLiteral("%1%2").arg(s_patchmanagerCacheRoot, QString::fromLatin1(request));
         if (!m_failed && QFileInfo::exists(fakePath)) {
             payload = fakePath.toLatin1();
             qWarning() << Q_FUNC_INFO << "Requested:" << request << "Sending:" << payload;
@@ -1301,6 +1343,10 @@ void PatchManagerObject::startReadingLocalServer()
 void PatchManagerObject::onOriginalFileChanged(const QString &path)
 {
     qWarning() << Q_FUNC_INFO << path;
+
+    if (m_failed || !getLoaded()) {
+        return;
+    }
 
     if (!m_fileToPatch.contains(path)) {
         return;
@@ -1356,7 +1402,7 @@ void PatchManagerObject::onFailureOccured()
 {
     qDebug() << Q_FUNC_INFO;
 
-    if (m_serverThread->isRunning()) {
+    if (getLoaded()) {
         m_serverThread->quit();
     }
 
@@ -1366,6 +1412,8 @@ void PatchManagerObject::onFailureOccured()
 
     m_failed = true;
     emit m_adaptor->failureChanged(m_failed);
+
+    putSettings(QStringLiteral("applyOnBoot"), false);
 
     unapplyAllPatches();
     QMetaObject::invokeMethod(this, NAME(restartLipstick), Qt::QueuedConnection);
@@ -1392,34 +1440,35 @@ void PatchManagerObject::doRefreshPatchList()
             continue;
         }
         while (!patchFile.atEnd()) {
-            QByteArray line = patchFile.readLine();
-            if (line.startsWith(QByteArrayLiteral("+++ "))) {
-                QString toPatch = QString::fromLatin1(line.split(' ')[1].split('\t')[0].split('\n')[0]);
-                QString path = toPatch;
-                while (!QFileInfo::exists(path) && path.count('/') > 1) {
-                    path = path.mid(path.indexOf('/', 1));
-                }
-                if (!QFileInfo::exists(path)) {
-                    if (toPatch.startsWith(QChar('/'))) {
-                        path = toPatch;
-                    } else {
-                        path = toPatch.mid(toPatch.indexOf('/', 1));
-                    }
-                }
-                filesConflicts[path].append(patchFolder);
-
-                QStringList patchFiles = m_patchFiles[patchFolder];
-                if (!patchFiles.contains(path)) {
-                    patchFiles.append(path);
-                }
-                m_patchFiles[patchFolder] = patchFiles;
-
-                QStringList fileToPatch = m_fileToPatch[path];
-                if (!fileToPatch.contains(patchFolder)) {
-                    fileToPatch.append(patchFolder);
-                }
-                m_fileToPatch[path] = fileToPatch;
+            const QByteArray line = patchFile.readLine();
+            if (!line.startsWith(QByteArrayLiteral("+++ "))) {
+                continue;
             }
+            const QString toPatch = QString::fromLatin1(line.split(' ')[1].split('\t')[0].split('\n')[0]);
+            QString path = toPatch;
+            while (!QFileInfo::exists(path) && path.count('/') > 1) {
+                path = path.mid(path.indexOf('/', 1));
+            }
+            if (!QFileInfo::exists(path)) {
+                if (toPatch.startsWith(QChar('/'))) {
+                    path = toPatch;
+                } else {
+                    path = toPatch.mid(toPatch.indexOf('/', 1));
+                }
+            }
+            filesConflicts[path].append(patchFolder);
+
+            QStringList patchFiles = m_patchFiles[patchFolder];
+            if (!patchFiles.contains(path)) {
+                patchFiles.append(path);
+            }
+            m_patchFiles[patchFolder] = patchFiles;
+
+            QStringList fileToPatch = m_fileToPatch[path];
+            if (!fileToPatch.contains(patchFolder)) {
+                fileToPatch.append(patchFolder);
+            }
+            m_fileToPatch[path] = fileToPatch;
         }
 
         patchFile.close();
@@ -2140,7 +2189,7 @@ bool PatchManagerObject::checkIsFakeLinked(const QString &path)
     for (const QString &part : parts) {
         if (trial.cd(part)) {
             const QFileInfo fi(trial.absolutePath());
-            if (fi.isSymLink() && fi.symLinkTarget().startsWith(patchmanager_cache_root)) {
+            if (fi.isSymLink() && fi.symLinkTarget().startsWith(s_patchmanagerCacheRoot)) {
                 qDebug() << Q_FUNC_INFO << path << "already have fake link:" << trial.absolutePath();
                 return true;
             }
@@ -2158,14 +2207,14 @@ bool PatchManagerObject::tryToLinkFakeParent(const QString &path)
     for (const QString &part : parts) {
         if (trial.cd(part)) {
             const QFileInfo fi(trial.absolutePath());
-            if (fi.isSymLink() && fi.symLinkTarget().startsWith(patchmanager_cache_root)) {
+            if (fi.isSymLink() && fi.symLinkTarget().startsWith(s_patchmanagerCacheRoot)) {
                 qDebug() << Q_FUNC_INFO << path << "already have fake link:" << trial.absolutePath();
                 return true;
             }
             continue;
         }
         const QString realPath = QStringLiteral("%1/%2").arg(trial.absolutePath(), part);
-        const QString fakePath = QStringLiteral("%1%2").arg(patchmanager_cache_root, realPath);
+        const QString fakePath = QStringLiteral("%1%2").arg(s_patchmanagerCacheRoot, realPath);
         bool link_ret = QFile::link(fakePath, realPath);
         qDebug() << Q_FUNC_INFO << "linking" << realPath << "to:" << fakePath << link_ret;
         return true;
@@ -2184,7 +2233,7 @@ bool PatchManagerObject::tryToUnlinkFakeParent(const QString &path)
             return false;
         }
         const QFileInfo fi(trial.absolutePath());
-        if (fi.isSymLink() && fi.symLinkTarget().startsWith(patchmanager_cache_root)) {
+        if (fi.isSymLink() && fi.symLinkTarget().startsWith(s_patchmanagerCacheRoot)) {
             bool remove_ret = QFile::remove(trial.absolutePath());
             qDebug() << Q_FUNC_INFO << "removing:" << trial.absolutePath() << remove_ret;
             return true;

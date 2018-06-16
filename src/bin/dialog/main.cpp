@@ -33,6 +33,12 @@ int main(int argc, char *argv[])
 {
     qputenv("NO_PM_PRELOAD", "1");
 
+    QSettings pm(QStringLiteral("/etc/patchmanager2.conf"), QSettings::IniFormat);
+    if (pm.value(QStringLiteral("settings/applyOnBoot"), false).toBool()) {
+        qDebug() << Q_FUNC_INFO << "applyOnBoot is active, exiting!";
+        return 0;
+    }
+
     QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
 
     QTranslator translator;

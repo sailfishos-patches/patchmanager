@@ -153,7 +153,7 @@ Page {
                 anchors.right: parent.right
                 anchors.margins: Theme.horizontalPageMargin
                 wrapMode: Text.WrapAnywhere
-                text: modelData.log
+                text: modelData.log || qsTranslate("", "No log yet")
                 font.family: "Courier"
                 font.pixelSize: Theme.fontSizeTiny
                 visible: PatchManager.developerMode

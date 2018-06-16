@@ -359,6 +359,13 @@ QDBusPendingCallWatcher *PatchManager::unapplyAllPatches()
     return new QDBusPendingCallWatcher(m_interface->unapplyAllPatches(), this);
 }
 
+void PatchManager::loadRequest(bool apply)
+{
+    qDebug() << Q_FUNC_INFO;
+
+    m_interface->loadRequest(apply);
+}
+
 void PatchManager::restartServices()
 {
     qDebug() << Q_FUNC_INFO;
@@ -589,6 +596,18 @@ void PatchManager::onFailureChanged(bool failed)
 
     m_failed = failed;
     emit failureChanged(m_failed);
+}
+
+void PatchManager::onLoadedChanged(bool loaded)
+{
+    qDebug() << Q_FUNC_INFO << loaded;
+
+    if (m_loaded == loaded) {
+        return;
+    }
+
+    m_loaded = loaded;
+    emit loadedChanged(m_loaded);
 }
 
 void PatchManager::resolveFailure()

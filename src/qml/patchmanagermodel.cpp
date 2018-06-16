@@ -113,11 +113,13 @@ void PatchManagerModel::populateData(const QVariantList &data, const QString &pa
 
     if (patch.isEmpty()) {
         QMap<QString, QVariantMap> patches;
+        QStringList order;
 
         for (const QVariant &var : data) {
             const QVariantMap item = var.toMap();
             const QString patchName = item.value(QStringLiteral("patch")).toString();
             patches.insert(patchName, item);
+            order.append(patchName);
         }
 
         for (const QString &existing : m_patchMap.keys()) {
@@ -133,7 +135,7 @@ void PatchManagerModel::populateData(const QVariantList &data, const QString &pa
             }
         }
 
-        for (const QString &changed : patches.keys()) {
+        for (const QString &changed : order) {
             if (m_patchMap.contains(changed)) {
                 continue;
             }
