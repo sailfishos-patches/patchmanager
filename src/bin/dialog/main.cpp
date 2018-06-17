@@ -9,6 +9,7 @@
 #include <QDBusMessage>
 #include <QDBusConnection>
 #include <QDBusReply>
+#include <QTimer>
 
 QString getLang()
 {
