@@ -10,37 +10,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="43"/>
+        <location filename="../src/bin/dialog/dialog.qml" line="45"/>
         <source>Apply patches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="51"/>
+        <location filename="../src/bin/dialog/dialog.qml" line="53"/>
         <source>Patchmanager will automatically apply patches in 10 seconds.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="64"/>
+        <location filename="../src/bin/dialog/dialog.qml" line="66"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="26"/>
+        <location filename="../src/bin/dialog/dialog.qml" line="28"/>
         <source>Applying patches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="134"/>
+        <location filename="../src/bin/dialog/dialog.qml" line="136"/>
         <source>Appled successfully!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="135"/>
+        <location filename="../src/bin/dialog/dialog.qml" line="137"/>
         <source>Failed applying patches!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="163"/>
+        <location filename="../src/bin/dialog/dialog.qml" line="165"/>
         <location filename="../src/qml/AboutPage.qml" line="63"/>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="179"/>
         <source>Patchmanager</source>

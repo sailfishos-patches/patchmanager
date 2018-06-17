@@ -12,11 +12,13 @@ ApplicationWindow {
         path: '/'
 
         xml: '  <interface name="org.SfietKonstantin.patchmanager">\n' +
-             '    <method name="show" />\n' +
+             '    <method name="show">\n' +
+             '        <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>\n' +
+             '    </method>\n' +
              '  </interface>\n'
 
         function show() {
-            console.log("Show called!")
+            console.warn("Show called!")
         }
     }
     initialPage: Component {

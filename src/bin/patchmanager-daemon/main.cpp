@@ -103,7 +103,11 @@ int main(int argc, char **argv)
 #endif
 
     QTranslator translator;
-    bool success = translator.load(QLocale(getLang()), QStringLiteral("settings-patchmanager"), "-", QStringLiteral("/usr/share/translations/"), ".qm");
+    bool success = translator.load(QLocale(getLang()),
+                                   QStringLiteral("settings-patchmanager"),
+                                   QStringLiteral("-"),
+                                   QStringLiteral("/usr/share/translations/"),
+                                   QStringLiteral(".qm"));
     qDebug() << Q_FUNC_INFO << "Translator loaded:" << success;
 
     success = app.installTranslator(&translator);

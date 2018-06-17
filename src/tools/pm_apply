@@ -5,7 +5,7 @@
 #
 
 # Root
-PM_VAR_DIR="/var/lib/patchmanager3"
+PM_VAR_DIR="/tmp/patchmanager3"
 PATCH_ROOT_DIR="/usr/share/patchmanager/patches"
 
 # Paths / Files
@@ -52,6 +52,22 @@ success() {
   exit 0
 }
 
+test_if_applied() {
+  if [ -f "$PATCH_PATH" ]; then
+    log
+    log "----------------------------------"
+    log "Test if already applied patch"
+    log "----------------------------------"
+    log
+
+    $PATCH_EXEC -R -p 1 -d "$ROOT_DIR" --dry-run < "$PATCH_PATH" 2>&1 | tee -a "$PM_LOG_FILE" ; test ${PIPESTATUS[0]} -eq 0
+
+    if [ $? -eq 0 ]; then
+      success
+    fi
+  fi
+}
+
 verify_text_patch() {
   if [ -f "$PATCH_PATH" ]; then
     log
@@ -87,7 +103,7 @@ create_backup_patch() {
   log "----------------------------------"
   log
 
-  mkdir -p "$PM_PATCH_BACKUP_ROOT_DIR" > /dev/null 2>&1
+  mkdir -p "$PM_PATCH_BACKUP_DIR" > /dev/null 2>&1
   cp -f "$PATCH_DIR/$PATCH_NAME" "$PM_PATCH_BACKUP_DIR" > /dev/null 2>&1
   log "Created backup"
   log "  backup: $PM_PATCH_BACKUP_DIR"
@@ -140,6 +156,8 @@ fi
 #
 # The main function that controls all the magic stuff
 #
+
+test_if_applied
 
 verify_text_patch
 

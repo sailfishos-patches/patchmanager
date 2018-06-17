@@ -77,7 +77,7 @@ if (!calledFromDBus()) {\
 }
 
 static const QString PATCHES_DIR = QStringLiteral("/usr/share/patchmanager/patches");
-static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("/var/lib/patchmanager3/patches");
+static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("/tmp/patchmanager3/patches");
 static const QString PATCH_FILE = QStringLiteral("patch.json");
 
 static const QString NAME_KEY = QStringLiteral("name");
@@ -291,17 +291,32 @@ void PatchManagerObject::lateInitialize()
         setAppliedPatches(m_appliedPatches);
     }
 
+    bool needClear = false;
     QDir ausmtBackup(AUSMT_BACKUP_DIR);
+    QDir oldpm3cache(QStringLiteral("/var/lib/patchmanager3/patches"));
     if (ausmtBackup.exists()) {
         qWarning() << Q_FUNC_INFO << "Found ausmt backup directory, preforming fakeroot clear";
 
         ausmtBackup.removeRecursively();
+        needClear = true;
+    }
+
+    if (oldpm3cache.exists()) {
+        qWarning() << Q_FUNC_INFO << "Found old backup directory, preforming fakeroot clear";
+
+        oldpm3cache.removeRecursively();
+        needClear = true;
+    }
+
+    if (needClear) {
         clearFakeroot();
     } else {
         refreshPatchList();
     }
 
-    if (getSettings(QStringLiteral("applyOnBoot"), false).toBool()) {
+    QDir cache(PATCHES_ADDITIONAL_DIR);
+    if ((cache.exists() && cache.entryList(QDir::NoDotAndDotDot | QDir::Dirs).count() > 0)
+            || getSettings(QStringLiteral("applyOnBoot"), false).toBool()) {
         prepareCacheRoot();
         startLocalServer();
     }
@@ -788,9 +803,8 @@ void PatchManagerObject::clearFakeroot()
     qDebug() << Q_FUNC_INFO << "Directory" << s_patchmanagerCacheRoot << "is empty:" <<
     QDir::root().rmpath(s_patchmanagerCacheRoot);
 
-    eraseRecursively(PATCHES_ADDITIONAL_DIR);
     qDebug() << Q_FUNC_INFO << "Directory" << PATCHES_ADDITIONAL_DIR << "is empty:" <<
-    QDir::root().rmpath(PATCHES_ADDITIONAL_DIR);
+    QDir(PATCHES_ADDITIONAL_DIR).removeRecursively();
 
     qDebug() << Q_FUNC_INFO << "Making clean cache:" <<
     QDir::root().mkpath(s_patchmanagerCacheRoot);
@@ -1070,9 +1084,10 @@ bool PatchManagerObject::putSettings(const QString &name, const QVariant &value)
 
 QVariant PatchManagerObject::getSettings(const QString &name, const QVariant &def) const
 {
-    qDebug() << Q_FUNC_INFO << name << def;
     QString key = QStringLiteral("settings/%1").arg(name);
-    return m_settings->value(key, def);
+    const QVariant value = m_settings->value(key, def);
+    qDebug() << Q_FUNC_INFO << name << def << value;
+    return value;
 }
 
 QString PatchManagerObject::maxVersion(const QString &version1, const QString &version2)
@@ -1243,7 +1258,7 @@ void PatchManagerObject::loadRequest(bool apply)
 
     startLocalServer();
 
-    if (apply) {
+    if (apply && m_appliedPatches.count() > 0) {
         restartLipstick();
     }
 }
@@ -1612,6 +1627,7 @@ void PatchManagerObject::doListPatches(const QDBusMessage &message)
 bool PatchManagerObject::doPatch(const QString &patchName, bool apply, QString *patchLog)
 {
     qDebug() << Q_FUNC_INFO << patchName << apply;
+
     if (apply) {
         doPrepareCache(patchName, apply);
     }
