@@ -1768,6 +1768,7 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
     const QString &archive = QStringLiteral("/tmp/%1").arg(url.section(QChar('/'), -1));
     const QString &version = params.value(QStringLiteral("version")).toString();
 
+    qDebug() << Q_FUNC_INFO << "Saving archive to" << archive;
     QFile *archiveFile = new QFile(archive, this);
     if (!archiveFile->open(QFile::WriteOnly)) {
         return;
@@ -1779,6 +1780,9 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
     QObject::connect(reply, &QNetworkReply::finished, [reply, message, patch, archiveFile, archive, json, version, this](){
         reply->deleteLater();
         archiveFile->deleteLater();
+        qDebug() << Q_FUNC_INFO << "Flushing to disk:" << archiveFile->flush();
+        archiveFile->close();
+
         if (reply->error() != QNetworkReply::NoError) {
             qDebug() << Q_FUNC_INFO << "Error:" << reply->error();
             sendMessageError(message, reply->errorString());
@@ -1841,9 +1845,12 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
     });
     QObject::connect(reply, &QNetworkReply::readyRead, [archiveFile, reply](){
         if (!archiveFile || !archiveFile->isOpen()) {
+            qWarning() << Q_FUNC_INFO << "Problem with archive";
             return;
         }
-        archiveFile->write(reply->read(reply->bytesAvailable()));
+        const qint64 ba = reply->bytesAvailable();
+        qDebug() << Q_FUNC_INFO << "Writing" << ba << "bytes fo file:" <<
+        archiveFile->write(reply->read(ba));
     });
     QObject::connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), [reply](QNetworkReply::NetworkError networkError){
         qWarning() << Q_FUNC_INFO << "Download file error:" << networkError << reply->errorString();
