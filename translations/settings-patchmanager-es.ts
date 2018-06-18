@@ -93,9 +93,15 @@
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="123"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="123"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="136"/>
         <source>Description</source>
         <translation>Descripción</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="135"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="149"/>
+        <source>Patch log</source>
+        <translation>Registro de parches</translation>
     </message>
     <message>
         <location filename="../src/qml/NewPatchPage.qml" line="82"/>
@@ -104,6 +110,11 @@
     </message>
     <message>
         <location filename="../src/qml/NewPatchPage.qml" line="110"/>
+        <source>Version</source>
+        <translation>Versión</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/NewPatchPage.qml" line="123"/>
         <source>Compatible</source>
         <translation>Compatible</translation>
     </message>
@@ -123,73 +134,73 @@
         <translation>Desactivar todos los parches</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="153"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="151"/>
         <source>Updates available</source>
         <translation>Actualizaciones disponibles</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="153"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="151"/>
         <location filename="../src/qml/WebCatalogPage.qml" line="93"/>
         <source>Web catalog</source>
         <translation>Catálogo Web</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="159"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="157"/>
         <source>Restart preloaded services</source>
         <translation>Reiniciar servicios de precarga</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="165"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="163"/>
         <source>Resolve failure</source>
         <translation>Solucionar fallo</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="172"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="170"/>
         <source>Installed patches</source>
         <translation>Parches instalados</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="361"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="345"/>
         <source>This patch is not compatible with SailfishOS version!</source>
         <translation>¡Este parche no es compatible con la versión de SailfishOS!</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="408"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="353"/>
         <source>Uninstalling patch %1</source>
         <translation>Desinstalando parche %1</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="513"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="458"/>
         <source>Compatible with:</source>
         <translation>Compatible con:</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="527"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="472"/>
         <source>Have possible conflicts</source>
         <translation>Hay posibles conflictos</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="530"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="475"/>
         <source>Patch info</source>
         <translation>Info del parche</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="534"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="479"/>
         <source>Unapply</source>
         <translation>Desactivar</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="534"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="479"/>
         <source>Apply</source>
         <translation>Aplicar</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="544"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="484"/>
         <source>Uninstall</source>
         <translation>Desinstalar</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="558"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="498"/>
         <location filename="../src/qml/WebCatalogPage.qml" line="212"/>
         <source>No patches available</source>
         <translation>No hay parches disponibles</translation>
@@ -415,7 +426,7 @@
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="62"/>
-        <location filename="../src/qml/patchmanager.cpp" line="196"/>
+        <location filename="../src/qml/patchmanager.cpp" line="200"/>
         <source>other</source>
         <translation>otros</translation>
     </message>
