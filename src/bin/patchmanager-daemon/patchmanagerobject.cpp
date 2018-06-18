@@ -411,7 +411,7 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
     m_timer->setInterval(60 * 60 * 1000); // 60 min
     m_timer->start();
 
-    connect(m_sessionBusConnector, &QTimer::timeout, this, [this](){
+    connect(m_sessionBusConnector, &QTimer::timeout, this, [this]() {
         QDBusConnection test = QDBusConnection::connectToBus(QDBusConnection::SessionBus, s_sessionBusConnection);
         if (!test.isConnected()) {
             QDBusConnection::disconnectFromBus(s_sessionBusConnection);
@@ -419,7 +419,6 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
             m_sbus = test;
             m_sessionBusConnector->stop();
             qDebug() << Q_FUNC_INFO << "Connected to session bus!";
-
 
             m_sbus.connect(QString(),
                            QStringLiteral("/org/freedesktop/systemd1/unit/lipstick_2eservice"),
@@ -700,10 +699,10 @@ void PatchManagerObject::doRestartLipstick()
     qDebug() << Q_FUNC_INFO;
 
     QDBusMessage m = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
-                                                    QStringLiteral("/org/freedesktop/systemd1/unit/lipstick_2eservice"),
-                                                    QStringLiteral("org.freedesktop.systemd1.Unit"),
-                                                    QStringLiteral("Restart"));
-    m.setArguments({ QStringLiteral("replace") });
+                                                    QStringLiteral("/org/freedesktop/systemd1"),
+                                                    QStringLiteral("org.freedesktop.systemd1.Manager"),
+                                                    QStringLiteral("RestartUnit"));
+    m.setArguments({ QStringLiteral("lipstick.service"), QStringLiteral("replace") });
     if (!m_sbus.send(m)) {
         qWarning() << Q_FUNC_INFO << "Error sending message";
         qWarning() << Q_FUNC_INFO << "Invoking systemctl:" <<
@@ -1274,7 +1273,7 @@ void PatchManagerObject::lipstickChanged(const QString &state)
                                                                       QStringLiteral("/"),
                                                                       QStringLiteral("org.SfietKonstantin.patchmanager"),
                                                                       QStringLiteral("show"));
-            m_sbus.call(showPatcher, QDBus::NoBlock);
+            qDebug() << Q_FUNC_INFO << m_sbus.send(showPatcher);
         });
     }
 }
@@ -1354,7 +1353,7 @@ void PatchManagerObject::onLipstickChanged(const QString &, const QVariantMap &c
                                                                       QStringLiteral("/"),
                                                                       QStringLiteral("org.SfietKonstantin.patchmanager"),
                                                                       QStringLiteral("show"));
-            m_sbus.call(showPatcher, QDBus::NoBlock);
+            qDebug() << Q_FUNC_INFO << m_sbus.send(showPatcher);
         });
     }
 }
@@ -1876,7 +1875,7 @@ void PatchManagerObject::doUninstallPatch(const QString &patch, const QDBusMessa
                                                                     QStringLiteral("com.jolla.jollastore"),
                                                                     QStringLiteral("removePackage"));
         removePackage.setArguments({ rpmPatch, QVariant::fromValue(false) });
-        m_sbus.call(removePackage, QDBus::NoBlock);
+        qDebug() << Q_FUNC_INFO << m_sbus.send(removePackage);
         removeSuccess = true;
     }
 
