@@ -62,6 +62,9 @@ ln -s ../checkForUpdates-org.SfietKonstantin.patchmanager.timer %{buildroot}/lib
 mkdir -p %{buildroot}/usr/lib/systemd/user/lipstick.service.wants/
 ln -s ../lipstick-patchmanager.service %{buildroot}/usr/lib/systemd/user/lipstick.service.wants/
 
+chmod +x %{buildroot}/%{_libexecdir}/pm_apply
+chmod +x %{buildroot}/%{_libexecdir}/pm_unapply
+
 %pre
 export NO_PM_PRELOAD=1
 case "$*" in
@@ -170,8 +173,8 @@ systemctl-user daemon-reload
 %{_libdir}/systemd/user/lipstick.service.wants/lipstick-patchmanager.service
 %{_libdir}/libpreload%{name}.so
 
-%attr(755,root,root-) %{_libexecdir}/pm_apply
-%attr(755,root,root-) %{_libexecdir}/pm_unapply
+%attr(0755,root,root-) %{_libexecdir}/pm_apply
+%attr(0755,root,root-) %{_libexecdir}/pm_unapply
 
 %{_libdir}/qt5/qml/org/SfietKonstantin/%{name}
 %{_datadir}/%{name}/data

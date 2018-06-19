@@ -1389,7 +1389,7 @@ void PatchManagerObject::startReadingLocalServer()
     }, Qt::DirectConnection);
     connect(clientConnection, &QLocalSocket::readyRead, this, [this, clientConnection](){
         if (!clientConnection) {
-            qWarning() << "Can not get socket!";
+            qWarning() << Q_FUNC_INFO << "Can not get socket!";
             return;
         }
         const qint64 bytes = clientConnection->bytesAvailable();
@@ -1402,10 +1402,14 @@ void PatchManagerObject::startReadingLocalServer()
         const QString fakePath = QStringLiteral("%1%2").arg(s_patchmanagerCacheRoot, QString::fromLatin1(request));
         if (!m_failed && QFileInfo::exists(fakePath)) {
             payload = fakePath.toLatin1();
-            qWarning() << Q_FUNC_INFO << "Requested:" << request << "Sending:" << payload;
+            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
+                qWarning() << Q_FUNC_INFO << "Requested:" << request << "Sending:" << payload;
+            }
         } else {
             payload = request;
-            qWarning() << Q_FUNC_INFO << "Requested:" << request << "Not changing";
+            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
+                qWarning() << Q_FUNC_INFO << "Requested:" << request << "Not changing";
+            }
         }
         clientConnection->write(payload);
         clientConnection->flush();
