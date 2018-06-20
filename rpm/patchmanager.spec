@@ -62,9 +62,6 @@ ln -s ../checkForUpdates-org.SfietKonstantin.patchmanager.timer %{buildroot}/lib
 mkdir -p %{buildroot}/usr/lib/systemd/user/lipstick.service.wants/
 ln -s ../lipstick-patchmanager.service %{buildroot}/usr/lib/systemd/user/lipstick.service.wants/
 
-chmod +x %{buildroot}/%{_libexecdir}/pm_apply
-chmod +x %{buildroot}/%{_libexecdir}/pm_unapply
-
 %pre
 export NO_PM_PRELOAD=1
 case "$*" in

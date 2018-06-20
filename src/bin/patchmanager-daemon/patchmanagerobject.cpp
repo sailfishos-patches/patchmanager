@@ -310,9 +310,8 @@ void PatchManagerObject::lateInitialize()
 
     if (needClear) {
         clearFakeroot();
-    } else {
-        refreshPatchList();
     }
+    refreshPatchList();
 
     QDir cache(PATCHES_ADDITIONAL_DIR);
     if ((cache.exists() && cache.entryList(QDir::NoDotAndDotDot | QDir::Dirs).count() > 0)
@@ -389,6 +388,22 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
         qDebug().noquote() << Q_FUNC_INFO << preload.readAll();
     } else {
         qWarning() << Q_FUNC_INFO << "ld.so.preload does not exists!";
+    }
+
+    qDebug() << Q_FUNC_INFO << PM_APPLY;
+    QFileInfo pa(PM_APPLY);
+    if (pa.exists()) {
+        qDebug() << Q_FUNC_INFO << pa.permissions();
+    } else {
+        qWarning() << Q_FUNC_INFO << "Does not exists!";
+    }
+
+    qDebug() << Q_FUNC_INFO << PM_UNAPPLY;
+    QFileInfo pu(PM_UNAPPLY);
+    if (pu.exists()) {
+        qDebug() << Q_FUNC_INFO << pu.permissions();
+    } else {
+        qWarning() << Q_FUNC_INFO << "Does not exists!";
     }
 
     if (!QFileInfo::exists(s_newConfigLocation) && QFileInfo::exists(s_oldConfigLocation)) {
@@ -1520,38 +1535,39 @@ void PatchManagerObject::doRefreshPatchList()
         }
         while (!patchFile.atEnd()) {
             const QByteArray line = patchFile.readLine();
-            if (!line.startsWith(QByteArrayLiteral("+++ "))) {
-                continue;
-            }
-            const QString toPatch = QString::fromLatin1(line.split(' ')[1].split('\t')[0].split('\n')[0]);
-            QString path = toPatch;
-            while (!QFileInfo::exists(path) && path.count('/') > 1) {
-                path = path.mid(path.indexOf('/', 1));
-            }
-            if (!QFileInfo::exists(path)) {
-                if (toPatch.startsWith(QChar('/'))) {
-                    path = toPatch;
-                } else {
-                    path = toPatch.mid(toPatch.indexOf('/', 1));
+            if (line.startsWith(QByteArrayLiteral("+++ "))) {
+                const QString toPatch = QString::fromLatin1(line.split(' ')[1].split('\t')[0].split('\n')[0]);
+                QString path = toPatch;
+                while (!QFileInfo::exists(path) && path.count('/') > 1) {
+                    path = path.mid(path.indexOf('/', 1));
                 }
-            }
-            filesConflicts[path].append(patchFolder);
+                if (!QFileInfo::exists(path)) {
+                    if (toPatch.startsWith(QChar('/'))) {
+                        path = toPatch;
+                    } else {
+                        path = toPatch.mid(toPatch.indexOf('/', 1));
+                    }
+                }
+                filesConflicts[path].append(patchFolder);
 
-            QStringList patchFiles = m_patchFiles[patchFolder];
-            if (!patchFiles.contains(path)) {
-                patchFiles.append(path);
-            }
-            m_patchFiles[patchFolder] = patchFiles;
+                QStringList patchFiles = m_patchFiles[patchFolder];
+                if (!patchFiles.contains(path)) {
+                    patchFiles.append(path);
+                }
+                m_patchFiles[patchFolder] = patchFiles;
 
-            QStringList fileToPatch = m_fileToPatch[path];
-            if (!fileToPatch.contains(patchFolder)) {
-                fileToPatch.append(patchFolder);
+                QStringList fileToPatch = m_fileToPatch[path];
+                if (!fileToPatch.contains(patchFolder)) {
+                    fileToPatch.append(patchFolder);
+                }
+                m_fileToPatch[path] = fileToPatch;
             }
-            m_fileToPatch[path] = fileToPatch;
         }
 
         patchFile.close();
     }
+    qDebug() << Q_FUNC_INFO << "patchFiles:" << m_patchFiles.keys();
+    qDebug() << Q_FUNC_INFO << "fileToPatch:" << m_fileToPatch.keys();
 
     // collect conflicts per patch
 
@@ -1606,7 +1622,7 @@ void PatchManagerObject::doListPatches(const QDBusMessage &message)
     qDebug() << Q_FUNC_INFO;
     QVariantList result;
     QStringList order = getSettings(QStringLiteral("order"), QStringList()).toStringList();
-    qDebug() << Q_FUNC_INFO << order;
+    qDebug() << Q_FUNC_INFO << "order:" << order;
 
     for (const QString &patchName : order) {
         if (m_metadata.contains(patchName)) {
@@ -1647,12 +1663,10 @@ bool PatchManagerObject::doPatch(const QString &patchName, bool apply, QString *
     process.waitForFinished(-1);
     const bool ret = process.exitCode() == 0;
     qDebug() << Q_FUNC_INFO << "Success:" << ret;
-    if (ret != 0) {
-        const QString log = QString::fromUtf8(process.readAllStandardOutput());
-        qDebug().noquote() << Q_FUNC_INFO << log;
-        if (patchLog) {
-            *patchLog = log;
-        }
+    const QString log = QString::fromUtf8(process.readAllStandardOutput());
+    qDebug().noquote() << Q_FUNC_INFO << log;
+    if (patchLog) {
+        *patchLog = log;
     }
 
     if ((!apply && ret) || (apply && !ret)) {
@@ -1886,16 +1900,15 @@ void PatchManagerObject::doUninstallPatch(const QString &patch, const QDBusMessa
                                                                     QStringLiteral("com.jolla.jollastore"),
                                                                     QStringLiteral("removePackage"));
         removePackage.setArguments({ rpmPatch, QVariant::fromValue(false) });
-        qDebug() << Q_FUNC_INFO << m_sbus.send(removePackage);
-        removeSuccess = true;
+        removeSuccess = m_sbus.send(removePackage);
     }
 
     qDebug() << Q_FUNC_INFO << "Success:" << removeSuccess;
 
-    if (removeSuccess) {
-        // TODO: gracefully update models
-        refreshPatchList();
-    }
+//    if (removeSuccess) {
+//        // TODO: gracefully update models
+//        refreshPatchList();
+//    }
     sendMessageReply(message, removeSuccess);
 }
 
