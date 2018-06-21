@@ -136,15 +136,14 @@ Page {
         }
         section.criteria: ViewSection.FullString
         section.delegate: SectionHeader {
-            text: qsTranslate("", section[0].toUpperCase() + section.substr(1))
+            text: qsTranslate("Sections", section)
         }
         section.property: "category"
         currentIndex: -1
 
         delegate: BackgroundItem {
             id: background
-            contentHeight: height
-            height: Theme.itemSizeExtraLarge + Theme.paddingSmall
+            height: delegateContent.height
             property bool isInstalled: typeof(container.versions) != "undefined" && typeof(container.versions[model.name]) != "undefined"
 
             onClicked: {
@@ -161,7 +160,6 @@ Page {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.margins: Theme.horizontalPageMargin
-                anchors.verticalCenter: parent.verticalCenter
 
                 Item {
                     height: nameLabel.height
@@ -194,15 +192,36 @@ Page {
                     maximumLineCount: 3
                 }
 
-                Label {
+                Item {
+                    height: Theme.itemSizeSmall
                     width: parent.width
-                    text: visible ? qsTranslate("", "Update available: %1").arg(PatchManager.updates[model.name]) : ""
-                    color: background.down ? Theme.secondaryHighlightColor : Theme.secondaryColor
-                    font.bold: true
-                    font.pixelSize: Theme.fontSizeExtraSmall
-                    wrapMode: Text.NoWrap
-                    maximumLineCount: 1
                     visible: PatchManager.updatesNames.indexOf(model.name) >= 0
+
+                    GlassItem {
+                        id: updateGlass
+                        height: parent.height
+                        width: height
+                    }
+
+                    Item {
+                        id: updateSpacing
+                        width: Theme.paddingMedium
+                        height: parent.height
+                        anchors.left: updateGlass.right
+                    }
+
+                    Label {
+                        id: updateLabel
+                        anchors.left: updateSpacing.right
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: visible ? qsTranslate("", "Update available: %1").arg(PatchManager.updates[model.name]) : ""
+                        color: background.down ? Theme.secondaryHighlightColor : Theme.secondaryColor
+                        font.bold: true
+                        font.pixelSize: Theme.fontSizeExtraSmall
+                        wrapMode: Text.NoWrap
+                        maximumLineCount: 1
+                    }
                 }
             }
         }
