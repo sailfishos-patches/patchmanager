@@ -177,7 +177,12 @@ private slots:
     void restartLipstick();
     void doRestartLipstick();
 
+    void restartKeyboard();
+    void doRestartKeyboard();
+
 private:
+    void restartService(const QString &serviceName);
+
     void resetSystem();
     void clearFakeroot();
 

@@ -113,6 +113,7 @@ static const QString MESSAGES_CODE = QStringLiteral("messages");
 static const QString PHONE_CODE = QStringLiteral("phone");
 static const QString SILICA_CODE = QStringLiteral("silica");
 static const QString SETTINGS_CODE = QStringLiteral("settings");
+static const QString KEYBOARD_CODE = QStringLiteral("keyboard");
 
 static const QString s_newConfigLocation = QStringLiteral("/etc/patchmanager2.conf");
 static const QString s_oldConfigLocation = QStringLiteral("/home/nemo/.config/patchmanager2.conf");
@@ -713,15 +714,36 @@ void PatchManagerObject::doRestartLipstick()
 {
     qDebug() << Q_FUNC_INFO;
 
+    restartService(QStringLiteral("lipstick.service"));
+}
+
+void PatchManagerObject::restartKeyboard()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    QMetaObject::invokeMethod(this, NAME(doRestartKeyboard), Qt::QueuedConnection);
+}
+
+void PatchManagerObject::doRestartKeyboard()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    restartService(QStringLiteral("maliit-server.service"));
+}
+
+void PatchManagerObject::restartService(const QString &serviceName)
+{
+    qDebug() << Q_FUNC_INFO << serviceName;
+
     QDBusMessage m = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
                                                     QStringLiteral("/org/freedesktop/systemd1"),
                                                     QStringLiteral("org.freedesktop.systemd1.Manager"),
                                                     QStringLiteral("RestartUnit"));
-    m.setArguments({ QStringLiteral("lipstick.service"), QStringLiteral("replace") });
+    m.setArguments({ serviceName, QStringLiteral("replace") });
     if (!m_sbus.send(m)) {
         qWarning() << Q_FUNC_INFO << "Error sending message";
         qWarning() << Q_FUNC_INFO << "Invoking systemctl:" <<
-                    QProcess::execute(QStringLiteral("/bin/systemctl-user"), { QStringLiteral("--no-block"), QStringLiteral("restart"), QStringLiteral("lipstick") });
+                    QProcess::execute(QStringLiteral("/bin/systemctl-user"), { QStringLiteral("--no-block"), QStringLiteral("restart"), serviceName });
     }
 }
 
@@ -943,7 +965,8 @@ QVariantMap PatchManagerObject::unapplyPatch(const QString &patch)
         msg = message();
     }
     QMetaObject::invokeMethod(this, NAME(doPatch), Qt::QueuedConnection,
-                              Q_ARG(QVariantMap, QVariantMap({{QStringLiteral("name"), patch}})),
+                              Q_ARG(QVariantMap, QVariantMap({{QStringLiteral("name"), patch},
+                                                              {QStringLiteral("user_request"), true}})),
                               Q_ARG(QDBusMessage, msg),
                               Q_ARG(bool, false));
     return QVariantMap();
@@ -1150,6 +1173,8 @@ void PatchManagerObject::restartServices()
         qDebug() << Q_FUNC_INFO << category;
         if (category == HOMESCREEN_CODE || category == SILICA_CODE) {
             restartLipstick();
+        } else if (category == KEYBOARD_CODE) {
+            restartKeyboard();
         } else {
             QHash<QString, QString> categoryToProcess = {
                 { BROWSER_CODE, QStringLiteral("sailfish-browser") },
@@ -1681,6 +1706,7 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
     qDebug() << Q_FUNC_INFO << params << apply;
     const QString &patch = params.value(QStringLiteral("name")).toString();
     const bool user_request = params.value(QStringLiteral("user_request"), false).toBool();
+    const bool at_init = params.value(QStringLiteral("at_init"), false).toBool();
 
     QVariantMap patchData = m_metadata[patch];
     QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
@@ -1700,7 +1726,9 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
         }
         setAppliedPatches(m_appliedPatches);
         refreshPatchList();
-        patchToggleService(patch, apply);
+        if (!at_init) {
+            patchToggleService(patch, apply);
+        }
     }
 
     if (!params.value(QStringLiteral("dont_notify"), false).toBool()) {
