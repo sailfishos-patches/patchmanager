@@ -990,7 +990,7 @@ bool PatchManagerObject::unapplyAllPatches()
 
     qDebug() << Q_FUNC_INFO << "Toggle restart services...";
     for (const QString &appliedPatch : m_appliedPatches) {
-        patchToggleService(appliedPatch, false);
+        patchToggleService(appliedPatch);
     }
 
     qDebug() << Q_FUNC_INFO << "Resetting variables...";
@@ -1218,9 +1218,9 @@ void PatchManagerObject::restartServices()
     }
 }
 
-void PatchManagerObject::patchToggleService(const QString &patch, bool activate)
+void PatchManagerObject::patchToggleService(const QString &patch)
 {
-    qDebug() << Q_FUNC_INFO << patch << activate;
+    qDebug() << Q_FUNC_INFO << patch;
 
     if (!m_metadata.contains(patch)) {
         return;
@@ -1228,32 +1228,16 @@ void PatchManagerObject::patchToggleService(const QString &patch, bool activate)
 
     const QString &category = m_metadata[patch][CATEGORY_KEY].toString();
 
-    if (activate) {
-        if (!m_toggleServices.contains(category) || !m_toggleServices[category].contains(patch)) {
-            QStringList patches = m_toggleServices[category];
-            patches.append(patch);
-            m_toggleServices[category] = patches;
+    if (m_toggleServices.contains(category) && m_toggleServices[category].contains(patch)) {
+        return;
+    }
 
-            if (m_adaptor) {
-                emit m_adaptor->toggleServicesChanged(true);
-            }
-        }
-    } else {
-        if (m_toggleServices.contains(category) && m_toggleServices[category].contains(patch)) {
-            if (m_toggleServices[category].count() == 1) {
-                m_toggleServices.remove(category);
-            } else {
-                QStringList patches = m_toggleServices[category];
-                patches.removeOne(patch);
-                m_toggleServices[category] = patches;
-            }
+    QStringList patches = m_toggleServices[category];
+    patches.append(patch);
+    m_toggleServices[category] = patches;
 
-            if (m_toggleServices.isEmpty()) {
-                if (m_adaptor) {
-                    emit m_adaptor->toggleServicesChanged(false);
-                }
-            }
-        }
+    if (m_adaptor) {
+        emit m_adaptor->toggleServicesChanged(true);
     }
 }
 
@@ -1737,7 +1721,7 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
         setAppliedPatches(m_appliedPatches);
         refreshPatchList();
         if (!at_init) {
-            patchToggleService(patch, apply);
+            patchToggleService(patch);
         }
     }
 

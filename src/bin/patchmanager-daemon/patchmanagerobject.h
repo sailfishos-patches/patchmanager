@@ -121,7 +121,7 @@ public slots:
     static QString maxVersion(const QString &version1, const QString &version2);
 
     void restartServices();
-    void patchToggleService(const QString &patch, bool activate);
+    void patchToggleService(const QString &patch);
 
     bool getToggleServices() const;
     bool getFailure() const;
