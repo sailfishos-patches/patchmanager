@@ -89,6 +89,19 @@ Page {
             }
 
             SectionHeader {
+                text: qsTranslate("", "Version")
+            }
+
+            Label {
+                color: Theme.highlightColor
+                anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
+                anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
+                wrapMode: Text.WordWrap
+                font.pixelSize: Theme.fontSizeLarge
+                text: modelData.version ? modelData.version : modelData.rpm
+            }
+
+            SectionHeader {
                 visible: !!modelData.infos && modelData.infos.maintainer
                 text: qsTranslate("", "Maintainer")
             }

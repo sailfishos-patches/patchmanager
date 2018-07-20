@@ -853,7 +853,7 @@ QString PatchManagerObject::checkRpmPatch(const QString &patch) const
         return QString();
     }
     QProcess proc;
-    proc.start(QStringLiteral("/bin/rpm"), { QStringLiteral("-qf"), QStringLiteral("--qf"), QStringLiteral("%{NAME}"), patchPath });
+    proc.start(QStringLiteral("/bin/rpm"), { QStringLiteral("-qf"), QStringLiteral("--qf"), QStringLiteral("%{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}"), patchPath });
     if (!proc.waitForFinished(5000) || proc.exitCode() != 0) {
         return QString();
     }
@@ -862,6 +862,16 @@ QString PatchManagerObject::checkRpmPatch(const QString &patch) const
         return QString();
     }
     return package;
+}
+
+QString PatchManagerObject::getRpmName(const QString &rpm) const
+{
+    const QString arch = rpm.section('.', -1);
+    const QString part1 = rpm.left(rpm.length() - arch.length() - 1);
+    const QString release = part1.section('-', -1);
+    const QString version = part1.section('-', -2);
+    const QString name = rpm.left(rpm.length() - arch.length() - release.length() - version.length() - 3);
+    return name;
 }
 
 void PatchManagerObject::process()
@@ -1927,7 +1937,7 @@ void PatchManagerObject::doUninstallPatch(const QString &patch, const QDBusMessa
                                                                     QStringLiteral("/StoreClient"),
                                                                     QStringLiteral("com.jolla.jollastore"),
                                                                     QStringLiteral("removePackage"));
-        removePackage.setArguments({ rpmPatch, QVariant::fromValue(false) });
+        removePackage.setArguments({ getRpmName(rpmPatch), QVariant::fromValue(false) });
         removeSuccess = m_sbus.send(removePackage);
     }
 

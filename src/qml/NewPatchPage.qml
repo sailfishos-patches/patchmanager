@@ -113,7 +113,7 @@ Page {
                 anchors.right: parent.right
                 anchors.margins: Theme.horizontalPageMargin
                 wrapMode: Text.WordWrap
-                text: modelData.version
+                text: modelData.version ? modelData.version : modelData.rpm
             }
 
             SectionHeader {
