@@ -1604,12 +1604,14 @@ void PatchManagerObject::doRefreshPatchList()
             patchConflicts[conflict] = existingConflicts;
         }
     }
+    qDebug() << Q_FUNC_INFO << "patchConflicts:" << patchConflicts.keys();
 
     // get patches
 
     QSet<QString> existingPatches;
     QList<QVariantMap> patches = listPatchesFromDir(PATCHES_DIR, existingPatches);
     patches.append(listPatchesFromDir(PATCHES_ADDITIONAL_DIR, existingPatches, false));
+    qDebug() << Q_FUNC_INFO << "patches:" << patches.count();
 //    std::sort(patches.begin(), patches.end(), patchSort);
 
     // fill patch conflicts
@@ -1623,6 +1625,7 @@ void PatchManagerObject::doRefreshPatchList()
 
         m_metadata[patchName] = patch;
     }
+    qDebug() << Q_FUNC_INFO << "metadata:" << m_metadata.keys();
 
     QVariantMap debug;
     for (const QString &debugKey : m_metadata.keys()) {
