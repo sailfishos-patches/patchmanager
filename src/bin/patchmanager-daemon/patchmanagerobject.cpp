@@ -140,14 +140,13 @@ bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, Q
     file.close();
 
     if (error.error != QJsonParseError::NoError) {
+        qWarning() << Q_FUNC_INFO << error.errorString();
         return false;
     }
 
     QVariantMap json = document.toVariant().toMap();
 
-    const QStringList &keys = json.keys();
-
-    if (!keys.contains(NAME_KEY) || !keys.contains(DESCRIPTION_KEY) || !keys.contains(CATEGORY_KEY)) {
+    if (!json.contains(NAME_KEY) || !json.contains(DESCRIPTION_KEY) || !json.contains(CATEGORY_KEY)) {
         return false;
     }
 
