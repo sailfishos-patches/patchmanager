@@ -98,7 +98,7 @@ Page {
                 anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeLarge
-                text: modelData.version ? modelData.version : modelData.rpm
+                text: modelData.rpm ? modelData.rpm : modelData.version
             }
 
             SectionHeader {
