@@ -866,11 +866,8 @@ QString PatchManagerObject::checkRpmPatch(const QString &patch) const
 
 QString PatchManagerObject::getRpmName(const QString &rpm) const
 {
-    const QString arch = rpm.section('.', -1);
-    const QString part1 = rpm.left(rpm.length() - arch.length() - 1);
-    const QString release = part1.section('-', -1);
-    const QString version = part1.section('-', -2);
-    const QString name = rpm.left(rpm.length() - arch.length() - release.length() - version.length() - 3);
+    const QString info = rpm.section('-', -2);
+    const QString name = rpm.left(rpm.length() - info.length() - 1);
     return name;
 }
 
