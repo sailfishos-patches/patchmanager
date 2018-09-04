@@ -1918,7 +1918,6 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
                     }
                 }
             }
-            refreshPatchList();
         } else {
             patchDir.removeRecursively();
         }
