@@ -140,6 +140,7 @@ Page {
         }
         section.property: "category"
         currentIndex: -1
+        spacing: Theme.paddingSmall
 
         delegate: BackgroundItem {
             id: background
