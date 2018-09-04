@@ -33,6 +33,7 @@ BuildRequires:  pkgconfig(nemonotifications-qt5)
 BuildRequires:  qt5-qtdeclarative-devel-tools
 BuildRequires:  pkgconfig(libsystemd-journal)
 BuildRequires:  qt5-qttools-linguist
+BuildRequires:  pkgconfig(rpm)
 
 %description
 patchmanager allows managing Sailfish OS patches

@@ -68,6 +68,11 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
+#include <rpm/rpmlib.h>
+#include <rpm/header.h>
+#include <rpm/rpmdb.h>
+#include <rpm/rpmts.h>
+
 #define NAME(x) #x
 
 #define DBUS_GUARD(x) \
@@ -151,7 +156,7 @@ bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, Q
     }
 
     json[PATCH_KEY] = patchPath;
-    json[RPM_KEY] = checkRpmPatch(patchPath);
+    json[RPM_KEY] = QString();
     json[AVAILABLE_KEY] = available;
 //    json[CATEGORY_KEY] = json[CATEGORY_KEY];
 //    json[SECTION_KEY] = QStringLiteral("Other");
@@ -478,6 +483,12 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
 
     connect(m_journal, &Journal::matchFound, this, &PatchManagerObject::onFailureOccured);
     m_journal->init();
+
+    static bool rpmConfigRead = false;
+    if (!rpmConfigRead) {
+        rpmReadConfigFiles(NULL, NULL);
+        rpmConfigRead = true;
+    }
 }
 
 PatchManagerObject::~PatchManagerObject()
@@ -843,24 +854,6 @@ void PatchManagerObject::clearFakeroot()
 
     qDebug() << Q_FUNC_INFO << "Making clean cache:" <<
     QDir::root().mkpath(s_patchmanagerCacheRoot);
-}
-
-QString PatchManagerObject::checkRpmPatch(const QString &patch) const
-{
-    QString patchPath = QStringLiteral("/usr/share/patchmanager/patches/%1/unified_diff.patch").arg(patch);
-    if (!QFile(patchPath).exists()) {
-        return QString();
-    }
-    QProcess proc;
-    proc.start(QStringLiteral("/bin/rpm"), { QStringLiteral("-qf"), QStringLiteral("--qf"), QStringLiteral("%{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}"), patchPath });
-    if (!proc.waitForFinished(5000) || proc.exitCode() != 0) {
-        return QString();
-    }
-    const QString package = QString::fromLatin1(proc.readAllStandardOutput());
-    if (package.isEmpty()) {
-        return QString();
-    }
-    return package;
 }
 
 QString PatchManagerObject::getRpmName(const QString &rpm) const
@@ -1610,7 +1603,7 @@ void PatchManagerObject::doRefreshPatchList()
     qDebug() << Q_FUNC_INFO << "patches:" << patches.count();
 //    std::sort(patches.begin(), patches.end(), patchSort);
 
-    // fill patch conflicts
+    // fill patch conflicts and rpm names
 
     m_metadata.clear();
     for (QVariantMap &patch : patches) {
@@ -1619,8 +1612,62 @@ void PatchManagerObject::doRefreshPatchList()
             patch[CONFLICTS_KEY] = patchConflicts[patchName];
         }
 
+        //
+        rpmts transactionSet = rpmtsCreate();
+
+        char filename[255] = {0};
+        sprintf(filename, "/usr/share/patchmanager/patches/%s/unified_diff.patch", patchName.toLatin1().constData());
+
+        rpmdbMatchIterator it = rpmtsInitIterator(transactionSet, RPMDBI_BASENAMES, filename, 0);
+
+        if (Header header = rpmdbNextIterator(it)) {
+            rpmtd tagData = rpmtdNew();
+
+            QString name;
+            QString version;
+            QString release;
+            QString arch;
+
+            if (headerGet(header, RPMTAG_NAME, tagData, HEADERGET_DEFAULT)) {
+                const char *value = rpmtdGetString(tagData);
+                if (value) {
+                    name = QString::fromLatin1(value);
+                }
+            }
+
+            if (headerGet(header, RPMTAG_VERSION, tagData, HEADERGET_DEFAULT)) {
+                const char *value = rpmtdGetString(tagData);
+                if (value) {
+                    version = QString::fromLatin1(value);
+                }
+            }
+
+            if (headerGet(header, RPMTAG_RELEASE, tagData, HEADERGET_DEFAULT)) {
+                const char *value = rpmtdGetString(tagData);
+                if (value) {
+                    release = QString::fromLatin1(value);
+                }
+            }
+
+            if (headerGet(header, RPMTAG_ARCH, tagData, HEADERGET_DEFAULT)) {
+                const char *value = rpmtdGetString(tagData);
+                if (value) {
+                    arch = QString::fromLatin1(value);
+                }
+            }
+
+            rpmtdFree(tagData);
+
+            patch[RPM_KEY] = QStringLiteral("%1-%2-%3.%4").arg(name, version, release, arch);
+        }
+
+        rpmdbFreeIterator(it);
+        rpmtsFree(transactionSet);
+        //
+
         m_metadata[patchName] = patch;
     }
+
     qDebug() << Q_FUNC_INFO << "metadata:" << m_metadata.keys();
 
     QVariantMap debug;
