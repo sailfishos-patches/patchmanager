@@ -64,6 +64,8 @@ ln -s ../checkForUpdates-org.SfietKonstantin.patchmanager.timer %{buildroot}/lib
 mkdir -p %{buildroot}/usr/lib/systemd/user/lipstick.service.wants/
 ln -s ../lipstick-patchmanager.service %{buildroot}/usr/lib/systemd/user/lipstick.service.wants/
 
+mkdir -p %{buildroot}%{_datadir}/%{name}/patches
+
 %pre
 export NO_PM_PRELOAD=1
 case "$*" in
@@ -156,6 +158,7 @@ systemctl-user daemon-reload
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-dialog
 %{_sbindir}/%{name}
+%dir %{_datadir}/%{name}/patches
 %{_datadir}/%{name}/tools
 %{_datadir}/dbus-1/
 %{_sysconfdir}/dbus-1/system.d/

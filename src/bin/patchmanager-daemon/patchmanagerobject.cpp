@@ -1962,12 +1962,9 @@ void PatchManagerObject::doUninstallPatch(const QString &patch, const QDBusMessa
         }
     } else {
         qDebug() << Q_FUNC_INFO << "Removing patch package" << rpmPatch;
-        QDBusMessage removePackage = QDBusMessage::createMethodCall(QStringLiteral("com.jolla.jollastore"),
-                                                                    QStringLiteral("/StoreClient"),
-                                                                    QStringLiteral("com.jolla.jollastore"),
-                                                                    QStringLiteral("removePackage"));
-        removePackage.setArguments({ getRpmName(rpmPatch), QVariant::fromValue(false) });
-        removeSuccess = m_sbus.send(removePackage);
+
+        const int ret = QProcess::execute(QStringLiteral("/usr/bin/pkcon"), {QStringLiteral("remove"), QStringLiteral("-y"), getRpmName(rpmPatch)});
+        removeSuccess = ret == 0;
     }
 
     qDebug() << Q_FUNC_INFO << "Success:" << removeSuccess;

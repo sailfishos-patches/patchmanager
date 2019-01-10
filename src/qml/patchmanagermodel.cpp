@@ -107,7 +107,7 @@ void PatchManagerModel::populateData(const QVariantList &data, const QString &pa
     qDebug() << Q_FUNC_INFO << data.length();
     qDebug() << Q_FUNC_INFO << "Altered:" << patch << "installed:" << installed;
 
-    if (data.isEmpty()) {
+    if (data.isEmpty() && patch.isEmpty()) {
         return;
     }
 
