@@ -960,6 +960,11 @@ QVariantMap PatchManagerObject::unapplyPatch(const QString &patch)
     qDebug() << Q_FUNC_INFO << patch;
     QDBusMessage msg;
     if (calledFromDBus()) {
+        if (!m_appliedPatches.contains(patch)) {
+            const QVariantMap reply = {{ QStringLiteral("ok"), true }, { QStringLiteral("log"), QStringLiteral("not applied") }};
+            return reply;
+        }
+
         setDelayedReply(true);
         msg = message();
     }
