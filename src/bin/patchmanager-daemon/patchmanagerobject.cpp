@@ -941,7 +941,7 @@ void PatchManagerObject::process()
         if (!data.isEmpty()) {
             msg.setArguments(data);
         }
-        connection.send(msg);
+        connection.call(msg);
 
         QCoreApplication::exit(0);
         return;
