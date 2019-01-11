@@ -55,29 +55,6 @@ void help()
     std::cout << "  patchmanager-daemon --daemon       : daemonize" << std::endl;
 }
 
-QString getLang()
-{
-    QString lang = QStringLiteral("en_US.utf8");
-
-    QFile localeConfig(QStringLiteral("/var/lib/environment/nemo/locale.conf"));
-
-    if (!localeConfig.exists() || !localeConfig.open(QFile::ReadOnly)) {
-        return lang;
-    }
-
-    while (!localeConfig.atEnd()) {
-        QString line = localeConfig.readLine().trimmed();
-        if (line.startsWith(QStringLiteral("LANG="))) {
-             lang = line.mid(5);
-             break;
-        }
-    }
-
-    qDebug() << Q_FUNC_INFO << lang;
-
-    return lang;
-}
-
 int main(int argc, char **argv)
 {
     qputenv("NO_PM_PRELOAD", "1");
@@ -95,23 +72,11 @@ int main(int argc, char **argv)
 
 #ifdef BUILD_VERSION
     const QString version = QStringLiteral(BUILD_VERSION);
-    qDebug() << Q_FUNC_INFO << "Patchmanager:" << version;
     app.setApplicationVersion(version);
 #else
     qDebug() << Q_FUNC_INFO << "Patchmanager version unknown!";
     app.setApplicationVersion(QStringLiteral("3.9.9"));
 #endif
-
-    QTranslator translator;
-    bool success = translator.load(QLocale(getLang()),
-                                   QStringLiteral("settings-patchmanager"),
-                                   QStringLiteral("-"),
-                                   QStringLiteral("/usr/share/translations/"),
-                                   QStringLiteral(".qm"));
-    qDebug() << Q_FUNC_INFO << "Translator loaded:" << success;
-
-    success = app.installTranslator(&translator);
-    qDebug() << Q_FUNC_INFO << "Translator installed:" << success;
 
     PatchManagerObject patchManager;
     app.installEventFilter(&patchManager);

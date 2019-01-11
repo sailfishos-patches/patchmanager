@@ -128,6 +128,29 @@ static const QString s_patchmanagerCacheRoot = QStringLiteral("/tmp/patchmanager
 
 static const QString s_sessionBusConnection = QStringLiteral("pm3connection");
 
+QString getLang()
+{
+    QString lang = QStringLiteral("en_US.utf8");
+
+    QFile localeConfig(QStringLiteral("/var/lib/environment/nemo/locale.conf"));
+
+    if (!localeConfig.exists() || !localeConfig.open(QFile::ReadOnly)) {
+        return lang;
+    }
+
+    while (!localeConfig.atEnd()) {
+        QString line = localeConfig.readLine().trimmed();
+        if (line.startsWith(QStringLiteral("LANG="))) {
+             lang = line.mid(5);
+             break;
+        }
+    }
+
+    qDebug() << Q_FUNC_INFO << lang;
+
+    return lang;
+}
+
 bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available)
 {
     QDir patchDir(root);
@@ -367,128 +390,8 @@ QList<QVariantMap> PatchManagerObject::listPatchesFromDir(const QString &dir, QS
 
 PatchManagerObject::PatchManagerObject(QObject *parent)
     : QObject(parent)
-    , m_timer(new QTimer(this))
-    , m_nam(new QNetworkAccessManager(this))
-    , m_originalWatcher(new QFileSystemWatcher(this))
-    , m_settings(new QSettings(s_newConfigLocation, QSettings::IniFormat, this))
-    , m_serverThread(new QThread(this))
-    , m_localServer(new QLocalServer(nullptr)) // controlled by separate thread
-    , m_journal(new Journal(this))
-    , m_sessionBusConnector(new QTimer(this))
     , m_sbus(s_sessionBusConnection)
 {
-    qDebug() << Q_FUNC_INFO << "Environment:";
-
-    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    for (const QString &key : env.keys()) {
-        qDebug() << Q_FUNC_INFO << key << "=" << env.value(key);
-    }
-
-    QFile preload(QStringLiteral("/etc/ld.so.preload"));
-    if (preload.exists()) {
-        qDebug() << Q_FUNC_INFO << "ld.so.preload:";
-        if (!preload.open(QFile::ReadOnly)) {
-            qWarning() << Q_FUNC_INFO << "Can't open ld.so.preload!";
-        }
-        qDebug().noquote() << Q_FUNC_INFO << preload.readAll();
-    } else {
-        qWarning() << Q_FUNC_INFO << "ld.so.preload does not exists!";
-    }
-
-    qDebug() << Q_FUNC_INFO << PM_APPLY;
-    QFileInfo pa(PM_APPLY);
-    if (pa.exists()) {
-        qDebug() << Q_FUNC_INFO << pa.permissions();
-    } else {
-        qWarning() << Q_FUNC_INFO << "Does not exists!";
-    }
-
-    qDebug() << Q_FUNC_INFO << PM_UNAPPLY;
-    QFileInfo pu(PM_UNAPPLY);
-    if (pu.exists()) {
-        qDebug() << Q_FUNC_INFO << pu.permissions();
-    } else {
-        qWarning() << Q_FUNC_INFO << "Does not exists!";
-    }
-
-    if (!QFileInfo::exists(s_newConfigLocation) && QFileInfo::exists(s_oldConfigLocation)) {
-        QFile::copy(s_oldConfigLocation, s_newConfigLocation);
-    }
-
-    if (qEnvironmentVariableIsSet("PM_DEBUG_EVENTFILTER")) {
-        installEventFilter(this);
-    }
-
-    if (qEnvironmentVariableIsEmpty("DBUS_SESSION_BUS_ADDRESS")) {
-        qWarning() << Q_FUNC_INFO << "Session bus address is not set! Please check environment configuration!";
-        qDebug() << Q_FUNC_INFO << "Injecting DBUS_SESSION_BUS_ADDRESS...";
-        qputenv("DBUS_SESSION_BUS_ADDRESS", QByteArrayLiteral("unix:path=/run/user/100000/dbus/user_bus_socket"));
-    }
-
-    connect(m_timer, &QTimer::timeout, this, &PatchManagerObject::onTimerAction);
-    m_timer->setSingleShot(false);
-    m_timer->setTimerType(Qt::VeryCoarseTimer);
-    m_timer->setInterval(60 * 60 * 1000); // 60 min
-    m_timer->start();
-
-    connect(m_sessionBusConnector, &QTimer::timeout, this, [this]() {
-        QDBusConnection test = QDBusConnection::connectToBus(QDBusConnection::SessionBus, s_sessionBusConnection);
-        if (!test.isConnected()) {
-            QDBusConnection::disconnectFromBus(s_sessionBusConnection);
-        } else {
-            m_sbus = test;
-            m_sessionBusConnector->stop();
-            qDebug() << Q_FUNC_INFO << "Connected to session bus!";
-
-            m_sbus.connect(QString(),
-                           QStringLiteral("/org/freedesktop/systemd1/unit/lipstick_2eservice"),
-                           QStringLiteral("org.freedesktop.DBus.Properties"),
-                           QStringLiteral("PropertiesChanged"), this, SLOT(onLipstickChanged(QString,QVariantMap,QStringList)));
-
-            m_sbus.connect(QString(),
-                           QStringLiteral("/StoreClient"),
-                           QStringLiteral("com.jolla.jollastore"),
-                           QStringLiteral("osUpdateProgressChanged"), this, SLOT(onOsUpdateProgress(int)));
-        }
-    });
-    m_sessionBusConnector->setSingleShot(false);
-    m_sessionBusConnector->setTimerType(Qt::VeryCoarseTimer);
-    m_sessionBusConnector->setInterval(1000); // 1 second
-    m_sessionBusConnector->start();
-
-    connect(m_originalWatcher, &QFileSystemWatcher::fileChanged, this, &PatchManagerObject::onOriginalFileChanged);
-
-    m_localServer->setSocketOptions(QLocalServer::WorldAccessOption);
-    m_localServer->setMaxPendingConnections(2147483647);
-    m_localServer->moveToThread(m_serverThread);
-
-    connect(m_serverThread, &QThread::finished, this, [this](){
-        m_localServer->close();
-    });
-    connect(m_localServer, &QLocalServer::newConnection, this, &PatchManagerObject::startReadingLocalServer, Qt::DirectConnection);
-    connect(m_serverThread, &QThread::started, this, [this](){
-        bool listening = m_localServer->listen(s_patchmanagerSocket);
-        if (!listening // not listening
-                && m_localServer->serverError() == QAbstractSocket::AddressInUseError // because of AddressInUseError
-                && QFileInfo::exists(s_patchmanagerSocket) // socket file already exists
-                && QFile::remove(s_patchmanagerSocket)) { // and successfully removed it
-            qWarning() << Q_FUNC_INFO << "Removed old stuck socket";
-            listening = m_localServer->listen(s_patchmanagerSocket); // try to start lisening again
-        }
-        qDebug() << Q_FUNC_INFO << "Server listening:" << listening;
-        if (!listening) {
-            qWarning() << Q_FUNC_INFO << "Server error:" << m_localServer->serverError() << m_localServer->errorString();
-        }
-    }, Qt::DirectConnection);
-
-    connect(m_journal, &Journal::matchFound, this, &PatchManagerObject::onFailureOccured);
-    m_journal->init();
-
-    static bool rpmConfigRead = false;
-    if (!rpmConfigRead) {
-        rpmReadConfigFiles(NULL, NULL);
-        rpmConfigRead = true;
-    }
 }
 
 PatchManagerObject::~PatchManagerObject()
@@ -698,7 +601,140 @@ void PatchManagerObject::doStartLocalServer()
 
 void PatchManagerObject::initialize()
 {
-    qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO << "Patchmanager:" << qApp->applicationVersion();
+
+    QTranslator *translator = new QTranslator(this);
+    bool success = translator->load(QLocale(getLang()),
+                                   QStringLiteral("settings-patchmanager"),
+                                   QStringLiteral("-"),
+                                   QStringLiteral("/usr/share/translations/"),
+                                   QStringLiteral(".qm"));
+    qDebug() << Q_FUNC_INFO << "Translator loaded:" << success;
+
+    success = qApp->installTranslator(translator);
+    qDebug() << Q_FUNC_INFO << "Translator installed:" << success;
+
+    m_nam = new QNetworkAccessManager(this);
+    m_settings = new QSettings(s_newConfigLocation, QSettings::IniFormat, this);
+
+    qDebug() << Q_FUNC_INFO << "Environment:";
+
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    for (const QString &key : env.keys()) {
+        qDebug() << Q_FUNC_INFO << key << "=" << env.value(key);
+    }
+
+    QFile preload(QStringLiteral("/etc/ld.so.preload"));
+    if (preload.exists()) {
+        qDebug() << Q_FUNC_INFO << "ld.so.preload:";
+        if (!preload.open(QFile::ReadOnly)) {
+            qWarning() << Q_FUNC_INFO << "Can't open ld.so.preload!";
+        }
+        qDebug().noquote() << Q_FUNC_INFO << preload.readAll();
+    } else {
+        qWarning() << Q_FUNC_INFO << "ld.so.preload does not exists!";
+    }
+
+    qDebug() << Q_FUNC_INFO << PM_APPLY;
+    QFileInfo pa(PM_APPLY);
+    if (pa.exists()) {
+        qDebug() << Q_FUNC_INFO << pa.permissions();
+    } else {
+        qWarning() << Q_FUNC_INFO << "Does not exists!";
+    }
+
+    qDebug() << Q_FUNC_INFO << PM_UNAPPLY;
+    QFileInfo pu(PM_UNAPPLY);
+    if (pu.exists()) {
+        qDebug() << Q_FUNC_INFO << pu.permissions();
+    } else {
+        qWarning() << Q_FUNC_INFO << "Does not exists!";
+    }
+
+    if (!QFileInfo::exists(s_newConfigLocation) && QFileInfo::exists(s_oldConfigLocation)) {
+        QFile::copy(s_oldConfigLocation, s_newConfigLocation);
+    }
+
+    if (Q_UNLIKELY(qEnvironmentVariableIsSet("PM_DEBUG_EVENTFILTER"))) {
+        installEventFilter(this);
+    }
+
+    if (Q_UNLIKELY(qEnvironmentVariableIsEmpty("DBUS_SESSION_BUS_ADDRESS"))) {
+        qWarning() << Q_FUNC_INFO << "Session bus address is not set! Please check environment configuration!";
+        qDebug() << Q_FUNC_INFO << "Injecting DBUS_SESSION_BUS_ADDRESS...";
+        qputenv("DBUS_SESSION_BUS_ADDRESS", QByteArrayLiteral("unix:path=/run/user/100000/dbus/user_bus_socket"));
+    }
+
+    m_timer = new QTimer(this);
+    connect(m_timer, &QTimer::timeout, this, &PatchManagerObject::onTimerAction);
+    m_timer->setSingleShot(false);
+    m_timer->setTimerType(Qt::VeryCoarseTimer);
+    m_timer->setInterval(60 * 60 * 1000); // 60 min
+    m_timer->start();
+
+    m_sessionBusConnector = new QTimer(this);
+    connect(m_sessionBusConnector, &QTimer::timeout, this, [this]() {
+        QDBusConnection test = QDBusConnection::connectToBus(QDBusConnection::SessionBus, s_sessionBusConnection);
+        if (!test.isConnected()) {
+            QDBusConnection::disconnectFromBus(s_sessionBusConnection);
+        } else {
+            m_sbus = test;
+            m_sessionBusConnector->stop();
+            qDebug() << Q_FUNC_INFO << "Connected to session bus!";
+
+            m_sbus.connect(QString(),
+                           QStringLiteral("/org/freedesktop/systemd1/unit/lipstick_2eservice"),
+                           QStringLiteral("org.freedesktop.DBus.Properties"),
+                           QStringLiteral("PropertiesChanged"), this, SLOT(onLipstickChanged(QString,QVariantMap,QStringList)));
+
+            m_sbus.connect(QString(),
+                           QStringLiteral("/StoreClient"),
+                           QStringLiteral("com.jolla.jollastore"),
+                           QStringLiteral("osUpdateProgressChanged"), this, SLOT(onOsUpdateProgress(int)));
+        }
+    });
+    m_sessionBusConnector->setSingleShot(false);
+    m_sessionBusConnector->setTimerType(Qt::VeryCoarseTimer);
+    m_sessionBusConnector->setInterval(1000); // 1 second
+    m_sessionBusConnector->start();
+
+    m_originalWatcher = new QFileSystemWatcher(this);
+    connect(m_originalWatcher, &QFileSystemWatcher::fileChanged, this, &PatchManagerObject::onOriginalFileChanged);
+
+    m_localServer = new QLocalServer(nullptr); // controlled by separate thread
+    m_localServer->setSocketOptions(QLocalServer::WorldAccessOption);
+    m_localServer->setMaxPendingConnections(2147483647);
+
+    m_serverThread = new QThread(this);
+    connect(m_serverThread, &QThread::finished, this, [this](){
+        m_localServer->close();
+    });
+    connect(m_localServer, &QLocalServer::newConnection, this, &PatchManagerObject::startReadingLocalServer, Qt::DirectConnection);
+    connect(m_serverThread, &QThread::started, this, [this](){
+        bool listening = m_localServer->listen(s_patchmanagerSocket);
+        if (!listening // not listening
+                && m_localServer->serverError() == QAbstractSocket::AddressInUseError // because of AddressInUseError
+                && QFileInfo::exists(s_patchmanagerSocket) // socket file already exists
+                && QFile::remove(s_patchmanagerSocket)) { // and successfully removed it
+            qWarning() << Q_FUNC_INFO << "Removed old stuck socket";
+            listening = m_localServer->listen(s_patchmanagerSocket); // try to start lisening again
+        }
+        qDebug() << Q_FUNC_INFO << "Server listening:" << listening;
+        if (!listening) {
+            qWarning() << Q_FUNC_INFO << "Server error:" << m_localServer->serverError() << m_localServer->errorString();
+        }
+    }, Qt::DirectConnection);
+    m_localServer->moveToThread(m_serverThread);
+
+    m_journal = new Journal(this);
+    connect(m_journal, &Journal::matchFound, this, &PatchManagerObject::onFailureOccured);
+    m_journal->init();
+
+    static bool rpmConfigRead = false;
+    if (!rpmConfigRead) {
+        rpmReadConfigFiles(NULL, NULL);
+        rpmConfigRead = true;
+    }
 
     getVersion();
 }
@@ -865,7 +901,6 @@ QString PatchManagerObject::getRpmName(const QString &rpm) const
 
 void PatchManagerObject::process()
 {
-    qDebug() << Q_FUNC_INFO;
     const QStringList args = QCoreApplication::arguments();
 
     if (args.count() == 2 && args[1] == QStringLiteral("--daemon")) {

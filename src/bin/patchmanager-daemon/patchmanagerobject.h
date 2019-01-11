@@ -227,7 +227,7 @@ private:
     bool m_dbusRegistered = false;
     QSet<QString> m_appliedPatches;
     QMap<QString, QVariantMap> m_metadata;
-    QTimer *m_timer;
+    QTimer *m_timer = nullptr;
 
     QMap<QString, QStringList> m_patchFiles;
     QMap<QString, QStringList> m_fileToPatch;
@@ -237,21 +237,21 @@ private:
 
     QString m_ssuRelease;
     PatchManagerAdaptor *m_adaptor = nullptr;
-    QNetworkAccessManager *m_nam;
+    QNetworkAccessManager *m_nam = nullptr;
 
-    QFileSystemWatcher *m_originalWatcher;
+    QFileSystemWatcher *m_originalWatcher = nullptr;
 
-    QSettings *m_settings;
+    QSettings *m_settings = nullptr;
 
-    QThread *m_serverThread;
-    QLocalServer *m_localServer;
+    QThread *m_serverThread = nullptr;
+    QLocalServer *m_localServer = nullptr;
 
     QHash<QString, QStringList> m_toggleServices; // category => patches
 
-    Journal *m_journal;
+    Journal *m_journal = nullptr;
     bool m_failed = false;
 
-    QTimer *m_sessionBusConnector;
+    QTimer *m_sessionBusConnector = nullptr;
     QDBusConnection m_sbus;
 };
 
