@@ -1,0 +1,9 @@
+[Unit]
+Description=Patchmanager check for updates service
+Requires=dbus.service
+After=dbus.service
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/bin/dbus-send --system --print-reply --dest=org.coderus.patchmanager /org/coderus/patchmanager org.coderus.patchmanager.checkForUpdates

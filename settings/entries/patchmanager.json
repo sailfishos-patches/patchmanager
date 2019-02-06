@@ -1,0 +1,16 @@
+{
+    "translation_catalog": "settings-patchmanager",
+    "entries": [
+        {
+            "path": "system_settings/look_and_feel/patchmanager",
+            "type": "page",
+            "title": "Patchmanager",
+            "translation_id": "Patchmanager",
+            "icon": "image://theme/icon-m-patchmanager",
+            "order": 2000,
+            "params": {
+                "source": "/usr/share/jolla-settings/pages/patchmanager/patchmanager.qml"
+            }
+        }
+    ]
+}

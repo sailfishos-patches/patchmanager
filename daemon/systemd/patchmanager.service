@@ -1,0 +1,19 @@
+[Unit]
+Description=Patchmanager service
+Requires=dbus.service
+After=dbus.service
+Before=systemd-user-sessions.service
+
+[Service]
+Type=dbus
+BusName=org.coderus.patchmanager
+SupplementaryGroups=inet
+User=root
+EnvironmentFile=-/var/lib/environment/patchmanager/*.conf
+ExecStart=/usr/sbin/patchmanager-daemon
+TimeoutStartSec=600
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,158 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+    <interface name="org.coderus.patchmanager">
+        <method name="listPatches">
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantList"/>
+            <arg name="result" type="a(v)" direction="out" />
+        </method>
+        <method name="listVersions">
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+            <arg name="result" type="a{sv}" direction="out" />
+        </method>
+        <method name="isPatchApplied">
+            <arg name="patch" type="s" direction="in" />
+            <arg name="applied" type="b" direction="out" />
+        </method>
+        <method name="applyPatch">
+            <arg name="patch" type="s" direction="in" />
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+            <arg name="result" type="a{sv}" direction="out" />
+        </method>
+        <method name="unapplyPatch">
+            <arg name="patch" type="s" direction="in" />
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+            <arg name="result" type="a{sv}" direction="out" />
+        </method>
+        <method name="installPatch">
+            <arg name="patch" type="s" direction="in" />
+            <arg name="version" type="s" direction="in" />
+            <arg name="url" type="s" direction="in" />
+            <arg name="ok" type="b" direction="out" />
+        </method>
+        <method name="uninstallPatch">
+            <arg name="patch" type="s" direction="in" />
+            <arg name="ok" type="b" direction="out" />
+        </method>
+        <method name="resetState">
+            <arg name="patch" type="s" direction="in" />
+            <arg name="ok" type="b" direction="out" />
+        </method>
+        <method name="unapplyAllPatches">
+            <arg name="ok" type="b" direction="out" />
+        </method>
+        <method name="votePatch">
+            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+            <arg name="patch" type="s" direction="in" />
+            <arg name="action" type="i" direction="in" />
+        </method>
+        <method name="checkVote">
+            <arg name="patch" type="s" direction="in" />
+            <arg name="vote" type="i" direction="out" />
+        </method>
+        <method name="putSettings">
+            <arg name="name" type="s" direction="in" />
+            <arg name="value" type="v" direction="in" />
+            <arg name="result" type="b" direction="out" />
+        </method>
+        <method name="getSettings">
+            <arg name="name" type="s" direction="in" />
+            <arg name="def" type="v" direction="in" />
+            <arg name="value" type="v" direction="out" />
+        </method>
+        <method name="checkEaster">
+            <arg name="easter" type="s" direction="out" />
+        </method>
+        <method name="getSsuVersion">
+            <arg name="version" type="s" direction="out" />
+        </method>
+        <method name="getPatchmanagerVersion">
+            <arg name="version" type="s" direction="out" />
+        </method>
+        <method name="downloadCatalog">
+            <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QVariantMap"/>
+            <arg name="params" type="a{sv}" direction="in" />
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantList"/>
+            <arg name="json" type="a(v)" direction="out" />
+        </method>
+        <method name="downloadPatchInfo">
+            <arg name="name" type="s" direction="in" />
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+            <arg name="data" type="a{sv}" direction="out" />
+        </method>
+        <method name="getUpdates">
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+            <arg name="updates" type="a{sv}" direction="out" />
+        </method>
+        <method name="restartServices">
+            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+        </method>
+        <method name="patchToggleService">
+            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+            <arg name="patch" type="s" direction="in" />
+            <arg name="activate" type="b" direction="in" />
+        </method>
+        <method name="getToggleServices">
+            <arg name="toggle" type="b" direction="out" />
+        </method>
+        <method name="getFailure">
+            <arg name="failure" type="b" direction="out" />
+        </method>
+        <method name="getLoaded">
+            <arg name="loaded" type="b" direction="out" />
+        </method>
+        <method name="resolveFailure">
+            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+        </method>
+        <method name="loadRequest">
+            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+            <arg name="apply" type="b" direction="in" />
+        </method>
+        <method name="checkForUpdates">
+            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+        </method>
+        <method name="quit">
+            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+        </method>
+        <method name="lipstickChanged">
+            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+            <arg name="state" type="s" direction="in" />
+        </method>
+        <signal name="applyPatchFinished">
+          <arg name="patch" type="s"/>
+        </signal>
+        <signal name="unapplyPatchFinished">
+          <arg name="patch" type="s"/>
+        </signal>
+        <signal name="updatesAvailable">
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+            <arg name="updates" type="a{sv}"/>
+        </signal>
+        <signal name="toggleServicesChanged">
+            <arg name="toggle" type="b"/>
+        </signal>
+        <signal name="patchAltered">
+            <arg name="patch" type="s"/>
+            <arg name="installed" type="b"/>
+        </signal>
+        <signal name="listPatchesChanged" />
+        <signal name="unapplyAllPatchesFinished" />
+        <signal name="failureChanged">
+            <arg name="failure" type="b"/>
+        </signal>
+        <signal name="loadedChanged">
+            <arg name="loaded" type="b"/>
+        </signal>
+        <signal name="autoApplyingStarted">
+            <arg name="count" type="i"/>
+        </signal>
+        <signal name="autoApplyingPatch">
+            <arg name="name" type="s"/>
+        </signal>
+        <signal name="autoApplyingFailed">
+            <arg name="name" type="s"/>
+        </signal>
+        <signal name="autoApplyingFinished">
+            <arg name="success" type="b"/>
+        </signal>
+    </interface>
+</node>

@@ -1,0 +1,22 @@
+# Patchmanager script constants
+
+# Root
+PM_VAR_DIR="/tmp/patchmanager"
+PATCH_ROOT_DIR="/usr/share/patchmanager/patches"
+
+# Paths / Files
+PATCH_DIR="$PATCH_ROOT_DIR/$1"
+
+PM_LOG_FILE="$PM_VAR_DIR/patchmanager.log"
+PM_PATCH_BACKUP_ROOT_DIR="$PM_VAR_DIR/patches"
+PM_PATCH_BACKUP_DIR="$PM_PATCH_BACKUP_ROOT_DIR/$1"
+
+# Constants
+PATCH_NAME="unified_diff.patch"
+PATCH_PATH="$PATCH_DIR/$PATCH_NAME"
+PATCH_BACKUP="$PM_PATCH_BACKUP_DIR/$PATCH_NAME"
+
+ROOT_DIR="/tmp/patchmanager-root"
+
+# Applications
+PATCH_EXEC="/usr/bin/patch"

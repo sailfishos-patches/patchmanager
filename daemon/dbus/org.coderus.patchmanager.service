@@ -1,0 +1,5 @@
+[D-BUS Service]
+Name=org.coderus.patchmanager
+Exec=/bin/false
+User=root
+SystemdService=patchmanager.service
