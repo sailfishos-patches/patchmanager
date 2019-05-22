@@ -485,7 +485,7 @@ void PatchManagerObject::doPrepareCacheRoot()
         }
     }
 
-    for (const QString &patchName : m_appliedPatches) {
+    for (const QString &patchName : QSet<QString>(m_appliedPatches)) {
         if (!order.contains(patchName)) {
             if (m_adaptor) {
                 emit m_adaptor->autoApplyingPatch(getPatchName(patchName));
@@ -1493,7 +1493,7 @@ void PatchManagerObject::onOriginalFileChanged(const QString &path)
     }
 
     QStringList patches = m_fileToPatch[path];
-    for (const QString &patch : patches) {
+    for (const QString &patch : QStringList(patches)) {
         if (!isPatchApplied(patch)) {
             patches.removeAll(patch);
         }
