@@ -6,8 +6,10 @@ CONFIG += link_pkgconfig
 PKGCONFIG += nemonotifications-qt5
 PKGCONFIG += libsystemd-journal
 PKGCONFIG += rpm
+PKGCONFIG += popt
 
-INCLUDEPATH += "/home/OMP/a.kozhevnikov/SailfishOS2/mersdk/targets/SailfishOS-2.2.1.7-armv7hl/usr/include/"
+INCLUDEPATH += /usr/include
+INCLUDEPATH += /usr/include/rpm
 
 isEmpty(PROJECT_PACKAGE_VERSION) {
     BUILD_VERSION = "3.0.0"
