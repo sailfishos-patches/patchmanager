@@ -125,6 +125,7 @@
         </signal>
         <signal name="updatesAvailable">
             <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+            <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QVariantMap"/>
             <arg name="updates" type="a{sv}"/>
         </signal>
         <signal name="toggleServicesChanged">
