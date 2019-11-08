@@ -37,7 +37,7 @@ import org.SfietKonstantin.patchmanager 2.0
 Page {
     id: container
     property var modelData
-    property QtObject delegate
+    property var delegate
     signal doPatch
 
     SilicaFlickable {
@@ -46,13 +46,21 @@ Page {
         contentHeight: content.height
 
         PullDownMenu {
-            enabled: !container.delegate.applying || active
+            busy: container.delegate.applying
             MenuItem {
-                text: container.delegate.applying ? qsTranslate("", "Patch being applied") : (modelData.patched ? qsTranslate("", "Unapply patch") : qsTranslate("", "Apply patch"))
+                text: container.delegate.applying
+                    ? qsTranslate("", "Patch being applied")
+                    : (modelData.patched
+                        ? qsTranslate("", "Unapply patch")
+                        : qsTranslate("", "Apply patch"))
                 enabled: !container.delegate.applying && PatchManager.loaded
                 onClicked: {
                     container.delegate.doPatch()
                 }
+            }
+            MenuLabel {
+                visible: !PatchManager.loaded
+                text: qsTranslate("", "Load engine before applying patches")
             }
         }
 
