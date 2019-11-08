@@ -215,7 +215,7 @@ Page {
             id: background
             menu: contextMenu
             contentHeight: content.height
-            property bool applying: !appliedSwitch.busy
+            property bool applying: appliedSwitch.busy
             property int dragThreshold: width / 3
             property var pressPosition
             property int dragIndex: index
