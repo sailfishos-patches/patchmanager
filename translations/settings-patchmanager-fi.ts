@@ -3,15 +3,46 @@
     <name/>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="49"/>
-        <location filename="../src/qml/PatchManagerPage.qml" line="139"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="142"/>
         <source>About</source>
         <translation>Tietoja</translation>
     </message>
     <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="45"/>
+        <source>Apply patches</source>
+        <translation>Ota muutostiedostot käyttöön</translation>
+    </message>
+    <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="53"/>
+        <source>Patchmanager will automatically apply patches in 10 seconds.</source>
+        <translation>Muutostiedostojen hallinta ottaa muutostiedostot käyttöön automaattisesti 10 sekunnin kuluessa.</translation>
+    </message>
+    <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="66"/>
+        <source>Exit</source>
+        <translation>Poistu</translation>
+    </message>
+    <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="28"/>
+        <source>Applying patches</source>
+        <translation>Muutostiedostojen käyttöönottaminen</translation>
+    </message>
+    <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="136"/>
+        <source>Appled successfully!</source>
+        <translation>Käyttöönotto onnistui!</translation>
+    </message>
+    <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="137"/>
+        <source>Failed applying patches!</source>
+        <translation>Muutostiedostojen käyttöönotto epäonnistui!</translation>
+    </message>
+    <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="165"/>
         <location filename="../src/qml/AboutPage.qml" line="63"/>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="175"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="207"/>
         <source>Patchmanager</source>
-        <translation>Patchmanager</translation>
+        <translation>Muutostiedostojen hallinta</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="71"/>
@@ -21,7 +52,7 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="81"/>
         <source>Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.</source>
-        <translation>Patchmanager mahdollistaa järjestelmään muokkaamisen muutostiedostojen kautta. Se sisältää järjestelmäprosessin joka on vastuussa muutosten tekemisestä, sekä graafisen käyttöliittymän toimintojen ohjaamiseksi ja muutostiedostojen asentamiseksi/poistamiseksi.</translation>
+        <translation>Muutostiedostojen hallinta (Patchmanager) sallii muutoksia järjestelmään muutostiedostoilla (patch). Se tarjoaa järjestelmän taustaprosessin joka vastaa kyseisten muutostiedostojen suorittamisesta, samoin kuin graafinen käyttöliittymä (GUI), hallitakseen niiden toimintoja ja muutostiedostojen asennuksia/poistoja.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="92"/>
@@ -38,7 +69,7 @@
     <message>
         <location filename="../src/qml/DevelopersPage.qml" line="146"/>
         <source>%1&apos;s webpage</source>
-        <translation>%1:n nettisivu</translation>
+        <translation>%1:n verkkosivut</translation>
     </message>
     <message>
         <location filename="../src/qml/DevelopersPage.qml" line="151"/>
@@ -46,169 +77,188 @@
         <translation>%1:n Twitter-tili</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="51"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="51"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="52"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="52"/>
         <source>Patch being applied</source>
         <translation>Muutostiedostoa otetaan käyttöön</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="51"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="51"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="54"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="54"/>
         <source>Unapply patch</source>
         <translation>Poista muutostiedosto käytöstä</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="51"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="51"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="55"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="55"/>
         <source>Apply patch</source>
         <translation>Ota muutostiedosto käyttöön</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="68"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="63"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="63"/>
+        <source>Load engine before applying patches</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="73"/>
         <location filename="../src/qml/WebPatchPage.qml" line="85"/>
         <source>Patch information</source>
         <translation>Tietoja muutostiedostosta</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="78"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="78"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="83"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="83"/>
         <source>This patch is no available anymore. You won&apos;t be able to reinstall it.</source>
-        <translation>Tämä muutostiedosto ei ole enää saatavilla. Et voi asentaa sitä enää uudelleen.</translation>
+        <translation>Tämä muutostiedosto ei ole enää saatavilla. Et voi asentaa sitä uudelleen.</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="82"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="87"/>
         <source>Name</source>
         <translation>Nimi</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="96"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="114"/>
         <source>Maintainer</source>
         <translation>Ylläpitäjä</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="110"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="96"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="128"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="101"/>
         <source>Possible conflicts</source>
         <translation>Mahdolliset ristiriidat</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="123"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="123"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="141"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="141"/>
         <source>Description</source>
         <translation>Kuvaus</translation>
     </message>
     <message>
-        <location filename="../src/qml/NewPatchPage.qml" line="82"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="153"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="154"/>
+        <source>Patch log</source>
+        <translation>Muutostiedostoloki</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="162"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="164"/>
+        <source>No log yet</source>
+        <translation>Ei vielä lokitietoja</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/NewPatchPage.qml" line="87"/>
         <source>Author</source>
         <translation>Tekijä</translation>
     </message>
     <message>
-        <location filename="../src/qml/NewPatchPage.qml" line="110"/>
+        <location filename="../src/qml/LegacyPatchPage.qml" line="100"/>
+        <location filename="../src/qml/NewPatchPage.qml" line="115"/>
+        <source>Version</source>
+        <translation>Versio</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/NewPatchPage.qml" line="128"/>
         <source>Compatible</source>
         <translation>Yhteensopiva</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="134"/>
-        <source>Disable developer mode</source>
-        <translation>Poista kehittäjätila käytöstä</translation>
-    </message>
-    <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="134"/>
-        <source>Enable developer mode</source>
-        <translation>Ota kehittäjätila käyttöön</translation>
-    </message>
-    <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="144"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="147"/>
         <source>Unapply all patches</source>
         <translation>Poista kaikki muutostiedostot käytöstä</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="153"/>
+        <source>Load engine</source>
+        <translation>Lataa moottori</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/PatchManagerPage.qml" line="159"/>
         <source>Updates available</source>
         <translation>Päivityksiä saatavilla</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="153"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="159"/>
         <location filename="../src/qml/WebCatalogPage.qml" line="93"/>
         <source>Web catalog</source>
-        <translation>Web-katalogi</translation>
+        <translation>Luettelo muutostiedostoista verkossa</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="159"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="165"/>
         <source>Restart preloaded services</source>
         <translation>Käynnistä esiladatut palvelut uudelleen</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="165"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="171"/>
         <source>Resolve failure</source>
-        <translation>Ratkaise ongelma</translation>
+        <translation>Ratkaise häiriö</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="172"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="178"/>
         <source>Installed patches</source>
         <translation>Asennetut muutostiedostot</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="361"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="357"/>
         <source>This patch is not compatible with SailfishOS version!</source>
-        <translation>Tämä muutostiedosto ei ole yhteesopiva SailfistOS-version kanssa!</translation>
+        <translation>Muutostiedosto ei sovi tähän Sailfish -käyttöjärjestelmäversioon!</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="408"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="365"/>
         <source>Uninstalling patch %1</source>
         <translation>Poistetaan muutostiedosto %1</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="513"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="470"/>
         <source>Compatible with:</source>
         <translation>Yhteensopiva:</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="527"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="484"/>
         <source>Have possible conflicts</source>
         <translation>Mahdollisia ristiriitoja</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="530"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="487"/>
         <source>Patch info</source>
         <translation>Muutostiedoston tiedot</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="534"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="491"/>
         <source>Unapply</source>
         <translation>Poista käytöstä</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="534"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="491"/>
         <source>Apply</source>
         <translation>Ota käyttöön</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="544"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="496"/>
         <source>Uninstall</source>
-        <translation>Poista</translation>
+        <translation>Poista asennus</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="558"/>
-        <location filename="../src/qml/WebCatalogPage.qml" line="212"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="510"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="232"/>
         <source>No patches available</source>
-        <translation>Ei muutostiedostoja saatavilla</translation>
+        <translation>Muutostiedostoja ei ole saatavilla</translation>
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="48"/>
         <source>Restart services</source>
-        <translation>Käynnistä palvelut uudelleen</translation>
+        <translation>Käynnistä palvelut</translation>
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="56"/>
         <source>Some services will now be restarted. Phone interface might take time to load for a short moment.</source>
-        <translation>Palveluja käynnistetään nyt uudelleen. Puhelimen käyttöliittymän käynnistys voi viedä hetken.</translation>
+        <translation>Valittuasi &quot;Käynnistä palvelut&quot; laite käynnistää alkunäkymän uudelleen, jonka yhteydessä valitut palvelut käynnistyvät. Puhelimen käyttäjäliittymän käynnistyminen voi viedä hetken.</translation>
     </message>
     <message>
         <location filename="../src/qml/ScreenshotsPage.qml" line="71"/>
         <location filename="../src/qml/WebPatchPage.qml" line="272"/>
         <source>Screenshots</source>
-        <translation>Ruudunkaappaukset</translation>
+        <translation>Näyttökuvat</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="82"/>
@@ -228,10 +278,10 @@
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="99"/>
         <source>Tap to enter search query</source>
-        <translation>Napauta syöttääksesi hakuehdon</translation>
+        <translation>Mitä haet?</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="199"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="219"/>
         <source>Update available: %1</source>
         <translation>Päivitys saatavilla: %1</translation>
     </message>
@@ -243,7 +293,7 @@
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="75"/>
         <source>Problem in fetching patch data</source>
-        <translation>Ongelma haettaessa muutostiedoston tietoja</translation>
+        <translation>Ongelmia muutostiedoston tiedonhaussa</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="188"/>
@@ -273,7 +323,7 @@
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="333"/>
         <source>This file is not compatible with SailfishOS version!</source>
-        <translation>Tämä tiedosto ei ole yhteensopiva SailfishOS-version kanssa!</translation>
+        <translation>Tiedosto ei sovi tähän Sailfish -käyttöjärjestelmäversioon!</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="335"/>
@@ -288,7 +338,7 @@
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="388"/>
         <source>[click to install]</source>
-        <translation>[napauta asentaaksesi]</translation>
+        <translation>[kosketa asentaaksesi]</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="404"/>
@@ -296,54 +346,70 @@
         <translation>Yhteensopiva: %1</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="186"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="218"/>
         <source>Patch installed</source>
         <translation>Muutostiedosto asennettu</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="187"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="219"/>
         <source>Patch %1 installed</source>
         <translation>Muutostiedosto %1 asennettu</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="190"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="222"/>
         <source>Patch removed</source>
         <translation>Muutostiedosto poistettu</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="191"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="223"/>
         <source>Patch %1 removed</source>
         <translation>Muutostiedosto %1 poistettu</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="194"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="226"/>
         <source>Failed to install patch</source>
         <translation>Muutostiedoston asennus epäonnistui</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="195"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="227"/>
         <source>Patch %1 installation failed</source>
         <translation>Muutostiedoston %1 asennus epäonnistui</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="198"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="230"/>
         <source>Failed to remove patch</source>
-        <translation>Muutostiedoston poisto epäonnistui</translation>
+        <translation>Muutostiedoston poistaminen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="199"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="231"/>
         <source>Patch %1 removal failed</source>
         <translation>Muutostiedoston %1 poisto epäonnistui</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="202"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="234"/>
         <source>Update available</source>
         <translation>Päivitys saatavilla</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="203"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="235"/>
         <source>Patch %1 have update candidate</source>
-        <translation>Muutostiedostolla %1 on päivitys</translation>
+        <translation>Muutostiedostolle %1 on tarjolla mahdollinen päivitys</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/PatchManagerPage.qml" line="137"/>
+        <location filename="../src/qml/SettingsPage.qml" line="14"/>
+        <source>Settings</source>
+        <translation>Asetukset</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="18"/>
+        <source>Apply on boot</source>
+        <translation>Ota käyttöön käynnistyksen yhteydessä</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="25"/>
+        <source>Developer mode</source>
+        <translation>Kehitystila</translation>
     </message>
 </context>
 <context>
@@ -376,7 +442,7 @@
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="54"/>
         <source>email</source>
-        <translation>email</translation>
+        <translation>s-posti</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="55"/>
@@ -386,7 +452,7 @@
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="56"/>
         <source>homescreen</source>
-        <translation>kotinäyttö</translation>
+        <translation>alkunäyttö</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="57"/>
@@ -415,7 +481,7 @@
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="62"/>
-        <location filename="../src/qml/patchmanager.cpp" line="196"/>
+        <location filename="../src/qml/patchmanager.cpp" line="229"/>
         <source>other</source>
         <translation>muut</translation>
     </message>

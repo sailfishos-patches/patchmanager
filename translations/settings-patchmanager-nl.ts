@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="nl_BE" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="nl" version="2.1">
 <context>
     <name/>
     <message>
@@ -10,12 +10,12 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="45"/>
         <source>Apply patches</source>
-        <translation>Plakkers plakken</translation>
+        <translation>Pleisters kleven</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="53"/>
         <source>Patchmanager will automatically apply patches in 10 seconds.</source>
-        <translation>Patchmanagers gaat de plakkers binnen 10 seconden automatisch plakken.</translation>
+        <translation>Patchmanager zal over 10 seconden de pleisters automatisch kleven.</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="66"/>
@@ -25,17 +25,17 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="28"/>
         <source>Applying patches</source>
-        <translation>Plakkers worden geplakt</translation>
+        <translation>Pleisters worden gekleefd</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="136"/>
         <source>Appled successfully!</source>
-        <translation>Geplakt!</translation>
+        <translation>Succesvol gekleefd!</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="137"/>
         <source>Failed applying patches!</source>
-        <translation>Plakken mislukt!</translation>
+        <translation>Kleven van pleisters mislukt!</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="165"/>
@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="81"/>
         <source>Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.</source>
-        <translation>Patchmanager biedt u de mogelijkheid uw systeem aan te passen met plakkers. Het biedt ne systeemdaemon verantwoordelijk voor het uitvoeren van de plakkers, evenals ne grafischen interface voor de bewerkingen en installatie/verwijderen van de plakkers te beheren.</translation>
+        <translation>Patchmanager biedt je de mogelijkheid je systeem aan te passen met pleisters. Het biedt een systeemdaemon verantwoordelijk voor het uitvoeren van de pleisters, evenals een grafische interface om de bewerkingen en installatie/verwijderen van de pleisters te beheren.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="92"/>
@@ -74,25 +74,25 @@
     <message>
         <location filename="../src/qml/DevelopersPage.qml" line="151"/>
         <source>%1&apos;s Twitter account</source>
-        <translation>Twitteraccount van %1</translation>
+        <translation>Twitter-account van %1</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="52"/>
         <location filename="../src/qml/NewPatchPage.qml" line="52"/>
         <source>Patch being applied</source>
-        <translation>Plakker wordt geplakt</translation>
+        <translation>Pleister wordt gekleefd</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="54"/>
         <location filename="../src/qml/NewPatchPage.qml" line="54"/>
         <source>Unapply patch</source>
-        <translation>Plakker losmaken</translation>
+        <translation>Pleister losmaken</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="55"/>
         <location filename="../src/qml/NewPatchPage.qml" line="55"/>
         <source>Apply patch</source>
-        <translation>Plakker plakken</translation>
+        <translation>Pleister kleven</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="63"/>
@@ -104,13 +104,13 @@
         <location filename="../src/qml/LegacyPatchPage.qml" line="73"/>
         <location filename="../src/qml/WebPatchPage.qml" line="85"/>
         <source>Patch information</source>
-        <translation>Plakkerinformatie</translation>
+        <translation>Pleisterinformatie</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="83"/>
         <location filename="../src/qml/NewPatchPage.qml" line="83"/>
         <source>This patch is no available anymore. You won&apos;t be able to reinstall it.</source>
-        <translation>Deze plakker is niet meer beschikbaar. Ge zult hem niet terug kunnen installeren.</translation>
+        <translation>Deze pleister is niet meer beschikbaar. Je zal hem niet opnieuw kunnen installeren.</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="87"/>
@@ -138,13 +138,13 @@
         <location filename="../src/qml/LegacyPatchPage.qml" line="153"/>
         <location filename="../src/qml/NewPatchPage.qml" line="154"/>
         <source>Patch log</source>
-        <translation>Plakkerlogboek</translation>
+        <translation>Pleisterlogboek</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="162"/>
         <location filename="../src/qml/NewPatchPage.qml" line="164"/>
         <source>No log yet</source>
-        <translation>Nog geen logboek</translation>
+        <translation>Nog geen log</translation>
     </message>
     <message>
         <location filename="../src/qml/NewPatchPage.qml" line="87"/>
@@ -165,7 +165,7 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="147"/>
         <source>Unapply all patches</source>
-        <translation>Alle plakkers losmaken</translation>
+        <translation>Alle pleisters verwijderen</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="153"/>
@@ -181,7 +181,7 @@
         <location filename="../src/qml/PatchManagerPage.qml" line="159"/>
         <location filename="../src/qml/WebCatalogPage.qml" line="93"/>
         <source>Web catalog</source>
-        <translation>Webcataloog</translation>
+        <translation>Webcatalogus</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="165"/>
@@ -196,17 +196,17 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="178"/>
         <source>Installed patches</source>
-        <translation>Geïnstalleerde plakkers</translation>
+        <translation>Geïnstalleerde pleisters</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="357"/>
         <source>This patch is not compatible with SailfishOS version!</source>
-        <translation>Deze plakker is niet compatibel met uw versie van Sailfish OS!</translation>
+        <translation>Deze pleister is niet compatibel met je versie van Sailfish OS!</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="365"/>
         <source>Uninstalling patch %1</source>
-        <translation>Plakker %1 wordt losgemaakt</translation>
+        <translation>Pleister %1 wordt losgemaakt</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="470"/>
@@ -221,7 +221,7 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="487"/>
         <source>Patch info</source>
-        <translation>Plakkerinfo</translation>
+        <translation>Pleisterinfo</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="491"/>
@@ -231,7 +231,7 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="491"/>
         <source>Apply</source>
-        <translation>Plakken</translation>
+        <translation>Kleven</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="496"/>
@@ -242,7 +242,7 @@
         <location filename="../src/qml/PatchManagerPage.qml" line="510"/>
         <location filename="../src/qml/WebCatalogPage.qml" line="232"/>
         <source>No patches available</source>
-        <translation>Geen plakkers beschikbaar</translation>
+        <translation>Geen pleisters beschikbaar</translation>
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="48"/>
@@ -252,7 +252,7 @@
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="56"/>
         <source>Some services will now be restarted. Phone interface might take time to load for a short moment.</source>
-        <translation>Sommige diensten gaan nu herstart worden. Het kan efkens duren vooraleer dat de gsm-interface terug laadt.</translation>
+        <translation>Sommige diensten zullen nu worden herstart. Het kan even duren voordat de telefooninterface opnieuw laadt.</translation>
     </message>
     <message>
         <location filename="../src/qml/ScreenshotsPage.qml" line="71"/>
@@ -268,17 +268,17 @@
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="82"/>
         <source>Show search field</source>
-        <translation>Zoekveld weergeven</translation>
+        <translation>Zoekveld tonen</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="93"/>
         <source>%1 patches</source>
-        <translation>%1 plakkers</translation>
+        <translation>%1 pleisters</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="99"/>
         <source>Tap to enter search query</source>
-        <translation>Tikt voor een zoekopdracht in te voeren</translation>
+        <translation>Tik om een zoekopdracht in te voeren</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="219"/>
@@ -288,12 +288,12 @@
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="75"/>
         <source>Fetching patch information...</source>
-        <translation>Plakkerinformatie wordt opgehaald…</translation>
+        <translation>Pleisterinformatie wordt opgehaald…</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="75"/>
         <source>Problem in fetching patch data</source>
-        <translation>Probleem bij ophalen van plakkergegevens</translation>
+        <translation>Probleem bij ophalen van pleistergegevens</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="188"/>
@@ -323,12 +323,12 @@
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="333"/>
         <source>This file is not compatible with SailfishOS version!</source>
-        <translation>Dit bestand is niet compatibel met uw versie van Sailfish OS!</translation>
+        <translation>Dit bestand is niet compatibel met je versie van Sailfish OS!</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="335"/>
         <source>Install patch %1</source>
-        <translation>Plakker %1 installeren</translation>
+        <translation>Pleister %1 installeren</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="388"/>
@@ -338,7 +338,7 @@
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="388"/>
         <source>[click to install]</source>
-        <translation>[tikt voor te installeren]</translation>
+        <translation>[tik om te installeren]</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="404"/>
@@ -348,42 +348,42 @@
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="218"/>
         <source>Patch installed</source>
-        <translation>Plakker geïnstalleerd</translation>
+        <translation>Pleister geïnstalleerd</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="219"/>
         <source>Patch %1 installed</source>
-        <translation>Plakker %1 geïnstalleerd</translation>
+        <translation>Pleister %1 geïnstalleerd</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="222"/>
         <source>Patch removed</source>
-        <translation>Plakker verwijderd</translation>
+        <translation>Pleister verwijderd</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="223"/>
         <source>Patch %1 removed</source>
-        <translation>Plakker %1 verwijderd</translation>
+        <translation>Pleister %1 verwijderd</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="226"/>
         <source>Failed to install patch</source>
-        <translation>Installeren van plakker mislukt</translation>
+        <translation>Installeren van pleister mislukt</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="227"/>
         <source>Patch %1 installation failed</source>
-        <translation>Installeren van plakker %1 mislukt</translation>
+        <translation>Installeren van pleister %1 mislukt</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="230"/>
         <source>Failed to remove patch</source>
-        <translation>Verwijderen van plakker mislukt</translation>
+        <translation>Verwijderen van pleister mislukt</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="231"/>
         <source>Patch %1 removal failed</source>
-        <translation>Verwijderen van plakker %1 mislukt</translation>
+        <translation>Verwijderen van pleister %1 mislukt</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="234"/>
@@ -393,7 +393,7 @@
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="235"/>
         <source>Patch %1 have update candidate</source>
-        <translation>Plakker %1 heeft nen updatekandidaat</translation>
+        <translation>Pleister %1 heeft een updatekandidaat</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="137"/>
@@ -467,7 +467,7 @@
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="59"/>
         <source>phone</source>
-        <translation>gsm</translation>
+        <translation>telefoon</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="60"/>

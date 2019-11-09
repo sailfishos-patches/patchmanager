@@ -1,41 +1,41 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="nl_BE" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.1">
 <context>
     <name/>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="49"/>
         <location filename="../src/qml/PatchManagerPage.qml" line="142"/>
         <source>About</source>
-        <translation>Over</translation>
+        <translation>About</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="45"/>
         <source>Apply patches</source>
-        <translation>Plakkers plakken</translation>
+        <translation>Apply patches</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="53"/>
         <source>Patchmanager will automatically apply patches in 10 seconds.</source>
-        <translation>Patchmanagers gaat de plakkers binnen 10 seconden automatisch plakken.</translation>
+        <translation>Patchmanager will automatically apply patches in 10 seconds.</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="66"/>
         <source>Exit</source>
-        <translation>Sluiten</translation>
+        <translation>Exit</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="28"/>
         <source>Applying patches</source>
-        <translation>Plakkers worden geplakt</translation>
+        <translation>Applying patches</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="136"/>
         <source>Appled successfully!</source>
-        <translation>Geplakt!</translation>
+        <translation>Appled successfully!</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="137"/>
         <source>Failed applying patches!</source>
-        <translation>Plakken mislukt!</translation>
+        <translation>Failed applying patches!</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="165"/>
@@ -47,369 +47,369 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="71"/>
         <source>Version: %1</source>
-        <translation>Versie: %1</translation>
+        <translation>Version: %1</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="81"/>
         <source>Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.</source>
-        <translation>Patchmanager biedt u de mogelijkheid uw systeem aan te passen met plakkers. Het biedt ne systeemdaemon verantwoordelijk voor het uitvoeren van de plakkers, evenals ne grafischen interface voor de bewerkingen en installatie/verwijderen van de plakkers te beheren.</translation>
+        <translation>Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="92"/>
         <location filename="../src/qml/WebPatchPage.qml" line="246"/>
         <source>Donate</source>
-        <translation>Doneren</translation>
+        <translation>Donate</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="103"/>
         <location filename="../src/qml/DevelopersPage.qml" line="107"/>
         <source>Developers</source>
-        <translation>Ontwikkelaars</translation>
+        <translation>Developers</translation>
     </message>
     <message>
         <location filename="../src/qml/DevelopersPage.qml" line="146"/>
         <source>%1&apos;s webpage</source>
-        <translation>Webpagina van %1</translation>
+        <translation>%1&apos;s webpage</translation>
     </message>
     <message>
         <location filename="../src/qml/DevelopersPage.qml" line="151"/>
         <source>%1&apos;s Twitter account</source>
-        <translation>Twitteraccount van %1</translation>
+        <translation>%1&apos;s Twitter account</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="52"/>
         <location filename="../src/qml/NewPatchPage.qml" line="52"/>
         <source>Patch being applied</source>
-        <translation>Plakker wordt geplakt</translation>
+        <translation>Patch being applied</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="54"/>
         <location filename="../src/qml/NewPatchPage.qml" line="54"/>
         <source>Unapply patch</source>
-        <translation>Plakker losmaken</translation>
+        <translation>Unapply patch</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="55"/>
         <location filename="../src/qml/NewPatchPage.qml" line="55"/>
         <source>Apply patch</source>
-        <translation>Plakker plakken</translation>
+        <translation>Apply patch</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="63"/>
         <location filename="../src/qml/NewPatchPage.qml" line="63"/>
         <source>Load engine before applying patches</source>
-        <translation type="unfinished"/>
+        <translation>Load engine before applying patches</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="73"/>
         <location filename="../src/qml/WebPatchPage.qml" line="85"/>
         <source>Patch information</source>
-        <translation>Plakkerinformatie</translation>
+        <translation>Patch information</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="83"/>
         <location filename="../src/qml/NewPatchPage.qml" line="83"/>
         <source>This patch is no available anymore. You won&apos;t be able to reinstall it.</source>
-        <translation>Deze plakker is niet meer beschikbaar. Ge zult hem niet terug kunnen installeren.</translation>
+        <translation>This patch is no available anymore. You won&apos;t be able to reinstall it.</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="87"/>
         <source>Name</source>
-        <translation>Naam</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="114"/>
         <source>Maintainer</source>
-        <translation>Beheerder</translation>
+        <translation>Maintainer</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="128"/>
         <location filename="../src/qml/NewPatchPage.qml" line="101"/>
         <source>Possible conflicts</source>
-        <translation>Mogelijke conflicten</translation>
+        <translation>Possible conflicts</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="141"/>
         <location filename="../src/qml/NewPatchPage.qml" line="141"/>
         <source>Description</source>
-        <translation>Beschrijving</translation>
+        <translation>Description</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="153"/>
         <location filename="../src/qml/NewPatchPage.qml" line="154"/>
         <source>Patch log</source>
-        <translation>Plakkerlogboek</translation>
+        <translation>Patch log</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="162"/>
         <location filename="../src/qml/NewPatchPage.qml" line="164"/>
         <source>No log yet</source>
-        <translation>Nog geen logboek</translation>
+        <translation>No log yet</translation>
     </message>
     <message>
         <location filename="../src/qml/NewPatchPage.qml" line="87"/>
         <source>Author</source>
-        <translation>Auteur</translation>
+        <translation>Author</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="100"/>
         <location filename="../src/qml/NewPatchPage.qml" line="115"/>
         <source>Version</source>
-        <translation>Versie</translation>
+        <translation>Version</translation>
     </message>
     <message>
         <location filename="../src/qml/NewPatchPage.qml" line="128"/>
         <source>Compatible</source>
-        <translation>Compatibel</translation>
+        <translation>Compatible</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="147"/>
         <source>Unapply all patches</source>
-        <translation>Alle plakkers losmaken</translation>
+        <translation>Unapply all patches</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="153"/>
         <source>Load engine</source>
-        <translation>Motor laden</translation>
+        <translation>Load engine</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="159"/>
         <source>Updates available</source>
-        <translation>Updates beschikbaar</translation>
+        <translation>Updates available</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="159"/>
         <location filename="../src/qml/WebCatalogPage.qml" line="93"/>
         <source>Web catalog</source>
-        <translation>Webcataloog</translation>
+        <translation>Web catalog</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="165"/>
         <source>Restart preloaded services</source>
-        <translation>Voorafgeladen diensten herstarten</translation>
+        <translation>Restart preloaded services</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="171"/>
         <source>Resolve failure</source>
-        <translation>Fout oplossen</translation>
+        <translation>Resolve failure</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="178"/>
         <source>Installed patches</source>
-        <translation>Geïnstalleerde plakkers</translation>
+        <translation>Installed patches</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="357"/>
         <source>This patch is not compatible with SailfishOS version!</source>
-        <translation>Deze plakker is niet compatibel met uw versie van Sailfish OS!</translation>
+        <translation>This patch is not compatible with SailfishOS version!</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="365"/>
         <source>Uninstalling patch %1</source>
-        <translation>Plakker %1 wordt losgemaakt</translation>
+        <translation>Uninstalling patch %1</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="470"/>
         <source>Compatible with:</source>
-        <translation>Compatibel met:</translation>
+        <translation>Compatible with:</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="484"/>
         <source>Have possible conflicts</source>
-        <translation>Hebben mogelijke conflicten</translation>
+        <translation>Have possible conflicts</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="487"/>
         <source>Patch info</source>
-        <translation>Plakkerinfo</translation>
+        <translation>Patch info</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="491"/>
         <source>Unapply</source>
-        <translation>Losmaken</translation>
+        <translation>Unapply</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="491"/>
         <source>Apply</source>
-        <translation>Plakken</translation>
+        <translation>Apply</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="496"/>
         <source>Uninstall</source>
-        <translation>Verwijderen</translation>
+        <translation>Uninstall</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="510"/>
         <location filename="../src/qml/WebCatalogPage.qml" line="232"/>
         <source>No patches available</source>
-        <translation>Geen plakkers beschikbaar</translation>
+        <translation>No patches available</translation>
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="48"/>
         <source>Restart services</source>
-        <translation>Diensten herstarten</translation>
+        <translation>Restart services</translation>
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="56"/>
         <source>Some services will now be restarted. Phone interface might take time to load for a short moment.</source>
-        <translation>Sommige diensten gaan nu herstart worden. Het kan efkens duren vooraleer dat de gsm-interface terug laadt.</translation>
+        <translation>Some services will now be restarted. Phone interface might take time to load for a short moment.</translation>
     </message>
     <message>
         <location filename="../src/qml/ScreenshotsPage.qml" line="71"/>
         <location filename="../src/qml/WebPatchPage.qml" line="272"/>
         <source>Screenshots</source>
-        <translation>Schermafdrukken</translation>
+        <translation>Screenshots</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="82"/>
         <source>Hide search field</source>
-        <translation>Zoekveld verbergen</translation>
+        <translation>Hide search field</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="82"/>
         <source>Show search field</source>
-        <translation>Zoekveld weergeven</translation>
+        <translation>Show search field</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="93"/>
         <source>%1 patches</source>
-        <translation>%1 plakkers</translation>
+        <translation>%1 patches</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="99"/>
         <source>Tap to enter search query</source>
-        <translation>Tikt voor een zoekopdracht in te voeren</translation>
+        <translation>Tap to enter search query</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="219"/>
         <source>Update available: %1</source>
-        <translation>Update beschikbaar: %1</translation>
+        <translation>Update available: %1</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="75"/>
         <source>Fetching patch information...</source>
-        <translation>Plakkerinformatie wordt opgehaald…</translation>
+        <translation>Fetching patch information...</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="75"/>
         <source>Problem in fetching patch data</source>
-        <translation>Probleem bij ophalen van plakkergegevens</translation>
+        <translation>Problem in fetching patch data</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="188"/>
         <source>Author: %1</source>
-        <translation>Auteur: %1</translation>
+        <translation>Author: %1</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="204"/>
         <source>Links</source>
-        <translation>Koppelingen</translation>
+        <translation>Links</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="225"/>
         <source>Open discussion link</source>
-        <translation>Discussiekoppeling openen</translation>
+        <translation>Open discussion link</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="267"/>
         <source>Sources</source>
-        <translation>Bronnen</translation>
+        <translation>Sources</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="318"/>
         <source>Files</source>
-        <translation>Bestanden</translation>
+        <translation>Files</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="333"/>
         <source>This file is not compatible with SailfishOS version!</source>
-        <translation>Dit bestand is niet compatibel met uw versie van Sailfish OS!</translation>
+        <translation>This file is not compatible with SailfishOS version!</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="335"/>
         <source>Install patch %1</source>
-        <translation>Plakker %1 installeren</translation>
+        <translation>Install patch %1</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="388"/>
         <source>[installed]</source>
-        <translation>[geïnstalleerd]</translation>
+        <translation>[installed]</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="388"/>
         <source>[click to install]</source>
-        <translation>[tikt voor te installeren]</translation>
+        <translation>[click to install]</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="404"/>
         <source>Compatible: %1</source>
-        <translation>Compatibel: %1</translation>
+        <translation>Compatible: %1</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="218"/>
         <source>Patch installed</source>
-        <translation>Plakker geïnstalleerd</translation>
+        <translation>Patch installed</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="219"/>
         <source>Patch %1 installed</source>
-        <translation>Plakker %1 geïnstalleerd</translation>
+        <translation>Patch %1 installed</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="222"/>
         <source>Patch removed</source>
-        <translation>Plakker verwijderd</translation>
+        <translation>Patch removed</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="223"/>
         <source>Patch %1 removed</source>
-        <translation>Plakker %1 verwijderd</translation>
+        <translation>Patch %1 removed</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="226"/>
         <source>Failed to install patch</source>
-        <translation>Installeren van plakker mislukt</translation>
+        <translation>Failed to install patch</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="227"/>
         <source>Patch %1 installation failed</source>
-        <translation>Installeren van plakker %1 mislukt</translation>
+        <translation>Patch %1 installation failed</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="230"/>
         <source>Failed to remove patch</source>
-        <translation>Verwijderen van plakker mislukt</translation>
+        <translation>Failed to remove patch</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="231"/>
         <source>Patch %1 removal failed</source>
-        <translation>Verwijderen van plakker %1 mislukt</translation>
+        <translation>Patch %1 removal failed</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="234"/>
         <source>Update available</source>
-        <translation>Update beschikbaar</translation>
+        <translation>Update available</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="235"/>
         <source>Patch %1 have update candidate</source>
-        <translation>Plakker %1 heeft nen updatekandidaat</translation>
+        <translation>Patch %1 have update candidate</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="137"/>
         <location filename="../src/qml/SettingsPage.qml" line="14"/>
         <source>Settings</source>
-        <translation>Instellingen</translation>
+        <translation>Settings</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="18"/>
         <source>Apply on boot</source>
-        <translation>Toepassen bij opstarten</translation>
+        <translation>Apply on boot</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="25"/>
         <source>Developer mode</source>
-        <translation>Ontwikkelaarsmodus</translation>
+        <translation>Developer mode</translation>
     </message>
 </context>
 <context>
@@ -427,32 +427,32 @@
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="51"/>
         <source>calendar</source>
-        <translation>agenda</translation>
+        <translation>calendar</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="52"/>
         <source>clock</source>
-        <translation>klok</translation>
+        <translation>clock</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="53"/>
         <source>contacts</source>
-        <translation>contacten</translation>
+        <translation>contacts</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="54"/>
         <source>email</source>
-        <translation>e-mail</translation>
+        <translation>email</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="55"/>
         <source>gallery</source>
-        <translation>galerij</translation>
+        <translation>gallery</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="56"/>
         <source>homescreen</source>
-        <translation>startscherm</translation>
+        <translation>homescreen</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="57"/>
@@ -462,12 +462,12 @@
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="58"/>
         <source>messages</source>
-        <translation>berichten</translation>
+        <translation>messages</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="59"/>
         <source>phone</source>
-        <translation>gsm</translation>
+        <translation>phone</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="60"/>
@@ -477,13 +477,13 @@
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="61"/>
         <source>settings</source>
-        <translation>instellingen</translation>
+        <translation>settings</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="62"/>
         <location filename="../src/qml/patchmanager.cpp" line="229"/>
         <source>other</source>
-        <translation>overige</translation>
+        <translation>other</translation>
     </message>
 </context>
 </TS>

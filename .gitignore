@@ -3,3 +3,5 @@ build/
 src/bin/patchmanager-daemon/adaptor.*
 
 *.rpm
+
+.build*
