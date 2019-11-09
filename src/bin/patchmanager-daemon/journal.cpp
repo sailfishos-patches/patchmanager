@@ -53,6 +53,7 @@ void Journal::init()
     }
 
     sd_journal_add_match(m_sdj, "_EXE=/usr/bin/lipstick", 0);
+    sd_journal_add_match(m_sdj, "_COMM=jolla-settings", 0);
     sd_journal_seek_tail(m_sdj);
 
     wait();
