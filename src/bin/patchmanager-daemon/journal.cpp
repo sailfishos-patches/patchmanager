@@ -69,10 +69,17 @@ void Journal::process()
         size_t length;
         if (sd_journal_get_data(m_sdj, "MESSAGE", &data, &length) == 0) {
             const QString &message = QString::fromUtf8((const char *)data, length).section(QChar('='), 1);
-            if (message.contains(QRegExp("Type.\\w+.unavailable"))
-                || message.contains(QLatin1String("Error while loading page"))
-                || message.contains(QLatin1String("is not a type"))) {
+            if (message.contains(QRegExp("Type.\\w+.unavailable"))) {
                 emit matchFound();
+                continue;
+            }
+            if (message.contains(QLatin1String("/usr/share/patchmanager/patches"))) {
+                continue;
+            }
+            if (message.contains(QLatin1String("is not a type"))
+                && message.contains(QLatin1String("Error while loading page"))) {
+                emit matchFound();
+                continue;
             }
         }
         QCoreApplication::processEvents();
