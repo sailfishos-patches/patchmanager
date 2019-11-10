@@ -1,4 +1,4 @@
-#include "journal.h"
+﻿#include "journal.h"
 
 #include <QVariantMap>
 #include <QDebug>
@@ -71,15 +71,13 @@ void Journal::process()
             const QString &message = QString::fromUtf8((const char *)data, length).section(QChar('='), 1);
             if (message.contains(QRegExp("Type.\\w+.unavailable"))) {
                 emit matchFound();
-                continue;
             }
-            if (message.contains(QLatin1String("/usr/share/patchmanager/patches"))) {
-                continue;
+            else if (message.contains(QLatin1String("/usr/share/patchmanager/patches"))) {
+                // nothing
             }
-            if (message.contains(QLatin1String("is not a type"))
+            else if (message.contains(QLatin1String("is not a type"))
                 && message.contains(QLatin1String("Error while loading page"))) {
                 emit matchFound();
-                continue;
             }
         }
         QCoreApplication::processEvents();
