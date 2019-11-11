@@ -6,4 +6,4 @@ After=dbus.service
 [Service]
 Type=oneshot
 User=root
-ExecStart=/bin/dbus-send --system --print-reply --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager org.SfietKonstantin.patchmanager.checkForUpdates
+ExecStart=/usr/bin/env dbus-send --system --print-reply --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager org.SfietKonstantin.patchmanager.checkForUpdates
