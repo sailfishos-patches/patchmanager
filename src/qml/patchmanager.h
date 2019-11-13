@@ -42,6 +42,22 @@
 #include "webdownloader.h"
 #include "patchmanagermodel.h"
 
+class PatchManagerTranslator: public QObject
+{
+    Q_OBJECT
+public:
+    explicit PatchManagerTranslator(QObject *parent = nullptr);
+    static PatchManagerTranslator *GetInstance(QObject *parent = nullptr);
+
+public slots:
+    bool installTranslator(const QString & patch);
+    bool removeTranslator(const QString & patch);
+
+private:
+    QHash<QString, QTranslator*> m_translators;
+
+};
+
 class QDBusPendingCallWatcher;
 class PatchManagerInterface;
 class PatchManager: public QObject
@@ -152,7 +168,7 @@ private:
 
     QVariantMap m_updates;
 
-    QHash<QString, QTranslator*> m_translators;
+    PatchManagerTranslator *m_translator;
     QNetworkAccessManager *m_nam;
 
     PatchManagerModel *m_installedModel;

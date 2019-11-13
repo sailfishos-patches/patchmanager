@@ -67,6 +67,7 @@ PatchManager::PatchManager(QObject *parent)
     , m_nam(new QNetworkAccessManager(this))
     , m_installedModel(new PatchManagerModel(this))
     , m_interface(new PatchManagerInterface(DBUS_SERVICE_NAME, DBUS_PATH_NAME, QDBusConnection::systemBus(), this))
+    , m_translator(new PatchManagerTranslator(this))
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -418,34 +419,12 @@ void PatchManager::watchCall(QDBusPendingCallWatcher *call, QJSValue callback, Q
 
 bool PatchManager::installTranslator(const QString &patch)
 {
-    qDebug() << Q_FUNC_INFO << patch;
-
-    if (!m_translators.contains(patch)) {
-        QTranslator * translator = new QTranslator(this);
-        translator->load(QLocale::system(),
-                         QStringLiteral("translation"),
-                         QStringLiteral("_"),
-                         QStringLiteral("/usr/share/patchmanager/patches/%1").arg(patch),
-                         QStringLiteral(".qm"));
-        bool ok = qGuiApp->installTranslator(translator);
-        if (ok) {
-            m_translators[patch] = translator;
-        }
-        return ok;
-    }
-    return true;
+    return m_translator->installTranslator(patch);
 }
 
 bool PatchManager::removeTranslator(const QString &patch)
 {
-    qDebug() << Q_FUNC_INFO << patch;
-
-    if (m_translators.contains(patch)) {
-        QTranslator * translator = m_translators.take(patch);
-        translator->deleteLater();
-        return qGuiApp->removeTranslator(translator);
-    }
-    return true;
+    return m_translator->removeTranslator(patch);
 }
 
 int PatchManager::checkVote(const QString &patch) const
@@ -746,4 +725,51 @@ QVariant PatchManager::unwind(const QVariant &val, int depth)
     }
 
     return res;
+}
+
+PatchManagerTranslator::PatchManagerTranslator(QObject *parent)
+    : QObject(parent)
+{
+
+}
+
+PatchManagerTranslator *PatchManagerTranslator::GetInstance(QObject *parent)
+{
+    static PatchManagerTranslator* tsSingleton = nullptr;
+    if (!tsSingleton) {
+        tsSingleton = new PatchManagerTranslator(parent);
+    }
+    return tsSingleton;
+}
+
+bool PatchManagerTranslator::installTranslator(const QString &patch)
+{
+    qDebug() << Q_FUNC_INFO << patch;
+
+    if (!m_translators.contains(patch)) {
+        QTranslator * translator = new QTranslator(this);
+        translator->load(QLocale::system(),
+                         QStringLiteral("translation"),
+                         QStringLiteral("_"),
+                         QStringLiteral("/usr/share/patchmanager/patches/%1").arg(patch),
+                         QStringLiteral(".qm"));
+        bool ok = qGuiApp->installTranslator(translator);
+        if (ok) {
+            m_translators[patch] = translator;
+        }
+        return ok;
+    }
+    return true;
+}
+
+bool PatchManagerTranslator::removeTranslator(const QString &patch)
+{
+    qDebug() << Q_FUNC_INFO << patch;
+
+    if (m_translators.contains(patch)) {
+        QTranslator * translator = m_translators.take(patch);
+        translator->deleteLater();
+        return qGuiApp->removeTranslator(translator);
+    }
+    return true;
 }

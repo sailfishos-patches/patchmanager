@@ -46,6 +46,11 @@ static QObject *patchmanager_singleton(QQmlEngine *engine, QJSEngine *scriptEngi
     Q_UNUSED(scriptEngine)
     return PatchManager::GetInstance(engine);
 }
+static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine *scriptEngine)
+{
+    Q_UNUSED(scriptEngine)
+    return PatchManagerTranslator::GetInstance(engine);
+}
 
 class PatchManagerPlugin : public QQmlExtensionPlugin
 {
@@ -62,6 +67,7 @@ public:
     {
         Q_ASSERT(strcmp(uri, "org.SfietKonstantin.patchmanager") == 0);
         qmlRegisterSingletonType<PatchManager>(uri, 2, 0, "PatchManager", patchmanager_singleton);
+        qmlRegisterSingletonType<PatchManagerTranslator>(uri, 2, 0, "PatchManagerTranslator", patchmanagertransalator_singleton);
         qmlRegisterType<WebPatchesModel>(uri, 2, 0, "WebPatchesModel");
         qmlRegisterUncreatableType<QDBusPendingCallWatcher>(uri, 2, 0, "QDBusPendingCallWatcher", "Compatibility import");
     }
