@@ -744,18 +744,21 @@ PatchManagerTranslator *PatchManagerTranslator::GetInstance(QObject *parent)
 
 bool PatchManagerTranslator::installTranslator(const QString &patch)
 {
-    qDebug() << Q_FUNC_INFO << patch;
+    qDebug() << Q_FUNC_INFO << patch << QLocale::system();
 
     if (!m_translators.contains(patch)) {
         QTranslator * translator = new QTranslator(this);
-        translator->load(QLocale::system(),
+        bool ok = translator->load(QLocale::system(),
                          QStringLiteral("translation"),
                          QStringLiteral("_"),
                          QStringLiteral("/usr/share/patchmanager/patches/%1").arg(patch),
-                         QStringLiteral(".qm"));
-        bool ok = qGuiApp->installTranslator(translator);
+                         QStringLiteral(".qm"))
+        && qGuiApp->installTranslator(translator);
         if (ok) {
+            qDebug() << Q_FUNC_INFO << "success";
             m_translators[patch] = translator;
+        } else {
+            qDebug() << Q_FUNC_INFO << "fail";
         }
         return ok;
     }
