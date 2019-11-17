@@ -754,7 +754,7 @@ bool PatchManagerTranslator::installTranslator(const QString &patch)
                          QStringLiteral("/usr/share/patchmanager/patches/%1").arg(patch),
                          QStringLiteral(".qm"))
         || translator->load(QLocale::system(),
-                         QStringLiteral(patch),
+                         patch,
                          QStringLiteral("-"),
                          QStringLiteral("/usr/share/patchmanager/patches/%1").arg(patch),
                          QStringLiteral(".qm")))
