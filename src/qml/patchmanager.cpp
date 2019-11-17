@@ -748,11 +748,16 @@ bool PatchManagerTranslator::installTranslator(const QString &patch)
 
     if (!m_translators.contains(patch)) {
         QTranslator * translator = new QTranslator(this);
-        bool ok = translator->load(QLocale::system(),
+        bool ok = (translator->load(QLocale::system(),
                          QStringLiteral("translation"),
                          QStringLiteral("_"),
                          QStringLiteral("/usr/share/patchmanager/patches/%1").arg(patch),
                          QStringLiteral(".qm"))
+        || translator->load(QLocale::system(),
+                         QStringLiteral(patch),
+                         QStringLiteral("-"),
+                         QStringLiteral("/usr/share/patchmanager/patches/%1").arg(patch),
+                         QStringLiteral(".qm")))
         && qGuiApp->installTranslator(translator);
         if (ok) {
             qDebug() << Q_FUNC_INFO << "success";
