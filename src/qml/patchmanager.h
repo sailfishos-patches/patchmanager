@@ -129,7 +129,7 @@ public slots:
     int checkVote(const QString &patch) const;
     void doVote(const QString &patch, int action);
     void checkEaster();
-    QString iconForPatch(const QString &patch) const;
+    QString iconForPatch(const QString &patch, bool dark = true) const;
     QString valueIfExists(const QString & filename) const;
 
     void checkForUpdates();

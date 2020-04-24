@@ -461,14 +461,19 @@ void PatchManager::checkEaster()
     });
 }
 
-QString PatchManager::iconForPatch(const QString &patch) const
+QString PatchManager::iconForPatch(const QString &patch, bool dark) const
 {
-    const QString iconPlaceholder = QStringLiteral("/usr/share/patchmanager/patches/%1/main.%2").arg(patch);
-    const QStringList validExtensions = { QStringLiteral("png"), QStringLiteral("svg") };
+    static QString iconPlaceholder = QStringLiteral("/usr/share/patchmanager/patches/%1/main.%2").arg(patch);
+    static QString iconLightPlaceholder = QStringLiteral("/usr/share/patchmanager/patches/%1/main-light.%2").arg(patch);
+    static QStringList validExtensions = { QStringLiteral("png"), QStringLiteral("svg") };
+
     for (const QString &extension : validExtensions) {
-        QString filename = iconPlaceholder.arg(extension);
-        if (QFileInfo::exists(filename)) {
-            return filename;
+        const QString darkFilename = iconPlaceholder.arg(extension);
+        const QString lightFilename = iconLightPlaceholder.arg(extension);
+        if (!dark && QFileInfo::exists(lightFilename)) {
+            return lightFilename;
+        } else if (QFileInfo::exists(darkFilename)) {
+            return darkFilename;
         }
     }
     return QString();

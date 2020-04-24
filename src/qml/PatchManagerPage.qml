@@ -458,7 +458,7 @@ Page {
                     width: Theme.itemSizeExtraSmall
                     height: Theme.itemSizeExtraSmall
                     visible: status == Image.Ready
-                    source: PatchManager.iconForPatch(patchObject.details.patch)
+                    source: PatchManager.iconForPatch(patchObject.details.patch, Theme.colorScheme ? (Theme.colorScheme == Theme.LightOnDark) : true)
                 }
             }
 
