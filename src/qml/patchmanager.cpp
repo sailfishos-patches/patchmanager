@@ -463,8 +463,8 @@ void PatchManager::checkEaster()
 
 QString PatchManager::iconForPatch(const QString &patch, bool dark) const
 {
-    static QString iconPlaceholder = QStringLiteral("/usr/share/patchmanager/patches/%1/main.%2").arg(patch);
-    static QString iconLightPlaceholder = QStringLiteral("/usr/share/patchmanager/patches/%1/main-light.%2").arg(patch);
+    const QString iconPlaceholder = QStringLiteral("/usr/share/patchmanager/patches/%1/main.%2").arg(patch);
+    const QString iconLightPlaceholder = QStringLiteral("/usr/share/patchmanager/patches/%1/main-light.%2").arg(patch);
     static QStringList validExtensions = { QStringLiteral("png"), QStringLiteral("svg") };
 
     for (const QString &extension : validExtensions) {
