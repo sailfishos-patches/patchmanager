@@ -7,9 +7,9 @@ Patchmanager does not have application icon inside launcher. After installation 
 
 ## For users
 
-To install Patchmanager you first need to install Warehouse https://openrepos.net/content/basil/warehouse-sailfishos, then install Patchmanager 2 using Warehouse.
+To install Patchmanager you first need to install Storeman (https://openrepos.net/content/osetr/storeman), then install Patchmanager 3 from OpenRepos using Storeman.
 
-RPM patches can be installed from Warehouse or manually downloaded from https://openrepos.net/category/patches
+RPM patches can be installed from OpenRepos per Storeman or manually downloaded from https://openrepos.net/category/patches
 
 Patches available via Web Catalog can be found here: https://coderus.openrepos.net/pm2/projects/
 
