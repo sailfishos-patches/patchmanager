@@ -14,8 +14,8 @@
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="53"/>
-        <source>Patchmanager will automatically apply patches in 10 seconds.</source>
-        <translation>Patchmanager will automatically apply patches in 10 seconds.</translation>
+        <source>Patchmanager will automatically apply all patches in 10 seconds.</source>
+        <translation>Patchmanager will automatically apply all patches in 10 seconds.</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="66"/>
@@ -29,13 +29,13 @@
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="136"/>
-        <source>Appled successfully!</source>
-        <translation>Appled successfully!</translation>
+        <source>Applied successfully.</source>
+        <translation>Applied successfully.</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="137"/>
-        <source>Failed applying patches!</source>
-        <translation>Failed applying patches!</translation>
+        <source>Failed to apply patches!</source>
+        <translation>Failed to apply patches!</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="165"/>
