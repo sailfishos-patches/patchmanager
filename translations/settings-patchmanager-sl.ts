@@ -14,7 +14,7 @@
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="53"/>
-        <source>Patchmanager will automatically apply patches in 10 seconds.</source>
+        <source>Patchmanager will automatically apply all patches in 10 seconds.</source>
         <translation>Patchmanager bo v 10. sekundah samodejno uveljavil popravke</translation>
     </message>
     <message>
@@ -29,12 +29,12 @@
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="136"/>
-        <source>Appled successfully!</source>
-        <translation>Uspešno uveljavljeno!</translation>
+        <source>Applied successfully.</source>
+        <translation>Uspešno uveljavljeno.</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="137"/>
-        <source>Failed applying patches!</source>
+        <source>Failed to apply patches!</source>
         <translation>Nespešno uveljavljanje popravkov!</translation>
     </message>
     <message>
