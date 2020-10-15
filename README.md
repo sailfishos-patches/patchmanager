@@ -3,25 +3,26 @@
 Patchmanager is a tool that can be used to modify the Sailfish OS user experience.
 It is based on AUSMT (Auto-Update System Modification Technology), a set of scripts that enables system file patching.
 
-Patchmanager does not have application icon inside launcher. After installation Patchmanager can be found inside Settings.
+Patchmanager does not have application icon on the launcher.  After installation Patchmanager can be found inside Settings.
 
 ## For users
 
-To install Patchmanager you first need to install Storeman (https://openrepos.net/content/osetr/storeman), then install Patchmanager 3 from OpenRepos using Storeman.
+To install Patchmanager you first need to install Storeman (https://openrepos.net/content/osetr/storeman), then install Patchmanager 3 from OpenRepos using Storeman. 
+Alternatively you may download the recent Patchmanager RPM from OpenRepos (https://openrepos.net/content/coderus/patchmanager-30) and install it manually.
 
 RPM patches can be installed from OpenRepos per Storeman or manually downloaded from https://openrepos.net/category/patches
 
-Patches available via Web Catalog can be found here: https://coderus.openrepos.net/pm2/projects/
+Patches available via Web Catalog are listed and detailed here: https://coderus.openrepos.net/pm2/projects/
 
 ## For developers
 
-To write a patch, you need to provide at least two files. A patch file, and the JSON metadata.
+To write a patch, you need to provide at least two files: a patch file and the JSON metadata
 
 ### The patch file
 
-The patch file must be a diff of all the files to be patched in the filesystem. It will
-be applied on the root of the filesystem, with the `-p1` flag. It **must** be named 
-`unified_diff.patch`.
+The patch file must be a diff of all the files to be patched in the filesystem. 
+It will be applied on the root of the filesystem, with the `-p1` flag. 
+It **must** be named `unified_diff.patch`.
 
 Usually, you can generate one of these patch files using the following command
 
@@ -33,11 +34,10 @@ where `original` and `patched` contains the original and modified files.
 
 ### The JSON metadata file
 
-The metadata file contains information about the patch. It is a simple JSON file, that **must**
-be named `patch.json`.
+The metadata file contains information about the patch.  It is a simple JSON file, that **must** be named `patch.json`.
 
-This file contains the title of the patch, a quick description of the patch, a category,
-and other informations. Here is a sample of a metadata file.
+This file contains the title of the patch, a short description of the patch, a category, and other information. 
+Here is a sample of a metadata file.
 
 ```json
 {
@@ -52,7 +52,8 @@ and other informations. Here is a sample of a metadata file.
 
 #### Categories
 
-The category entry must be in the following list
+The category entry must be one of the following list:
+
 - browser
 - camera
 - calendar
@@ -68,33 +69,36 @@ The category entry must be in the following list
 - silica
 - others
 
-Some of these entries allow specific actions to be triggered, such as relaunching the homescreen
-or prestarted services.
+Some of these entries allow specific actions to be triggered, such as relaunching the homescreen or the preloaded services.
 
 #### Maintainers
 
-A maintainer can be registered inside the JSON metadata file to claim maintainership of the patch. 
+A maintainer can be registered inside the JSON metadata file to claim maintainership of a patch. 
 Either use your real name, as displayed on Github or Twitter, or use your usual nickname.
 
 #### Additional files
 
-Patchmanager starting from version 2.0 can utilize additional files to provide better users experience. All files should be placed in the same folder
+Patchmanager starting from version 2.0 can utilize additional files to provide better users experience. 
+All files shall be placed in the same folder.
 
-- **main.qml** - QML page with some additional info about patch and/or configuration. Will be showed when user tap on patch entry inside Patchmanager
-- **main.png** or **main.svg** - icon for patch, will be displayed inside list of patches, at right corner after patch name
-- **translation_\<LANG_CODE\>.qm** - translation files for QML page, allow patch developers to translate texts to various languages
-- any additional **.qml**, .**js**, **.png** files used by QML page is allowed
+- **main.qml** - QML page with some additional info about patch and/or configuration.  Will be shown when user taps on the patch entry inside Patchmanager.
+- **main.png** or **main.svg** - Icon for the patch, which will be displayed at the list of patches, at right corner after patch name.
+- **translation_\<LANG_CODE\>.qm** - Translation files for QML page, to allow patch developers to translate texts to various languages.
+- Any additional **.qml**, .**js**, **.png** files used by QML page are allowed.
 
 ## Web catalog for patches
 
-Patchmanager is supporting installing patches from web catalog. Patch developers can upload patches to https://coderus.openrepos.net/pm2 to make them visible inside Patchmanager Web Catalog list. When uploading patch to web catalog, patch developer should not provide patch.json file with metadata, but he should fill necessary fields on webpage before uploading instead.
+Patchmanager supports installing patches from its web catalog. 
+Patch developers can upload patches to https://coderus.openrepos.net/pm2 to make them visible inside Patchmanager Web Catalog list. 
+When uploading a patch to web catalog, the patch developer should not provide a *patch.json* file with metadata, but should fill the necessary fields on the webpage before uploading, instead.
 
 ## Patches distribution at OpenRepos.net
 
-Some patches can be too complex for Web Catalog. In this case developer can package patch to RPM file and upload to https://openrepos.net
+Patches can be too complex for Patchmanager's Web Catalog. 
+In this case the developer can package the patch as an RPM and upload it at https://openrepos.net
 
-In this case patch content should be installed to `/usr/share/patchmanager/patches/<patch-name>/` and patch developer should follow same rules for including additional files.
+For RPM patches, the patch content shall be installed in a directory `/usr/share/patchmanager/patches/<patch-name>/`; additional files (see above) for this patch shall also be placed there.
 
-Additionaly, when patch developer decide to use RPM packages, he should manually maintain compatibility of patch by using RPM spec file fields.
+Additionaly, when a patch developer decides package a patch as an RPM, the compatibility of patch (to SailfishoS versions, instrastructure it uses etc.) shall be properly defined by RPM spec file dependencies ("Requires:", "Conflits:" etc.).
 
 Sample RPM patch project: https://github.com/CODeRUS/sailfishos-disable-glass-avatar
