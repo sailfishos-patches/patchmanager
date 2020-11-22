@@ -99,6 +99,6 @@ In this case the developer can package the patch as an RPM and upload it at http
 
 For RPM patches, the patch content shall be installed in a directory `/usr/share/patchmanager/patches/<patch-name>/`; additional files (see above) for this patch shall also be placed there.
 
-Additionaly, when a patch developer decides package a patch as an RPM, the compatibility of patch (to SailfishoS versions, instrastructure it uses etc.) shall be properly defined by RPM spec file dependencies ("Requires:", "Conflits:" etc.).
+Additionaly, when a patch developer decides to package a patch as an RPM, the compatibility of patch (to SailfishoS versions, instrastructure it uses etc.) shall be properly defined by RPM spec file dependencies ("Requires:", "Conflits:" etc.).
 
 Sample RPM patch project: https://github.com/CODeRUS/sailfishos-disable-glass-avatar
