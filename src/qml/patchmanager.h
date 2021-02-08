@@ -131,6 +131,7 @@ public slots:
     void checkEaster();
     QString iconForPatch(const QString &patch, bool dark = true) const;
     QString valueIfExists(const QString & filename) const;
+    bool fileExists(const QString &filename);
 
     void checkForUpdates();
 

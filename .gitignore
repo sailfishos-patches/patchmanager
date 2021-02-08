@@ -13,3 +13,6 @@ patchmanager_adaptor.*
 patchmanager-dialog
 
 .build*
+src/icons/z*
+src/icons/ss
+*.list
