@@ -383,14 +383,14 @@ Page {
 
             onClicked: {
                 var patchName = patchObject.details.patch
-                try {
+                var qmlFile = "/usr/share/patchmanager/patches/%1/main.qml".arg(patchName)
+                if (PatchManager.fileExists(qmlFile)) {
                     var translator = PatchManager.installTranslator(patchName)
                     var page = pageStack.push("/usr/share/patchmanager/patches/%1/main.qml".arg(patchName))
                     if (translator) {
                         page.Component.destruction.connect(function() { PatchManager.removeTranslator(patchName) })
                     }
-                }
-                catch(err) {
+                } else {
                     openPatchInfo()
                 }
             }

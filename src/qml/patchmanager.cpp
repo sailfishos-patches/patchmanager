@@ -775,6 +775,11 @@ bool PatchManagerTranslator::installTranslator(const QString &patch)
     return true;
 }
 
+bool PatchManager::fileExists(const QString &filename)
+{
+    return QFile::exists(filename);
+}
+
 bool PatchManagerTranslator::removeTranslator(const QString &patch)
 {
     qDebug() << Q_FUNC_INFO << patch;
