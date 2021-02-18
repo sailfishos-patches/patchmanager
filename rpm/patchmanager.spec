@@ -155,8 +155,6 @@ systemctl-user daemon-reload
 %{_unitdir}/checkForUpdates-org.SfietKonstantin.patchmanager.timer
 %{_unitdir}/timers.target.wants/checkForUpdates-org.SfietKonstantin.patchmanager.timer
 %{_sharedstatedir}/environment/patchmanager/10-dbus.conf
-#%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/patch.json
-#%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/unified_diff.patch
 %{_libdir}/systemd/user/dbus-org.SfietKonstantin.patchmanager.service
 %{_libdir}/systemd/user/lipstick-patchmanager.service
 %{_libdir}/systemd/user/lipstick.service.wants/lipstick-patchmanager.service
