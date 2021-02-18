@@ -4,11 +4,10 @@ TARGET = patchmanager
 QT = core dbus network
 CONFIG += link_pkgconfig
 PKGCONFIG += nemonotifications-qt5
-PKGCONFIG += libsystemd-journal
+PKGCONFIG += libsystemd
 PKGCONFIG += rpm
 PKGCONFIG += popt
 
-INCLUDEPATH += /usr/include
 INCLUDEPATH += /usr/include/rpm
 
 isEmpty(PROJECT_PACKAGE_VERSION) {

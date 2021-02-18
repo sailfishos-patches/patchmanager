@@ -26,6 +26,7 @@ static orig_open_f_type orig_open64 = NULL;
 #include <limits.h>
 #include <libgen.h>
 
+#include <getdef.h>
 #include <pwd.h>
 
 #define SERVER_PATH "/tmp/patchmanager-socket"
@@ -95,18 +96,9 @@ static void pm_name(char new_name[]) {
     close(sockfd);
 }
 
-static uid_t nemo_uid()
+static uid_t user_uid()
 {
-    static struct passwd *nemo_pwd;
-
-    if (!nemo_pwd) {
-        nemo_pwd = getpwnam("nemo");
-        if (!nemo_pwd) {
-            return 100000;
-        }
-    }
-
-    return nemo_pwd->pw_uid;
+    return getdef_num("UID_MIN", 100000);
 }
 
 static int pm_validate_uid(uid_t uid)
@@ -114,7 +106,7 @@ static int pm_validate_uid(uid_t uid)
 #ifdef ALLOW_ALL_USERS
     return 1;
 #else // #ifdef ALLOW_ALL_USERS
-    return uid == nemo_uid();
+    return uid >= user_uid();
 #endif // #ifdef ALLOW_ALL_USERS
 }
 
