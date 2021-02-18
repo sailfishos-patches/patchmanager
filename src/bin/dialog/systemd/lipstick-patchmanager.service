@@ -4,9 +4,9 @@ PartOf=lipstick.service
 
 [Service]
 ExecStart=/bin/sleep infinity
-ExecStartPost=/bin/dbus-send --print-reply --system --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager org.SfietKonstantin.patchmanager.lipstickChanged "string:started"
-ExecStop=/bin/dbus-send --print-reply --system --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager org.SfietKonstantin.patchmanager.lipstickChanged "string:stopped"
-ExecReload=/bin/dbus-send --print-reply --system --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager org.SfietKonstantin.patchmanager.lipstickChanged "string:reloaded"
+ExecStartPost=/usr/bin/env dbus-send --print-reply --system --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager org.SfietKonstantin.patchmanager.lipstickChanged "string:started"
+ExecStop=/usr/bin/env dbus-send --print-reply --system --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager org.SfietKonstantin.patchmanager.lipstickChanged "string:stopped"
+ExecReload=/usr/bin/env dbus-send --print-reply --system --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager org.SfietKonstantin.patchmanager.lipstickChanged "string:reloaded"
 
 [Install]
 WantedBy=lipstick.service

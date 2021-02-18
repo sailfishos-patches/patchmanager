@@ -4,7 +4,7 @@ TARGET = patchmanager
 QT = core dbus network
 CONFIG += link_pkgconfig
 PKGCONFIG += nemonotifications-qt5
-PKGCONFIG += libsystemd-journal
+PKGCONFIG += systemd
 PKGCONFIG += rpm
 
 INCLUDEPATH += "/home/OMP/a.kozhevnikov/SailfishOS2/mersdk/targets/SailfishOS-2.2.1.7-armv7hl/usr/include/"
