@@ -155,9 +155,9 @@ systemctl-user daemon-reload
 %{_unitdir}/checkForUpdates-org.SfietKonstantin.patchmanager.timer
 %{_unitdir}/timers.target.wants/checkForUpdates-org.SfietKonstantin.patchmanager.timer
 %{_sharedstatedir}/environment/patchmanager/10-dbus.conf
-%{_libdir}/systemd/user/dbus-org.SfietKonstantin.patchmanager.service
-%{_libdir}/systemd/user/lipstick-patchmanager.service
-%{_libdir}/systemd/user/lipstick.service.wants/lipstick-patchmanager.service
+%{_userunitdir}/dbus-org.SfietKonstantin.patchmanager.service
+%{_userunitdir}/lipstick-patchmanager.service
+%{_userunitdir}/lipstick.service.wants/lipstick-patchmanager.service
 %{_libdir}/libpreload%{name}.so
 
 %attr(0755,root,root-) %{_libexecdir}/pm_apply
