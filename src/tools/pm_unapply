@@ -1,5 +1,6 @@
 #!/bin/bash
-
+# for busybox
+set -o pipefail
 #
 # Some constants
 #
@@ -67,7 +68,7 @@ verify_text_patch() {
     log "----------------------------------"
     log
 
-    $PATCH_EXEC -R -p 1 -d "$ROOT_DIR" --dry-run < "$PATCH_FILE" 2>&1 | tee -a "$PM_LOG_FILE" ; test ${PIPESTATUS[0]} -eq 0
+    $PATCH_EXEC -R -p 1 -d "$ROOT_DIR" --dry-run < "$PATCH_FILE" 2>&1 | tee -a "$PM_LOG_FILE"
   fi
 }
 
@@ -79,7 +80,7 @@ remove_text_patch() {
     log "----------------------------------"
     log
 
-    $PATCH_EXEC -R -p 1 -d "$ROOT_DIR" --no-backup-if-mismatch < "$PATCH_FILE" 2>&1 | tee -a "$PM_LOG_FILE" ; test ${PIPESTATUS[0]} -eq 0
+    $PATCH_EXEC -R -p 1 -d "$ROOT_DIR" --no-backup-if-mismatch < "$PATCH_FILE" 2>&1 | tee -a "$PM_LOG_FILE"
   fi
 }
 
