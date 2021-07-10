@@ -158,7 +158,7 @@ systemctl-user daemon-reload
 %{_userunitdir}/dbus-org.SfietKonstantin.patchmanager.service
 %{_userunitdir}/lipstick-patchmanager.service
 %{_userunitdir}/lipstick.service.wants/lipstick-patchmanager.service
-%{_libdir}/libpreload%{name}.so
+/usr/lib/libpreload%{name}.so
 
 %attr(0755,root,root-) %{_libexecdir}/pm_apply
 %attr(0755,root,root-) %{_libexecdir}/pm_unapply
