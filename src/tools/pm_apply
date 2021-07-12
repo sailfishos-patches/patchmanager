@@ -1,5 +1,4 @@
 #!/bin/bash
-# for busybox
 set -o pipefail
 #
 # Some constants
