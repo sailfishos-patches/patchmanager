@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -o pipefail
 #
 # Some constants
 #
@@ -60,7 +60,7 @@ test_if_applied() {
     log "----------------------------------"
     log
 
-    $PATCH_EXEC -R -p 1 -d "$ROOT_DIR" --dry-run < "$PATCH_PATH" 2>&1 | tee -a "$PM_LOG_FILE" ; test ${PIPESTATUS[0]} -eq 0
+    $PATCH_EXEC -R -p 1 -d "$ROOT_DIR" --dry-run < "$PATCH_PATH" 2>&1 | tee -a "$PM_LOG_FILE"
 
     if [ $? -eq 0 ]; then
       success
@@ -76,7 +76,7 @@ verify_text_patch() {
     log "----------------------------------"
     log
 
-    $PATCH_EXEC -p 1 -d "$ROOT_DIR" --dry-run < "$PATCH_PATH" 2>&1 | tee -a "$PM_LOG_FILE" ; test ${PIPESTATUS[0]} -eq 0
+    $PATCH_EXEC -p 1 -d "$ROOT_DIR" --dry-run < "$PATCH_PATH" 2>&1 | tee -a "$PM_LOG_FILE"
 
     if [ $? -ne 0 ]; then
       failure
@@ -92,7 +92,7 @@ install_text_patch() {
     log "----------------------------------"
     log
 
-    $PATCH_EXEC -p 1 -d "$ROOT_DIR" --no-backup-if-mismatch < "$PATCH_PATH" 2>&1 | tee -a "$PM_LOG_FILE" ; test ${PIPESTATUS[0]} -eq 0
+    $PATCH_EXEC -p 1 -d "$ROOT_DIR" --no-backup-if-mismatch < "$PATCH_PATH" 2>&1 | tee -a "$PM_LOG_FILE"
   fi
 }
 
