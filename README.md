@@ -7,7 +7,7 @@ Patchmanager does not have application icon on the launcher.  After installation
 
 ## For users
 
-To install Patchmanager you first need to install Storeman (https://openrepos.net/content/osetr/storeman), then install Patchmanager 3 from OpenRepos using Storeman. 
+To install Patchmanager you first need to install Storeman (https://openrepos.net/content/osetr/storeman-installer), then install Patchmanager 3 from OpenRepos using Storeman. 
 Alternatively you may download the recent Patchmanager RPM from OpenRepos (https://openrepos.net/content/coderus/patchmanager-30) and install it manually.
 
 RPM patches can be installed from OpenRepos per Storeman or manually downloaded from https://openrepos.net/category/patches
