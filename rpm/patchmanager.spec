@@ -95,10 +95,12 @@ echo Upgrading package
 ;;
 *) echo case "$*" not handled in post
 esac
+ARCH=$(getconf LONG_BIT)
+SUFFIX=$([[ "$ARCH" == "64" ]] && echo "64" || echo "")
 if grep libpreloadpatchmanager /etc/ld.so.preload > /dev/null; then
     echo "Preload already exists"
 else
-    echo /usr/lib/libpreloadpatchmanager.so >> /etc/ld.so.preload
+    echo /usr/lib$SUFFIX/libpreloadpatchmanager.so >> /etc/ld.so.preload
 fi
 /sbin/ldconfig
 dbus-send --system --type=method_call \
@@ -158,7 +160,7 @@ systemctl-user daemon-reload
 %{_userunitdir}/dbus-org.SfietKonstantin.patchmanager.service
 %{_userunitdir}/lipstick-patchmanager.service
 %{_userunitdir}/lipstick.service.wants/lipstick-patchmanager.service
-/usr/lib/libpreload%{name}.so
+%{_libdir}/libpreload%{name}.so
 
 %attr(0755,root,root-) %{_libexecdir}/pm_apply
 %attr(0755,root,root-) %{_libexecdir}/pm_unapply
