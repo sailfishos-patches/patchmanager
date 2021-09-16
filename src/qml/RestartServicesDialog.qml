@@ -1,6 +1,10 @@
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
+ * Copyright (c) 2021, Patchmanger for SailfishOS contributors:
+ *                  - olf "Olf0" <https://github.com/Olf0>
+ *                  - Peter G. "nephros" <sailfish@nephros.org>
+ *                  - Vlad G. "b100dian" <https://github.com/b100dian>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -39,21 +43,39 @@ Dialog {
     id: container
     onAccepted: PatchManager.restartServices()
 
-    SilicaFlickable {
-        anchors.fill: parent
-        Column {
-            spacing: Theme.paddingMedium
-            anchors.left: parent.left; anchors.right: parent.right
-            DialogHeader {
-                acceptText: qsTranslate("", "Restart services")
-            }
+    Component.onCompleted: console.info("Will restart " + PatchManager.appsToRestart);
 
-            Label {
-                anchors.left: parent.left; anchors.leftMargin: Theme.paddingMedium
-                anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
-                wrapMode: Text.WordWrap
-                color: Theme.highlightColor
-                text: qsTranslate("", "Some services will now be restarted. Phone interface might take time to load for a short moment.")
+    Column {
+        spacing: Theme.paddingSmall
+        width: parent.width
+        DialogHeader {
+            acceptText: qsTranslate("", "Restart")
+        }
+        Label {
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width -  Theme.horizontalPageMargin * 2
+            color: Theme.highlightColor
+            text: qsTranslate("", "Some services will now be restarted. The phone interface might take a short moment to load.")
+            wrapMode: Text.WordWrap
+            horizontalAlignment: Text.AlignJustify
+        }
+        SectionHeader { text: qsTranslate("", "List of services:" ); color: Theme.secondaryHighlightColor }
+        Column {
+            id: col
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width -  Theme.horizontalPageMargin * 2
+            Repeater {
+                model: PatchManager.appsToRestart
+                delegate: Component { TextSwitch {
+                    automaticCheck: false; checked: true; text: modelData;
+                    description: {
+                        if ((modelData == "homescreen") || (modelData == "silica"))   { return qsTranslate("","Note: this will close all apps!"); }
+                        else if (modelData == "settings")  { return qsTranslate("","Note: this will close %1!").arg("Patchmanager"); }
+                        else if (modelData == "keyboard")  { return "" }
+                        else if (modelData == "other")     { return "" }
+                        else { return qsTranslate("","Note: this will close the %1 app!").arg(modelData); }
+                    }
+                } }
             }
         }
     }
