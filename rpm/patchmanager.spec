@@ -69,7 +69,7 @@ echo "Installing %{name}: pre section"
 ;;
 2)
 echo "Updating %{name}: pre section"
-# Unapply patches if Patchmanager 2.x is installed
+# Unapply all patches if Patchmanager 2.x is installed
 if [ ! -d /var/lib/patchmanager/ausmt/patches/ ]
 then
     exit 0
