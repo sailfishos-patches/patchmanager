@@ -124,7 +124,7 @@ export NO_PM_PRELOAD=1
 case "$*" in
 0)
 echo "Uninstalling %{name}: postun section"
-sed -i "/libpreloadpatchmanager/ d" /etc/ld.so.preload
+sed -i "/libpreload%{name}/ d" /etc/ld.so.preload
 /sbin/ldconfig
 rm -rf /tmp/patchmanager || true
 rm -f /tmp/patchmanager-socket || true
