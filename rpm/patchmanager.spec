@@ -97,11 +97,8 @@ echo Upgrading package
 esac
 ARCH=$(getconf LONG_BIT)
 SUFFIX=$([[ "$ARCH" == "64" ]] && echo "64" || echo "")
-if grep libpreloadpatchmanager /etc/ld.so.preload > /dev/null; then
-    echo "Preload already exists"
-else
-    echo /usr/lib$SUFFIX/libpreloadpatchmanager.so >> /etc/ld.so.preload
-fi
+sed -i "/libpreloadpatchmanager/ d" /etc/ld.so.preload
+echo /usr/lib$SUFFIX/libpreloadpatchmanager.so >> /etc/ld.so.preload
 /sbin/ldconfig
 dbus-send --system --type=method_call \
 --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
