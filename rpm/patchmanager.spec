@@ -96,13 +96,8 @@ echo "Updating %{name}: post section"
 ;;
 *) echo "Case $* is not handled in post section of %{name}!"
 esac
-ARCH="$(getconf LONG_BIT)"
-SUFFIX="$([ "$ARCH" = "64" ] && echo "64" || echo "")"
-if grep -qF libpreloadpatchmanager /etc/ld.so.preload; then
-    echo "Preload entry already exists in /etc/ld.so.preload"
-else
-    echo "/usr/lib$SUFFIX/libpreloadpatchmanager.so" >> /etc/ld.so.preload
-fi
+sed -i "/libpreload%{name}/ d" /etc/ld.so.preload
+echo "%{_libdir}/libpreload%{name}.so" >> /etc/ld.so.preload
 /sbin/ldconfig
 dbus-send --system --type=method_call \
 --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
