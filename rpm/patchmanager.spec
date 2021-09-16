@@ -125,6 +125,7 @@ case "$*" in
 0)
 echo "Uninstalling %{name}: postun section"
 sed -i "/libpreloadpatchmanager/ d" /etc/ld.so.preload
+/sbin/ldconfig
 rm -rf /tmp/patchmanager || true
 rm -f /tmp/patchmanager-socket || true
 ;;
@@ -133,7 +134,6 @@ echo "Updating %{name}: postun section"
 ;;
 *) echo "Case $* is not handled in postun section of %{name}!"
 esac
-/sbin/ldconfig
 dbus-send --system --type=method_call \
 --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 systemctl daemon-reload
