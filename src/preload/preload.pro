@@ -12,6 +12,6 @@ SOURCES += \
     src/preloadpatchmanager.c
 
 TARGET = preloadpatchmanager
-target.path = /usr/lib
+target.path = $$LIBDIR
 
 INSTALLS = target
