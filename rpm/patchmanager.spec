@@ -1,11 +1,13 @@
 %define theme sailfish-default
 
+# These macros should already be defined in the RPMbuild environment, see: rpm --showrc
 %{!?qtc_qmake5:%define qtc_qmake5 %qmake5}
 %{!?qtc_make:%define qtc_make make}
+%{!?qmake5_install:%define qmake5_install make install INSTALL_ROOT=%{buildroot}}
 
 Name:       patchmanager
 
-Summary:    Patchmanager allows you to manage Sailfish OS patches
+Summary:    Patchmanager allows for managing Sailfish OS patches
 Version:    3.0.1
 Release:    1
 Group:      Qt/Qt
@@ -30,8 +32,7 @@ BuildRequires:  pkgconfig(rpm)
 BuildRequires:  pkgconfig(popt)
 
 %description
-patchmanager allows managing Sailfish OS patches
-on your device easily.
+%{summary} on your device easily.
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -64,43 +65,43 @@ mkdir -p %{buildroot}%{_datadir}/%{name}/patches
 export NO_PM_PRELOAD=1
 case "$*" in
 1)
-echo Installing package
+echo "Installing %{name}: pre section"
 ;;
 2)
-echo Upgrading package
-// unapply patches if pm2 is installed
+echo "Updating %{name}: pre section"
+# Unapply patches if Patchmanager 2.x is installed
 if [ ! -d /var/lib/patchmanager/ausmt/patches/ ]
 then
     exit 0
 else
-    /usr/sbin/patchnamager --unapply-all || :
+    /usr/sbin/patchnamager --unapply-all || true
 fi
-if [ "$(ls -A /var/lib/patchmanager/ausmt/patches/)" ]
+if [ -n "$(ls -A /var/lib/patchmanager/ausmt/patches/)" ]
 then
-    echo "Unapply all patches before upgrade!"
+    echo "Unapply all patches before updating %{name}!"
     exit 1
 fi
 ;;
-*) echo case "$*" not handled in pre
+*) echo "Case $* is not handled in pre section of %{name}!"
 esac
 
 %post
 export NO_PM_PRELOAD=1
 case "$*" in
 1)
-echo Installing package
+echo "Installing %{name}: post section"
 ;;
 2)
-echo Upgrading package
+echo "Updating %{name}: post section"
 ;;
-*) echo case "$*" not handled in post
+*) echo "Case $* is not handled in post section of %{name}!"
 esac
-ARCH=$(getconf LONG_BIT)
-SUFFIX=$([[ "$ARCH" == "64" ]] && echo "64" || echo "")
-if grep libpreloadpatchmanager /etc/ld.so.preload > /dev/null; then
-    echo "Preload already exists"
+ARCH="$(getconf LONG_BIT)"
+SUFFIX="$([ "$ARCH" = "64" ] && echo "64" || echo "")"
+if grep -qF libpreloadpatchmanager /etc/ld.so.preload; then
+    echo "Preload entry already exists in /etc/ld.so.preload"
 else
-    echo /usr/lib$SUFFIX/libpreloadpatchmanager.so >> /etc/ld.so.preload
+    echo "/usr/lib$SUFFIX/libpreloadpatchmanager.so" >> /etc/ld.so.preload
 fi
 /sbin/ldconfig
 dbus-send --system --type=method_call \
@@ -114,28 +115,28 @@ systemctl restart checkForUpdates-org.SfietKonstantin.patchmanager.timer
 export NO_PM_PRELOAD=1
 case "$*" in
 0)
-echo Uninstalling package
+echo "Uninstalling %{name}: preun section"
 systemctl stop dbus-org.SfietKonstantin.patchmanager.service
 ;;
 1)
-echo Upgrading package
+echo "Updating %{name}: preun section"
 ;;
-*) echo case "$*" not handled in preun
+*) echo "Case $* is not handled in preun section of %{name}!"
 esac
 
 %postun
 export NO_PM_PRELOAD=1
 case "$*" in
 0)
-echo Uninstalling package
+echo "Uninstalling %{name}: postun section"
 sed -i "/libpreloadpatchmanager/ d" /etc/ld.so.preload
-rm -rf /tmp/patchmanager || :
-rm -f /tmp/patchmanager-socket || :
+rm -rf /tmp/patchmanager || true
+rm -f /tmp/patchmanager-socket || true
 ;;
 1)
-echo Upgrading package
+echo "Updating %{name}: postun section"
 ;;
-*) echo case "$*" not handled in postun
+*) echo "Case $* is not handled in postun section of %{name}!"
 esac
 /sbin/ldconfig
 dbus-send --system --type=method_call \
