@@ -74,7 +74,7 @@ if [ ! -d /var/lib/patchmanager/ausmt/patches/ ]
 then
     exit 0
 else
-    /usr/sbin/patchnamager --unapply-all || true
+    /usr/sbin/patchmanager --unapply-all || true
 fi
 if [ -n "$(ls -A /var/lib/patchmanager/ausmt/patches/)" ]
 then
