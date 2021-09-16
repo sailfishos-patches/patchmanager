@@ -55,8 +55,8 @@ ln -s ../dbus-org.SfietKonstantin.patchmanager.service %{buildroot}%{_unitdir}/m
 mkdir -p %{buildroot}%{_unitdir}/timers.target.wants/
 ln -s ../checkForUpdates-org.SfietKonstantin.patchmanager.timer %{buildroot}%{_unitdir}/timers.target.wants/
 
-mkdir -p %{buildroot}/usr/lib/systemd/user/lipstick.service.wants/
-ln -s ../lipstick-patchmanager.service %{buildroot}/usr/lib/systemd/user/lipstick.service.wants/
+mkdir -p %{buildroot}/%{_userunitdir}/lipstick.service.wants/
+ln -s ../lipstick-patchmanager.service %{buildroot}/%{_userunitdir}/lipstick.service.wants/
 
 mkdir -p %{buildroot}%{_datadir}/%{name}/patches
 
