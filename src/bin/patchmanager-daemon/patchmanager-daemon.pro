@@ -4,11 +4,10 @@ TARGET = patchmanager
 QT = core dbus network
 CONFIG += link_pkgconfig
 PKGCONFIG += nemonotifications-qt5
-PKGCONFIG += libsystemd-journal
+PKGCONFIG += libsystemd
 PKGCONFIG += rpm
 PKGCONFIG += popt
 
-INCLUDEPATH += /usr/include
 INCLUDEPATH += /usr/include/rpm
 
 isEmpty(PROJECT_PACKAGE_VERSION) {
@@ -55,7 +54,7 @@ systemd.files = \
     systemd/dbus-org.SfietKonstantin.patchmanager.service \
     systemd/checkForUpdates-org.SfietKonstantin.patchmanager.service \
     systemd/checkForUpdates-org.SfietKonstantin.patchmanager.timer
-systemd.path = /lib/systemd/system/
+systemd.path = /usr/lib/systemd/system/
 INSTALLS += systemd
 
 env.files = environment/10-dbus.conf

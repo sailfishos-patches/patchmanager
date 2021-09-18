@@ -132,17 +132,23 @@ QString getLang()
 {
     QString lang = QStringLiteral("en_US.utf8");
 
-    QFile localeConfig(QStringLiteral("/var/lib/environment/nemo/locale.conf"));
+    QStringList locales = {
+        QStringLiteral("/etc/locale.conf"),
+        QStringLiteral("/var/lib/environment/nemo/locale.conf"),
+    };
+    for (const QString &localePath : locales) {
+        QFile localeConfig(localePath);
 
-    if (!localeConfig.exists() || !localeConfig.open(QFile::ReadOnly)) {
-        return lang;
-    }
+        if (!localeConfig.exists() || !localeConfig.open(QFile::ReadOnly)) {
+            continue;
+        }
 
-    while (!localeConfig.atEnd()) {
-        QString line = localeConfig.readLine().trimmed();
-        if (line.startsWith(QStringLiteral("LANG="))) {
-             lang = line.mid(5);
-             break;
+        while (!localeConfig.atEnd()) {
+            QString line = localeConfig.readLine().trimmed();
+            if (line.startsWith(QStringLiteral("LANG="))) {
+                 lang = line.mid(5);
+                 break;
+            }
         }
     }
 

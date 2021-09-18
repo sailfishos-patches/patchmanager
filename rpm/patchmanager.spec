@@ -1,9 +1,7 @@
 %define theme sailfish-default
 
-%{!?qtc_qmake:%define qtc_qmake %qmake}
 %{!?qtc_qmake5:%define qtc_qmake5 %qmake5}
 %{!?qtc_make:%define qtc_make make}
-%{?qtc_builddir:%define _builddir %qtc_builddir}
 
 Name:       patchmanager
 
@@ -16,12 +14,6 @@ URL:        https://github.com/sailfishos-patches/patchmanager
 Source0:    %{name}-%{version}.tar.bz2
 Requires:   unzip
 Requires:   patch
-Conflicts:  jolla-settings-%{name}
-Obsoletes:  jolla-settings-%{name}
-Conflicts:  %{name}-ui
-Obsoletes:  %{name}-ui
-Conflicts:  prepatch
-Obsoletes:  prepatch
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Qml)
@@ -31,7 +23,8 @@ BuildRequires:  pkgconfig(sailfishapp) >= 0.0.10
 BuildRequires:  sailfish-svg2png >= 0.1.5
 BuildRequires:  pkgconfig(nemonotifications-qt5)
 BuildRequires:  qt5-qtdeclarative-devel-tools
-BuildRequires:  pkgconfig(libsystemd-journal)
+BuildRequires:  pkgconfig(systemd)
+BuildRequires:  pkgconfig(libshadowutils)
 BuildRequires:  qt5-qttools-linguist
 BuildRequires:  pkgconfig(rpm)
 BuildRequires:  pkgconfig(popt)
@@ -56,11 +49,11 @@ rm -rf %{buildroot}
 /usr/lib/qt5/bin/qmlplugindump -v -noinstantiate -nonrelocatable org.SfietKonstantin.patchmanager 2.0 %{buildroot}%{_libdir}/qt5/qml > %{buildroot}%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}/plugin.qmltypes |:
 sed -i 's#%{buildroot}##g' %{buildroot}%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}/plugin.qmltypes
 
-mkdir -p %{buildroot}/lib/systemd/system/multi-user.target.wants/
-ln -s ../dbus-org.SfietKonstantin.patchmanager.service %{buildroot}/lib/systemd/system/multi-user.target.wants/
+mkdir -p %{buildroot}%{_unitdir}/multi-user.target.wants/
+ln -s ../dbus-org.SfietKonstantin.patchmanager.service %{buildroot}%{_unitdir}/multi-user.target.wants/
 
-mkdir -p %{buildroot}/lib/systemd/system/timers.target.wants/
-ln -s ../checkForUpdates-org.SfietKonstantin.patchmanager.timer %{buildroot}/lib/systemd/system/timers.target.wants/
+mkdir -p %{buildroot}%{_unitdir}/timers.target.wants/
+ln -s ../checkForUpdates-org.SfietKonstantin.patchmanager.timer %{buildroot}%{_unitdir}/timers.target.wants/
 
 mkdir -p %{buildroot}/usr/lib/systemd/user/lipstick.service.wants/
 ln -s ../lipstick-patchmanager.service %{buildroot}/usr/lib/systemd/user/lipstick.service.wants/
@@ -156,17 +149,15 @@ systemctl-user daemon-reload
 %{_datadir}/%{name}/tools
 %{_datadir}/dbus-1/
 %{_sysconfdir}/dbus-1/system.d/
-/lib/systemd/system/dbus-org.SfietKonstantin.patchmanager.service
-/lib/systemd/system/multi-user.target.wants/dbus-org.SfietKonstantin.patchmanager.service
-/lib/systemd/system/checkForUpdates-org.SfietKonstantin.patchmanager.service
-/lib/systemd/system/checkForUpdates-org.SfietKonstantin.patchmanager.timer
-/lib/systemd/system/timers.target.wants/checkForUpdates-org.SfietKonstantin.patchmanager.timer
+%{_unitdir}/dbus-org.SfietKonstantin.patchmanager.service
+%{_unitdir}/multi-user.target.wants/dbus-org.SfietKonstantin.patchmanager.service
+%{_unitdir}/checkForUpdates-org.SfietKonstantin.patchmanager.service
+%{_unitdir}/checkForUpdates-org.SfietKonstantin.patchmanager.timer
+%{_unitdir}/timers.target.wants/checkForUpdates-org.SfietKonstantin.patchmanager.timer
 %{_sharedstatedir}/environment/patchmanager/10-dbus.conf
-#%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/patch.json
-#%{_datadir}/patchmanager/patches/sailfishos-patchmanager-unapplyall/unified_diff.patch
-%{_libdir}/systemd/user/dbus-org.SfietKonstantin.patchmanager.service
-%{_libdir}/systemd/user/lipstick-patchmanager.service
-%{_libdir}/systemd/user/lipstick.service.wants/lipstick-patchmanager.service
+%{_userunitdir}/dbus-org.SfietKonstantin.patchmanager.service
+%{_userunitdir}/lipstick-patchmanager.service
+%{_userunitdir}/lipstick.service.wants/lipstick-patchmanager.service
 %{_libdir}/libpreload%{name}.so
 
 %attr(0755,root,root-) %{_libexecdir}/pm_apply
@@ -178,7 +169,6 @@ systemctl-user daemon-reload
 %{_datadir}/jolla-settings/pages/%{name}
 %{_datadir}/jolla-settings/entries/%{name}.json
 %{_datadir}/%{name}/icons/icon-m-patchmanager.png
-%attr(644,nemo,nemo) %ghost /home/nemo/.config/patchmanager2.conf
 
 %{_datadir}/themes/%{theme}/meegotouch/z1.0/icons/*.png
 %{_datadir}/themes/%{theme}/meegotouch/z1.25/icons/*.png

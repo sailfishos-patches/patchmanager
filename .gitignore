@@ -3,5 +3,13 @@ build/
 src/bin/patchmanager-daemon/adaptor.*
 
 *.rpm
+*.so*
+Makefile
+*.o
+moc_*
+*.moc
+patchmanager_interface.*
+patchmanager_adaptor.*
+patchmanager-dialog
 
 .build*
