@@ -145,7 +145,7 @@ Page {
 
             MenuItem {
                 text: qsTranslate("", "Unapply all patches")
-                onClicked: PatchManager.call(PatchManager.unapplyAllPatches())
+                onClicked: menuRemorse.execute( text, function() { PatchManager.call(PatchManager.unapplyAllPatches()) } )
                 visible: PatchManager.loaded
             }
 
@@ -509,7 +509,7 @@ Page {
             enabled: view.count == 0
             text: qsTranslate("", "No patches available")
         }
-
+        RemorsePopup { id: menuRemorse }
         VerticalScrollDecorator {}
     }
 
