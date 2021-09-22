@@ -61,6 +61,8 @@ ln -s ../lipstick-patchmanager.service %{buildroot}/%{_userunitdir}/lipstick.ser
 
 mkdir -p %{buildroot}%{_datadir}/%{name}/patches
 
+install -m 644 -D src/etc/whitelist-common-patchmanager.local %{buildroot}%{_sysconfdir}/firejail/whitelist-common-patchmanager.local
+
 %pre
 export NO_PM_PRELOAD=1
 case "$*" in
@@ -163,6 +165,7 @@ systemctl-user daemon-reload
 %{_userunitdir}/lipstick-patchmanager.service
 %{_userunitdir}/lipstick.service.wants/lipstick-patchmanager.service
 %{_libdir}/libpreload%{name}.so
+%{_sysconfdir}/firejail/whitelist-common-patchmanager.local
 
 %attr(0755,root,root-) %{_libexecdir}/pm_apply
 %attr(0755,root,root-) %{_libexecdir}/pm_unapply
@@ -180,3 +183,4 @@ systemctl-user daemon-reload
 %{_datadir}/themes/%{theme}/meegotouch/z1.5-large/icons/*.png
 %{_datadir}/themes/%{theme}/meegotouch/z1.75/icons/*.png
 %{_datadir}/themes/%{theme}/meegotouch/z2.0/icons/*.png
+

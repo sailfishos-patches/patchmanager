@@ -1,0 +1,5 @@
+### patchmanager for sailjailed apps
+whitelist /tmp/patchmanager-socket
+whitelist /tmp/patchmanager
+whitelist /tmp/patchmanager3
+private-etc ld.so.preload
