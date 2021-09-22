@@ -61,8 +61,6 @@ ln -s ../lipstick-patchmanager.service %{buildroot}/%{_userunitdir}/lipstick.ser
 
 mkdir -p %{buildroot}%{_datadir}/%{name}/patches
 
-install -m 644 -D src/etc/whitelist-common-patchmanager.local %{buildroot}%{_sysconfdir}/firejail/whitelist-common-patchmanager.local
-
 %pre
 export NO_PM_PRELOAD=1
 case "$*" in
