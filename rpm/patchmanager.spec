@@ -99,6 +99,11 @@ esac
 sed -i "/libpreload%{name}/ d" /etc/ld.so.preload
 echo "%{_libdir}/libpreload%{name}.so" >> /etc/ld.so.preload
 /sbin/ldconfig
+if grep 'include whitelist-common-patchmanager.local' /etc/firejail/whitelist-common.local > /dev/null; then
+    echo "Firejail whitelist already exists"
+else
+    echo 'include whitelist-common-patchmanager.local' >> /etc/firejail/whitelist-common.local
+fi
 dbus-send --system --type=method_call \
 --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 systemctl daemon-reload
@@ -124,6 +129,7 @@ export NO_PM_PRELOAD=1
 case "$*" in
 0)
 echo "Uninstalling %{name}: postun section"
+sed -i "/whitelist-common-patchmanager.local/ d" /etc/firejail/whitelist-common.local ||:
 sed -i "/libpreload%{name}/ d" /etc/ld.so.preload
 /sbin/ldconfig
 rm -rf /tmp/patchmanager || true
