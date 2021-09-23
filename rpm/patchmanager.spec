@@ -96,13 +96,13 @@ echo "Updating %{name}: post section"
 ;;
 *) echo "Case $* is not handled in post section of %{name}!"
 esac
-sed -i "/libpreload%{name}/ d" /etc/ld.so.preload
-echo "%{_libdir}/libpreload%{name}.so" >> /etc/ld.so.preload
+sed -i '/libpreload%{name}/ d' /etc/ld.so.preload
+echo '%{_libdir}/libpreload%{name}.so' >> /etc/ld.so.preload
 /sbin/ldconfig
-if grep 'include whitelist-common-patchmanager.local' /etc/firejail/whitelist-common.local > /dev/null; then
-    echo "Firejail whitelist already exists"
+if grep -qF 'include whitelist-common-%{name}.local' /etc/firejail/whitelist-common.local; then
+    echo "Firejail whitelist entry for %{name} already exists."
 else
-    echo 'include whitelist-common-patchmanager.local' >> /etc/firejail/whitelist-common.local
+    echo 'include whitelist-common-%{name}.local' >> /etc/firejail/whitelist-common.local
 fi
 dbus-send --system --type=method_call \
 --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
@@ -129,8 +129,8 @@ export NO_PM_PRELOAD=1
 case "$*" in
 0)
 echo "Uninstalling %{name}: postun section"
-sed -i "/whitelist-common-patchmanager.local/ d" /etc/firejail/whitelist-common.local
-sed -i "/libpreload%{name}/ d" /etc/ld.so.preload
+sed -i '/whitelist-common-%{name}.local/ d' /etc/firejail/whitelist-common.local
+sed -i '/libpreload%{name}/ d' /etc/ld.so.preload
 /sbin/ldconfig
 rm -rf /tmp/patchmanager
 rm -f /tmp/patchmanager-socket
@@ -163,7 +163,7 @@ systemctl-user daemon-reload
 %{_userunitdir}/lipstick-patchmanager.service
 %{_userunitdir}/lipstick.service.wants/lipstick-patchmanager.service
 %{_libdir}/libpreload%{name}.so
-%{_sysconfdir}/firejail/whitelist-common-patchmanager.local
+%{_sysconfdir}/firejail/whitelist-common-%{name}.local
 
 %attr(0755,root,root-) %{_libexecdir}/pm_apply
 %attr(0755,root,root-) %{_libexecdir}/pm_unapply
