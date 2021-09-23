@@ -129,11 +129,11 @@ export NO_PM_PRELOAD=1
 case "$*" in
 0)
 echo "Uninstalling %{name}: postun section"
-sed -i "/whitelist-common-patchmanager.local/ d" /etc/firejail/whitelist-common.local || true
+sed -i "/whitelist-common-patchmanager.local/ d" /etc/firejail/whitelist-common.local
 sed -i "/libpreload%{name}/ d" /etc/ld.so.preload
 /sbin/ldconfig
-rm -rf /tmp/patchmanager || true
-rm -f /tmp/patchmanager-socket || true
+rm -rf /tmp/patchmanager
+rm -f /tmp/patchmanager-socket
 ;;
 1)
 echo "Updating %{name}: postun section"
