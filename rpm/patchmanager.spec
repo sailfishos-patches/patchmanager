@@ -96,9 +96,12 @@ echo "Updating %{name}: post section"
 ;;
 *) echo "Case $* is not handled in post section of %{name}!"
 esac
-sed -i "/libpreload%{name}/ d" /etc/ld.so.preload
-echo "%{_libdir}/libpreload%{name}.so" >> /etc/ld.so.preload
+sed -i '/libpreload%{name}/ d' /etc/ld.so.preload
+echo '%{_libdir}/libpreload%{name}.so' >> /etc/ld.so.preload
 /sbin/ldconfig
+if ! grep -qsF 'include whitelist-common-%{name}.local' /etc/firejail/whitelist-common.local; then
+   echo 'include whitelist-common-%{name}.local' >> /etc/firejail/whitelist-common.local
+fi
 dbus-send --system --type=method_call \
 --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 systemctl daemon-reload
@@ -124,10 +127,11 @@ export NO_PM_PRELOAD=1
 case "$*" in
 0)
 echo "Uninstalling %{name}: postun section"
-sed -i "/libpreload%{name}/ d" /etc/ld.so.preload
+sed -i '/whitelist-common-%{name}.local/ d' /etc/firejail/whitelist-common.local
+sed -i '/libpreload%{name}/ d' /etc/ld.so.preload
 /sbin/ldconfig
-rm -rf /tmp/patchmanager || true
-rm -f /tmp/patchmanager-socket || true
+rm -rf /tmp/patchmanager
+rm -f /tmp/patchmanager-socket
 ;;
 1)
 echo "Updating %{name}: postun section"
@@ -157,9 +161,10 @@ systemctl-user daemon-reload
 %{_userunitdir}/lipstick-patchmanager.service
 %{_userunitdir}/lipstick.service.wants/lipstick-patchmanager.service
 %{_libdir}/libpreload%{name}.so
+%{_sysconfdir}/firejail/whitelist-common-%{name}.local
 
-%attr(0755,root,root-) %{_libexecdir}/pm_apply
-%attr(0755,root,root-) %{_libexecdir}/pm_unapply
+%attr(0755,root,root) %{_libexecdir}/pm_apply
+%attr(0755,root,root) %{_libexecdir}/pm_unapply
 
 %{_libdir}/qt5/qml/org/SfietKonstantin/%{name}
 %{_datadir}/%{name}/data
@@ -174,3 +179,4 @@ systemctl-user daemon-reload
 %{_datadir}/themes/%{theme}/meegotouch/z1.5-large/icons/*.png
 %{_datadir}/themes/%{theme}/meegotouch/z1.75/icons/*.png
 %{_datadir}/themes/%{theme}/meegotouch/z2.0/icons/*.png
+
