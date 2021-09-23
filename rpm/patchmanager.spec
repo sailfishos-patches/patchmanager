@@ -99,10 +99,8 @@ esac
 sed -i '/libpreload%{name}/ d' /etc/ld.so.preload
 echo '%{_libdir}/libpreload%{name}.so' >> /etc/ld.so.preload
 /sbin/ldconfig
-if grep -qF 'include whitelist-common-%{name}.local' /etc/firejail/whitelist-common.local; then
-    echo "Firejail whitelist entry for %{name} already exists."
-else
-    echo 'include whitelist-common-%{name}.local' >> /etc/firejail/whitelist-common.local
+if ! grep -qsF 'include whitelist-common-%{name}.local' /etc/firejail/whitelist-common.local; then
+   echo 'include whitelist-common-%{name}.local' >> /etc/firejail/whitelist-common.local
 fi
 dbus-send --system --type=method_call \
 --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
