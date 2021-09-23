@@ -48,7 +48,8 @@ rm -rf %{buildroot}
 
 %qmake5_install
 
-/usr/lib/qt5/bin/qmlplugindump -v -noinstantiate -nonrelocatable org.SfietKonstantin.patchmanager 2.0 %{buildroot}%{_libdir}/qt5/qml > %{buildroot}%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}/plugin.qmltypes |:
+/usr/lib/qt5/bin/qmlplugindump -noinstantiate -nonrelocatable org.SfietKonstantin.patchmanager 2.0 %{buildroot}%{_libdir}/qt5/qml \
+> %{buildroot}%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}/plugin.qmltypes 2> /dev/null || true
 sed -i 's#%{buildroot}##g' %{buildroot}%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}/plugin.qmltypes
 
 mkdir -p %{buildroot}%{_unitdir}/multi-user.target.wants/
@@ -103,8 +104,7 @@ echo '%{_libdir}/libpreload%{name}.so' >> /etc/ld.so.preload
 if ! grep -qsF 'include whitelist-common-%{name}.local' /etc/firejail/whitelist-common.local; then
    echo 'include whitelist-common-%{name}.local' >> /etc/firejail/whitelist-common.local
 fi
-dbus-send --system --type=method_call \
---dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+dbus-send --system --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 systemctl daemon-reload
 systemctl-user daemon-reload
 systemctl restart dbus-org.SfietKonstantin.patchmanager.service
@@ -139,8 +139,7 @@ echo "Updating %{name}: postun section"
 ;;
 *) echo "Case $* is not handled in postun section of %{name}!"
 esac
-dbus-send --system --type=method_call \
---dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+dbus-send --system --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 systemctl daemon-reload
 systemctl-user daemon-reload
 
