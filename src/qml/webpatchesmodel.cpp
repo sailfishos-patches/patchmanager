@@ -55,6 +55,7 @@ WebPatchesModel::WebPatchesModel(QObject * parent)
     }
 
     _completed = false;
+    _sorted = false;
     _nam = new QNetworkAccessManager(this);
 }
 
@@ -73,6 +74,15 @@ void WebPatchesModel::setQueryParams(const QVariantMap & queryParams)
         _queryParams = queryParams;
         emit queryParamsChanged(_queryParams);
 
+        if (_completed) {
+            componentComplete();
+        }
+    }
+}
+void WebPatchesModel::setSorted(const bool & sorted) {
+    if (sorted != _sorted) {
+        _sorted = sorted;
+        emit WebPatchesModel::sortedChanged();
         if (_completed) {
             componentComplete();
         }
@@ -109,12 +119,13 @@ void WebPatchesModel::componentComplete()
             QVariantList catalog = PatchManager::unwind(reply.value()).toList();
             qDebug() << Q_FUNC_INFO << catalog.count();
 
-            const QLatin1String category("category");
-            const QLatin1String name("display_name");
-            const QByteArray other("other");
-            std::sort(catalog.begin(), catalog.end(),
-                [&category, &name, &other](const QVariant &a, const QVariant &b)
-                {
+            if (_sorted) {
+                const QLatin1String category("category");
+                const QLatin1String name("display_name");
+                const QByteArray other("other");
+                std::sort(catalog.begin(), catalog.end(),
+                    [&category, &name, &other](const QVariant &a, const QVariant &b)
+                    {
                     const auto amap = a.toMap();
                     const auto bmap = b.toMap();
 
@@ -123,23 +134,24 @@ void WebPatchesModel::componentComplete()
 
                     if (acat == bcat)
                     {
-                        // If categories are equal then sort by name
-                        return compareStrings(amap[name].toString(), bmap[name].toString());
+                    // If categories are equal then sort by name
+                    return compareStrings(amap[name].toString(), bmap[name].toString());
                     }
 
                     // Move others to the end
                     if (acat == other)
                     {
-                        return false;
+                    return false;
                     }
                     if (bcat == other)
                     {
-                        return true;
+                      return true;
                     }
 
                     // Sort by localized category name
                     return compareStrings(translateCategory(acat), translateCategory(bcat));
-                });
+                    });
+            }
 
             beginInsertRows(QModelIndex(), 0, catalog.count() - 1);
             _modelData = catalog;

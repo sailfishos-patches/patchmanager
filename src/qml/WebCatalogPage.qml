@@ -41,6 +41,7 @@ Page {
     property var versions
     property string search
     property bool searchVisible
+    property bool sortByDate: true
 
     onStatusChanged: {
         if (status == PageStatus.Active) {
@@ -84,13 +85,21 @@ Page {
                     searchVisible = !searchVisible
                 }
             }
+            MenuItem {
+                text: sortByDate ? qsTranslate("", "Sort by Category") : qsTranslate("", "Sort by Date")
+                onClicked: {
+                    sortByDate = !sortByDate
+                }
+            }
+
         }
 
         header: Component {
             Column {
                 width: view.width
                 PageHeader {
-                    title: container.author ? qsTranslate("", "%1 patches").arg(container.author) : qsTranslate("", "Web catalog")
+                    title: container.author ? qsTranslate("", "%1 patches").arg(container.author) : qsTranslate("", "Web catalog") 
+                    description: container.sortByDate ? qsTranslate("", "(by date updated)") : qsTranslate("", "(by category)")
                 }
 
                 SearchField {
@@ -130,15 +139,22 @@ Page {
         }
         model: WebPatchesModel {
             id: patchModel
-            queryParams:  container.author ? { 'author': container.author }
-                                           : container.search ? { 'display_name__contains': container.search }
-                                                              : {}
+            sorted: !container.sortByDate
+            queryParams: {
+                var p = {};
+                if (container.author)  p = { 'author': container.author };
+                if (container.search)  p = { 'display_name__contains': container.search };
+                return p;
+            }
         }
         section.criteria: ViewSection.FullString
         section.delegate: SectionHeader {
-            text: qsTranslate("Sections", section)
+            text: container.sortByDate ? "" : qsTranslate("Sections", section)
+            font.capitalization: Font.Capitalize
+            height: text.length > 0 ? implicitHeight : 0
+            visible: text.length > 0
         }
-        section.property: "category"
+        section.property: container.sortByDate ? "undefined" : "category"
         currentIndex: -1
         spacing: Theme.paddingSmall
 
@@ -167,7 +183,7 @@ Page {
                     width: parent.width
                     Label {
                         id: nameLabel
-                        width: parent.width - authorLabel.width - Theme.paddingMedium
+                        width: parent.width - secondaryLabel.width - Theme.paddingMedium
                         text: model.display_name
                         color: background.down ? Theme.highlightColor : Theme.primaryColor
                         font.bold: isInstalled
@@ -175,11 +191,11 @@ Page {
                     }
 
                     Label {
-                        id: authorLabel
+                        id: secondaryLabel
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         font.pixelSize: Theme.fontSizeExtraSmall
-                        text: model.author
+                        text: container.sortByDate ? model.category : model.author
                         color: Theme.secondaryHighlightColor
                     }
                 }
