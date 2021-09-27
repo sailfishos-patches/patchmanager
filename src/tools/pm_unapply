@@ -16,7 +16,7 @@ PM_PATCH_BACKUP_ROOT_DIR="$PM_VAR_DIR/patches"
 PM_PATCH_BACKUP_DIR="$PM_PATCH_BACKUP_ROOT_DIR/$1"
 
 # Constants
-PATCH_NAME=unified_diff.patch
+PATCH_NAME="unified_diff.patch"
 PATCH_PATH="$PATCH_DIR/$PATCH_NAME"
 PATCH_BACKUP="$PM_PATCH_BACKUP_DIR/$PATCH_NAME"
 
@@ -109,7 +109,7 @@ log "PM UNAPPLY $(date)"
 log "----------------------------------"
 log
 
-log $(basename "$PATCH_DIR")
+log "$(basename "$PATCH_DIR")"
 
 if [ -f "$PATCH_FILE" ]; then
   log "  contains text patch"
