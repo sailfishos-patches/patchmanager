@@ -125,7 +125,7 @@ log "PM APPLY $(date)"
 log "----------------------------------"
 log
 
-log $(basename "$PATCH_DIR")
+log "$(basename "$PATCH_DIR")"
 
 if [ -f "$PATCH_PATH" ]; then
   log "  contains text patch"
