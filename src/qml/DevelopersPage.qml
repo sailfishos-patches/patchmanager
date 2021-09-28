@@ -65,6 +65,15 @@ Page {
             website: "https://github.com/coderus"
         }
         ListElement {
+            icon: "/usr/share/patchmanager/data/nephros.png"
+            category: "Patchmanager"
+            name: "Peter G."
+            nickname: "nephros"
+            description: "Maintainer, UI Tweaker"
+            twitter: "https://mastodon.sdf.org/@renalcalculus"
+            website: "https://forum.sailfishos.org/u/nephros/summary"
+        }
+        ListElement {
             icon: "/usr/share/patchmanager/data/morpog.jpeg"
             category: "Thanks to"
             name: "Stephan Beyerle"
