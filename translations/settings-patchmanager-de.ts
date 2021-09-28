@@ -449,17 +449,17 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="21"/>
         <source>Apply all enabled patches when the system starts</source>
-        <translation type="unfinished"></translation>
+        <translation>Wendet alle gewählten Patches beim Systemstart an</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="28"/>
         <source>Allow incompatible patches</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht kompatible Patches erlauben</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="29"/>
         <source>Apply patches which are not marked compatible with the installed Sailfish OS version. Note that this will not fix patches that are actually incompatible.</source>
-        <translation type="unfinished"></translation>
+        <translation>Patches andenden, die nicht als kompatibel mit der laufenden Sailfish OS-Version markiert sind. NB: Das behebt keine Fehler durch tatsächlich nichtkompatible patches.</translation>
     </message>
     <message>
         <source>Developer mode</source>
