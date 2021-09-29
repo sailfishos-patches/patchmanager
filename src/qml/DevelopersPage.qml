@@ -74,6 +74,15 @@ Page {
             website: "https://forum.sailfishos.org/u/nephros/summary"
         }
         ListElement {
+            icon: "/usr/share/patchmanager/data/b100dian.png"
+            category: "Patchmanager"
+            name: "Vlad G."
+            nickname: "b100dian"
+            description: "Maintainer"
+            twitter: "https://mastodon.social/@b100dian"
+            website: "https://forum.sailfishos.org/u/vlagged/summary"
+        }
+        ListElement {
             icon: "/usr/share/patchmanager/data/morpog.jpeg"
             category: "Thanks to"
             name: "Stephan Beyerle"
