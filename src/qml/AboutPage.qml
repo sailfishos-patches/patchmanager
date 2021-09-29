@@ -119,8 +119,7 @@ Page {
 
                 Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: qsTranslate("", "Credits and Thanks<br />")
-                            + "<a href=\"about:_blank\">" + qsTr("Developers") + "</a>"
+                        text: qsTranslate("", "Credits and Thanks<br /><a href=\"%1\">Developers</a>").arg("about:_blank")
                         textFormat: Text.StyledText
                         horizontalAlignment: Text.AlignHCenter
                         font.pixelSize: Theme.fontSizeSmall
