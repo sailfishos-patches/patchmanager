@@ -49,6 +49,9 @@ public:
     Q_PROPERTY(QVariantMap queryParams READ queryParams WRITE setQueryParams NOTIFY queryParamsChanged)
     QVariantMap queryParams() const;
     void setQueryParams(const QVariantMap & queryParams);
+    Q_PROPERTY(bool sorted READ sorted WRITE setSorted NOTIFY sortedChanged)
+    bool sorted() const { return _sorted; };
+    void setSorted(const bool & sorted);
 
     explicit WebPatchesModel(QObject * parent = 0);
     virtual ~WebPatchesModel();
@@ -63,6 +66,7 @@ public:
 private:
     QVariantMap _queryParams;
     bool _completed;
+    bool _sorted;
 
     QNetworkAccessManager * _nam;
 
@@ -72,6 +76,7 @@ private:
 
 signals:
     void queryParamsChanged(const QVariantMap & queryParams);
+    void sortedChanged();
 
 };
 

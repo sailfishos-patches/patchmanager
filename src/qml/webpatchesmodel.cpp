@@ -36,6 +36,8 @@
 #include <QDBusPendingReply>
 #include <QDebug>
 
+#include <algorithm>
+
 WebPatchesModel::WebPatchesModel(QObject * parent)
     : QAbstractListModel(parent)
 {
@@ -53,6 +55,7 @@ WebPatchesModel::WebPatchesModel(QObject * parent)
     }
 
     _completed = false;
+    _sorted = false;
     _nam = new QNetworkAccessManager(this);
 }
 
@@ -76,10 +79,29 @@ void WebPatchesModel::setQueryParams(const QVariantMap & queryParams)
         }
     }
 }
+void WebPatchesModel::setSorted(const bool & sorted) {
+    if (sorted != _sorted) {
+        _sorted = sorted;
+        emit WebPatchesModel::sortedChanged();
+        if (_completed) {
+            componentComplete();
+        }
+    }
+}
 
 void WebPatchesModel::classBegin()
 {
 
+}
+
+QString translateCategory(const QByteArray &category)
+{
+    return QCoreApplication::translate("Sections", category.data());
+}
+
+bool compareStrings(const QString &a, const QString &b)
+{
+    return a.compare(b, Qt::CaseInsensitive) < 0;
 }
 
 void WebPatchesModel::componentComplete()
@@ -94,8 +116,37 @@ void WebPatchesModel::componentComplete()
     connect(watcher, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
         QDBusPendingReply<QVariantList> reply = *watcher;
         if (!reply.isError()) {
-            const QVariantList catalog = PatchManager::unwind(reply.value()).toList();
+            QVariantList catalog = PatchManager::unwind(reply.value()).toList();
             qDebug() << Q_FUNC_INFO << catalog.count();
+
+            if (_sorted) {
+                const QLatin1String category("category");
+                const QLatin1String name("display_name");
+                const QByteArray other("other");
+                std::sort(catalog.begin(), catalog.end(), [&category, &name, &other](const QVariant &a, const QVariant &b) {
+                    const auto amap = a.toMap();
+                    const auto bmap = b.toMap();
+
+                    const auto acat = amap[category].toByteArray();
+                    const auto bcat = bmap[category].toByteArray();
+
+                    if (acat == bcat) {
+                        // If categories are equal then sort by name
+                        return compareStrings(amap[name].toString(), bmap[name].toString());
+                    }
+
+                    // Move others to the end
+                    if (acat == other) {
+                        return false;
+                    }
+                    if (bcat == other) {
+                        return true;
+                    }
+
+                    // Sort by localized category name
+                    return compareStrings(translateCategory(acat), translateCategory(bcat));
+                });
+            }
 
             beginInsertRows(QModelIndex(), 0, catalog.count() - 1);
             _modelData = catalog;
