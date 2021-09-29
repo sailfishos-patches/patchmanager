@@ -92,9 +92,7 @@ Page {
 
                 Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: qsTranslate("", "Licensed under the terms of the<br />")
-                            + "<a href=\"https://opensource.org/licenses/BSD-3-Clause\">"
-                            + qsTranslate("", "BSD 3-Clause License") + "</a>"
+                        text: qsTranslate("", "Licensed under the terms of the<br /><a href=\"%1\"> BSD 3-Clause License</a>").arg("https://opensource.org/licenses/BSD-3-Clause")
                         textFormat: Text.StyledText
                         horizontalAlignment: Text.AlignHCenter
                         font.pixelSize: Theme.fontSizeSmall
@@ -104,8 +102,7 @@ Page {
                 }
                 Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: qsTranslate("", "Sources and Issue Tracker<br />")
-                            + "<a href=\"" +  SOURCE_REPO + "\">" + qsTr("on GitHub") + "</a>"
+                        text: qsTranslate("", "Sources and Issue Tracker<br /><a href=\"%1\">on GitHub</a>").arg(SOURCE_REPO)
                         textFormat: Text.StyledText
                         horizontalAlignment: Text.AlignHCenter
                         font.pixelSize: Theme.fontSizeSmall
