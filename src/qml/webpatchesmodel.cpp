@@ -123,34 +123,29 @@ void WebPatchesModel::componentComplete()
                 const QLatin1String category("category");
                 const QLatin1String name("display_name");
                 const QByteArray other("other");
-                std::sort(catalog.begin(), catalog.end(),
-                    [&category, &name, &other](const QVariant &a, const QVariant &b)
-                    {
+                std::sort(catalog.begin(), catalog.end(), [&category, &name, &other](const QVariant &a, const QVariant &b) {
                     const auto amap = a.toMap();
                     const auto bmap = b.toMap();
 
                     const auto acat = amap[category].toByteArray();
                     const auto bcat = bmap[category].toByteArray();
 
-                    if (acat == bcat)
-                    {
-                    // If categories are equal then sort by name
-                    return compareStrings(amap[name].toString(), bmap[name].toString());
+                    if (acat == bcat) {
+                        // If categories are equal then sort by name
+                        return compareStrings(amap[name].toString(), bmap[name].toString());
                     }
 
                     // Move others to the end
-                    if (acat == other)
-                    {
-                    return false;
+                    if (acat == other) {
+                        return false;
                     }
-                    if (bcat == other)
-                    {
-                      return true;
+                    if (bcat == other) {
+                        return true;
                     }
 
                     // Sort by localized category name
                     return compareStrings(translateCategory(acat), translateCategory(bcat));
-                    });
+                });
             }
 
             beginInsertRows(QModelIndex(), 0, catalog.count() - 1);
