@@ -131,18 +131,6 @@ Page {
                         linkColor: Theme.highlightColor
                         onLinkActivated: pageStack.push(Qt.resolvedUrl("DevelopersPage.qml"))
                 }
-                //BackgroundItem {
-                //    width: parent.width
-                //    onClicked: pageStack.push(Qt.resolvedUrl("DevelopersPage.qml"))
-                //    Label {
-                //        anchors.left: parent.left
-                //        anchors.right: parent.right
-                //        anchors.margins: Theme.horizontalPageMargin
-                //        anchors.verticalCenter: parent.verticalCenter
-                //        text: qsTranslate("", "Developers")
-                //        horizontalAlignment: Text.AlignHCenter
-                //    }
-                //}
 
                 Separator {
                         width: parent.width
@@ -156,18 +144,7 @@ Page {
                         onClicked: Qt.openUrlExternally(PAYPAL_DONATE)
                         text: qsTranslate("", "Donate")
                 }
-                //BackgroundItem {
-                //    width: parent.width
-                //    onClicked: Qt.openUrlExternally(PAYPAL_DONATE)
-                //    Label {
-                //        anchors.left: parent.left
-                //        anchors.right: parent.right
-                //        anchors.margins: Theme.horizontalPageMargin
-                //        anchors.verticalCenter: parent.verticalCenter
-                //        text: qsTranslate("", "Donate")
-                //        horizontalAlignment: Text.AlignHCenter
-                //    }
-                //}
+
             }
 
             property int rotAngle: 0
