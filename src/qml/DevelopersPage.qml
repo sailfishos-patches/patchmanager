@@ -51,7 +51,7 @@ Page {
             category: "Patchmanager"
             name: "Lucien Xu"
             nickname: "Sfiet_Konstantin"
-            description: "Main developer"
+            description: "Original developer"
             twitter: "https://twitter.com/SfietKonstantin"
             website: "https://github.com/SfietKonstantin"
         }
@@ -81,6 +81,15 @@ Page {
             description: "Maintainer"
             twitter: "https://mastodon.social/@b100dian"
             website: "https://forum.sailfishos.org/u/vlagged/summary"
+        }
+        ListElement {
+            icon: "/usr/share/patchmanager/data/olf.png"
+            category: "Patchmanager"
+            name: "olf"
+            nickname: ""
+            description: "Maintainer"
+            twitter: "https://mastodon.social/@olf"
+            website: "https://github.com/Olf0"
         }
         ListElement {
             icon: "/usr/share/patchmanager/data/morpog.jpeg"
