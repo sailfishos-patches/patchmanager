@@ -127,6 +127,20 @@ Page {
             socialmedianame: ""
             website: "https://github.com/jakibaki"
         }
+        /*
+         * TEMPLATE for new entry
+         *
+        ListElement {
+            icon: ""                        # local image file, remember to add to src/share/share.pro
+            category: "Patchmanager"        # under which section to show the name
+            name: "Anonymous"               # long name, required
+            nickname: "anon"                # short name, required
+            description: "Anonymous developer"
+            socialmedia: ""                 # URL to social media profile
+            socialmedianame: ""             # name of the social media site, e.g. "Twitter"
+            website: ""                     # web site URL
+        }
+        */
     }
 
 
