@@ -89,7 +89,7 @@ Page {
             nickname: ""
             description: "Maintainer"
             twitter: "https://mastodon.social/@olf"
-            website: "https://github.com/Olf0"
+            website: "https://talk.maemo.org/member.php?u=72347"
         }
         ListElement {
             icon: "/usr/share/patchmanager/data/morpog.jpeg"
