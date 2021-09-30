@@ -43,7 +43,8 @@ Page {
             name: "webOS Internals"
             nickname: ""
             description: "Team behind AUSMT"
-            twitter: "https://twitter.com/webosinternals"
+            socialmedia: "https://twitter.com/webosinternals"
+            socialmedianame: "Twitter"
             website: "http://www.webos-internals.org/wiki/Main_Page"
         }
         ListElement {
@@ -52,7 +53,8 @@ Page {
             name: "Lucien Xu"
             nickname: "Sfiet_Konstantin"
             description: "Original developer"
-            twitter: "https://twitter.com/SfietKonstantin"
+            socialmedia: "https://twitter.com/SfietKonstantin"
+            socialmedianame: "Twitter"
             website: "https://github.com/SfietKonstantin"
         }
         ListElement {
@@ -61,7 +63,8 @@ Page {
             name: "Andrey Kozhevnikov"
             nickname: "coderus"
             description: "Community developer"
-            twitter: "https://twitter.com/icoderus"
+            socialmedia: "https://twitter.com/icoderus"
+            socialmedianame: "Twitter"
             website: "https://github.com/coderus"
         }
         ListElement {
@@ -70,7 +73,8 @@ Page {
             name: "Peter G."
             nickname: "nephros"
             description: "Maintainer, UI Tweaker"
-            twitter: "https://mastodon.sdf.org/@renalcalculus"
+            socialmedia: "https://mastodon.sdf.org/@renalcalculus"
+            socialmedianame: "Mastodon"
             website: "https://forum.sailfishos.org/u/nephros/summary"
         }
         ListElement {
@@ -79,7 +83,8 @@ Page {
             name: "Vlad G."
             nickname: "b100dian"
             description: "Maintainer"
-            twitter: "https://mastodon.social/@b100dian"
+            socialmedia: "https://mastodon.social/@b100dian"
+            socialmedianame: "Mastodon"
             website: "https://forum.sailfishos.org/u/vlagged/summary"
         }
         ListElement {
@@ -88,7 +93,8 @@ Page {
             name: "olf"
             nickname: ""
             description: "Maintainer"
-            twitter: "https://mastodon.social/@olf"
+            socialmedia: "https://mastodon.social/@olf"
+            socialmedianame: "Mastodon"
             website: "https://talk.maemo.org/member.php?u=72347"
         }
         ListElement {
@@ -97,7 +103,8 @@ Page {
             name: "Stephan Beyerle"
             nickname: "Morpog"
             description: "Icons master"
-            twitter: "https://twitter.com/Morpog"
+            socialmedia: "https://twitter.com/Morpog"
+            socialmedianame: "Twitter"
             website: ""
         }
         ListElement {
@@ -106,7 +113,8 @@ Page {
             name: ""
             nickname: "Ancelad"
             description: "Icons master"
-            twitter: "https://twitter.com/iAncelad"
+            socialmedia: "https://twitter.com/iAncelad"
+            socialmedianame: "Twitter"
             website: ""
         }
         ListElement {
@@ -115,7 +123,8 @@ Page {
             name: "Jakob Dietrich"
             nickname: "Jakibaki"
             description: "Prepatch developer"
-            twitter: ""
+            socialmedia: ""
+            socialmedianame: ""
             website: "https://github.com/jakibaki"
         }
     }
@@ -174,9 +183,9 @@ Page {
                         onClicked: Qt.openUrlExternally(model.website)
                     }
                     MenuItem {
-                        visible: model.twitter != ""
-                        text: qsTranslate("", "%1's Twitter account").arg(model.name || model.nickname)
-                        onClicked: Qt.openUrlExternally(model.twitter)
+                        visible: model.social != ""
+                        text: qsTranslate("", "%1's %2 account").arg(model.name || model.nickname).arg(model.socialmedianame || "Social Media")
+                        onClicked: Qt.openUrlExternally(model.socialmedia)
                     }
                 }
             }
