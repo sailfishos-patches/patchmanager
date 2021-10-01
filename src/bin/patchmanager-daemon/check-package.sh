@@ -1,12 +1,12 @@
 #!/bin/sh
 if [ -e "$1" ]; then
-  echo "Must provide package name"
+  echo "Error: A package name must be provided!"
   exit -1
 fi
 
 rpm -q "$1" > /dev/null 2>&1
-if [ $? -ne 0 ]; then
-  echo "Invalid package name"
+if [ ! $? = 0 ]; then
+  echo "Error: Invalid package name!"
   exit -1
 fi
 
@@ -79,7 +79,7 @@ done < $BACKUP_FAILED_TMP_FILE
 
 # If the backup is up-to-date, it's ok
 if [ ! -f $BACKUP_FAILED_FILE ]; then
-  echo "Backup available"
+  echo "Backup available."
   do_check_success
 fi
 
@@ -95,7 +95,7 @@ if [ ! -f $ORIGINAL_FAILED_FILE ]; then
     mkdir -p "$backup_dir"
     cp "$i" "$backup_file"
   done < $TMP_FILE
-  echo "Backup done"
+  echo "Backup done."
   do_check_success
 fi
 
