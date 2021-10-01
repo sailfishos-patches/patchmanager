@@ -11,7 +11,7 @@ Summary:    Patchmanager allows for managing Sailfish OS patches
 Version:    3.1.0
 Release:    1
 Group:      Qt/Qt
-License:    TODO
+License:    BSD-3-Clause
 URL:        https://github.com/sailfishos-patches/patchmanager
 Source0:    %{name}-%{version}.tar.bz2
 Requires:   unzip
