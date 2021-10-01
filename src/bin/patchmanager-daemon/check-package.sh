@@ -5,7 +5,7 @@ if [ -e "$1" ]; then
 fi
 
 rpm -q "$1" > /dev/null 2>&1
-if [ ! $? = 0 ]; then
+if [ $? != 0 ]; then
   echo "Error: Invalid package name!"
   exit -1
 fi
