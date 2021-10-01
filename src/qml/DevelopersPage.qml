@@ -91,7 +91,7 @@ Page {
             icon: "/usr/share/patchmanager/data/olf.png"
             category: "Patchmanager"
             name: "olf"
-            nickname: ""
+            nickname: "Olf0"
             description: "Maintainer"
             socialmedia: "https://mastodon.social/@olf"
             socialmedianame: "Mastodon"
