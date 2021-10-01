@@ -1,8 +1,11 @@
 BSD 3-Clause License
 
-Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
-Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
-Copyright (c) 2021 Patchmanger for SailfishOS contributors
+Copyright (C) 2013, Lucien XU <sfietkonstantin@free.fr>
+Copyright (C) 2016, Andrey Kozhevnikov <coderusinbox@gmail.com>
+Copyright (c) 2021, Patchmanger for SailfishOS contributors:
+                    - olf "Olf0" <https://github.com/Olf0>
+                    - Peter G. "Nephros" <https://github.com/nephros>
+                    - Vlad G. "b100dian" <https://github.com/b100dian>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -15,7 +18,7 @@ modification, are permitted provided that the following conditions are met:
    this list of conditions and the following disclaimer in the documentation
    and/or other materials provided with the distribution.
 
-3. Neither the name of the copyright holder nor the names of its
+3. Neither the name of the copyright holders nor the names of its
    contributors may be used to endorse or promote products derived from
    this software without specific prior written permission.
 
