@@ -32,6 +32,7 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import Nemo.Notifications 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
 Page {
@@ -39,6 +40,19 @@ Page {
     property var modelData
     property var delegate
     signal doPatch
+
+    Notification {
+        id: popup
+        appName: modelData.display_name
+        summary: qsTranslate("", "Log copied to Clipboard!")
+        previewSummary: summary
+        icon: "image://theme/icon-s-clipboard"
+        //appIcon: "image://theme/icon-m-patchmanager2"
+        appIcon: icon
+        category: "transfer.complete"
+        expireTimeout: 2000
+        isTransient: true
+    }
 
     SilicaFlickable {
         id: view
@@ -68,6 +82,7 @@ Page {
             id: content
             width: view.width
             spacing: Theme.paddingMedium
+            anchors.bottomMargin: Theme.itemSizeSmall
 
             PageHeader {
                 title: modelData.display_name
@@ -83,58 +98,50 @@ Page {
                 text: qsTranslate("", "This patch is no available anymore. You won't be able to reinstall it.")
             }
 
-            SectionHeader {
-                text: qsTranslate("", "Author")
+            Column {
+                width: parent.width - Theme.itemSizeMedium * 2
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: Theme.paddingSmall
+                DetailItem {
+                    label: qsTranslate("", "Author")
+                    value: modelData.author
+                }
+                DetailItem {
+                    label: qsTranslate("", "Version")
+                    value: modelData.rpm ? modelData.rpm : modelData.version
+                    _valueItem.wrapMode: Text.WordWrap
+                }
+                DetailItem {
+                    label: qsTranslate("", "Compatible")
+                    value: modelData.compatible.join(', ')
+                    _valueItem.wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                }
             }
-
-            Label {
-                color: Theme.highlightColor
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: Theme.horizontalPageMargin
-                wrapMode: Text.WordWrap
-                text: modelData.author
+            Separator {
+                    width: parent.width
+                    color: Theme.primaryColor
+                    horizontalAlignment: Qt.AlignHCenter
             }
-
             SectionHeader {
                 visible: modelData.conflicts.length > 0
-                text: qsTranslate("", "Possible conflicts")
+                text: qsTranslate("", "May conflict with:")
             }
-
-            Label {
-                color: Theme.highlightColor
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: Theme.horizontalPageMargin
-                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                text: modelData.conflicts.map(function(i) { return PatchManager.patchName(i) }).join("\n")
+            Repeater {
                 visible: modelData.conflicts.length > 0
-            }
-
-            SectionHeader {
-                text: qsTranslate("", "Version")
-            }
-
-            Label {
-                color: Theme.highlightColor
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: Theme.horizontalPageMargin
-                wrapMode: Text.WordWrap
-                text: modelData.rpm ? modelData.rpm : modelData.version
-            }
-
-            SectionHeader {
-                text: qsTranslate("", "Compatible")
-            }
-
-            Label {
-                color: Theme.highlightColor
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: Theme.horizontalPageMargin
-                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                text: modelData.compatible.join(', ')
+                model: modelData.conflicts
+                delegate: TextSwitch {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.margins: Theme.horizontalPageMargin
+                    automaticCheck : false
+                    checked: PatchManager.isApplied(modelData)
+                    _label.color: checked ? Theme.primaryColor :  Theme.secondaryColor
+                    height: Math.max(Theme.itemSizeMedium, implicitHeight)
+                    text: PatchManager.patchName(modelData)
+                    Component.onCompleted: {
+                            console.debug("isApplied for patch " + modelData + " returned " + checked + ".")
+                    }
+                }
             }
 
             SectionHeader {
@@ -142,7 +149,7 @@ Page {
             }
 
             Label {
-                color: Theme.highlightColor
+                color: Theme.secondaryHighlightColor
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.margins: Theme.horizontalPageMargin
@@ -156,20 +163,29 @@ Page {
             }
 
             Label {
-                color: Theme.highlightColor
+                anchors.right: parent.right
+                anchors.rightMargin: Theme.horizontalPageMargin
+                anchors.leftMargin: Theme.horizontalPageMargin
+                color: Theme.secondaryHighlightColor
+                text: qsTranslate("", "Press and hold to copy to Clipboard")
+                font.pixelSize: Theme.fontSizeTiny
+                visible: modelData.log && log.visible
+            }
+
+            TextArea {
+                id: log
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.margins: Theme.horizontalPageMargin
-                wrapMode: Text.WrapAnywhere
-                text: modelData.log || qsTranslate("", "No log yet")
+                readOnly: true
+                color: Theme.secondaryColor
+                text: modelData.log
+                placeholderText: qsTranslate("", "No log yet")
+                wrapMode: Text.Wrap
+                //selectionMode: TextInput.SelectWords
                 font.family: "Courier"
                 font.pixelSize: Theme.fontSizeTiny
                 visible: PatchManager.developerMode
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: Clipboard.text = modelData.log
-                }
             }
         }
     }
