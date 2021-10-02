@@ -138,9 +138,6 @@ Page {
                     _label.color: checked ? Theme.primaryColor :  Theme.secondaryColor
                     height: Math.max(Theme.itemSizeMedium, implicitHeight)
                     text: PatchManager.patchName(modelData)
-                    Component.onCompleted: {
-                            console.debug("isApplied for patch " + modelData + " returned " + checked + ".")
-                    }
                 }
             }
 
@@ -186,6 +183,10 @@ Page {
                 font.family: "Courier"
                 font.pixelSize: Theme.fontSizeTiny
                 visible: PatchManager.developerMode
+                onPressAndHold: {
+                    Clipboard.text = modelData.log;
+                    popup.publish();
+                }
             }
         }
     }

@@ -121,6 +121,7 @@ public slots:
     void restartServices();
 
     QString patchName(const QString &patch) const;
+    bool isApplied(const QString &name) const;
 
     bool installTranslator(const QString & patch);
     bool removeTranslator(const QString & patch);
