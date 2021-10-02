@@ -197,7 +197,7 @@ Page {
                         onClicked: Qt.openUrlExternally(model.website)
                     }
                     MenuItem {
-                        visible: model.social != ""
+                        visible: model.socialmedia != ""
                         text: qsTranslate("", "%1's %2 account").arg(model.name || model.nickname).arg(model.socialmedianame || "Social Media")
                         onClicked: Qt.openUrlExternally(model.socialmedia)
                     }
