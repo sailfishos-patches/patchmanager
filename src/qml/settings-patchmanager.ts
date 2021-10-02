@@ -190,8 +190,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PatchManagerPage.qml" line="485"/>
-        <source>May have conflicts</source>
+        <location filename="PatchManagerPage.qml" line="484"/>
+        <source>May conflict with %n other patch(es), see %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

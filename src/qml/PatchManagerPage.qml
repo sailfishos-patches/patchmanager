@@ -445,7 +445,7 @@ Page {
                     anchors.right: patchIcon.status == Image.Ready ? patchIcon.left : parent.right
                     anchors.margins: Theme.paddingMedium
                     anchors.verticalCenter: parent.verticalCenter
-                    text: ( patchObject.details.conflicts.length > 0 ) ? name + " ⚠": name
+                    text: name
                     color: patchObject.details.isCompatible ? background.down ? Theme.highlightColor : Theme.primaryColor
                                                             : background.down ? Qt.tint(Theme.highlightColor, "red") : Qt.tint(Theme.primaryColor, "red")
                     truncationMode: TruncationMode.Fade
@@ -480,10 +480,11 @@ Page {
                         }
                     }
                     MenuLabel {
-                        visible: patchObject.details.conflicts.length > 0
-                        text: qsTranslate("", "May have conflicts")
+                        visible: !patchObject.details.patched && patchObject.details.conflicts.length > 0
+                        text: qsTr("May conflict with %n other patch(es), see %2", "", patchObject.details.conflicts.length).arg(patchinfoitem.text)
                     }
                     MenuItem {
+                        id: patchinfoitem
                         text: qsTranslate("", "Patch info")
                         onClicked: background.openPatchInfo()
                     }
