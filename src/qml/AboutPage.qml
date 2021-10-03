@@ -81,27 +81,66 @@ Page {
                 text: qsTranslate("", "Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.")
             }
 
-            BackgroundItem {
+            Separator {
                 width: parent.width
-                onClicked: Qt.openUrlExternally(PAYPAL_DONATE)
-                Label {
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.margins: Theme.horizontalPageMargin
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: qsTranslate("", "Donate")
-                }
+                color: Theme.primaryColor
+                horizontalAlignment: Qt.AlignHCenter
             }
-            BackgroundItem {
-                width: parent.width
-                onClicked: pageStack.push(Qt.resolvedUrl("DevelopersPage.qml"))
-                Label {
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.margins: Theme.horizontalPageMargin
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: qsTranslate("", "Developers")
+            Column {
+                width: parent.width - Theme.paddingSmall
+                spacing: Theme.paddingLarge
+
+                Text {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: qsTranslate("", "Licensed under the terms of the<br /><a href=\"%1\"> BSD 3-Clause License</a>").arg("https://opensource.org/licenses/BSD-3-Clause")
+                        textFormat: Text.StyledText
+                        horizontalAlignment: Text.AlignHCenter
+                        font.pixelSize: Theme.fontSizeSmall
+                        color: Theme.secondaryColor
+                        linkColor: Theme.highlightColor
+                        onLinkActivated: Qt.openUrlExternally("https://opensource.org/licenses/BSD-3-Clause")
                 }
+                Text {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: qsTranslate("", "Sources and Issue Tracker<br /><a href=\"%1\">on GitHub</a>").arg(SOURCE_REPO)
+                        textFormat: Text.StyledText
+                        horizontalAlignment: Text.AlignHCenter
+                        font.pixelSize: Theme.fontSizeSmall
+                        color: Theme.secondaryColor
+                        linkColor: Theme.highlightColor
+                        onLinkActivated: Qt.openUrlExternally(SOURCE_REPO)
+                }
+
+                Separator {
+                        width: parent.width
+                        color: Theme.primaryColor
+                        horizontalAlignment: Qt.AlignHCenter
+                }
+
+                Text {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: qsTranslate("", "Credits and Thanks<br /><a href=\"%1\">Developers</a>").arg("about:_blank")
+                        textFormat: Text.StyledText
+                        horizontalAlignment: Text.AlignHCenter
+                        font.pixelSize: Theme.fontSizeSmall
+                        color: Theme.secondaryColor
+                        linkColor: Theme.highlightColor
+                        onLinkActivated: pageStack.push(Qt.resolvedUrl("DevelopersPage.qml"))
+                }
+
+                Separator {
+                        width: parent.width
+                        color: Theme.primaryColor
+                        horizontalAlignment: Qt.AlignHCenter
+                }
+
+                Button {
+                        preferredWidth: Theme.buttonWidthMedium
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        onClicked: Qt.openUrlExternally(PAYPAL_DONATE)
+                        text: qsTranslate("", "Donate")
+                }
+
             }
 
             property int rotAngle: 0

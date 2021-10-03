@@ -41,6 +41,8 @@
 // TODO: ask for paypal.me
 static QString PAYPAL_DONATE = QStringLiteral("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R6AJV4U2G33XG");
 
+static QString SOURCE_REPO = QStringLiteral("https://github.com/sailfishos-patches/patchmanager");
+
 static QObject *patchmanager_singleton(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
     Q_UNUSED(scriptEngine)
@@ -61,6 +63,7 @@ public:
     {
         Q_ASSERT(strcmp(uri, "org.SfietKonstantin.patchmanager") == 0);
         engine->rootContext()->setContextProperty(QStringLiteral("PAYPAL_DONATE"), PAYPAL_DONATE);
+        engine->rootContext()->setContextProperty(QStringLiteral("SOURCE_REPO"), SOURCE_REPO);
     }
 
     void registerTypes(const char *uri)
