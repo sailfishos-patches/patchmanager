@@ -132,7 +132,7 @@ public slots:
     void lipstickChanged(const QString &state);
 
     QString getPatchmanagerVersion() const;
-    QString getSsuVersion() const;
+    QString getOsVersion() const;
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
@@ -235,7 +235,8 @@ private:
 
     QVariantMap m_updates;
 
-    QString m_ssuRelease;
+    QString m_osRelease;
+
     PatchManagerAdaptor *m_adaptor = nullptr;
     QNetworkAccessManager *m_nam = nullptr;
 
