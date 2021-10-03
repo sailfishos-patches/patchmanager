@@ -73,7 +73,7 @@ class PatchManager: public QObject
     Q_PROPERTY(bool failure READ failure NOTIFY failureChanged)
     Q_PROPERTY(bool loaded READ loaded NOTIFY loadedChanged)
     Q_PROPERTY(QString patchmanagerVersion READ patchmanagerVersion NOTIFY patchmanagerVersionChanged)
-    Q_PROPERTY(QString ssuVersion READ ssuVersion NOTIFY ssuVersionChanged)
+    Q_PROPERTY(QString osVersion MEMBER m_osVersion CONSTANT)
 
 public:
     explicit PatchManager(QObject *parent = nullptr);
@@ -88,7 +88,6 @@ public:
     QVariantMap getUpdates() const;
     QStringList getUpdatesNames() const;
     QString patchmanagerVersion() const;
-    QString ssuVersion() const;
 
     bool toggleServices() const;
     bool failure() const;
@@ -161,7 +160,6 @@ signals:
     void failureChanged(bool failed);
     void loadedChanged(bool loaded);
     void patchmanagerVersionChanged(const QString &patchmanagerVersion);
-    void ssuVersionChanged(const QString &ssuVersion);
 
 private:
     void successCall(QJSValue callback, const QVariant &value);
@@ -180,7 +178,7 @@ private:
     bool m_loaded = false;
 
     QString m_patchmanagerVersion;
-    QString m_ssuVersion;
+    QString m_osVersion;
 };
 
 #endif // PATCHMANAGER_H

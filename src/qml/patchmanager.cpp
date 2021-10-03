@@ -162,22 +162,7 @@ PatchManager::PatchManager(QObject *parent)
 
     });
 
-    QDBusPendingCallWatcher *watchGetSsuVersion = new QDBusPendingCallWatcher(m_interface->getSsuVersion(), this);
-    connect(watchGetSsuVersion, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
-        watcher->deleteLater();
-        QDBusPendingReply<QString> reply = *watcher;
-        if (reply.isError()) {
-            qWarning() << Q_FUNC_INFO << reply.error().type() << reply.error().name() << reply.error().message();
-            return;
-        }
-
-        qDebug() << Q_FUNC_INFO << reply.value();
-
-        const QString ssuVersion = reply.value();
-        m_ssuVersion = ssuVersion;
-        emit ssuVersionChanged(m_ssuVersion);
-
-    });
+    m_osVersion  = QSettings("/etc/os-release", QSettings::IniFormat).value("VERSION_ID").toString();
 }
 
 PatchManager *PatchManager::GetInstance(QObject *parent)
@@ -245,11 +230,6 @@ QStringList PatchManager::getUpdatesNames() const
 QString PatchManager::patchmanagerVersion() const
 {
     return m_patchmanagerVersion;
-}
-
-QString PatchManager::ssuVersion() const
-{
-    return m_ssuVersion;
 }
 
 bool PatchManager::toggleServices() const
