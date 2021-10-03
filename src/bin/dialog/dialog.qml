@@ -133,7 +133,7 @@ ApplicationWindow {
                 function autoApplyingFinished(success) {
                     console.log(success)
                     button.enabled = true
-                    progress.label = success ? qsTranslate("", "Applied successfully.")
+                    progress.label = success ? qsTranslate("", "Applied patches successfully.")
                                              : qsTranslate("", "Failed to apply patches!")
                 }
             }
