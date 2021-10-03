@@ -26,7 +26,7 @@ ApplicationWindow {
             onStatusChanged: {
                 if (status == PageStatus.Active && !appWindow.remorseItem) {
                     remorse.execute(button, qsTranslate("", "Applying patches"), function() {
-                        console.log("Accepted applying patches!")
+                        console.log("Accepted applying patches.")
                         dbusPm.call("loadRequest", [true])
                     }, 10000)
                     appWindow.remorseItem = remorse
@@ -70,7 +70,7 @@ ApplicationWindow {
                             RemorseItem {
                                 id: remorse
                                 onCanceled: {
-                                    console.log("Cancelled applying patches!")
+                                    console.log("Cancelled applying patches.")
                                     dbusPm.call("loadRequest", [false])
                                     Qt.quit()
                                 }
