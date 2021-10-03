@@ -283,7 +283,9 @@ void PatchManagerObject::setAppliedPatches(const QSet<QString> &patches)
 void PatchManagerObject::getVersion()
 {
     qDebug() << Q_FUNC_INFO;
-    m_osRelease  = QSettings("/etc/os-release", QSettings::IniFormat).value("VERSION_ID").toString();
+    m_osRelease = QSettings("/etc/os-release", QSettings::IniFormat).value("VERSION_ID").toString();
+    qDebug() << "Received OS version:" << m_osRelease;
+    lateInitialize();
 }
 
 void PatchManagerObject::lateInitialize()
