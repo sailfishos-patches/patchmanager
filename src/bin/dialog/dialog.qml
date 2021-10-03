@@ -18,7 +18,7 @@ ApplicationWindow {
              '  </interface>\n'
 
         function show() {
-            console.warn("Show called!")
+            console.warn("Function show is called!")
         }
     }
     initialPage: Component {
@@ -26,7 +26,7 @@ ApplicationWindow {
             onStatusChanged: {
                 if (status == PageStatus.Active && !appWindow.remorseItem) {
                     remorse.execute(button, qsTranslate("", "Applying patches"), function() {
-                        console.log("Accepted patch applying!")
+                        console.log("Accepted applying patches.")
                         dbusPm.call("loadRequest", [true])
                     }, 10000)
                     appWindow.remorseItem = remorse
@@ -50,7 +50,7 @@ ApplicationWindow {
                         anchors.right: parent.right
                         anchors.margins: Theme.horizontalPageMargin
                         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                        text: qsTranslate("", "Patchmanager will automatically apply patches in 10 seconds.")
+                        text: qsTranslate("", "Patchmanager will automatically apply all patches in 10 seconds.")
                     }
 
                     Item {
@@ -70,7 +70,7 @@ ApplicationWindow {
                             RemorseItem {
                                 id: remorse
                                 onCanceled: {
-                                    console.log("Cancelled patches applying!")
+                                    console.log("Cancelled applying patches.")
                                     dbusPm.call("loadRequest", [false])
                                     Qt.quit()
                                 }
@@ -133,8 +133,8 @@ ApplicationWindow {
                 function autoApplyingFinished(success) {
                     console.log(success)
                     button.enabled = true
-                    progress.label = success ? qsTranslate("", "Appled successfully!")
-                                             : qsTranslate("", "Failed applying patches!")
+                    progress.label = success ? qsTranslate("", "Applied successfully.")
+                                             : qsTranslate("", "Failed to apply patches!")
                 }
             }
         }
