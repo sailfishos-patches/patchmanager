@@ -18,7 +18,7 @@ ApplicationWindow {
              '  </interface>\n'
 
         function show() {
-            console.warn("Function show called!")
+            console.warn("Function show is called!")
         }
     }
     initialPage: Component {
