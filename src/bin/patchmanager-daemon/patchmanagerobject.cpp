@@ -1941,9 +1941,18 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
         QProcess proc;
         int ret = 0;
         if (archive.endsWith(QStringLiteral(".zip"))) {
-            ret = proc.execute(QStringLiteral("/usr/bin/unzip"), {archive, QStringLiteral("-d"), patchPath});
+            ret = proc.execute(QStringLiteral("/usr/bin/unzip"), {QStringLiteral("-o"), archive, QStringLiteral("-d"), patchPath });
         } else {
-            ret = proc.execute(QStringLiteral("/bin/tar"), {QStringLiteral("xzf"), archive, QStringLiteral("-C"), patchPath});
+            const QString uncompressOpt;
+            if (archive.endsWith(QStringLiteral("gz"))) { uncompressOpt = QStringLiteral("-z"); }
+            else if (archive.endsWith(QStringLiteral("bz2"))) { uncompressOpt = QStringLiteral("-j"); }
+             // careful: GNU tar has J for everything xz/lz*, and a for automatic, BusyBox has J for .xz and a for .lzma
+            else if (archive.endsWith(QStringLiteral("xz"))) { uncompressOpt = QStringLiteral("-J"); }
+            else {
+                qWarning() << Q_FUNC_INFO << QStringLiteral("Archive format unsupported");
+                uncompressOpt = QStringLiteral("");
+            }
+            ret = proc.execute(QStringLiteral("/bin/tar"), {QStringLiteral("x"), uncompressOpt, QStringLiteral("-f"), archive, QStringLiteral("-C"), patchPath});
         }
         if (ret == 0) {
             if (m_updates.contains(patch)) {
@@ -1958,6 +1967,13 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
                 }
             }
         } else {
+            QString retMsg = QStringLiteral("process exited with code (%1)").arg(ret);
+            if ( ret == -2 ) {
+                retMsg = QStringLiteral("Process could not start (%1)").arg(ret);
+            } else if ( ret == -1 ) {
+                retMsg = QStringLiteral("Process crashed (%1)").arg(ret);
+            }
+            qDebug() << Q_FUNC_INFO << QStringLiteral("Error: extraction failed:") << proc.error() << retMsg;
             patchDir.removeRecursively();
         }
 
