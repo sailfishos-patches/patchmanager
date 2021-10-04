@@ -459,7 +459,7 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="29"/>
         <source>Apply patches which are not marked compatible with the installed Sailfish OS version. Note that this will not fix patches that are actually incompatible.</source>
-        <translation>Patches andenden, die nicht als kompatibel mit der laufenden Sailfish OS-Version markiert sind. NB: Das behebt keine Fehler durch tatsächlich nichtkompatible patches.</translation>
+        <translation>Patches anwenden, die nicht als kompatibel mit der installierten Sailfish OS Version markiert sind. NB: Das behebt keine Fehler durch tatsächlich inkompatible Patches.</translation>
     </message>
     <message>
         <source>Developer mode</source>
