@@ -32,13 +32,27 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import Nemo.Notifications 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
 Page {
     id: container
     property var modelData
-    property QtObject delegate
+    property var delegate
     signal doPatch
+
+    Notification {
+        id: popup
+        appName: modelData.display_name
+        summary: qsTranslate("", "Log copied to Clipboard!")
+        previewSummary: summary
+        icon: "image://theme/icon-s-clipboard"
+        //appIcon: "image://theme/icon-m-patchmanager2"
+        appIcon: icon
+        category: "transfer.complete"
+        expireTimeout: 2000
+        isTransient: true
+    }
 
     SilicaFlickable {
         id: view
@@ -68,9 +82,10 @@ Page {
             id: content
             width: view.width
             spacing: Theme.paddingMedium
+            anchors.bottomMargin: Theme.itemSizeSmall
 
             PageHeader {
-                title: qsTranslate("", "Patch information")
+                title: modelData.name
             }
 
             Label {
@@ -83,58 +98,56 @@ Page {
                 text: qsTranslate("", "This patch is no available anymore. You won't be able to reinstall it.")
             }
 
-            SectionHeader {
-                text: qsTranslate("", "Name")
+            Column {
+                width: parent.width - Theme.itemSizeMedium * 2
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: Theme.paddingSmall
+                DetailItem {
+                    label: qsTranslate("", "Maintainer")
+                    value: modelData.infos.maintainer
+                }
+                DetailItem {
+                    label: qsTranslate("", "Version")
+                    value: modelData.rpm ? modelData.rpm : modelData.version
+                    _valueItem.wrapMode: Text.WordWrap
+                }
+                DetailItem {
+                    label: qsTranslate("", "Compatible")
+                    value: modelData.compatible ? modelData.compatible.join(', ') : qsTranslate("", "not available")
+                    _valueItem.wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                }
             }
-
-            Label {
-                color: Theme.highlightColor
-                anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
-                anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
-                wrapMode: Text.WordWrap
-                font.pixelSize: Theme.fontSizeLarge
-                text: modelData.name
+            Separator {
+                    width: parent.width
+                    color: Theme.primaryColor
+                    horizontalAlignment: Qt.AlignHCenter
             }
-
-            SectionHeader {
-                text: qsTranslate("", "Version")
-            }
-
-            Label {
-                color: Theme.highlightColor
-                anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
-                anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
-                wrapMode: Text.WordWrap
-                font.pixelSize: Theme.fontSizeLarge
-                text: modelData.rpm ? modelData.rpm : modelData.version
-            }
-
-            SectionHeader {
-                visible: !!modelData.infos && modelData.infos.maintainer
-                text: qsTranslate("", "Maintainer")
-            }
-
-            Label {
-                color: Theme.highlightColor
-                anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
-                anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
-                wrapMode: Text.WordWrap
-                visible: !!modelData.infos && modelData.infos.maintainer
-                text: modelData.infos.maintainer
-            }
-
             SectionHeader {
                 visible: modelData.conflicts.length > 0
-                text: qsTranslate("", "Possible conflicts")
+                text: qsTranslate("", "May conflict with:")
+            }
+            Repeater {
+                visible: modelData.conflicts.length > 0
+                model: modelData.conflicts
+                delegate: TextSwitch {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.margins: Theme.horizontalPageMargin
+                    automaticCheck : false
+                    checked: PatchManager.isApplied(modelData)
+                    _label.color: checked ? Theme.primaryColor :  Theme.secondaryColor
+                    height: Math.max(Theme.itemSizeMedium, implicitHeight)
+                    text: PatchManager.patchName(modelData)
+                }
             }
 
             Label {
-                color: Theme.highlightColor
+                visible: PatchManager.developerMode
+                color: Theme.primaryColor
                 anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
                 anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
                 wrapMode: Text.WordWrap
-                visible: modelData.conflicts.length > 0
-                text: modelData.conflicts.map(function(i) { return PatchManager.patchName(i) }).join("\n")
+                text: qsTranslate("", "This patch uses the legacy format for information in its patch.json file. If you're the maintianer, consider updating to the new format.")
             }
 
             SectionHeader {
@@ -142,9 +155,10 @@ Page {
             }
 
             Label {
-                color: Theme.highlightColor
-                anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
-                anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
+                color: Theme.secondaryHighlightColor
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: Theme.horizontalPageMargin
                 wrapMode: Text.WordWrap
                 text: modelData.description
             }
@@ -155,18 +169,32 @@ Page {
             }
 
             Label {
-                color: Theme.highlightColor
-                anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
-                anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
-                wrapMode: Text.WrapAnywhere
-                text: modelData.log || qsTranslate("", "No log yet")
+                anchors.right: parent.right
+                anchors.rightMargin: Theme.horizontalPageMargin
+                anchors.leftMargin: Theme.horizontalPageMargin
+                color: Theme.secondaryHighlightColor
+                text: qsTranslate("", "Press and hold to copy to Clipboard")
+                font.pixelSize: Theme.fontSizeTiny
+                visible: modelData.log && log.visible
+            }
+
+            TextArea {
+                id: log
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: Theme.horizontalPageMargin
+                readOnly: true
+                color: Theme.secondaryColor
+                text: modelData.log
+                placeholderText: qsTranslate("", "No log yet")
+                wrapMode: Text.Wrap
+                //selectionMode: TextInput.SelectWords
                 font.family: "Courier"
                 font.pixelSize: Theme.fontSizeTiny
                 visible: PatchManager.developerMode
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: Clipboard.text = modelData.log
+                onPressAndHold: {
+                    Clipboard.text = modelData.log;
+                    popup.publish();
                 }
             }
         }

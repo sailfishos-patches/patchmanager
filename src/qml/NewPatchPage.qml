@@ -113,7 +113,7 @@ Page {
                 }
                 DetailItem {
                     label: qsTranslate("", "Compatible")
-                    value: modelData.compatible.join(', ')
+                    value: modelData.compatible ? modelData.compatible.join(', ') : qsTranslate("", "not available")
                     _valueItem.wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 }
             }
