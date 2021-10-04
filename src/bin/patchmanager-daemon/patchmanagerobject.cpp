@@ -197,7 +197,7 @@ bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, Q
         json[COMPATIBLE_KEY] = QStringList();
         json[ISCOMPATIBLE_KEY] = true;
     } else {
-        json[ISCOMPATIBLE_KEY] = json[COMPATIBLE_KEY].toStringList().contains(m_ssuRelease);
+        json[ISCOMPATIBLE_KEY] = json[COMPATIBLE_KEY].toStringList().contains(m_osRelease);
     }
     json[CONFLICTS_KEY] = QStringList();
     patch = json;
@@ -283,23 +283,9 @@ void PatchManagerObject::setAppliedPatches(const QSet<QString> &patches)
 void PatchManagerObject::getVersion()
 {
     qDebug() << Q_FUNC_INFO;
-    QDBusMessage msg = QDBusMessage::createMethodCall(QStringLiteral("org.nemo.ssu"),
-                                                      QStringLiteral("/org/nemo/ssu"),
-                                                      QStringLiteral("org.nemo.ssu"),
-                                                      QStringLiteral("release"));
-    msg.setArguments({ QVariant::fromValue(false) });
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(QDBusConnection::systemBus().asyncCall(msg), this);
-    connect(watcher, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher) {
-        watcher->deleteLater();
-        if (!watcher->isError()) {
-            m_ssuRelease = QDBusPendingReply<QString>(*watcher);
-            qDebug() << "Received ssu version:" << m_ssuRelease;
-            lateInitialize();
-        } else {
-            qWarning() << "Ssu version request error!" << watcher->error();
-            QCoreApplication::exit(2);
-        }
-    });
+    m_osRelease = QSettings("/etc/os-release", QSettings::IniFormat).value("VERSION_ID").toString();
+    qDebug() << "Received OS version:" << m_osRelease;
+    lateInitialize();
 }
 
 void PatchManagerObject::lateInitialize()
@@ -1352,9 +1338,9 @@ QString PatchManagerObject::getPatchmanagerVersion() const
     return QCoreApplication::applicationVersion();
 }
 
-QString PatchManagerObject::getSsuVersion() const
+QString PatchManagerObject::getOsVersion() const
 {
-    return m_ssuRelease;
+    return m_osRelease;
 }
 
 //void PatchManagerObject::checkPatches()
@@ -2250,7 +2236,7 @@ void PatchManagerObject::requestCheckForUpdates()
 
     QUrl url(QStringLiteral(CATALOG_URL "/" PROJECTS_PATH));
     QUrlQuery query;
-    query.addQueryItem("version", m_ssuRelease);
+    query.addQueryItem("version", m_osRelease);
     url.setQuery(query);
     QNetworkRequest request(url);
     QNetworkReply *reply = m_nam->get(request);
@@ -2326,7 +2312,7 @@ void PatchManagerObject::requestCheckForUpdates()
                 for (const QVariant &fileVar : files) {
                     const QVariantMap file = fileVar.toMap();
                     const QStringList compatible = file.value("compatible").toStringList();
-                    if (!compatible.contains(m_ssuRelease)) {
+                    if (!compatible.contains(m_osRelease)) {
                         continue;
                     }
                     const QString version = file.value("version").toString();
