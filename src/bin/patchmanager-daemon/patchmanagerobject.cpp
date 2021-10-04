@@ -107,6 +107,13 @@ static const QString AUSMT_INSTALLED_LIST_FILE = QStringLiteral("/var/lib/patchm
 static const QString PM_APPLY = QStringLiteral("/usr/libexec/pm_apply");
 static const QString PM_UNAPPLY = QStringLiteral("/usr/libexec/pm_unapply");
 
+// external binaries
+static const QString BIN_UNZIP = QStringLiteral("/usr/bin/unzip");
+static const QString BIN_TAR = QStringLiteral("/bin/tar");
+static const QString BIN_PKCON = QStringLiteral("/usr/bin/pkcon");
+static const QString BIN_SYSTEMCTL_U = QStringLiteral("/bin/systemctl-user");
+static const QString BIN_RPM = QStringLiteral("/bin/rpm");
+
 static const QString BROWSER_CODE = QStringLiteral("browser");
 static const QString CAMERA_CODE = QStringLiteral("camera");
 static const QString CALENDAR_CODE = QStringLiteral("calendar");
@@ -783,7 +790,7 @@ void PatchManagerObject::restartService(const QString &serviceName)
     if (!m_sbus.send(m)) {
         qWarning() << Q_FUNC_INFO << "Error sending message";
         qWarning() << Q_FUNC_INFO << "Invoking systemctl:" <<
-                    QProcess::execute(QStringLiteral("/bin/systemctl-user"), { QStringLiteral("--no-block"), QStringLiteral("restart"), serviceName });
+                    QProcess::execute(BIN_SYSTEMCTL_U, { QStringLiteral("--no-block"), QStringLiteral("restart"), serviceName });
     }
 }
 
@@ -830,7 +837,7 @@ void PatchManagerObject::resetSystem()
         qDebug() << Q_FUNC_INFO << "Processing file:" << file;
 
         QProcess rpmProc;
-        rpmProc.start(QStringLiteral("/bin/rpm"), { QStringLiteral("-qf"), QStringLiteral("--qf"), QStringLiteral("%{NAME}"), file });
+        rpmProc.start(BIN_RPM, { QStringLiteral("-qf"), QStringLiteral("--qf"), QStringLiteral("%{NAME}"), file });
         if (!rpmProc.waitForFinished(5000) || rpmProc.exitCode() != 0) {
             continue;
         }
@@ -851,14 +858,14 @@ void PatchManagerObject::resetSystem()
 
     qDebug() << Q_FUNC_INFO << "Refreshing repositories...";
     QProcess refreshProc;
-    refreshProc.start(QStringLiteral("/usr/bin/pkcon"), { QStringLiteral("refresh") });
+    refreshProc.start(BIN_PKCON, { QStringLiteral("refresh") });
     refreshProc.waitForFinished(-1);
 
     for (const QString &package : packages) {
         qDebug() << Q_FUNC_INFO << "Reinstalling:" << package;
 
         QProcess pkconProc;
-        pkconProc.start(QStringLiteral("/usr/bin/pkcon"), { QStringLiteral("install"), QStringLiteral("-y"), package });
+        pkconProc.start(BIN_PKCON, { QStringLiteral("install"), QStringLiteral("-y"), package });
         pkconProc.waitForFinished(-1);
 
         if (pkconProc.exitCode() == 0) {
@@ -1941,9 +1948,9 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
         QProcess proc;
         int ret = 0;
         if (archive.endsWith(QStringLiteral(".zip"))) {
-            ret = proc.execute(QStringLiteral("/usr/bin/unzip"), {QStringLiteral("-o"), archive, QStringLiteral("-d"), patchPath });
+            ret = proc.execute(BIN_UNZIP, {QStringLiteral("-o"), archive, QStringLiteral("-d"), patchPath });
         } else {
-            const QString uncompressOpt;
+            QString uncompressOpt;
             if (archive.endsWith(QStringLiteral("gz"))) { uncompressOpt = QStringLiteral("-z"); }
             else if (archive.endsWith(QStringLiteral("bz2"))) { uncompressOpt = QStringLiteral("-j"); }
              // careful: GNU tar has J for everything xz/lz*, and a for automatic, BusyBox has J for .xz and a for .lzma
@@ -1952,7 +1959,7 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
                 qWarning() << Q_FUNC_INFO << QStringLiteral("Archive format unsupported");
                 uncompressOpt = QStringLiteral("");
             }
-            ret = proc.execute(QStringLiteral("/bin/tar"), {QStringLiteral("x"), uncompressOpt, QStringLiteral("-f"), archive, QStringLiteral("-C"), patchPath});
+            ret = proc.execute(BIN_TAR, {QStringLiteral("x"), uncompressOpt, QStringLiteral("-f"), archive, QStringLiteral("-C"), patchPath});
         }
         if (ret == 0) {
             if (m_updates.contains(patch)) {
@@ -2018,7 +2025,7 @@ void PatchManagerObject::doUninstallPatch(const QString &patch, const QDBusMessa
     } else {
         qDebug() << Q_FUNC_INFO << "Removing patch package" << rpmPatch;
 
-        const int ret = QProcess::execute(QStringLiteral("/usr/bin/pkcon"), {QStringLiteral("remove"), QStringLiteral("-y"), getRpmName(rpmPatch)});
+        const int ret = QProcess::execute(BIN_PKCON, {QStringLiteral("remove"), QStringLiteral("-y"), getRpmName(rpmPatch)});
         removeSuccess = ret == 0;
     }
 
