@@ -82,7 +82,9 @@ if (!calledFromDBus()) {\
 }
 
 static const QString PATCHES_DIR = QStringLiteral("/usr/share/patchmanager/patches");
-static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("/tmp/patchmanager3/patches");
+static const QString PATCHES_WORK_DIR_PREFIX = QStringLiteral("/tmp/patchmanager3");
+static const QString PATCHES_WORK_DIR = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR_PREFIX, "work");
+static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR_PREFIX, "patches");
 static const QString PATCH_FILE = QStringLiteral("patch.json");
 
 static const QString NAME_KEY = QStringLiteral("name");
@@ -1883,10 +1885,15 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
     const QString &url = params.value(QStringLiteral("url")).toString();
     const QString &patch = params.value(QStringLiteral("patch")).toString();
     const QString &json = params.value(QStringLiteral("json")).toString();
-    const QString &archive = QStringLiteral("/tmp/%1").arg(url.section(QChar('/'), -1));
+    const QString &archive = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR, url.section(QChar('/'), -1));
     const QString &version = params.value(QStringLiteral("version")).toString();
 
     qDebug() << Q_FUNC_INFO << "Saving archive to" << archive;
+    QDir workDir(PATCHES_WORK_DIR);
+    if (!workDir.mkpath(PATCHES_WORK_DIR)) {
+            qDebug() << Q_FUNC_INFO << QStringLiteral("Error: could not create ") << workDir;
+            return;
+    };
     QFile *archiveFile = new QFile(archive, this);
     if (!archiveFile->open(QFile::WriteOnly)) {
         return;
