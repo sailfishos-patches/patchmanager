@@ -43,7 +43,8 @@ Page {
             name: "webOS Internals"
             nickname: ""
             description: "Team behind AUSMT"
-            twitter: "https://twitter.com/webosinternals"
+            socialmedia: "https://twitter.com/webosinternals"
+            socialmedianame: "Twitter"
             website: "http://www.webos-internals.org/wiki/Main_Page"
         }
         ListElement {
@@ -51,8 +52,9 @@ Page {
             category: "Patchmanager"
             name: "Lucien Xu"
             nickname: "Sfiet_Konstantin"
-            description: "Main developer"
-            twitter: "https://twitter.com/SfietKonstantin"
+            description: "Original developer"
+            socialmedia: "https://twitter.com/SfietKonstantin"
+            socialmedianame: "Twitter"
             website: "https://github.com/SfietKonstantin"
         }
         ListElement {
@@ -61,8 +63,39 @@ Page {
             name: "Andrey Kozhevnikov"
             nickname: "coderus"
             description: "Community developer"
-            twitter: "https://twitter.com/icoderus"
+            socialmedia: "https://twitter.com/icoderus"
+            socialmedianame: "Twitter"
             website: "https://github.com/coderus"
+        }
+        ListElement {
+            icon: "/usr/share/patchmanager/data/nephros.png"
+            category: "Patchmanager"
+            name: "Peter G."
+            nickname: "nephros"
+            description: "Maintainer, UI Tweaker"
+            socialmedia: "https://mastodon.sdf.org/@renalcalculus"
+            socialmedianame: "Mastodon"
+            website: "https://forum.sailfishos.org/u/nephros/summary"
+        }
+        ListElement {
+            icon: "/usr/share/patchmanager/data/b100dian.png"
+            category: "Patchmanager"
+            name: "Vlad G."
+            nickname: "b100dian"
+            description: "Maintainer"
+            socialmedia: "https://mastodon.social/@b100dian"
+            socialmedianame: "Mastodon"
+            website: "https://forum.sailfishos.org/u/vlagged/summary"
+        }
+        ListElement {
+            icon: "/usr/share/patchmanager/data/olf.png"
+            category: "Patchmanager"
+            name: "olf"
+            nickname: "Olf0"
+            description: "Maintainer"
+            socialmedia: "https://mastodon.social/@olf"
+            socialmedianame: "Mastodon"
+            website: "https://talk.maemo.org/member.php?u=72347"
         }
         ListElement {
             icon: "/usr/share/patchmanager/data/morpog.jpeg"
@@ -70,7 +103,8 @@ Page {
             name: "Stephan Beyerle"
             nickname: "Morpog"
             description: "Icons master"
-            twitter: "https://twitter.com/Morpog"
+            socialmedia: "https://twitter.com/Morpog"
+            socialmedianame: "Twitter"
             website: ""
         }
         ListElement {
@@ -79,7 +113,8 @@ Page {
             name: ""
             nickname: "Ancelad"
             description: "Icons master"
-            twitter: "https://twitter.com/iAncelad"
+            socialmedia: "https://twitter.com/iAncelad"
+            socialmedianame: "Twitter"
             website: ""
         }
         ListElement {
@@ -88,9 +123,24 @@ Page {
             name: "Jakob Dietrich"
             nickname: "Jakibaki"
             description: "Prepatch developer"
-            twitter: ""
+            socialmedia: ""
+            socialmedianame: ""
             website: "https://github.com/jakibaki"
         }
+        /*
+         * TEMPLATE for new entry
+         *
+        ListElement {
+            icon: ""                        # local image file, remember to add to src/share/share.pro
+            category: "Patchmanager"        # under which section to show the name
+            name: "Anonymous"               # long name, required
+            nickname: "anon"                # short name, required
+            description: "Anonymous developer"
+            socialmedia: ""                 # URL to social media profile
+            socialmedianame: ""             # name of the social media site, e.g. "Twitter"
+            website: ""                     # web site URL
+        }
+        */
     }
 
 
@@ -147,9 +197,9 @@ Page {
                         onClicked: Qt.openUrlExternally(model.website)
                     }
                     MenuItem {
-                        visible: model.twitter != ""
-                        text: qsTranslate("", "%1's Twitter account").arg(model.name || model.nickname)
-                        onClicked: Qt.openUrlExternally(model.twitter)
+                        visible: model.socialmedia != ""
+                        text: qsTranslate("", "%1's %2 account").arg(model.name || model.nickname).arg(model.socialmedianame || "Social Media")
+                        onClicked: Qt.openUrlExternally(model.socialmedia)
                     }
                 }
             }

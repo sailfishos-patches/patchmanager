@@ -7,6 +7,9 @@ OTHER_FILES = patchmanager.png \
     jakibaki.jpeg \
     sfiet_konstantin.jpg \
     coderus.jpg \
+    nephros.png \
+    b100dian.png \
+    olf.png \
     webosinternals.png
 
 data.files = $${OTHER_FILES}
