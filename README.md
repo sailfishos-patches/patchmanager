@@ -88,17 +88,17 @@ All files shall be placed in the same folder.
 
 ## Web catalog for patches
 
-Patchmanager supports installing patches from its web catalog. 
-Patch developers can upload patches to https://coderus.openrepos.net/pm2 to make them visible inside Patchmanager Web Catalog list. 
-When uploading a patch to web catalog, the patch developer should not provide a *patch.json* file with metadata, but should fill the necessary fields on the webpage before uploading, instead.
+Patchmanager supports installing patches from its Web Catalog. 
+Patch developers can upload patches to https://coderus.openrepos.net/pm2 to enlist them on Patchmanager's Web Catalog. 
+When uploading a patch to the Web Catalog, the patch developer should not provide a *patch.json* file with metadata, but shall fill the necessary fields on the webpage before uploading, instead.
 
 ## Patches distribution at OpenRepos.net
 
 Patches can be too complex for Patchmanager's Web Catalog. 
 In this case the developer can package the patch as an RPM and upload it at https://openrepos.net
 
-For RPM patches, the patch content shall be installed in a directory `/usr/share/patchmanager/patches/<patch-name>/`; additional files (see above) for this patch shall also be placed there.
+For RPM patches, the patch content shall be installed in a directory `/usr/share/patchmanager/patches/<patch-name>/`; [additional files (see above)](#additional-files) for this patch shall also be placed there.
 
-Additionaly, when a patch developer decides to package a patch as an RPM, the compatibility of patch (to SailfishoS versions, instrastructure it uses etc.) shall be properly defined by RPM spec file dependencies ("Requires:", "Conflits:" etc.).
+Additionaly, when a patch developer decides to package a patch as an RPM, the compatibility of a patch (to Sailfish OS release versions, infrastructure it uses etc.) shall be properly defined by RPM spec file dependencies ("Requires:", "Conflicts:" etc.).
 
-Sample RPM patch project: https://github.com/CODeRUS/sailfishos-disable-glass-avatar
+Example RPM patch project: https://github.com/CODeRUS/sailfishos-disable-glass-avatar
