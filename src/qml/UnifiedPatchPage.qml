@@ -153,7 +153,7 @@ Page {
                 wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignJustify
                 font.pixelSize: Theme.fontSizeSmall
-                text: qsTranslate("", "This patch uses the legacy format for its patch.json file. If you're the maintainer, consider updating to the new format.")
+                text: qsTranslate("", "This patch uses the legacy format for its patch.json file. If you're the maintainer consider updating to the new format. If you are using Web Catalog you should not include a patch.json file at all in your upload.")
             }
 
             SectionHeader {
