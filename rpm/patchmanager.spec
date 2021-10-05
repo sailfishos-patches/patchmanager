@@ -145,6 +145,11 @@ systemctl-user daemon-reload
 
 %files
 %defattr(-,root,root,-)
+
+%doc README.md
+%doc doc/example_legacy_patch.json.md
+%doc doc/example_patch.json.md
+
 %{_bindir}/%{name}-dialog
 %{_sbindir}/%{name}
 %dir %{_datadir}/%{name}/patches
