@@ -82,7 +82,9 @@ if (!calledFromDBus()) {\
 }
 
 static const QString PATCHES_DIR = QStringLiteral("/usr/share/patchmanager/patches");
-static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("/tmp/patchmanager3/patches");
+static const QString PATCHES_WORK_DIR_PREFIX = QStringLiteral("/tmp/patchmanager3");
+static const QString PATCHES_WORK_DIR = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR_PREFIX, "work");
+static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR_PREFIX, "patches");
 static const QString PATCH_FILE = QStringLiteral("patch.json");
 
 static const QString NAME_KEY = QStringLiteral("name");
@@ -104,6 +106,13 @@ static const QString AUSMT_INSTALLED_LIST_FILE = QStringLiteral("/var/lib/patchm
 
 static const QString PM_APPLY = QStringLiteral("/usr/libexec/pm_apply");
 static const QString PM_UNAPPLY = QStringLiteral("/usr/libexec/pm_unapply");
+
+// external binaries
+static const QString BIN_UNZIP = QStringLiteral("/usr/bin/unzip");
+static const QString BIN_TAR = QStringLiteral("/bin/tar");
+static const QString BIN_PKCON = QStringLiteral("/usr/bin/pkcon");
+static const QString BIN_SYSTEMCTL_U = QStringLiteral("/bin/systemctl-user");
+static const QString BIN_RPM = QStringLiteral("/bin/rpm");
 
 static const QString BROWSER_CODE = QStringLiteral("browser");
 static const QString CAMERA_CODE = QStringLiteral("camera");
@@ -781,7 +790,7 @@ void PatchManagerObject::restartService(const QString &serviceName)
     if (!m_sbus.send(m)) {
         qWarning() << Q_FUNC_INFO << "Error sending message";
         qWarning() << Q_FUNC_INFO << "Invoking systemctl:" <<
-                    QProcess::execute(QStringLiteral("/bin/systemctl-user"), { QStringLiteral("--no-block"), QStringLiteral("restart"), serviceName });
+                    QProcess::execute(BIN_SYSTEMCTL_U, { QStringLiteral("--no-block"), QStringLiteral("restart"), serviceName });
     }
 }
 
@@ -828,7 +837,7 @@ void PatchManagerObject::resetSystem()
         qDebug() << Q_FUNC_INFO << "Processing file:" << file;
 
         QProcess rpmProc;
-        rpmProc.start(QStringLiteral("/bin/rpm"), { QStringLiteral("-qf"), QStringLiteral("--qf"), QStringLiteral("%{NAME}"), file });
+        rpmProc.start(BIN_RPM, { QStringLiteral("-qf"), QStringLiteral("--qf"), QStringLiteral("%{NAME}"), file });
         if (!rpmProc.waitForFinished(5000) || rpmProc.exitCode() != 0) {
             continue;
         }
@@ -849,14 +858,14 @@ void PatchManagerObject::resetSystem()
 
     qDebug() << Q_FUNC_INFO << "Refreshing repositories...";
     QProcess refreshProc;
-    refreshProc.start(QStringLiteral("/usr/bin/pkcon"), { QStringLiteral("refresh") });
+    refreshProc.start(BIN_PKCON, { QStringLiteral("refresh") });
     refreshProc.waitForFinished(-1);
 
     for (const QString &package : packages) {
         qDebug() << Q_FUNC_INFO << "Reinstalling:" << package;
 
         QProcess pkconProc;
-        pkconProc.start(QStringLiteral("/usr/bin/pkcon"), { QStringLiteral("install"), QStringLiteral("-y"), package });
+        pkconProc.start(BIN_PKCON, { QStringLiteral("install"), QStringLiteral("-y"), package });
         pkconProc.waitForFinished(-1);
 
         if (pkconProc.exitCode() == 0) {
@@ -1883,10 +1892,15 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
     const QString &url = params.value(QStringLiteral("url")).toString();
     const QString &patch = params.value(QStringLiteral("patch")).toString();
     const QString &json = params.value(QStringLiteral("json")).toString();
-    const QString &archive = QStringLiteral("/tmp/%1").arg(url.section(QChar('/'), -1));
+    const QString &archive = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR, url.section(QChar('/'), -1));
     const QString &version = params.value(QStringLiteral("version")).toString();
 
     qDebug() << Q_FUNC_INFO << "Saving archive to" << archive;
+    QDir workDir(PATCHES_WORK_DIR);
+    if (!workDir.mkpath(PATCHES_WORK_DIR)) {
+            qDebug() << Q_FUNC_INFO << QStringLiteral("Error: could not create ") << workDir;
+            return;
+    };
     QFile *archiveFile = new QFile(archive, this);
     if (!archiveFile->open(QFile::WriteOnly)) {
         return;
@@ -1934,9 +1948,18 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
         QProcess proc;
         int ret = 0;
         if (archive.endsWith(QStringLiteral(".zip"))) {
-            ret = proc.execute(QStringLiteral("/usr/bin/unzip"), {archive, QStringLiteral("-d"), patchPath});
+            ret = proc.execute(BIN_UNZIP, {QStringLiteral("-o"), archive, QStringLiteral("-d"), patchPath });
         } else {
-            ret = proc.execute(QStringLiteral("/bin/tar"), {QStringLiteral("xzf"), archive, QStringLiteral("-C"), patchPath});
+            QString uncompressOpt;
+            if (archive.endsWith(QStringLiteral("gz"))) { uncompressOpt = QStringLiteral("-z"); }
+            else if (archive.endsWith(QStringLiteral("bz2"))) { uncompressOpt = QStringLiteral("-j"); }
+             // careful: GNU tar has J for everything xz/lz*, and a for automatic, BusyBox has J for .xz and a for .lzma
+            else if (archive.endsWith(QStringLiteral("xz"))) { uncompressOpt = QStringLiteral("-J"); }
+            else {
+                qWarning() << Q_FUNC_INFO << QStringLiteral("Archive format unsupported");
+                uncompressOpt = QStringLiteral("");
+            }
+            ret = proc.execute(BIN_TAR, {QStringLiteral("x"), uncompressOpt, QStringLiteral("-f"), archive, QStringLiteral("-C"), patchPath});
         }
         if (ret == 0) {
             if (m_updates.contains(patch)) {
@@ -1951,6 +1974,13 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
                 }
             }
         } else {
+            QString retMsg = QStringLiteral("process exited with code (%1)").arg(ret);
+            if ( ret == -2 ) {
+                retMsg = QStringLiteral("Process could not start (%1)").arg(ret);
+            } else if ( ret == -1 ) {
+                retMsg = QStringLiteral("Process crashed (%1)").arg(ret);
+            }
+            qDebug() << Q_FUNC_INFO << QStringLiteral("Error: extraction failed:") << proc.error() << retMsg;
             patchDir.removeRecursively();
         }
 
@@ -1995,7 +2025,7 @@ void PatchManagerObject::doUninstallPatch(const QString &patch, const QDBusMessa
     } else {
         qDebug() << Q_FUNC_INFO << "Removing patch package" << rpmPatch;
 
-        const int ret = QProcess::execute(QStringLiteral("/usr/bin/pkcon"), {QStringLiteral("remove"), QStringLiteral("-y"), getRpmName(rpmPatch)});
+        const int ret = QProcess::execute(BIN_PKCON, {QStringLiteral("remove"), QStringLiteral("-y"), getRpmName(rpmPatch)});
         removeSuccess = ret == 0;
     }
 
