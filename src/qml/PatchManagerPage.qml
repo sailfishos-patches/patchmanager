@@ -42,8 +42,8 @@ Page {
         interval: 1500
         repeat: false
         running: true
-        onTriggered: console.log()
-        onRunningChanged: console.log(running)
+        onTriggered: console.debug()
+        onRunningChanged: console.debug(running)
     }
 
     Connections {
@@ -227,7 +227,7 @@ Page {
             enabled: !view.busy
 
             Component.onCompleted: {
-                console.log("Constructing delegate for:", patchObject.details.patch)
+                console.debug("Constructing delegate for:", patchObject.details.patch)
             }
 
             onPressed: {
@@ -337,14 +337,14 @@ Page {
             Connections {
                 target: patchObject.details
                 onPatchedChanged: {
-                    console.log("onPatchedChanged:", patchObject.details.patch, patchObject.details.patched)
+                    console.debug("onPatchedChanged:", patchObject.details.patch, patchObject.details.patched)
                 }
             }
 
             Connections {
                 target: patchObject
                 onBusyChanged: {
-                    console.log("onBusyChanged:", patchObject.details.patch, patchObject.busy)
+                    console.debug("onBusyChanged:", patchObject.details.patch, patchObject.busy)
                 }
             }
 

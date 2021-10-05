@@ -51,7 +51,7 @@ Page {
     onStatusChanged: {
         if (status == PageStatus.Active) {
             voteAction = PatchManager.checkVote(modelData.name)
-            console.log("versions:", JSON.stringify(versions))
+            console.info("versions:", JSON.stringify(versions))
 
             PatchManager.watchCall(PatchManager.downloadPatchInfo(modelData.name),
                                    function(d) {
@@ -337,7 +337,7 @@ Page {
                     }
 
                     function removeAction() {
-                        console.log("###")
+                        console.info("###")
                     }
 
                     function installPatch() {
@@ -351,7 +351,7 @@ Page {
                                                    container.versionsChanged()
                                                },
                                                function(error) {
-                                                   console.log(error)
+                                                   console.error(error)
                                                })
                     }
 

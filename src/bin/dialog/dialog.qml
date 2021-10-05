@@ -26,7 +26,7 @@ ApplicationWindow {
             onStatusChanged: {
                 if (status == PageStatus.Active && !appWindow.remorseItem) {
                     remorse.execute(button, qsTranslate("", "Applying patches"), function() {
-                        console.log("Accepted applying patches.")
+                        console.info("Accepted applying patches.")
                         dbusPm.call("loadRequest", [true])
                     }, 10000)
                     appWindow.remorseItem = remorse
@@ -70,7 +70,7 @@ ApplicationWindow {
                             RemorseItem {
                                 id: remorse
                                 onCanceled: {
-                                    console.log("Cancelled applying patches.")
+                                    console.info("Cancelled applying patches.")
                                     dbusPm.call("loadRequest", [false])
                                     Qt.quit()
                                 }
@@ -112,7 +112,7 @@ ApplicationWindow {
                 signalsEnabled: true
 
                 function autoApplyingStarted(count) {
-                    console.log(count)
+                    console.debug(count)
                     progress.maximumValue = count
                     progress.minimumValue = 0
                     progress.value = 0
@@ -120,18 +120,18 @@ ApplicationWindow {
                 }
 
                 function autoApplyingPatch(patch) {
-                    console.log(patch)
+                    console.info(patch)
                     progress.value += 1
                     progress.label = patch
                 }
 
                 function autoApplyingFailed(patch) {
-                    console.log(patch)
+                    console.warn(patch)
                     failed.text += "%1\n".arg(patch)
                 }
 
                 function autoApplyingFinished(success) {
-                    console.log(success)
+                    console.info(success)
                     button.enabled = true
                     progress.label = success ? qsTranslate("", "Applied patches successfully.")
                                              : qsTranslate("", "Failed to apply patches!")
