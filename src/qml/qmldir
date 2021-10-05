@@ -4,5 +4,4 @@ PatchManagerPage 2.0 PatchManagerPage.qml
 AboutPage 2.0 AboutPage.qml
 DevelopersPage 2.0 DevelopersPage.qml
 LipstickWarningDialog 2.0 LipstickWarningDialog.qml
-LegacyPatchPage 2.0 LegacyPatchPage.qml
 RestartServicesDialog 2.0 RestartServicesDialog.qml

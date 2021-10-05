@@ -26,11 +26,10 @@ DISTFILES += qmldir \
     AboutPage.qml \
     DevelopersPage.qml \
     RestartServicesDialog.qml \
-    LegacyPatchPage.qml \
+    UnifiedPatchPage.qml \
     WebCatalogPage.qml \
     WebPatchPage.qml \
     ItemErrorComponent.qml \
-    NewPatchPage.qml \
     ScreenshotsPage.qml \
     SettingsPage.qml
 

@@ -39,6 +39,7 @@ Page {
     id: container
     property var modelData
     property var delegate
+    property bool legacyPatch: !modelData.isNewPatch
     signal doPatch
 
     Notification {
@@ -85,35 +86,37 @@ Page {
             anchors.bottomMargin: Theme.itemSizeSmall
 
             PageHeader {
-                title: modelData.display_name
+                title: legacyPatch ? modelData.display_name : modelData.display_name
             }
 
             Label {
                 visible: !modelData.available
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: Theme.horizontalPageMargin
                 color: Theme.primaryColor
-                anchors.left: parent.left; anchors.leftMargin: Theme.horizontalPageMargin
-                anchors.right: parent.right; anchors.rightMargin: Theme.horizontalPageMargin
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeLarge
-                text: qsTranslate("", "This patch is no available anymore. You won't be able to reinstall it.")
+                text: qsTranslate("", "This patch is not available anymore. You won't be able to reinstall it.")
             }
 
             Column {
                 width: parent.width - Theme.itemSizeMedium * 2
                 anchors.horizontalCenter: parent.horizontalCenter
                 spacing: Theme.paddingSmall
+
                 DetailItem {
-                    label: qsTranslate("", "Author")
-                    value: modelData.author
+                    label: legacyPatch ? qsTranslate("", "Maintainer") : qsTranslate("", "Author")
+                    value: legacyPatch ? modelData.infos.maintainer : modelData.author
                 }
                 DetailItem {
                     label: qsTranslate("", "Version")
-                    value: modelData.rpm ? modelData.rpm : modelData.version
+                    value: modelData.rpm ? modelData.rpm : (modelData.version != "0.0.0") ? modelData.version : qsTranslate("", "not available")
                     _valueItem.wrapMode: Text.WordWrap
                 }
                 DetailItem {
                     label: qsTranslate("", "Compatible")
-                    value: modelData.compatible ? modelData.compatible.join(', ') : qsTranslate("", "not available")
+                    value: modelData.compatible.length > 0 ? modelData.compatible.join(', ') : qsTranslate("", "not available")
                     _valueItem.wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 }
             }
@@ -141,6 +144,18 @@ Page {
                 }
             }
 
+            Label {
+                visible: PatchManager.developerMode && legacyPatch
+                color: Theme.primaryColor
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: Theme.horizontalPageMargin
+                wrapMode: Text.WordWrap
+                horizontalAlignment: Text.AlignJustify
+                font.pixelSize: Theme.fontSizeSmall
+                text: qsTranslate("", "This patch uses the legacy format for its patch.json file. If you're the maintainer, consider updating to the new format.")
+            }
+
             SectionHeader {
                 text: qsTranslate("", "Description")
             }
@@ -150,6 +165,7 @@ Page {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.margins: Theme.horizontalPageMargin
+                horizontalAlignment: Text.AlignJustify
                 wrapMode: Text.WordWrap
                 text: modelData.description
             }

@@ -396,7 +396,7 @@ Page {
             }
 
             function openPatchInfo() {
-                pageStack.push(Qt.resolvedUrl(patchObject.details.isNewPatch ? "NewPatchPage.qml" : "LegacyPatchPage.qml"),
+                pageStack.push(Qt.resolvedUrl("UnifiedPatchPage.qml"),
                               {modelData: patchObject.details, delegate: background})
             }
 
