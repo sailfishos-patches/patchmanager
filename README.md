@@ -16,7 +16,10 @@ Patches available via Web Catalog are listed and detailed here: https://coderus.
 
 ## For developers
 
-To write a patch, you need to provide at least two files: a patch file and the JSON metadata
+To write a patch, you need to provide at least a patch file.
+If you package your patch as an RPM or archive file, must also provide the JSON metadata: see below.
+
+If you use the Web Catalog to distribute your patch, you need not and should not provide a JSON file.
 
 ### The patch file
 
@@ -37,48 +40,16 @@ where `original` and `patched` contains the original and modified files.
 The metadata file contains information about the patch.  It is a simple JSON file, that **must** be named `patch.json`.
 
 This file contains the title of the patch, a short description of the patch, a category, and other information. 
-Here is a sample of a metadata file.
+For documentation of the json file format see:
 
-```json
-{
-    "name": "My super patch",
-    "description": "Some description.",
-    "category": "other",
-    "infos": {
-        "maintainer": "Foo Bar"
-    }
-}
-```
+ - example [patch.json](./doc/example_patch.json.md)
+ - the much simpler [legacy format](./doc/example_legacy_patch.json.md)
 
-#### Categories
-
-The category entry must be one of the following list:
-
-- browser
-- camera
-- calendar
-- clock
-- contacts
-- email
-- gallery
-- homescreen
-- media
-- messages
-- phone
-- settings
-- silica
-- others
-
-Some of these entries allow specific actions to be triggered, such as relaunching the homescreen or the preloaded services.
-
-#### Maintainers
-
-A maintainer can be registered inside the JSON metadata file to claim maintainership of a patch. 
-Either use your real name, as displayed on Github or Twitter, or use your usual nickname.
+Either format is supported, but the modern one provides more useful features and is recommended.
 
 #### Additional files
 
-Patchmanager starting from version 2.0 can utilize additional files to provide better users experience. 
+Patchmanager starting from version 2.0 can utilize additional files to provide better user experience. 
 All files shall be placed in the same folder.
 
 - **main.qml** - QML page with some additional info about patch and/or configuration.  Will be shown when user taps on the patch entry inside Patchmanager.
@@ -86,16 +57,20 @@ All files shall be placed in the same folder.
 - **translation_\<LANG_CODE\>.qm** - Translation files for QML page, to allow patch developers to translate texts to various languages.
 - Any additional **.qml**, .**js**, **.png** files used by QML page are allowed.
 
-## Web catalog for patches
+## Patch distribution using Patchmanager's Web Catalog
 
 Patchmanager supports installing patches from its Web Catalog. 
-Patch developers can upload patches to https://coderus.openrepos.net/pm2 to enlist them on Patchmanager's Web Catalog. 
-When uploading a patch to the Web Catalog, the patch developer should not provide a *patch.json* file with metadata, but shall fill the necessary fields on the webpage before uploading, instead.
+Patch developers can upload patches to https://coderus.openrepos.net/pm2 to enlist them on the Catalog. 
+When uploading a patch, the patch developer should not provide a `patch.json` file with metadata, but shall fill the necessary fields on the webpage before uploading, instead.
 
-## Patches distribution at OpenRepos.net
+Web Catalog will encode the metadata automatically in the downloadable file.
+
+For more information about requirements for using Web Catalog, see https://coderus.openrepos.net/pm2/usage/
+
+## Patch distribution at OpenRepos.net and other repositories
 
 Patches can be too complex for Patchmanager's Web Catalog. 
-In this case the developer can package the patch as an RPM and upload it at https://openrepos.net
+In this case the developer can package the patch as an RPM and upload it at https://openrepos.net or another user-accessible package repository. OpenRepos provides a "Applications/Patches" category for this.
 
 For RPM patches, the patch content shall be installed in a directory `/usr/share/patchmanager/patches/<patch-name>/`; [additional files (see above)](#additional-files) for this patch shall also be placed there.
 
