@@ -40,7 +40,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="213"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="222"/>
         <location filename="../src/bin/dialog/dialog.qml" line="165"/>
         <location filename="../src/qml/AboutPage.qml" line="63"/>
         <source>Patchmanager</source>
@@ -382,52 +382,52 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="224"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="233"/>
         <source>Patch installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="225"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="234"/>
         <source>Patch %1 installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="228"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="237"/>
         <source>Patch removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="229"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="238"/>
         <source>Patch %1 removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="232"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="241"/>
         <source>Failed to install patch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="233"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="242"/>
         <source>Patch %1 installation failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="236"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="245"/>
         <source>Failed to remove patch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="237"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="246"/>
         <source>Patch %1 removal failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="240"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="249"/>
         <source>Update available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="241"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="250"/>
         <source>Patch %1 have update candidate</source>
         <translation type="unfinished"></translation>
     </message>
