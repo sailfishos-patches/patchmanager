@@ -440,7 +440,7 @@ void PatchManagerObject::doRegisterDBus()
         return;
     }
 
-    qWarning() << Q_FUNC_INFO << "Object registered:" << DBUS_PATH_NAME;
+    qInfo() << Q_FUNC_INFO << "Object registered:" << DBUS_PATH_NAME;
 
     if (!connection.registerService(DBUS_SERVICE_NAME)) {
         qCritical() << Q_FUNC_INFO << "Cannot register D-Bus service:" << DBUS_SERVICE_NAME;
@@ -452,13 +452,13 @@ void PatchManagerObject::doRegisterDBus()
     if (qEnvironmentVariableIsSet("PM_DEBUG_EVENTFILTER")) {
         m_adaptor->installEventFilter(this);
     }
-    qWarning() << Q_FUNC_INFO << "Service registered:" << DBUS_SERVICE_NAME;
+    qInfo() << Q_FUNC_INFO << "Service registered:" << DBUS_SERVICE_NAME;
     m_dbusRegistered = true;
 }
 
 void PatchManagerObject::doPrepareCacheRoot()
 {
-    qWarning() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO;
     // TODO: think about security issues here
 
 
@@ -512,7 +512,7 @@ void PatchManagerObject::doPrepareCacheRoot()
 
 void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 {
-    qWarning() << Q_FUNC_INFO << patchName << apply;
+    qDebug() << Q_FUNC_INFO << patchName << apply;
 
     if (!m_patchFiles.contains(patchName)) {
         qWarning() << Q_FUNC_INFO << "Not installed:" << patchName;
@@ -525,7 +525,7 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 
         QDir fakeDir(QStringLiteral("%1%2").arg(s_patchmanagerCacheRoot, fi.absoluteDir().absolutePath()));
         if (apply && !fakeDir.exists()) {
-            qWarning() << Q_FUNC_INFO << "creating:" << fakeDir.absolutePath();
+            qDebug() << Q_FUNC_INFO << "creating:" << fakeDir.absolutePath();
             QDir::root().mkpath(fakeDir.absolutePath());
         }
 
@@ -543,13 +543,13 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 
         if (apply && !fi.exists()) {
             bool link_ret = QFile::link(fakeFileName, fi.absoluteFilePath());
-            qWarning() << Q_FUNC_INFO << "linking" << fileName << "to:" << fakeFileName << link_ret;
+            qDebug() << Q_FUNC_INFO << "linking" << fileName << "to:" << fakeFileName << link_ret;
             continue;
         }
 
         if (!apply && fi.isSymLink()) {
             bool remove_ret = QFile::remove(fi.absoluteFilePath());
-            qWarning() << Q_FUNC_INFO << "Removing symlink" << fileName << "to" << fakeFileName << remove_ret;
+            qDebug() << Q_FUNC_INFO << "Removing symlink" << fileName << "to" << fakeFileName << remove_ret;
         }
 
         if (QFileInfo::exists(fakeFileName)) {
@@ -564,7 +564,7 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 
             m_originalWatcher->removePath(fileName);
             bool remove_ret = QFile::remove(fakeFileName);
-            qWarning() << Q_FUNC_INFO << "Removing" << fakeFileName << remove_ret;
+            qDebug() << Q_FUNC_INFO << "Removing" << fakeFileName << remove_ret;
         } else {
             if (!apply) {
                 tryToUnlinkFakeParent(fi.absoluteDir().absolutePath());
@@ -578,7 +578,7 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
             }
 
             bool copy_ret = QFile::copy(fileName, fakeFileName);
-            qWarning() << Q_FUNC_INFO << "Copying" << fileName << "to:" << fakeFileName << copy_ret;
+            qDebug() << Q_FUNC_INFO << "Copying" << fileName << "to:" << fakeFileName << copy_ret;
             m_originalWatcher->addPath(fileName);
 
             chmod(fakeFileName.toLatin1().constData(), fileStat.st_mode);
@@ -604,7 +604,7 @@ void PatchManagerObject::doStartLocalServer()
 
 void PatchManagerObject::initialize()
 {
-    qDebug() << Q_FUNC_INFO << "Patchmanager:" << qApp->applicationVersion();
+    qInfo() << Q_FUNC_INFO << "Patchmanager:" << qApp->applicationVersion();
 
     QTranslator *translator = new QTranslator(this);
     bool success = translator->load(QLocale(getLang()),
@@ -612,10 +612,10 @@ void PatchManagerObject::initialize()
                                    QStringLiteral("-"),
                                    QStringLiteral("/usr/share/translations/"),
                                    QStringLiteral(".qm"));
-    qDebug() << Q_FUNC_INFO << "Translator loaded:" << success;
+    qInfo() << Q_FUNC_INFO << "Translator loaded:" << success;
 
     success = qApp->installTranslator(translator);
-    qDebug() << Q_FUNC_INFO << "Translator installed:" << success;
+    qInfo() << Q_FUNC_INFO << "Translator installed:" << success;
 
     m_nam = new QNetworkAccessManager(this);
     m_settings = new QSettings(s_newConfigLocation, QSettings::IniFormat, this);
@@ -631,7 +631,7 @@ void PatchManagerObject::initialize()
     if (preload.exists()) {
         qDebug() << Q_FUNC_INFO << "ld.so.preload:";
         if (!preload.open(QFile::ReadOnly)) {
-            qWarning() << Q_FUNC_INFO << "Can't open ld.so.preload!";
+            qCritical() << Q_FUNC_INFO << "Can't open ld.so.preload!";
         }
         qDebug().noquote() << Q_FUNC_INFO << preload.readAll();
     } else {
@@ -663,7 +663,7 @@ void PatchManagerObject::initialize()
     }
 
     if (Q_UNLIKELY(qEnvironmentVariableIsEmpty("DBUS_SESSION_BUS_ADDRESS"))) {
-        qWarning() << Q_FUNC_INFO << "Session bus address is not set! Please check environment configuration!";
+        qCritical() << Q_FUNC_INFO << "Session bus address is not set! Please check environment configuration!";
         qDebug() << Q_FUNC_INFO << "Injecting DBUS_SESSION_BUS_ADDRESS...";
         qputenv("DBUS_SESSION_BUS_ADDRESS", QByteArrayLiteral("unix:path=/run/user/100000/dbus/user_bus_socket"));
     }
@@ -724,7 +724,7 @@ void PatchManagerObject::initialize()
         }
         qDebug() << Q_FUNC_INFO << "Server listening:" << listening;
         if (!listening) {
-            qWarning() << Q_FUNC_INFO << "Server error:" << m_localServer->serverError() << m_localServer->errorString();
+            qCritical() << Q_FUNC_INFO << "Server error:" << m_localServer->serverError() << m_localServer->errorString();
         }
     }, Qt::DirectConnection);
     m_localServer->moveToThread(m_serverThread);
@@ -791,8 +791,9 @@ void PatchManagerObject::restartService(const QString &serviceName)
     m.setArguments({ serviceName, QStringLiteral("replace") });
     if (!m_sbus.send(m)) {
         qWarning() << Q_FUNC_INFO << "Error sending message";
-        qWarning() << Q_FUNC_INFO << "Invoking systemctl:" <<
+        qDebug() << Q_FUNC_INFO << "Invoking systemctl:" <<
                     QProcess::execute(BIN_SYSTEMCTL_U, { QStringLiteral("--no-block"), QStringLiteral("restart"), serviceName });
+                    QProcess::execute(QStringLiteral("/bin/systemctl-user"), { QStringLiteral("--no-block"), QStringLiteral("restart"), serviceName });
     }
 }
 
@@ -1410,10 +1411,10 @@ void PatchManagerObject::onLipstickChanged(const QString &, const QVariantMap &c
     const QString activeState = changedProperties.value(QStringLiteral("ActiveState"), QStringLiteral("unknown")).toString();
     qDebug() << Q_FUNC_INFO << activeState;
     if (activeState == QStringLiteral("failed")) {
-        qWarning() << Q_FUNC_INFO << "Detected lipstick crash, deactivating all patches";
+        qInfo() << Q_FUNC_INFO << "Detected lipstick crash, deactivating all patches";
         unapplyAllPatches();
     } else if (activeState == QStringLiteral("active") && !getLoaded() && !m_failed && !getSettings(QStringLiteral("applyOnBoot"), false).toBool()) {
-        qDebug() << Q_FUNC_INFO << "Calling patch applier after boot";
+        qInfo() << Q_FUNC_INFO << "Calling patch applier after boot";
         QTimer::singleShot(5000, this, [this](){
             QDBusMessage showPatcher = QDBusMessage::createMethodCall(QStringLiteral("org.SfietKonstantin.patchmanager"),
                                                                       QStringLiteral("/"),
@@ -1430,7 +1431,7 @@ void PatchManagerObject::onOsUpdateProgress(int progress)
         return;
     }
 
-    qWarning() << Q_FUNC_INFO << "Detected os update, disabling patches!";
+    qInfo() << Q_FUNC_INFO << "Detected os update, disabling patches!";
     unapplyAllPatches();
 }
 
@@ -1469,12 +1470,12 @@ void PatchManagerObject::startReadingLocalServer()
         if (!m_failed && QFileInfo::exists(fakePath)) {
             payload = fakePath.toLatin1();
             if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
-                qWarning() << Q_FUNC_INFO << "Requested:" << request << "Sending:" << payload;
+                qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sending:" << payload;
             }
         } else {
             payload = request;
             if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
-                qWarning() << Q_FUNC_INFO << "Requested:" << request << "Not changing";
+                qDebug() << Q_FUNC_INFO << "Requested:" << request << "Not changing";
             }
         }
         clientConnection->write(payload);
@@ -1485,7 +1486,7 @@ void PatchManagerObject::startReadingLocalServer()
 
 void PatchManagerObject::onOriginalFileChanged(const QString &path)
 {
-    qWarning() << Q_FUNC_INFO << path;
+    qDebug() << Q_FUNC_INFO << path;
 
     if (m_failed || !getLoaded()) {
         return;
@@ -2299,7 +2300,7 @@ void PatchManagerObject::requestCheckForUpdates()
         for (const QVariant &projectVar : projects) {
             const QVariantMap project = projectVar.toMap();
             const QString projectName = project.value("name").toString();
-            qDebug() << Q_FUNC_INFO << "processing:" << projectName;
+            qInfo() << Q_FUNC_INFO << "processing:" << projectName;
             if (!m_metadata.contains(projectName)) {
                 qDebug() << Q_FUNC_INFO << projectName << "patch is not installed";
                 continue;
