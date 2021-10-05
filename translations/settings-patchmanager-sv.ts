@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="sv">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="sv" version="2.1">
 <context>
-    <name></name>
+    <name/>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="49"/>
         <location filename="../src/qml/PatchManagerPage.qml" line="142"/>
@@ -59,17 +57,17 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="95"/>
         <source>Licensed under the terms of the&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; BSD 3-Clause License&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Licensierad under villkoren för&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; BSD 3-Clause License&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="105"/>
         <source>Sources and Issue Tracker&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;on GitHub&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Källor och ärendehanterare&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;på GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="122"/>
         <source>Credits and Thanks&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Developers&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Erkännanden och tack&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Utvecklare&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="141"/>
@@ -114,7 +112,7 @@
         <location filename="../src/qml/LegacyPatchPage.qml" line="63"/>
         <location filename="../src/qml/NewPatchPage.qml" line="63"/>
         <source>Load engine before applying patches</source>
-        <translation type="unfinished"></translation>
+        <translation>Starta motorn före tillämpning av korrigeringar</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="73"/>
@@ -232,11 +230,7 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="484"/>
         <source>May have conflicts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Have possible conflicts</source>
-        <translation type="vanished">Har möjliga konflikter</translation>
+        <translation>Möjliga konflikter</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="487"/>
@@ -293,12 +287,12 @@
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
         <source>Sort by Category</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortera efter kategori</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
         <source>Sort by Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortera efter datum</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="101"/>
@@ -308,12 +302,12 @@
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="102"/>
         <source>(by date updated)</source>
-        <translation type="unfinished"></translation>
+        <translation>(uppdaterat efter datum)</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="102"/>
         <source>(by category)</source>
-        <translation type="unfinished"></translation>
+        <translation>(efter kategori)</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="108"/>
@@ -449,21 +443,17 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="21"/>
         <source>Apply all enabled patches when the system starts</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillämpa alla aktiverade korrigeringar när systemet startas</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="28"/>
         <source>Allow incompatible patches</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillåt inkompatibla korrigeringar</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="29"/>
         <source>Apply patches which are not marked compatible with the installed Sailfish OS version. Note that this will not fix patches that are actually incompatible.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Developer mode</source>
-        <translation type="vanished">Utvecklarläge</translation>
+        <translation>Tillämpa korrigeringar som inte är märkta, kompatibla med den installerade versionen av Sailfish OS. Notera att detta inte fixar korrigeringar som verkligen inte är kompatibla.</translation>
     </message>
 </context>
 <context>
