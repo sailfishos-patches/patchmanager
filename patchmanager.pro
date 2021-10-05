@@ -3,7 +3,7 @@ SUBDIRS = src
 
 OTHER_FILES += rpm/patchmanager.spec
 
-TRANSLATIONS += translations/settings-$${TARGET}-*.ts
+TRANSLATIONS += $$files(translations/settings-$${TARGET}-*.ts)
 
 TS_FILE = $${_PRO_FILE_PWD_}/translations/settings-$${TARGET}.ts
 HAVE_TRANSLATIONS = 0

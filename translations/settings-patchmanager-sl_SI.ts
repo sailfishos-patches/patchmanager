@@ -1,6 +1,8 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="sl_SI" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="sl_SI">
 <context>
-    <name/>
+    <name></name>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="49"/>
         <location filename="../src/qml/PatchManagerPage.qml" line="142"/>
@@ -38,9 +40,9 @@
         <translation>Nespešno uveljavljanje popravkov!</translation>
     </message>
     <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="213"/>
         <location filename="../src/bin/dialog/dialog.qml" line="165"/>
         <location filename="../src/qml/AboutPage.qml" line="63"/>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="207"/>
         <source>Patchmanager</source>
         <translation>Patchmanager</translation>
     </message>
@@ -57,13 +59,27 @@
 Patchmanager omogoča spreminjanje sistema s popravki. Program je zagnan v ozadju in nadzoruje nameščanje, upravljanje in odstranjevanje popravkov s pomočjo grafičnega vmesnika. </translation>
     </message>
     <message>
-        <location filename="../src/qml/AboutPage.qml" line="92"/>
+        <location filename="../src/qml/AboutPage.qml" line="95"/>
+        <source>Licensed under the terms of the&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; BSD 3-Clause License&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/AboutPage.qml" line="105"/>
+        <source>Sources and Issue Tracker&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;on GitHub&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/AboutPage.qml" line="122"/>
+        <source>Credits and Thanks&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Developers&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/AboutPage.qml" line="141"/>
         <location filename="../src/qml/WebPatchPage.qml" line="246"/>
         <source>Donate</source>
         <translation>Prispevaj</translation>
     </message>
     <message>
-        <location filename="../src/qml/AboutPage.qml" line="103"/>
         <location filename="../src/qml/DevelopersPage.qml" line="107"/>
         <source>Developers</source>
         <translation>Razvojniki</translation>
@@ -100,7 +116,7 @@ Patchmanager omogoča spreminjanje sistema s popravki. Program je zagnan v ozadj
         <location filename="../src/qml/LegacyPatchPage.qml" line="63"/>
         <location filename="../src/qml/NewPatchPage.qml" line="63"/>
         <source>Load engine before applying patches</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="73"/>
@@ -181,7 +197,7 @@ Patchmanager omogoča spreminjanje sistema s popravki. Program je zagnan v ozadj
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="159"/>
-        <location filename="../src/qml/WebCatalogPage.qml" line="93"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="101"/>
         <source>Web catalog</source>
         <translation>Spletni katalog</translation>
     </message>
@@ -217,8 +233,12 @@ Patchmanager omogoča spreminjanje sistema s popravki. Program je zagnan v ozadj
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="484"/>
+        <source>May have conflicts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Have possible conflicts</source>
-        <translation>Možni spori</translation>
+        <translation type="vanished">Možni spori</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="487"/>
@@ -242,7 +262,7 @@ Patchmanager omogoča spreminjanje sistema s popravki. Program je zagnan v ozadj
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="510"/>
-        <location filename="../src/qml/WebCatalogPage.qml" line="232"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="248"/>
         <source>No patches available</source>
         <translation>Ni popravkov</translation>
     </message>
@@ -263,27 +283,47 @@ Patchmanager omogoča spreminjanje sistema s popravki. Program je zagnan v ozadj
         <translation>Posnetki zaslona</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="82"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="83"/>
         <source>Hide search field</source>
         <translation>Skrij polje za iskanje</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="82"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="83"/>
         <source>Show search field</source>
         <translation>Prikaži polje za iskanje</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="93"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
+        <source>Sort by Category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
+        <source>Sort by Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebCatalogPage.qml" line="101"/>
         <source>%1 patches</source>
         <translation>%1 popravkov</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="99"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="102"/>
+        <source>(by date updated)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebCatalogPage.qml" line="102"/>
+        <source>(by category)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebCatalogPage.qml" line="108"/>
         <source>Tap to enter search query</source>
         <translation>Pritisnite za vnos iskalnega niza</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="219"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="235"/>
         <source>Update available: %1</source>
         <translation>Na voljo je posodobitev: %1</translation>
     </message>
@@ -348,70 +388,84 @@ Patchmanager omogoča spreminjanje sistema s popravki. Program je zagnan v ozadj
         <translation>Združljivost: %1</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="218"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="224"/>
         <source>Patch installed</source>
         <translation>Popravek je nameščen</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="219"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="225"/>
         <source>Patch %1 installed</source>
         <translation>%1 je nameščen</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="222"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="228"/>
         <source>Patch removed</source>
         <translation>Popravek je odstranjen</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="223"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="229"/>
         <source>Patch %1 removed</source>
         <translation>%1 je odstranjen</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="226"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="232"/>
         <source>Failed to install patch</source>
         <translation>Nespešno nameščanje popravka</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="227"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="233"/>
         <source>Patch %1 installation failed</source>
         <translation>Namestitev %1 ni uspela</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="230"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="236"/>
         <source>Failed to remove patch</source>
         <translation>Nespešno odstranjevanje popravka</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="231"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="237"/>
         <source>Patch %1 removal failed</source>
         <translation>Odstranjevanje %1 ni uspelo.</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="234"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="240"/>
         <source>Update available</source>
         <translation>Na voljo je posodobitev</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="235"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="241"/>
         <source>Patch %1 have update candidate</source>
         <translation>Za %1 ja na voljo posodobitev</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="137"/>
-        <location filename="../src/qml/SettingsPage.qml" line="14"/>
+        <location filename="../src/qml/SettingsPage.qml" line="16"/>
         <source>Settings</source>
         <translation>Nastavitve</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="18"/>
+        <location filename="../src/qml/SettingsPage.qml" line="20"/>
         <source>Apply on boot</source>
         <translation>Uveljavi ob zagonu</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="25"/>
+        <location filename="../src/qml/SettingsPage.qml" line="21"/>
+        <source>Apply all enabled patches when the system starts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="28"/>
+        <source>Allow incompatible patches</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="29"/>
+        <source>Apply patches which are not marked compatible with the installed Sailfish OS version. Note that this will not fix patches that are actually incompatible.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Developer mode</source>
-        <translation>Razvojni način</translation>
+        <translation type="vanished">Razvojni način</translation>
     </message>
 </context>
 <context>
@@ -483,7 +537,7 @@ Patchmanager omogoča spreminjanje sistema s popravki. Program je zagnan v ozadj
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="62"/>
-        <location filename="../src/qml/patchmanager.cpp" line="229"/>
+        <location filename="../src/qml/patchmanager.cpp" line="215"/>
         <source>other</source>
         <translation>ostalo</translation>
     </message>
