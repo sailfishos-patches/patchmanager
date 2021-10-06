@@ -1273,6 +1273,11 @@ void PatchManagerObject::patchToggleService(const QString &patch)
     }
 }
 
+QStringList PatchManagerObject::getToggleServicesList() const
+{
+    return m_toggleServices.keys();
+}
+
 bool PatchManagerObject::getToggleServices() const
 {
     return !m_toggleServices.isEmpty();

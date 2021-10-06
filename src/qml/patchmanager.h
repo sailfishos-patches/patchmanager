@@ -69,6 +69,7 @@ class PatchManager: public QObject
     Q_PROPERTY(PatchManagerModel *installedModel READ installedModel CONSTANT)
     Q_PROPERTY(QVariantMap updates READ getUpdates NOTIFY updatesChanged)
     Q_PROPERTY(QStringList updatesNames READ getUpdatesNames NOTIFY updatesChanged)
+    Q_PROPERTY(QStringList appsToRestart READ toggleServicesList NOTIFY toggleServicesListChanged)
     Q_PROPERTY(bool appsNeedRestart READ toggleServices NOTIFY toggleServicesChanged)
     Q_PROPERTY(bool failure READ failure NOTIFY failureChanged)
     Q_PROPERTY(bool loaded READ loaded NOTIFY loadedChanged)
@@ -88,6 +89,7 @@ public:
     QVariantMap getUpdates() const;
     QStringList getUpdatesNames() const;
     QString patchmanagerVersion() const;
+    QStringList toggleServicesList() const;
 
     bool toggleServices() const;
     bool failure() const;
@@ -102,6 +104,7 @@ public:
 
 private slots:
     void requestListPatches(const QString &patch, bool installed);
+    void requestServicesToBeToggled();
 
 public slots:
     QDBusPendingCallWatcher *applyPatch(const QString &patch);
@@ -161,6 +164,7 @@ signals:
     void failureChanged(bool failed);
     void loadedChanged(bool loaded);
     void patchmanagerVersionChanged(const QString &patchmanagerVersion);
+    void toggleServicesListChanged(const QStringList &servicesToBeToggled);
 
 private:
     void successCall(QJSValue callback, const QVariant &value);
@@ -173,6 +177,8 @@ private:
     PatchManagerModel *m_installedModel;
     PatchManagerInterface *m_interface;
     PatchManagerTranslator *m_translator;
+
+    QStringList m_servicesToBeToggled;
 
     bool m_toggleServices = false;
     bool m_failed = false;

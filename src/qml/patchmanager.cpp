@@ -98,6 +98,22 @@ PatchManager::PatchManager(QObject *parent)
 
     });
 
+    QDBusPendingCallWatcher *watchGetToggleServicesList = new QDBusPendingCallWatcher(m_interface->getToggleServicesList(), this);
+    connect(watchGetToggleServicesList, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
+        watcher->deleteLater();
+        QDBusPendingReply<QStringList> reply = *watcher;
+        if (reply.isError()) {
+            qWarning() << Q_FUNC_INFO << reply.error().type() << reply.error().name() << reply.error().message();
+            return;
+        }
+
+        qDebug() << Q_FUNC_INFO << reply.value();
+
+        m_servicesToBeToggled = reply.value();
+        emit toggleServicesListChanged(m_servicesToBeToggled);
+    });
+
+
     QDBusPendingCallWatcher *watchGetToggleServices = new QDBusPendingCallWatcher(m_interface->getToggleServices(), this);
     connect(watchGetToggleServices, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
         watcher->deleteLater();
@@ -233,6 +249,11 @@ QString PatchManager::patchmanagerVersion() const
     return m_patchmanagerVersion;
 }
 
+QStringList PatchManager::toggleServicesList() const
+{
+    return m_servicesToBeToggled;
+}
+
 bool PatchManager::toggleServices() const
 {
     return m_toggleServices;
@@ -256,6 +277,25 @@ void PatchManager::call(QDBusPendingCallWatcher *call)
         watcher->deleteLater();
     });
 }
+
+/*
+void PatchManager::requestServicesToBeToggled()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    QDBusPendingCallWatcher *watch = new QDBusPendingCallWatcher(m_interface->getServicesToBeToggled(), this);
+    connect(watch, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
+        watcher->deleteLater();
+        QDBusPendingReply<QStringList> reply = *watcher;
+        if (reply.isError()) {
+            qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
+            return;
+        }
+        const QStringList list = reply.value();
+        m_servicesToBeToggled = list;
+    });
+}
+*/
 
 void PatchManager::requestListPatches(const QString &patch, bool installed)
 {
