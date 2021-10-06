@@ -5,7 +5,7 @@ This describes the format of the `patch.json`.
 This is automatically generated and added to your patch distribution if you choose to upload your patch to the Web Catalog.
 So do NOT include one with your patch if you do that.
 
-If you distribute your patch some other way, e.g. as an RPM package, you will have to provide a valid `patch.json` file.
+If you distribute your patch some other way, e.g. as an RPM package, you must provide a valid `patch.json` file.
 
     {
         "author": "Jim Example",
@@ -13,7 +13,7 @@ If you distribute your patch some other way, e.g. as an RPM package, you will ha
         "display_name": "Human-facing Patch Name"
         "version": "1.0.0"
         "category": "calendar",
-        "description": "This is a longish description of what the patch does.\nIt will be displayed in the patch page.",
+        "description": "This is a long description of what the patch does.\nIt will be displayed in the patch page.",
         "discussion": "https://example.org/forum/thead?id=9999",
         "sources": "https://git.example.org/patch.git",
         "donations": "https://example.org/donate",
@@ -28,8 +28,8 @@ Required/Recommended:
 
  - display\_name: The name of the patch, as it will show in the patch list
  - version: a version string. It MUST be in the format X.Y.Z
- - author: name of the principle patch author or maintainer. Either use your real name, as displayed on Github or Twitter, or use your usual nickname.
- - compatible: a list of SailfishOS releases the patch works on. Versions MUST be given in full,  e.g. "3.3.0.16", using just "3.3" is invalid.
+ - author: name of the principal patch author or maintainer. Either use your real name, as displayed on Github or Twitter, or use your usual nickname.
+ - compatible: a list of SailfishOS releases the patch works on. Versions MUST be given in full, e.g. "3.3.0.16" (using just "3.3" is invalid).
 
 Optional:
  - description: explains a bit more what the patch actually does
@@ -49,7 +49,8 @@ Supplying a category not on this list will cause the patch to show up as "other"
  - "silica" - will restart Lipstick
  - "keyboard" - will restart the keyboard service
 
-These will stop/restart the corresponding system applications (e.g. jolla-browser) after applying the patch.
+These will stop/restart the corresponding system applications (e.g. the jolla-browser) after applying the patch.
+
  - "browser"
  - "calendar"
  - "camera"
