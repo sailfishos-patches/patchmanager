@@ -17,7 +17,7 @@ While this is still supported in Patchmanager 3, if possible switch to [the new 
  - name: The "display name" of the patch, as it will show in the patch list
  - description: explains a bit more what the patch actually does
  - category: this is used on the one hand to sort the list of patches, on the other hand certain categories will cause patchmanager to restart affected system services or applications. the category "homescreen" for example will prompt the user to restart Lipstick after applying.  
- - maintainer: name of the principle patch author or maintainer. Either use your real name, as displayed on Github or Twitter, or use your usual nickname.
+ - maintainer: name of the principal patch author or maintainer. Either use your real name, as displayed on Github or Twitter, or use your usual nickname.
 
 ### List of supported categories:
 
