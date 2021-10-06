@@ -108,7 +108,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="76"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="85"/>
         <source>Load engine before applying patches</source>
         <translation type="unfinished"></translation>
     </message>
@@ -118,37 +118,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="107"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="116"/>
         <source>Maintainer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="154"/>
-        <source>This patch uses the legacy format for its patch.json file. If you are the maintainer consider updating to the new format. If you are using Web Catalog you should not include a patch.json file at all in your upload.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="158"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="171"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="172"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="185"/>
         <source>Patch log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="181"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="194"/>
         <source>Press and hold to copy to Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="194"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="207"/>
         <source>No log yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="107"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="116"/>
         <source>Author</source>
         <translation type="unfinished"></translation>
     </message>
@@ -158,29 +153,44 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="98"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="75"/>
+        <source>Uninstall patch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="78"/>
+        <source>Patch %1 uninstalled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="107"/>
         <source>This patch is not available anymore. You won&apos;t be able to reinstall it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="111"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="120"/>
         <source>Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="112"/>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="117"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="121"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="126"/>
         <source>not available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="116"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="125"/>
         <source>Compatible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="128"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="137"/>
         <source>May conflict with:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="165"/>
+        <source>This patch uses the legacy format for its patch.json file. If you are the maintainer consider updating to the new format. If you are using Web Catalog you should not include a patch.json file at all in your upload.&lt;br /&gt; See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for more information.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
