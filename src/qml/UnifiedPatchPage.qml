@@ -151,7 +151,11 @@ Page {
                 wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignJustify
                 font.pixelSize: Theme.fontSizeSmall
-                text: qsTranslate("", "This patch uses the legacy format for its patch.json file. If you are the maintainer consider updating to the new format. If you are using Web Catalog you should not include a patch.json file at all in your upload.")
+                textFormat: Text.StyledText
+                property string link: SOURCE_REPO + "/blob/master/README.md#for-developers"
+                text: qsTranslate("", "This patch uses the legacy format for its patch.json file. If you are the maintainer consider updating to the new format. If you are using Web Catalog you should not include a patch.json file at all in your upload.<br /> See the developer section in the <a href=\"%1\">README</a> for more information.").arg(link)
+                linkColor: Theme.highlightColor
+                onLinkActivated: Qt.openUrlExternally(link)
             }
 
             SectionHeader {
