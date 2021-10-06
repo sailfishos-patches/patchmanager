@@ -12,7 +12,7 @@ To install Patchmanager you may install Storeman (https://openrepos.net/content/
 Modern patches for Patchmanager are provided via [the Web Catalog](https://coderus.openrepos.net/pm2/projects/), while older patches were provided as [RPMs at Openrepos](https://openrepos.net/category/patches) and some of them are still maintained.
 Mind that many patches were first released at Openrepos but later migrated to the Web Catalog: For these you will find outdated RPMs, hence always search in the Web Catalog first.
 
-## For developers
+## Information for developers
 
 To create a patch for Patchmanager, you must at least provide a patch file.
 If you package your patch as an RPM or archive file, you must also provide the JSON metadata: see below.
