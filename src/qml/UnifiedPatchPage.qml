@@ -48,8 +48,6 @@ Page {
         summary: qsTranslate("", "Log copied to Clipboard!")
         previewSummary: summary
         icon: "image://theme/icon-s-clipboard"
-        //appIcon: "image://theme/icon-m-patchmanager2"
-        appIcon: icon
         category: "transfer.complete"
         expireTimeout: 2000
         isTransient: true
@@ -138,7 +136,7 @@ Page {
                     anchors.margins: Theme.horizontalPageMargin
                     automaticCheck : false
                     checked: PatchManager.isApplied(modelData)
-                    _label.color: checked ? Theme.primaryColor :  Theme.secondaryColor
+                    _label.color: checked ? Theme.primaryColor : Theme.secondaryColor
                     height: Math.max(Theme.itemSizeMedium, implicitHeight)
                     text: PatchManager.patchName(modelData)
                 }
@@ -153,7 +151,7 @@ Page {
                 wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignJustify
                 font.pixelSize: Theme.fontSizeSmall
-                text: qsTranslate("", "This patch uses the legacy format for its patch.json file. If you're the maintainer consider updating to the new format. If you are using Web Catalog you should not include a patch.json file at all in your upload.")
+                text: qsTranslate("", "This patch uses the legacy format for its patch.json file. If you are the maintainer consider updating to the new format. If you are using Web Catalog you should not include a patch.json file at all in your upload.")
             }
 
             SectionHeader {
