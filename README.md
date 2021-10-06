@@ -9,14 +9,14 @@ Note that Patchmanager does not install an application icon on the launcher, but
 
 To install Patchmanager you may install Storeman (https://openrepos.net/content/osetr/storeman-installer) to install Patchmanager 3.x from OpenRepos using Storeman.  Alternatively you may download the recent Patchmanager RPM from OpenRepos and install it manually.
 
-Modern patches for Patchmanager are provided via [the web-catalog](https://coderus.openrepos.net/pm2/projects/), while older patches were provided as [RPMs at Openrepos](https://openrepos.net/category/patches) and some of them are still maintained.
-Mind that many patches were first released at Openrepos but later migrated to the web-catalog: For these you will find outdated RPMs, hence always search in the web-catalog first.
+Modern patches for Patchmanager are provided via [the Web Catalog](https://coderus.openrepos.net/pm2/projects/), while older patches were provided as [RPMs at Openrepos](https://openrepos.net/category/patches) and some of them are still maintained.
+Mind that many patches were first released at Openrepos but later migrated to the Web Catalog: For these you will find outdated RPMs, hence always search in the Web Catalog first.
 
 ## For developers
 
 To create a patch for Patchmanager, you must at least provide a patch file.
 If you package your patch as an RPM or archive file, you must also provide the JSON metadata: see below.
-If you use the web-catalog to distribute your patch, you must not provide a JSON file, but input the corresponding data when submitting the patch to the web-catalog.
+If you use the Web Catalog to distribute your patch, you must not provide a JSON file, but input the corresponding data when submitting the patch to the Web Catalog.
 
 ### The patch file
 
@@ -48,15 +48,15 @@ All these files must be placed in the same folder.
 
 ## Patch distribution using Patchmanager's Web Catalog
 
-Patchmanager supports installing patches from its web-catalog. 
-Patch developers can upload patches to https://coderus.openrepos.net/pm2 to enlist them for the web-catalog. 
-When uploading a patch, the patch developer must not provide a `patch.json` file with metadata, but instead must fill the necessary fields on the webpage before uploading: The web-catalog will encode this metadata automatically and add it to the downloadable file.
+Patchmanager supports installing patches from its Web Catalog. 
+Patch developers can upload patches to https://coderus.openrepos.net/pm2 to enlist them for the Web Catalog. 
+When uploading a patch, the patch developer must not provide a `patch.json` file with metadata, but instead must fill the necessary fields on the webpage before uploading: The Web Catalog will encode this metadata automatically and add it to the downloadable file.
 
-For more information about the requirements for using the web-catalog, see https://coderus.openrepos.net/pm2/usage/
+For more information about the requirements for using the Web Catalog, see https://coderus.openrepos.net/pm2/usage/
 
 ## Patch distribution at OpenRepos.net and other repositories
 
-Patches can be too complex for Patchmanager's web-catalog.  In this case the developer may package the patch as an RPM and upload it at https://openrepos.net or another user-accessible package repository.
+Patches can be too complex for Patchmanager's Web Catalog.  In this case the developer may package the patch as an RPM and upload it at https://openrepos.net or another user-accessible package repository.
 OpenRepos provides a [category "Patches"](https://openrepos.net/category/patches) and a [tag "Patch"](https://openrepos.net/tags/patch) for this, which both should be used.
 
 For RPM patches, the patch content should be installed in a directory `/usr/share/patchmanager/patches/<patch-name>/`; its [additional files](#additional-files) for this patch should also be placed there.
