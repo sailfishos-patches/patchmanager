@@ -71,6 +71,15 @@ Page {
                     container.delegate.doPatch()
                 }
             }
+            MenuItem {
+                text: qsTranslate("", "Uninstall patch")
+                enabled: !modelData.patched
+                onClicked: {
+                    Remorse.popupAction(container, qsTranslate("", "Patch %1 uninstalled.").arg(modelData.display_name), 
+                        function() { container.delegate.doUninstall(); pageStack.pop(); }
+                    )
+                }
+            }
             MenuLabel {
                 visible: !PatchManager.loaded
                 text: qsTranslate("", "Load engine before applying patches")
