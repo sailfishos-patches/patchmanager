@@ -359,6 +359,11 @@ QString PatchManager::patchName(const QString &patch) const
     return m_installedModel->patchName(patch);
 }
 
+bool PatchManager::isApplied(const QString &name) const
+{
+    return m_installedModel->isApplied(name);
+}
+
 //QDBusPendingCallWatcher *PatchManager::putSettings(const QString &name, const QVariant &value)
 //{
 //    return new QDBusPendingCallWatcher(m_interface->putSettings(name, value), this);

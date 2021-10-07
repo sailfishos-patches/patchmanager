@@ -239,6 +239,17 @@ QString PatchManagerModel::patchName(const QString &patch) const
     return m_patchMap[patch]->details()->value(QStringLiteral("display_name")).toString();
 }
 
+bool PatchManagerModel::isApplied(const QString &name) const
+{
+    // FIXME: there certainly is a more efficient way, e.g. std::find_if?
+    for (PatchObject *o : m_modelData) {
+        if (o->details()->value(QStringLiteral("name")).toString() == name ) {
+            return o->details()->value(QStringLiteral("patched")).toBool();
+        }
+    }
+    return false;
+}
+
 void PatchManagerModel::itemRemoved(PatchObject *object)
 {
     qDebug() << Q_FUNC_INFO << object;

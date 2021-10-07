@@ -56,6 +56,7 @@ public:
     Q_INVOKABLE void saveLayout();
 
     QString patchName(const QString &patch) const;
+    bool isApplied(const QString &name) const;
 
 private slots:
     void itemRemoved(PatchObject *object);
