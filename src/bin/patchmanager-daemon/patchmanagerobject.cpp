@@ -582,7 +582,10 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
             m_originalWatcher->addPath(fileName);
 
             chmod(fakeFileName.toLatin1().constData(), fileStat.st_mode);
-            chown(fakeFileName.toLatin1().constData(), fileStat.st_uid, fileStat.st_gid);
+            int chown_ret = chown(fakeFileName.toLatin1().constData(), fileStat.st_uid, fileStat.st_gid);
+            if (chown_ret) {
+                perror(fakeFileName.toLatin1().constData());
+            }
         }
     }
 }
