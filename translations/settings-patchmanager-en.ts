@@ -10,30 +10,38 @@
         <translation>About</translation>
     </message>
     <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="45"/>
         <source>Apply patches</source>
-        <translation type="vanished">Apply patches</translation>
+        <translation>Apply patches</translation>
     </message>
     <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="53"/>
         <source>Patchmanager will automatically apply patches in 10 seconds.</source>
-        <translation type="vanished">Patchmanager will automatically apply patches in 10 seconds.</translation>
+        <translation>Patchmanager will automatically apply patches in 10 seconds.</translation>
     </message>
     <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="66"/>
         <source>Exit</source>
-        <translation type="vanished">Exit</translation>
+        <translation>Exit</translation>
     </message>
     <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="28"/>
         <source>Applying patches</source>
-        <translation type="vanished">Applying patches</translation>
+        <translation>Applying patches</translation>
     </message>
     <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="136"/>
         <source>Appled successfully!</source>
-        <translation type="vanished">Appled successfully!</translation>
+        <translation>Appled successfully!</translation>
     </message>
     <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="137"/>
         <source>Failed applying patches!</source>
-        <translation type="vanished">Failed applying patches!</translation>
+        <translation>Failed applying patches!</translation>
     </message>
     <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="213"/>
+        <location filename="../src/bin/dialog/dialog.qml" line="165"/>
         <location filename="../src/qml/AboutPage.qml" line="63"/>
         <source>Patchmanager</source>
         <translation>Patchmanager</translation>
@@ -49,13 +57,27 @@
         <translation>Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.</translation>
     </message>
     <message>
-        <location filename="../src/qml/AboutPage.qml" line="92"/>
+        <location filename="../src/qml/AboutPage.qml" line="95"/>
+        <source>Licensed under the terms of the&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; BSD 3-Clause License&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/AboutPage.qml" line="105"/>
+        <source>Sources and Issue Tracker&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;on GitHub&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/AboutPage.qml" line="122"/>
+        <source>Credits and Thanks&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Developers&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/AboutPage.qml" line="141"/>
         <location filename="../src/qml/WebPatchPage.qml" line="246"/>
         <source>Donate</source>
         <translation>Donate</translation>
     </message>
     <message>
-        <location filename="../src/qml/AboutPage.qml" line="103"/>
         <location filename="../src/qml/DevelopersPage.qml" line="107"/>
         <source>Developers</source>
         <translation>Developers</translation>
@@ -173,7 +195,7 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="159"/>
-        <location filename="../src/qml/WebCatalogPage.qml" line="93"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="101"/>
         <source>Web catalog</source>
         <translation>Web catalog</translation>
     </message>
@@ -209,8 +231,12 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="484"/>
+        <source>May have conflicts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Have possible conflicts</source>
-        <translation>Have possible conflicts</translation>
+        <translation type="vanished">Have possible conflicts</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="487"/>
@@ -234,7 +260,7 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="510"/>
-        <location filename="../src/qml/WebCatalogPage.qml" line="232"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="248"/>
         <source>No patches available</source>
         <translation>No patches available</translation>
     </message>
@@ -255,27 +281,47 @@
         <translation>Screenshots</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="82"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="83"/>
         <source>Hide search field</source>
         <translation>Hide search field</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="82"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="83"/>
         <source>Show search field</source>
         <translation>Show search field</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="93"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
+        <source>Sort by Category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
+        <source>Sort by Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebCatalogPage.qml" line="101"/>
         <source>%1 patches</source>
         <translation>%1 patches</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="99"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="102"/>
+        <source>(by date updated)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebCatalogPage.qml" line="102"/>
+        <source>(by category)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebCatalogPage.qml" line="108"/>
         <source>Tap to enter search query</source>
         <translation>Tap to enter search query</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="219"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="235"/>
         <source>Update available: %1</source>
         <translation>Update available: %1</translation>
     </message>
@@ -340,44 +386,54 @@
         <translation>Compatible: %1</translation>
     </message>
     <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="224"/>
         <source>Patch installed</source>
-        <translation type="vanished">Patch installed</translation>
+        <translation>Patch installed</translation>
     </message>
     <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="225"/>
         <source>Patch %1 installed</source>
-        <translation type="vanished">Patch %1 installed</translation>
+        <translation>Patch %1 installed</translation>
     </message>
     <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="228"/>
         <source>Patch removed</source>
-        <translation type="vanished">Patch removed</translation>
+        <translation>Patch removed</translation>
     </message>
     <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="229"/>
         <source>Patch %1 removed</source>
-        <translation type="vanished">Patch %1 removed</translation>
+        <translation>Patch %1 removed</translation>
     </message>
     <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="232"/>
         <source>Failed to install patch</source>
-        <translation type="vanished">Failed to install patch</translation>
+        <translation>Failed to install patch</translation>
     </message>
     <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="233"/>
         <source>Patch %1 installation failed</source>
-        <translation type="vanished">Patch %1 installation failed</translation>
+        <translation>Patch %1 installation failed</translation>
     </message>
     <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="236"/>
         <source>Failed to remove patch</source>
-        <translation type="vanished">Failed to remove patch</translation>
+        <translation>Failed to remove patch</translation>
     </message>
     <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="237"/>
         <source>Patch %1 removal failed</source>
-        <translation type="vanished">Patch %1 removal failed</translation>
+        <translation>Patch %1 removal failed</translation>
     </message>
     <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="240"/>
         <source>Update available</source>
-        <translation type="vanished">Update available</translation>
+        <translation>Update available</translation>
     </message>
     <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="241"/>
         <source>Patch %1 have update candidate</source>
-        <translation type="vanished">Patch %1 have update candidate</translation>
+        <translation>Patch %1 have update candidate</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="137"/>
@@ -393,17 +449,17 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="21"/>
         <source>Apply all enabled patches when the system starts</source>
-        <translation>Apply all enabled patches when the system starts</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="28"/>
         <source>Allow incompatible patches</source>
-        <translation>Allow incompatible patches</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="29"/>
         <source>Apply patches which are not marked compatible with the installed Sailfish OS version. Note that this will not fix patches that are actually incompatible.</source>
-        <translation>Apply patches which are not marked compatible with the installed Sailfish OS version. Note that this will not fix patches that are actually incompatible.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Developer mode</source>
@@ -413,60 +469,75 @@
 <context>
     <name>Sections</name>
     <message>
+        <location filename="../src/qml/patchmanager.cpp" line="49"/>
         <source>browser</source>
-        <translation type="vanished">browser</translation>
+        <translation>browser</translation>
     </message>
     <message>
+        <location filename="../src/qml/patchmanager.cpp" line="50"/>
         <source>camera</source>
-        <translation type="vanished">camera</translation>
+        <translation>camera</translation>
     </message>
     <message>
+        <location filename="../src/qml/patchmanager.cpp" line="51"/>
         <source>calendar</source>
-        <translation type="vanished">calendar</translation>
+        <translation>calendar</translation>
     </message>
     <message>
+        <location filename="../src/qml/patchmanager.cpp" line="52"/>
         <source>clock</source>
-        <translation type="vanished">clock</translation>
+        <translation>clock</translation>
     </message>
     <message>
+        <location filename="../src/qml/patchmanager.cpp" line="53"/>
         <source>contacts</source>
-        <translation type="vanished">contacts</translation>
+        <translation>contacts</translation>
     </message>
     <message>
+        <location filename="../src/qml/patchmanager.cpp" line="54"/>
         <source>email</source>
-        <translation type="vanished">email</translation>
+        <translation>email</translation>
     </message>
     <message>
+        <location filename="../src/qml/patchmanager.cpp" line="55"/>
         <source>gallery</source>
-        <translation type="vanished">gallery</translation>
+        <translation>gallery</translation>
     </message>
     <message>
+        <location filename="../src/qml/patchmanager.cpp" line="56"/>
         <source>homescreen</source>
-        <translation type="vanished">homescreen</translation>
+        <translation>homescreen</translation>
     </message>
     <message>
+        <location filename="../src/qml/patchmanager.cpp" line="57"/>
         <source>media</source>
-        <translation type="vanished">media</translation>
+        <translation>media</translation>
     </message>
     <message>
+        <location filename="../src/qml/patchmanager.cpp" line="58"/>
         <source>messages</source>
-        <translation type="vanished">messages</translation>
+        <translation>messages</translation>
     </message>
     <message>
+        <location filename="../src/qml/patchmanager.cpp" line="59"/>
         <source>phone</source>
-        <translation type="vanished">phone</translation>
+        <translation>phone</translation>
     </message>
     <message>
+        <location filename="../src/qml/patchmanager.cpp" line="60"/>
         <source>silica</source>
-        <translation type="vanished">silica</translation>
+        <translation>silica</translation>
     </message>
     <message>
+        <location filename="../src/qml/patchmanager.cpp" line="61"/>
         <source>settings</source>
-        <translation type="vanished">settings</translation>
+        <translation>settings</translation>
     </message>
     <message>
+        <location filename="../src/qml/patchmanager.cpp" line="62"/>
+        <location filename="../src/qml/patchmanager.cpp" line="215"/>
         <source>other</source>
-        <translation type="vanished">other</translation>
+        <translation>other</translation>
     </message>
 </context>
 </TS>

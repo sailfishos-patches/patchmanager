@@ -38,9 +38,9 @@
         <translation>Kunde inte tillämpa korrigeringar!</translation>
     </message>
     <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="213"/>
         <location filename="../src/bin/dialog/dialog.qml" line="165"/>
         <location filename="../src/qml/AboutPage.qml" line="63"/>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="207"/>
         <source>Patchmanager</source>
         <translation>Patchmanager</translation>
     </message>
@@ -55,13 +55,27 @@
         <translation>Patchmanager möjliggör systemändringar via korrigeringsfiler. Den tillhandahåller en systemtjänst som ansvarar för att utföra dessa korrigeringar, samt ett grafiskt gränssnitt för att kontrollera dessa åtgärder och installation/avinstallation av korrigeringsfiler.</translation>
     </message>
     <message>
-        <location filename="../src/qml/AboutPage.qml" line="92"/>
+        <location filename="../src/qml/AboutPage.qml" line="95"/>
+        <source>Licensed under the terms of the&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; BSD 3-Clause License&lt;/a&gt;</source>
+        <translation>Licensierad under villkoren för&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; BSD 3-Clause License&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/AboutPage.qml" line="105"/>
+        <source>Sources and Issue Tracker&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;on GitHub&lt;/a&gt;</source>
+        <translation>Källor och ärendehanterare&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;på GitHub&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/AboutPage.qml" line="122"/>
+        <source>Credits and Thanks&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Developers&lt;/a&gt;</source>
+        <translation>Erkännanden och tack&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Utvecklare&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/AboutPage.qml" line="141"/>
         <location filename="../src/qml/WebPatchPage.qml" line="246"/>
         <source>Donate</source>
         <translation>Donera</translation>
     </message>
     <message>
-        <location filename="../src/qml/AboutPage.qml" line="103"/>
         <location filename="../src/qml/DevelopersPage.qml" line="107"/>
         <source>Developers</source>
         <translation>Utvecklare</translation>
@@ -98,7 +112,7 @@
         <location filename="../src/qml/LegacyPatchPage.qml" line="63"/>
         <location filename="../src/qml/NewPatchPage.qml" line="63"/>
         <source>Load engine before applying patches</source>
-        <translation type="unfinished"/>
+        <translation>Starta motorn före tillämpning av korrigeringar</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="73"/>
@@ -179,7 +193,7 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="159"/>
-        <location filename="../src/qml/WebCatalogPage.qml" line="93"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="101"/>
         <source>Web catalog</source>
         <translation>Webbkatalog</translation>
     </message>
@@ -215,8 +229,8 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="484"/>
-        <source>Have possible conflicts</source>
-        <translation>Har möjliga konflikter</translation>
+        <source>May have conflicts</source>
+        <translation>Möjliga konflikter</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="487"/>
@@ -240,7 +254,7 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="510"/>
-        <location filename="../src/qml/WebCatalogPage.qml" line="232"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="248"/>
         <source>No patches available</source>
         <translation>Inga korrigeringsfiler tillgängliga</translation>
     </message>
@@ -261,27 +275,47 @@
         <translation>Skärmklipp</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="82"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="83"/>
         <source>Hide search field</source>
         <translation>Dölj sökfältet</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="82"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="83"/>
         <source>Show search field</source>
         <translation>Visa sökfältet</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="93"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
+        <source>Sort by Category</source>
+        <translation>Sortera efter kategori</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
+        <source>Sort by Date</source>
+        <translation>Sortera efter datum</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebCatalogPage.qml" line="101"/>
         <source>%1 patches</source>
         <translation>%1 korrigeringar</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="99"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="102"/>
+        <source>(by date updated)</source>
+        <translation>(uppdaterat efter datum)</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebCatalogPage.qml" line="102"/>
+        <source>(by category)</source>
+        <translation>(efter kategori)</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebCatalogPage.qml" line="108"/>
         <source>Tap to enter search query</source>
         <translation>Tryck för att ange söksträng</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="219"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="235"/>
         <source>Update available: %1</source>
         <translation>Uppdatering tillgänglig: %1</translation>
     </message>
@@ -346,70 +380,80 @@
         <translation>Kompatibel: %1</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="218"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="224"/>
         <source>Patch installed</source>
         <translation>Korrigering installerad</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="219"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="225"/>
         <source>Patch %1 installed</source>
         <translation>Korrigering %1 installerad</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="222"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="228"/>
         <source>Patch removed</source>
         <translation>Korrigering borttagen</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="223"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="229"/>
         <source>Patch %1 removed</source>
         <translation>Korrigering %1 borttagen</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="226"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="232"/>
         <source>Failed to install patch</source>
         <translation>Kunde inte installera korrigering</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="227"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="233"/>
         <source>Patch %1 installation failed</source>
         <translation>Korrigeringsfil %1 kunde inte installeras</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="230"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="236"/>
         <source>Failed to remove patch</source>
         <translation>Kunde inte ta bort korrigering</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="231"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="237"/>
         <source>Patch %1 removal failed</source>
         <translation>Korrigering %1 kunde inte tas bort</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="234"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="240"/>
         <source>Update available</source>
         <translation>Uppdatering tillgänglig</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="235"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="241"/>
         <source>Patch %1 have update candidate</source>
         <translation>Korrigeringsfil %1 har en uppdateringskandidat</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="137"/>
-        <location filename="../src/qml/SettingsPage.qml" line="14"/>
+        <location filename="../src/qml/SettingsPage.qml" line="16"/>
         <source>Settings</source>
         <translation>Inställningar</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="18"/>
+        <location filename="../src/qml/SettingsPage.qml" line="20"/>
         <source>Apply on boot</source>
         <translation>Tillämpa vid systemstart</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="25"/>
-        <source>Developer mode</source>
-        <translation>Utvecklarläge</translation>
+        <location filename="../src/qml/SettingsPage.qml" line="21"/>
+        <source>Apply all enabled patches when the system starts</source>
+        <translation>Tillämpa alla aktiverade korrigeringar när systemet startas</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="28"/>
+        <source>Allow incompatible patches</source>
+        <translation>Tillåt inkompatibla korrigeringar</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="29"/>
+        <source>Apply patches which are not marked compatible with the installed Sailfish OS version. Note that this will not fix patches that are actually incompatible.</source>
+        <translation>Tillämpa korrigeringar som inte är märkta, kompatibla med den installerade versionen av Sailfish OS. Notera att detta inte fixar korrigeringar som verkligen inte är kompatibla.</translation>
     </message>
 </context>
 <context>
@@ -481,7 +525,7 @@
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="62"/>
-        <location filename="../src/qml/patchmanager.cpp" line="229"/>
+        <location filename="../src/qml/patchmanager.cpp" line="215"/>
         <source>other</source>
         <translation>Annat</translation>
     </message>

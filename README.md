@@ -50,7 +50,8 @@ All these files must be placed in the same folder.
 
 Patchmanager supports installing patches from its Web Catalog. 
 Patch developers can upload patches to https://coderus.openrepos.net/pm2 to enlist them for the Web Catalog. 
-When uploading a patch, the patch developer must not provide a `patch.json` file with metadata, but instead must fill the necessary fields on the webpage before uploading: The Web Catalog will encode this metadata automatically and add it to the downloadable file.
+When uploading a patch there, the patch developer should not provide a `patch.json` file with metadata and must fill the necessary fields on the webpage before uploading: The Web Catalog will encode this metadata automatically and add it to the downloadable file.
+Side note: If a JSON file is provided in the upload at the Web Catalog, it does not replace or mangle it; pay attention not to provide inconsistent data this way!
 
 For more information about the requirements for using the Web Catalog, see https://coderus.openrepos.net/pm2/usage/
 
