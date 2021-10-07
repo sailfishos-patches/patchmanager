@@ -1597,7 +1597,9 @@ void PatchManagerObject::doRefreshPatchList()
                         path = toPatch.mid(toPatch.indexOf('/', 1));
                     }
                 }
-                filesConflicts[path].append(patchFolder);
+                if (!filesConflicts[path].contains(patchFolder)) {
+                    filesConflicts[path].append(patchFolder);
+                }
 
                 QStringList patchFiles = m_patchFiles[patchFolder];
                 if (!patchFiles.contains(path)) {
