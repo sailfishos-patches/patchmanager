@@ -386,7 +386,7 @@ Page {
                 var qmlFile = "/usr/share/patchmanager/patches/%1/main.qml".arg(patchName)
                 if (PatchManager.fileExists(qmlFile)) {
                     var translator = PatchManager.installTranslator(patchName)
-                    var page = pageStack.push("/usr/share/patchmanager/patches/%1/main.qml".arg(patchName))
+                    var page = pageStack.push(qmlFile)
                     if (translator) {
                         page.Component.destruction.connect(function() { PatchManager.removeTranslator(patchName) })
                     }

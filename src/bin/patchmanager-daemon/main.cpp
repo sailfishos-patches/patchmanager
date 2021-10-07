@@ -45,14 +45,14 @@
 
 void help()
 {
-    std::cout << "patchmanager-daemon" << std::endl;
+    std::cout << "patchmanager" << std::endl;
     std::cout << std::endl;
     std::cout << "Usage:" << std::endl;
-    std::cout << "  patchmanager-daemon                : run as daemon" << std::endl;
-    std::cout << "  patchmanager-daemon -a <patch>     : apply a patch" << std::endl;
-    std::cout << "  patchmanager-daemon -u <patch>     : unapply a patch" << std::endl;
-    std::cout << "  patchmanager-daemon --unapply-all  : unapply all patches" << std::endl;
-    std::cout << "  patchmanager-daemon --daemon       : daemonize" << std::endl;
+    std::cout << "  patchmanager                : run as daemon" << std::endl;
+    std::cout << "  patchmanager -a <patch>     : apply a patch" << std::endl;
+    std::cout << "  patchmanager -u <patch>     : unapply a patch" << std::endl;
+    std::cout << "  patchmanager --unapply-all  : unapply all patches" << std::endl;
+    std::cout << "  patchmanager --daemon       : daemonize" << std::endl;
 }
 
 int main(int argc, char **argv)

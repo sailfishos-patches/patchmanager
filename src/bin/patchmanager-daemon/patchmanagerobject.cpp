@@ -220,8 +220,7 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
 
     Notification notification;
     notification.setAppName(qApp->translate("", "Patchmanager"));
-    notification.setHintValue("x-nemo-icon", "icon-m-patchmanager2");
-    notification.setHintValue("x-nemo-preview-icon", "icon-m-patchmanager2");
+    notification.setHintValue("app_icon", "icon-m-patchmanager2");
     notification.setTimestamp(QDateTime::currentDateTime());
 
     QString summary;
