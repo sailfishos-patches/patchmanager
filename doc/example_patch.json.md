@@ -10,8 +10,8 @@ If you distribute your patch some other way, e.g. as an RPM package, you must pr
     {
         "author": "Jim Example",
         "name": "the-internal-patch-name",
-        "display_name": "Human-facing Patch Name"
-        "version": "1.0.0"
+        "display_name": "Human-facing Patch Name",
+        "version": "1.0.0",
         "category": "calendar",
         "description": "This is a long description of what the patch does.\nIt will be displayed in the patch page.",
         "discussion": "https://example.org/forum/thead?id=9999",
