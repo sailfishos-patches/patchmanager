@@ -14,10 +14,10 @@ While this is still supported in Patchmanager 3, if possible switch to [the new 
 
 ### Description of options:
 
- - name: The "display name" of the patch, which will be shown in the patch list.
- - description: Explain what the patch actually does.
- - category: This is used to structure the list of patches in categories, but also certain categories will cause patchmanager to restart affected system services or applications.  The category "homescreen" for example will prompt the user to restart Lipstick after applying.  
- - maintainer: The name of the principal patch author or maintainer.  Either use your real name, as displayed on Github or Twitter, or use your usual nickname.
+ - name: The "display name" of the patch, which will be shown on the patch list.
+ - description: Explanation of what the patch does.
+ - category: This is used to structure the list of patches in categories, but also certain categories will cause patchmanager to restart affected system services or applications.  For example, patches in the category "homescreen" will prompt the user to restart Lipstick after applying.
+ - maintainer: The name of the principal patch author or maintainer.  Either use your real name, as displayed on Github or Twitter, or your usual nickname.
 
 ### List of supported categories:
 
