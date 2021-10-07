@@ -3,7 +3,7 @@
 This describes the format of the `patch.json`.
 
 This is automatically generated and added to your patch distribution if you choose to upload your patch to the Web Catalog.
-So do NOT include one with your patch if you do that.
+Hence you should NOT include one with your patch if you do that.
 
 If you distribute your patch some other way, e.g. as an RPM package, you must provide a valid `patch.json` file.
 
@@ -24,32 +24,32 @@ If you distribute your patch some other way, e.g. as an RPM package, you must pr
 
 ### Description of options:
 
-Required/Recommended:
+Required / Recommended:
 
- - display\_name: The name of the patch, as it will show in the patch list
- - version: a version string. It MUST be in the format X.Y.Z
- - author: name of the principal patch author or maintainer. Either use your real name, as displayed on Github or Twitter, or use your usual nickname.
- - compatible: a list of SailfishOS releases the patch works on. Versions MUST be given in full, e.g. "3.3.0.16" (using just "3.3" is invalid).
+ - display\_name: The name of the patch, which will be shown on the patch list.
+ - version: A version string.  It MUST be in the format X.Y.Z
+ - author: The name of the principal patch author or maintainer.  Either use your real name, as displayed on Github or Twitter, or your usual nickname.
+ - compatible: A list of SailfishOS releases the patch works on.  Versions MUST be given in full with all four fields populated, e.g. "3.3.0.16" (using just "3.3" is invalid).
 
 Optional:
- - description: explains a bit more what the patch actually does
- - category: this is used on the one hand to sort the list of patches, on the other hand certain categories will cause patchmanager to restart affected system services or applications. the category "homescreen" for example will prompt the user to restart Lipstick after applying.  
- - discussion, sources, donations: optional links to websites
- - last\_updated": an ISO date string. Web Catalog sets this. It is used in sorting and update detection.
- - name: an internal name for the patch. As this is used as a directory name it should only contain alphanumeric characters, underscores and hyphens. Notably NO spaces, dollar signs or other special characters please!
+ - description: Explanation of what the patch does.
+ - category: This is used to structure the list of patches in categories, but also certain categories will cause patchmanager to restart affected system services or applications.  For example, patches in the category "homescreen" will prompt the user to restart Lipstick after applying.
+ - discussion, sources, donations: Optional links to websites.
+ - last\_updated": An ISO date string, the Web Catalog sets this.  It is used for sorting and update detection.
+ - name: An internal name for the patch.  As this is used as a directory name, it should only contain alphanumeric characters, underscores and hyphens.  Notably NO spaces, dollar signs or other special characters should be used!
 
 Reserved:
- - id: a numeric ID used by Web Catalog. This MUST NOT be included in patches not distributed via Web Catalog.
+ - id: A numeric ID used by Web Catalog.  This MUST NOT be included in patches not distributed via Web Catalog.
 
 ### List of supported categories:
 
-Supplying a category not on this list will cause the patch to show up as "other".
+Supplying a category not on this list will cause the patch to be shown in the category "other".
 
  - "homescreen" - will restart Lipstick
  - "silica" - will restart Lipstick
  - "keyboard" - will restart the keyboard service
 
-These will stop/restart the corresponding system applications (e.g. the jolla-browser) after applying the patch.
+These will stop or restart the corresponding system applications (e.g. the jolla-browser) after applying the patch.
 
  - "browser"
  - "calendar"
