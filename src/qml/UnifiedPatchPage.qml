@@ -104,7 +104,7 @@ Page {
                 color: Theme.primaryColor
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeLarge
-                text: qsTranslate("", "This patch is not available anymore. You won't be able to reinstall it.")
+                text: qsTranslate("", "This patch is not available anymore. You will not be able to reinstall it.")
             }
 
             Column {
@@ -162,7 +162,7 @@ Page {
                 font.pixelSize: Theme.fontSizeSmall
                 textFormat: Text.StyledText
                 property string link: SOURCE_REPO + "/blob/master/README.md#for-developers"
-                text: qsTranslate("", "This patch uses the legacy format for its patch.json file. If you are the maintainer consider updating to the new format. If you are using Web Catalog you should not include a patch.json file at all in your upload.<br /> See the developer section in the <a href=\"%1\">README</a> for more information.").arg(link)
+                text: qsTranslate("", "This patch uses the legacy format for its patch.json file. If you are the maintainer, do consider updating to the new format. If you are using Web Catalog you should not include a patch.json file at all in your upload.<br />See the developer section in the <a href=\"%1\">README</a> for more information.").arg(link)
                 linkColor: Theme.highlightColor
                 onLinkActivated: Qt.openUrlExternally(link)
             }
