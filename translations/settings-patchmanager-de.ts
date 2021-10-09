@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="de">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.1">
 <context>
-    <name></name>
+    <name/>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="49"/>
         <location filename="../src/qml/PatchManagerPage.qml" line="142"/>
@@ -59,17 +57,17 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="95"/>
         <source>Licensed under the terms of the&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; BSD 3-Clause License&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Lizenziert unter den Bedingungen der&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; BSD 3-Clause License&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="105"/>
         <source>Sources and Issue Tracker&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;on GitHub&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Sources and Issue Tracker&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;on GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="122"/>
         <source>Credits and Thanks&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Developers&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Danksagungen&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Entwickler&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="141"/>
@@ -114,7 +112,7 @@
         <location filename="../src/qml/LegacyPatchPage.qml" line="63"/>
         <location filename="../src/qml/NewPatchPage.qml" line="63"/>
         <source>Load engine before applying patches</source>
-        <translation type="unfinished"></translation>
+        <translation>Engine laden, ehe Patches angewendet werden</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="73"/>
@@ -232,11 +230,7 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="484"/>
         <source>May have conflicts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Have possible conflicts</source>
-        <translation type="vanished">Eventuelle Konflikte</translation>
+        <translation>Kann Konfilkte verursachen</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="487"/>
@@ -293,12 +287,12 @@
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
         <source>Sort by Category</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortiere nach Kategorie</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
         <source>Sort by Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortiere nach Datum</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="101"/>
@@ -308,12 +302,12 @@
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="102"/>
         <source>(by date updated)</source>
-        <translation type="unfinished"></translation>
+        <translation>(nach Datum)</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="102"/>
         <source>(by category)</source>
-        <translation type="unfinished"></translation>
+        <translation>(nach Kategorie)</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="108"/>
@@ -460,10 +454,6 @@
         <location filename="../src/qml/SettingsPage.qml" line="29"/>
         <source>Apply patches which are not marked compatible with the installed Sailfish OS version. Note that this will not fix patches that are actually incompatible.</source>
         <translation>Patches anwenden, die nicht als kompatibel mit der installierten Sailfish OS Version markiert sind. NB: Das behebt keine Fehler durch tatsächlich inkompatible Patches.</translation>
-    </message>
-    <message>
-        <source>Developer mode</source>
-        <translation type="vanished">Entwickler-Modus</translation>
     </message>
 </context>
 <context>
