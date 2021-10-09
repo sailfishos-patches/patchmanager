@@ -7,7 +7,7 @@ Since version 3.0 it does not modify original files, but alters their content wh
 
 Note that Patchmanager does not install an application icon on the launcher, but creates a new entry in Sailfish OS' Settings app.
 
-To install Patchmanager you should install Storeman (https://openrepos.net/content/osetr/storeman-installer) to install Patchmanager 3.x from OpenRepos using Storeman.  Alternatively you may download the [recent Patchmanager RPM from OpenRepos](https://openrepos.net/content/patchmanager/patchmanager) and install it manually.
+To install Patchmanager you should install [Storeman](https://openrepos.net/content/osetr/storeman-installer) to install Patchmanager 3.x from OpenRepos using Storeman.  Alternatively you may download the [recent Patchmanager RPM from OpenRepos](https://openrepos.net/content/patchmanager/patchmanager) and install it manually.
 
 Modern patches for Patchmanager are provided via [the Web Catalog](https://coderus.openrepos.net/pm2/projects/), while older patches were provided as [RPMs at Openrepos](https://openrepos.net/category/patches) and some of them are still maintained.
 Mind that many patches were first released at Openrepos but later migrated to the Web Catalog: For these you will find outdated RPMs, hence always search in the Web Catalog first.
