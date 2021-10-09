@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="zh_CN">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh" version="2.1">
 <context>
-    <name></name>
+    <name/>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="49"/>
         <location filename="../src/qml/PatchManagerPage.qml" line="142"/>
@@ -59,17 +57,17 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="95"/>
         <source>Licensed under the terms of the&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; BSD 3-Clause License&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>许可证的条款&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;BSD 3-Clause许可证&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="105"/>
         <source>Sources and Issue Tracker&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;on GitHub&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>查看代码和问题跟进情况&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;在Github&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="122"/>
         <source>Credits and Thanks&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Developers&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>贡献和感谢&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;开发者们&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="141"/>
@@ -114,7 +112,7 @@
         <location filename="../src/qml/LegacyPatchPage.qml" line="63"/>
         <location filename="../src/qml/NewPatchPage.qml" line="63"/>
         <source>Load engine before applying patches</source>
-        <translation type="unfinished"></translation>
+        <translation>在应用补丁之前加载引擎</translation>
     </message>
     <message>
         <location filename="../src/qml/LegacyPatchPage.qml" line="73"/>
@@ -232,11 +230,7 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="484"/>
         <source>May have conflicts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Have possible conflicts</source>
-        <translation type="vanished">有可能与之冲突的补丁</translation>
+        <translation>可能有冲突</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="487"/>
@@ -293,12 +287,12 @@
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
         <source>Sort by Category</source>
-        <translation type="unfinished"></translation>
+        <translation>根据分类排序</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
         <source>Sort by Date</source>
-        <translation type="unfinished"></translation>
+        <translation>根据日期排序</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="101"/>
@@ -308,12 +302,12 @@
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="102"/>
         <source>(by date updated)</source>
-        <translation type="unfinished"></translation>
+        <translation>(按更新日期)</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="102"/>
         <source>(by category)</source>
-        <translation type="unfinished"></translation>
+        <translation>(按分类)</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="108"/>
@@ -449,21 +443,17 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="21"/>
         <source>Apply all enabled patches when the system starts</source>
-        <translation type="unfinished"></translation>
+        <translation>在系统启动时应用所有启用的补丁</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="28"/>
         <source>Allow incompatible patches</source>
-        <translation type="unfinished"></translation>
+        <translation>允许不兼容的补丁</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="29"/>
         <source>Apply patches which are not marked compatible with the installed Sailfish OS version. Note that this will not fix patches that are actually incompatible.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Developer mode</source>
-        <translation type="vanished">开发者模式</translation>
+        <translation>应用与所安装的Sailfish OS版本不兼容的补丁。请注意，这并不能修复那些实际上不兼容的补丁。</translation>
     </message>
 </context>
 <context>
