@@ -15,9 +15,17 @@ PM_LOG_FILE="$PM_VAR_DIR/patchmanager.log"
 PM_PATCH_BACKUP_ROOT_DIR="$PM_VAR_DIR/patches"
 PM_PATCH_BACKUP_DIR="$PM_PATCH_BACKUP_ROOT_DIR/$1"
 
+SYS_BITNESS=$(/usr/bin/getconf LONG_BIT)
+
 # Constants
 PATCH_NAME="unified_diff.patch"
 PATCH_PATH="$PATCH_DIR/$PATCH_NAME"
+PATCH_EDITED_NAME="unified_diff_${SYS_BITNESS}bit.patch"
+
+# list of candidate paths to attempt 32/64bit library path correction
+# determined by a find /usr/lib -name "*.qml" and bug reports
+# the list is given in "32bit" format, i.e. no lib64
+MANGLE_CANDIDATES="/usr/lib/qt5/qml /usr/lib/jolla-mediaplayer /usr/lib/maliit/plugins /usr/lib/patchmanager-test"
 
 ROOT_DIR="/tmp/patchmanager"
 
@@ -66,6 +74,60 @@ test_if_applied() {
       success
     fi
   fi
+}
+
+# see issue #71: https://github.com/sailfishos-patches/patchmanager/issues/71
+mangle_libpath() {
+    if [ -f "$PATCH_PATH" ]; then
+      log
+      log "----------------------------------"
+      [ $SYS_BITNESS -eq 32 ] && log "Mangling library path 32->64bit"
+      [ $SYS_BITNESS -eq 64 ] && log "Mangling library path 64->32bit"
+      log "----------------------------------"
+      log
+
+      candidates="$MANGLE_CANDIDATES"
+      if [ $SYS_BITNESS -eq 32 ]; then
+        # first, convert the candidate list
+        candidates=$(printf '%s' "$MANGLE_CANDIDATES" | sed 's@/usr/lib/@/usr/lib64/@g' )
+      fi
+
+      for p in $candidates; do
+        tplines=$(grep -c "^+++" "$PATCH_PATH")
+        cplines=$(grep -c "^+++ $p" "$PATCH_PATH")
+        if [ $cplines -eq 0 ]; then
+          continue # nothing found, try next
+        else
+          if [ $tplines -ne $cplines ]; then
+            # if there are several references in the patch file our mangling might do too much and cause the patch to fail.
+            log " WARNING: mixed patch, mangling might not work"
+          fi
+        fi
+
+        patch_edited_path="$PM_PATCH_BACKUP_DIR"/"$PATCH_EDITED_NAME"
+        log "found: ${p}, replacing library path references"
+
+        mkdir -p "$PM_PATCH_BACKUP_DIR"
+        printf '#\n# patch converted to %sbit library paths from original by Patchmanager 3.1\n# Date: %s\n#\n' $SYS_BITNESS $(date -Iseconds) > "$patch_edited_path"
+        # replace the libpath
+        # variable expansion ${p/lib/lib64} would work on bash, but not POSIX/ash/busybox
+        pr=""
+        if [ $SYS_BITNESS -eq 32 ]; then
+          pr=$(printf '%s' "$p" | sed 's@/usr/lib64/@/usr/lib/@')
+        elif [ $SYS_BITNESS -eq 64 ]; then
+          pr=$(printf '%s' "$p" | sed 's@/usr/lib/@/usr/lib64/@')
+        fi
+        sed "s@^+++ $p@+++ $pr@;s@^--- $p@--- $pr@" "$PATCH_PATH" >> "$patch_edited_path"
+        if [ $? -ne 0 ]; then
+          failure
+        fi
+        log "mangling produced: $patch_edited_path"
+        PATCH_PATH="$patch_edited_path"
+        return
+      done
+    fi
+  # failsafe: return original patch name if we fall through
+  printf '%s' "$PATCH_PATH"
 }
 
 verify_text_patch() {
@@ -158,6 +220,8 @@ fi
 #
 
 test_if_applied
+
+mangle_libpath
 
 verify_text_patch
 
