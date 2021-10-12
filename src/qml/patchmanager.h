@@ -168,11 +168,11 @@ private:
 
     QVariantMap m_updates;
 
-    PatchManagerTranslator *m_translator;
     QNetworkAccessManager *m_nam;
 
     PatchManagerModel *m_installedModel;
     PatchManagerInterface *m_interface;
+    PatchManagerTranslator *m_translator;
 
     bool m_toggleServices = false;
     bool m_failed = false;

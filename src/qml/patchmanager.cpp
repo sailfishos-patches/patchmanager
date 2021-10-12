@@ -45,6 +45,7 @@
 #include "webcatalog.h"
 #include "patchmanager_interface.h"
 
+Q_DECL_UNUSED
 static const char *noop_strings[] = {
     QT_TRANSLATE_NOOP("Sections", "browser"),
     QT_TRANSLATE_NOOP("Sections", "camera"),
@@ -624,7 +625,7 @@ QVariant PatchManager::unwind(const QVariant &val, int depth)
             lst <<QVariant::fromValue(static_cast<quint8>(arr[i]));
         res = QVariant::fromValue(lst);
     }
-    else if (type == val.type()) {
+    else if (type == (int)val.type()) {
         /* Already is built-in qt type, use as is */
         res = val;
     } else if (type == qMetaTypeId<QDBusVariant>()) {
