@@ -182,6 +182,73 @@ Page {
             }
 
             SectionHeader {
+                text: qsTranslate("", "Links")
+                visible: links.visible
+            }
+            ListModel {
+                id: linksmodel
+                // simply defining the ListItems does not work, errors with  "cannot assign a script item"
+                // so we append them when we're ready
+                Component.onCompleted: {
+                    if (modelData.discussion) {
+                      linksmodel.append({
+                          "link": modelData.discussion,
+                          "linktext": qsTranslate("", "Discussion"),
+                          "iconname": "icon-s-chat"
+                      })
+                    }
+                    if (modelData.sources) {
+                      linksmodel.append({
+                          "link": modelData.sources,
+                          "linktext": qsTranslate("", "Sources"),
+                          "iconname": "icon-s-developer"
+                      })
+                    }
+                    if (modelData.donations) {
+                      linksmodel.append({
+                          "link": modelData.donations,
+                          "linktext": qsTranslate("", "Donations"),
+                          "iconname": "icon-s-invitation"
+                      })
+                    }
+                }
+            }
+            Column {
+                id: links
+                visible: !legacyPatch && linksmodel.count > 0
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: Theme.horizontalPageMargin
+                spacing: Theme.paddingSmall
+                Repeater {
+                    model: linksmodel
+                    delegate: Component {
+                        ListItem {
+                            contentHeight: Theme.itemSizeExtraSmall
+                            width: parent.width
+                            Row {
+                                width: parent.width
+                                anchors.verticalCenter: parent.verticalCenter
+                                spacing: Theme.paddingMedium
+                                Icon {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    source: "image://theme/" + iconname
+                                    sourceSize: Theme.iconSizeMedium
+                                }
+                                Label {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    color: Theme.secondaryHighlightColor
+                                    linkColor: Theme.highlightColor
+                                    text: linktext
+                                }
+                            }
+                            onClicked: Qt.openUrlExternally(link)
+                        }
+                    }
+                }
+            }
+
+            SectionHeader {
                 text: qsTranslate("", "Patch log")
                 visible: PatchManager.developerMode
             }
