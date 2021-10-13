@@ -1,0 +1,7 @@
+addFilter("^patchmanager.*: E: use-tmp-in-%postun")
+addFilter("^patchmanager.*: W: dangerous-command-in-%postun")
+
+# we know.
+addFilter("^patchmanager.*: W: no-soname /usr/lib/libpreloadpatchmanager\.so")
+addFilter("^patchmanager.*: E: shlib-with-non-pic-code /usr/lib/libpreloadpatchmanager\.so")
+addFilter("^patchmanager.*: W: non-standard-dir-in-usr libexec")

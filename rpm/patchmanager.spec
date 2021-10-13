@@ -14,6 +14,9 @@ Group:      Qt/Qt
 License:    BSD-3-Clause
 URL:        https://github.com/sailfishos-patches/patchmanager
 Source0:    %{name}-%{version}.tar.bz2
+# note that it *must* be named that according to
+# https://en.opensuse.org/openSUSE:Packaging_checks#Building_Packages_in_spite_of_errors
+Source99:   patchmanager-rpmlintrc
 Requires:   unzip
 Requires:   patch
 Requires:   grep
