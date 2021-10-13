@@ -154,7 +154,7 @@ systemctl-user daemon-reload
 %dir %{_datadir}/%{name}/patches
 %{_datadir}/%{name}/tools
 %{_datadir}/dbus-1/
-%{_sysconfdir}/dbus-1/system.d/
+%config %{_sysconfdir}/dbus-1/system.d/org.SfietKonstantin.patchmanager.conf
 %{_unitdir}/dbus-org.SfietKonstantin.patchmanager.service
 %{_unitdir}/multi-user.target.wants/dbus-org.SfietKonstantin.patchmanager.service
 %{_unitdir}/checkForUpdates-org.SfietKonstantin.patchmanager.service
@@ -165,8 +165,8 @@ systemctl-user daemon-reload
 %{_userunitdir}/lipstick-patchmanager.service
 %{_userunitdir}/lipstick.service.wants/lipstick-patchmanager.service
 %{_libdir}/libpreload%{name}.so
-%{_sysconfdir}/firejail/whitelist-common-%{name}.local
 %config(noreplace) %{_sysconfdir}/%{name}/manglelist.conf
+%config(noreplace) %{_sysconfdir}/firejail/whitelist-common-%{name}.local
 
 %attr(0755,root,root) %{_libexecdir}/pm_apply
 %attr(0755,root,root) %{_libexecdir}/pm_unapply
