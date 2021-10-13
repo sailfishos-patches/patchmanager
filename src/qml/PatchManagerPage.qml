@@ -139,7 +139,7 @@ Page {
             }
 
             MenuItem {
-                text: qsTranslate("", "About")
+                text: qsTranslate("", "About Patchmanager")
                 onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
             }
 
