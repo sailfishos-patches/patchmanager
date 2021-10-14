@@ -187,7 +187,7 @@ Page {
             }
             ListModel {
                 id: linksmodel
-                // simply defining the ListItems does not work, errors with  "cannot assign a script item"
+                // simply defining the ListItems does not work, errors with "cannot assign a script item"
                 // so we append them when we're ready
                 Component.onCompleted: {
                     if (modelData.discussion) {
