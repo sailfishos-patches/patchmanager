@@ -96,7 +96,7 @@ mangle_libpath() {
       for p in $candidates; do
         totl_lines=$(grep -c "^+++" "$PATCH_PATH")
         cand_lines=$(grep -c "^+++ $p" "$PATCH_PATH")
-        if [ $cand_paths -eq 0 ]; then
+        if [ $cand_lines -eq 0 ]; then
           continue # nothing found, try next
         else
           if [ $totl_lines -ne $cand_lines ]; then
