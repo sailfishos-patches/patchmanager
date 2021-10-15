@@ -46,7 +46,7 @@ Page {
             width: parent.width
 
             PageHeader {
-                title: qsTranslate("", "About")
+                title: qsTranslate("", "About Patchmanager")
             }
 
             Image {

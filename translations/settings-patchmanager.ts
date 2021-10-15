@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="49"/>
         <location filename="../src/qml/PatchManagerPage.qml" line="142"/>
-        <source>About</source>
+        <source>About Patchmanager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
