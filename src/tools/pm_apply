@@ -126,8 +126,6 @@ mangle_libpath() {
         return
       done
     fi
-  # failsafe: return original patch name if we fall through
-  printf '%s' "$PATCH_PATH"
 }
 
 verify_text_patch() {
