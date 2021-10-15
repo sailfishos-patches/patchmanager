@@ -101,12 +101,12 @@ mangle_libpath() {
         else
           if [ $totl_lines -ne $cand_lines ]; then
             # if there are several references in the patch file our mangling might do too much and cause the patch to fail.
-            log " WARNING: mixed patch, mangling might not work"
+            log "WARNING: mixed patch, mangling might not work"
           fi
         fi
 
         patch_edited_path="$PM_PATCH_BACKUP_DIR"/"$PATCH_EDITED_NAME"
-        log "found: ${p}, replacing library path references"
+        log "found: ${p}, replacing libpath references"
 
         mkdir -p "$PM_PATCH_BACKUP_DIR"
         # prepare the pattern
