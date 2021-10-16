@@ -196,11 +196,6 @@ Page {
                 angle: mainColumn.rotAngle
             }
 
-            Item {
-                width: 1
-                height: flick.height - y
-            }
-
             Label {
                 id: easterLabel
                 anchors.left: parent.left
