@@ -144,12 +144,11 @@ Page {
                 }
                 */
                 Text {
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        text: qsTranslate("", "Donations")
-                        horizontalAlignment: Text.AlignHCenter
-                        font.pixelSize: Theme.fontSizeSmall
-                        color: Theme.secondaryColor
-                        linkColor: Theme.highlightColor
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: qsTranslate("", "Donations")
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: Theme.fontSizeSmall
+                    color: Theme.secondaryColor
                 }
                 Label {
                     anchors.left: parent.left
