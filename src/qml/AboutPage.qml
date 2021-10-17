@@ -74,6 +74,7 @@ Page {
 
             Label {
                 wrapMode: Text.WordWrap
+                horizontalAlignment: Text.AlignJustify
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.margins: Theme.horizontalPageMargin
@@ -134,11 +135,62 @@ Page {
                         horizontalAlignment: Qt.AlignHCenter
                 }
 
+                /*
                 Button {
                         preferredWidth: Theme.buttonWidthMedium
                         anchors.horizontalCenter: parent.horizontalCenter
                         onClicked: Qt.openUrlExternally(PAYPAL_DONATE)
                         text: qsTranslate("", "Donate")
+                }
+                */
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: qsTranslate("", "Donations")
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: Theme.fontSizeSmall
+                    color: Theme.secondaryColor
+                }
+                Label {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.margins: Theme.horizontalPageMargin
+                    font.pixelSize: Theme.fontSizeSmall
+                    wrapMode: Text.WordWrap
+                    horizontalAlignment: Text.AlignJustify
+                    text: qsTranslate("", "If you appreciate our work, please consider a donation to help covering the hosting costs for Openrepos. Openrepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of patches is hosted there.")
+                }
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    property string link: "https://openrepos.net/donate"
+                    text: "<a href=\"" + link + "\">" + link + "</a>"
+                    textFormat: Text.StyledText
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: Theme.fontSizeSmall
+                    color: Theme.secondaryColor
+                    linkColor: Theme.highlightColor
+                    onLinkActivated: Qt.openUrlExternally(link)
+                }
+
+                Label {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.margins: Theme.horizontalPageMargin
+                    font.pixelSize: Theme.fontSizeSmall
+                    wrapMode: Text.WordWrap
+                    horizontalAlignment: Text.AlignJustify
+                    text: qsTranslate("", "If for some reason you can not donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).")
+                }
+
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    property string link: "https://fsfe.org/donate"
+                    text: "<a href=\"" + link + "\">" + link + "</a>"
+                    textFormat: Text.StyledText
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: Theme.fontSizeSmall
+                    color: Theme.secondaryColor
+                    linkColor: Theme.highlightColor
+                    onLinkActivated: Qt.openUrlExternally(link)
                 }
 
             }
