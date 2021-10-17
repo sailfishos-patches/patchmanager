@@ -86,6 +86,10 @@ static const QString PATCHES_WORK_DIR_PREFIX = QStringLiteral("/tmp/patchmanager
 static const QString PATCHES_WORK_DIR = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR_PREFIX, "work");
 static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR_PREFIX, "patches");
 static const QString PATCH_FILE = QStringLiteral("patch.json");
+static const QVector<QStringList> MANGLE_CANDIDATES = {
+    {"/usr/lib/qt5/qml", "/usr/lib/jolla-mediaplayer", "/usr/lib/maliit/plugins", "/usr/lib/patchmanager-test"},
+    {"/usr/lib64/qt5/qml", "/usr/lib64/jolla-mediaplayer", "/usr/lib64/maliit/plugins", "/usr/lib64/patchmanager-test"}
+};
 
 static const QString NAME_KEY = QStringLiteral("name");
 static const QString DESCRIPTION_KEY = QStringLiteral("description");
@@ -1568,6 +1572,9 @@ void PatchManagerObject::doRefreshPatchList()
 {
     qDebug() << Q_FUNC_INFO;
 
+    constexpr int mangleCurrentPlatformIndex = Q_PROCESSOR_WORDSIZE / 4 - 1;
+    constexpr int mangleOtherPlatformIndex = 1 - mangleCurrentPlatformIndex;
+
     // load applied patches
 
     m_appliedPatches = getAppliedPatches();
@@ -1589,6 +1596,15 @@ void PatchManagerObject::doRefreshPatchList()
             if (line.startsWith(QByteArrayLiteral("+++ "))) {
                 const QString toPatch = QString::fromLatin1(line.split(' ')[1].split('\t')[0].split('\n')[0]);
                 QString path = toPatch;
+
+                for (int i = 0; i < MANGLE_CANDIDATES[mangleOtherPlatformIndex].size(); i++) {
+                    if (path.startsWith(MANGLE_CANDIDATES[mangleOtherPlatformIndex][i])) {
+                        qDebug() << Q_FUNC_INFO << "Editing path: " << path;
+                        path.replace(MANGLE_CANDIDATES[mangleOtherPlatformIndex][i], MANGLE_CANDIDATES[mangleCurrentPlatformIndex][i]);
+                    }
+                }
+
+
                 while (!QFileInfo::exists(path) && path.count('/') > 1) {
                     path = path.mid(path.indexOf('/', 1));
                 }
