@@ -7,11 +7,16 @@ assignees: ''
 
 ---
 
-**SailfishOS VERSION** (Settings > About product): 
-**PATCHMANAGER VERSION** (Settings > Patchmanager > About): 
+**SailfishOS VERSION** (Settings → About product → Build): 
+<br />**HARDWARE** (Settings → About product → Manufacturer & Product name): 
+<br />**PATCHMANAGER VERSION** (Settings → Patchmanager → [Top pulley] About): 
+
 #### BUG DESCRIPTION
+
 
 #### STEPS TO REPRODUCE
 
+
 #### ADDITIONAL INFORMATION
+
 (Please consider which other pieces of information may be relevant, e.g. denote if this is not always reproducible, if it is a regression, attach relevant data such as log files or the systemd journal, provide screenshots etc.)
