@@ -31,6 +31,20 @@ Page {
                 onClicked: PatchManager.developerMode = !PatchManager.developerMode
                 automaticCheck: false
             }
+
+            TextSwitch {
+                text: qsTranslate("", "Fix patches made for 32-bit or 64-bit only")
+                description: qsTranslate("", "Automatically fix lib or lib64 for select paths shown below.")
+                checked: PatchManager.bitnessMangle
+                onClicked: PatchManager.bitnessMangle = !PatchManager.bitnessMangle
+                automaticCheck: false
+            }
+
+            TextArea {
+                visible: PatchManager.bitnessMangle
+                text: PatchManager.mangleCandidates.join("\n")
+                enabled: false
+            }
         }
     }
 }

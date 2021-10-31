@@ -288,13 +288,14 @@ void PatchManagerObject::setAppliedPatches(const QSet<QString> &patches)
     putSettings(QStringLiteral("applied"), QStringList(patches.toList()));
 }
 
-void PatchManagerObject::getMangleCandidates()
+QStringList PatchManagerObject::getMangleCandidates()
 {
-    qDebug() << Q_FUNC_INFO;
-    m_mangleCandidates.append(QSettings(MANGLE_CONFIG_FILE, QSettings::IniFormat).value("MANGLE_CANDIDATES").toStringList());
-    m_mangleCandidates.append(QSettings(MANGLE_CONFIG_FILE, QSettings::IniFormat).value("MANGLE_CANDIDATES64").toStringList());
-    qDebug() << "Loaded mangle candidates:" << m_mangleCandidates;
-    lateInitialize();
+    if (m_mangleCandidates.empty()) {
+        qDebug() << Q_FUNC_INFO;
+        m_mangleCandidates = QSettings(MANGLE_CONFIG_FILE, QSettings::IniFormat).value("MANGLE_CANDIDATES").toStringList();
+        qDebug() << "Loaded mangle candidates:" << m_mangleCandidates;
+    }
+    return m_mangleCandidates;
 }
 
 void PatchManagerObject::getVersion()
@@ -746,12 +747,6 @@ void PatchManagerObject::initialize()
     if (!rpmConfigRead) {
         rpmReadConfigFiles(NULL, NULL);
         rpmConfigRead = true;
-    }
-
-    static bool configRead = false;
-    if (!configRead) {
-        getMangleCandidates();
-        configRead = true;
     }
 
     getVersion();
@@ -1583,8 +1578,14 @@ void PatchManagerObject::doRefreshPatchList()
 {
     qDebug() << Q_FUNC_INFO;
 
-    constexpr int mangleCurrentPlatformIndex = Q_PROCESSOR_WORDSIZE / 4 - 1;
-    constexpr int mangleOtherPlatformIndex = 1 - mangleCurrentPlatformIndex;
+    // Create mangling replacement tokens.
+    auto toManglePaths = getMangleCandidates();
+    auto mangledPaths = getMangleCandidates().replaceInStrings("/usr/lib/", "/usr/lib64/");
+    if (Q_PROCESSOR_WORDSIZE == 4) { // 32 bit
+        std::swap(toManglePaths, mangledPaths);
+    }
+    qDebug() << Q_FUNC_INFO << "toManglePaths" << toManglePaths;
+    qDebug() << Q_FUNC_INFO << "mangledPaths" << mangledPaths;
 
     // load applied patches
 
@@ -1608,13 +1609,12 @@ void PatchManagerObject::doRefreshPatchList()
                 const QString toPatch = QString::fromLatin1(line.split(' ')[1].split('\t')[0].split('\n')[0]);
                 QString path = toPatch;
 
-                for (int i = 0; i < m_mangleCandidates[mangleOtherPlatformIndex].size(); i++) {
-                    if (path.startsWith(m_mangleCandidates[mangleOtherPlatformIndex][i])) {
+                for (int i = 0; i < toManglePaths.size(); i++) {
+                    if (path.startsWith(toManglePaths[i])) {
                         qDebug() << Q_FUNC_INFO << "Editing path: " << path;
-                        path.replace(m_mangleCandidates[mangleOtherPlatformIndex][i], m_mangleCandidates[mangleCurrentPlatformIndex][i]);
+                        path.replace(toManglePaths[i], mangledPaths[i]);
                     }
                 }
-
 
                 while (!QFileInfo::exists(path) && path.count('/') > 1) {
                     path = path.mid(path.indexOf('/', 1));

@@ -59,6 +59,10 @@
             <arg name="def" type="v" direction="in" />
             <arg name="value" type="v" direction="out" />
         </method>
+        <method name="getMangleCandidates">
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantList"/>
+            <arg name="result" type="a(v)" direction="out" />
+        </method>
         <method name="checkEaster">
             <arg name="easter" type="s" direction="out" />
         </method>
