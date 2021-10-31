@@ -87,7 +87,6 @@ static const QString PATCHES_WORK_DIR = QStringLiteral("%1/%2").arg(PATCHES_WORK
 static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR_PREFIX, "patches");
 static const QString PATCH_FILE = QStringLiteral("patch.json");
 static const QString MANGLE_CONFIG_FILE = QStringLiteral("/etc/patchmanager/manglelist.conf");
-QVector<QStringList> MANGLE_CANDIDATES = {};
 static const QString NAME_KEY = QStringLiteral("name");
 static const QString DESCRIPTION_KEY = QStringLiteral("description");
 static const QString CATEGORY_KEY = QStringLiteral("category");
@@ -292,9 +291,9 @@ void PatchManagerObject::setAppliedPatches(const QSet<QString> &patches)
 void PatchManagerObject::getMangleCandidates()
 {
     qDebug() << Q_FUNC_INFO;
-    MANGLE_CANDIDATES.append(QSettings(MANGLE_CONFIG_FILE, QSettings::IniFormat).value("MANGLE_CANDIDATES").toStringList());
-    MANGLE_CANDIDATES.append(QSettings(MANGLE_CONFIG_FILE, QSettings::IniFormat).value("MANGLE_CANDIDATES64").toStringList());
-    qDebug() << "Loaded mangle candidates:" << MANGLE_CANDIDATES;
+    m_mangleCandidates.append(QSettings(MANGLE_CONFIG_FILE, QSettings::IniFormat).value("MANGLE_CANDIDATES").toStringList());
+    m_mangleCandidates.append(QSettings(MANGLE_CONFIG_FILE, QSettings::IniFormat).value("MANGLE_CANDIDATES64").toStringList());
+    qDebug() << "Loaded mangle candidates:" << m_mangleCandidates;
     lateInitialize();
 }
 
@@ -1609,10 +1608,10 @@ void PatchManagerObject::doRefreshPatchList()
                 const QString toPatch = QString::fromLatin1(line.split(' ')[1].split('\t')[0].split('\n')[0]);
                 QString path = toPatch;
 
-                for (int i = 0; i < MANGLE_CANDIDATES[mangleOtherPlatformIndex].size(); i++) {
-                    if (path.startsWith(MANGLE_CANDIDATES[mangleOtherPlatformIndex][i])) {
+                for (int i = 0; i < m_mangleCandidates[mangleOtherPlatformIndex].size(); i++) {
+                    if (path.startsWith(m_mangleCandidates[mangleOtherPlatformIndex][i])) {
                         qDebug() << Q_FUNC_INFO << "Editing path: " << path;
-                        path.replace(MANGLE_CANDIDATES[mangleOtherPlatformIndex][i], MANGLE_CANDIDATES[mangleCurrentPlatformIndex][i]);
+                        path.replace(m_mangleCandidates[mangleOtherPlatformIndex][i], m_mangleCandidates[mangleCurrentPlatformIndex][i]);
                     }
                 }
 

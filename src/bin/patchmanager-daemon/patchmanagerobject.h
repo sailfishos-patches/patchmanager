@@ -40,6 +40,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QVariantMap>
 #include <QtCore/QVariantList>
+#include <QtCore/QVector>
 #include <QtCore/QDir>
 
 #include <QDBusConnection>
@@ -237,6 +238,8 @@ private:
     QVariantMap m_updates;
 
     QString m_osRelease;
+
+    QVector<QStringList> m_mangleCandidates;
 
     PatchManagerAdaptor *m_adaptor = nullptr;
     QNetworkAccessManager *m_nam = nullptr;
