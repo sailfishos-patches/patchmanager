@@ -126,9 +126,7 @@ mangle_libpath() {
           failure
         fi
         log
-        log "----------------------------------"
-        log "Conversion produced: $patch_edited_path"
-        log "----------------------------------"
+        log "OK, conversion produced: $patch_edited_path"
         log
         # set the patch to apply to the new one:
         PATCH_PATH="$patch_edited_path"
@@ -136,9 +134,7 @@ mangle_libpath() {
       done
       if [ $found -eq 0 ]; then
         log
-        log "----------------------------------"
-        log "Found nothing to convert, OK"
-        log "----------------------------------"
+        log "OK, found nothing to convert"
         log
        fi
     fi
