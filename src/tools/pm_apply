@@ -25,7 +25,11 @@ PATCH_EDITED_NAME="unified_diff_${SYS_BITNESS}bit.patch"
 # list of candidate paths to attempt 32/64bit library path correction
 # determined by a find /usr/lib -name "*.qml" and bug reports
 # the list is given in "32bit" format, i.e. no lib64
-MANGLE_CANDIDATES="/usr/lib/qt5/qml /usr/lib/jolla-mediaplayer /usr/lib/maliit/plugins /usr/lib/patchmanager-test"
+#MANGLE_CANDIDATES="/usr/lib/qt5/qml /usr/lib/jolla-mediaplayer /usr/lib/maliit/plugins /usr/lib/patchmanager-test"
+MANGLE_CANDIDATES=""
+if [ -r "etc/patchmanager/manglelist.conf" ] ; then
+    source /etc/patchmanager/manglelist.conf
+fi
 
 ROOT_DIR="/tmp/patchmanager"
 

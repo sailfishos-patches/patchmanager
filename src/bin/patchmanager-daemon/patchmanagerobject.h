@@ -212,6 +212,7 @@ private:
     QSet<QString> getAppliedPatches() const;
     void setAppliedPatches(const QSet<QString> &patches);
 
+    void getMangleCandidates();
     void getVersion();
 
     void lateInitialize();

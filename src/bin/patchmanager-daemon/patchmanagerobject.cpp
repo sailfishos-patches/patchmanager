@@ -86,11 +86,8 @@ static const QString PATCHES_WORK_DIR_PREFIX = QStringLiteral("/tmp/patchmanager
 static const QString PATCHES_WORK_DIR = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR_PREFIX, "work");
 static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR_PREFIX, "patches");
 static const QString PATCH_FILE = QStringLiteral("patch.json");
-static const QVector<QStringList> MANGLE_CANDIDATES = {
-    {"/usr/lib/qt5/qml", "/usr/lib/jolla-mediaplayer", "/usr/lib/maliit/plugins", "/usr/lib/patchmanager-test"},
-    {"/usr/lib64/qt5/qml", "/usr/lib64/jolla-mediaplayer", "/usr/lib64/maliit/plugins", "/usr/lib64/patchmanager-test"}
-};
-
+static const QString MANGLE_CONFIG_FILE = QStringLiteral("/etc/patchmanager/manglelist.conf");
+QVector<QStringList> MANGLE_CANDIDATES = {};
 static const QString NAME_KEY = QStringLiteral("name");
 static const QString DESCRIPTION_KEY = QStringLiteral("description");
 static const QString CATEGORY_KEY = QStringLiteral("category");
@@ -290,6 +287,15 @@ QSet<QString> PatchManagerObject::getAppliedPatches() const
 void PatchManagerObject::setAppliedPatches(const QSet<QString> &patches)
 {
     putSettings(QStringLiteral("applied"), QStringList(patches.toList()));
+}
+
+void PatchManagerObject::getMangleCandidates()
+{
+    qDebug() << Q_FUNC_INFO;
+    MANGLE_CANDIDATES.append(QSettings(MANGLE_CONFIG_FILE, QSettings::IniFormat).value("MANGLE_CANDIDATES").toStringList());
+    MANGLE_CANDIDATES.append(QSettings(MANGLE_CONFIG_FILE, QSettings::IniFormat).value("MANGLE_CANDIDATES64").toStringList());
+    qDebug() << "Loaded mangle candidates:" << MANGLE_CANDIDATES;
+    lateInitialize();
 }
 
 void PatchManagerObject::getVersion()
@@ -741,6 +747,12 @@ void PatchManagerObject::initialize()
     if (!rpmConfigRead) {
         rpmReadConfigFiles(NULL, NULL);
         rpmConfigRead = true;
+    }
+
+    static bool configRead = false;
+    if (!configRead) {
+        getMangleCandidates();
+        configRead = true;
     }
 
     getVersion();

@@ -168,6 +168,7 @@ systemctl-user daemon-reload
 %{_userunitdir}/lipstick.service.wants/lipstick-patchmanager.service
 %{_libdir}/libpreload%{name}.so
 %{_sysconfdir}/firejail/whitelist-common-%{name}.local
+%config(noreplace) %{_sysconfdir}/%{name}/manglelist.conf
 
 %attr(0755,root,root) %{_libexecdir}/pm_apply
 %attr(0755,root,root) %{_libexecdir}/pm_unapply
