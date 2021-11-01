@@ -481,7 +481,7 @@ Page {
                     }
                     MenuLabel {
                         visible: !patchObject.details.patched && patchObject.details.conflicts.length > 0
-                        text: qsTr("May conflict with %n other patch(es), see %2", "", patchObject.details.conflicts.length).arg(patchinfoitem.text)
+                        text: qsTr("May conflict with %n other patch(es), see %1", "", patchObject.details.conflicts.length).arg(patchinfoitem.text)
                     }
                     MenuItem {
                         id: patchinfoitem
