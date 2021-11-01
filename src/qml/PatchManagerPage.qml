@@ -354,7 +354,7 @@ Page {
                     if (PatchManager.developerMode || patchObject.details.isCompatible) {
                         patchObject.apply()
                     } else {
-                        errorMesageComponent.createObject(background, {text: qsTranslate("", "This patch is not compatible with SailfishOS version!")})
+                        errorMesageComponent.createObject(background, {text: qsTranslate("", "This patch is incompatible with the installed Sailfish OS version.")})
                     }
                 } else {
                     patchObject.unapply()
