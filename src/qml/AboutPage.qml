@@ -178,7 +178,7 @@ Page {
                     font.pixelSize: Theme.fontSizeSmall
                     wrapMode: Text.WordWrap
                     horizontalAlignment: Text.AlignJustify
-                    text: qsTranslate("", "If for some reason you can not donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).")
+                    text: qsTranslate("", "If for some reason you cannot donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).")
                 }
 
                 Text {
