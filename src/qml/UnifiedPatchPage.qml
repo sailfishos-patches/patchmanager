@@ -45,7 +45,7 @@ Page {
     Notification {
         id: popup
         appName: modelData.display_name
-        summary: qsTranslate("", "Log copied to Clipboard.")
+        summary: qsTranslate("", "Copied log to clipboard.")
         previewSummary: summary
         icon: "image://theme/icon-s-clipboard"
         category: "transfer.complete"
@@ -258,7 +258,7 @@ Page {
                 anchors.rightMargin: Theme.horizontalPageMargin
                 anchors.leftMargin: Theme.horizontalPageMargin
                 color: Theme.secondaryHighlightColor
-                text: qsTranslate("", "Press and hold to copy to Clipboard")
+                text: qsTranslate("", "Press and hold to copy log to the clipboard")
                 font.pixelSize: Theme.fontSizeTiny
                 visible: modelData.log && log.visible
             }
@@ -271,7 +271,7 @@ Page {
                 readOnly: true
                 color: Theme.secondaryColor
                 text: modelData.log
-                placeholderText: qsTranslate("", "No log yet")
+                placeholderText: qsTranslate("", "No log exists yet")
                 wrapMode: Text.Wrap
                 //selectionMode: TextInput.SelectWords
                 font.family: "Courier"
