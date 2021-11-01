@@ -53,7 +53,7 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="82"/>
-        <source>Patchmanager allows to automatically modify system files via patches. It provides a system daemon that performs the application of those patches, as well as a GUI to control those operations and the installation or removal of patches.</source>
+        <source>Patchmanager allows to automatically modify system files via patches. It provides a daemon that performs the application of those patches, as well as a GUI to control those operations and the installation or removal of patches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -164,12 +164,12 @@
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="261"/>
-        <source>Press and hold to copy to Clipboard</source>
+        <source>Press and hold to copy log to the clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="274"/>
-        <source>No log yet</source>
+        <source>No log exists yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -179,7 +179,7 @@
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="48"/>
-        <source>Log copied to Clipboard.</source>
+        <source>Copied log to clipboard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -308,7 +308,7 @@
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="56"/>
-        <source>Some services will now be restarted. Reloading the GUI of the device might take a little time.</source>
+        <source>Some services will be restarted now. Reloading the GUI of the device might take a little time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
