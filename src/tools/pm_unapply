@@ -29,10 +29,10 @@ ROOT_DIR="/tmp/patchmanager"
 # Applications
 PATCH_EXEC="/usr/bin/patch"
 
-if [ -f "$PATCH_BACKUP" ]; then
-  PATCH_FILE="$PATCH_BACKUP"
-elif [ -f "$PATCH_EDITED_BACKUP" ]; then
+if [ -f "$PATCH_EDITED_BACKUP" ]; then
   PATCH_FILE="$PATCH_EDITED_BACKUP"
+elif [ -f "$PATCH_BACKUP" ]; then
+  PATCH_FILE="$PATCH_BACKUP"
 else
   PATCH_FILE="$PATCH_PATH"
 fi
@@ -116,6 +116,8 @@ log "----------------------------------"
 log
 
 log "$(basename "$PATCH_DIR")"
+
+log "Using PATCH_FILE=$PATCH_FILE"
 
 if [ -f "$PATCH_FILE" ]; then
   log "  contains text patch"

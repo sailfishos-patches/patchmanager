@@ -1795,6 +1795,13 @@ bool PatchManagerObject::doPatch(const QString &patchName, bool apply, QString *
     QStringList arguments;
     arguments.append(patchName);
 
+    if (false == getSettings(QStringLiteral("bitnessMangle"), false).toBool()) {
+        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+        qDebug() << Q_FUNC_INFO << "DISABLE_MANGLING=true";
+        env.insert("DISABLE_MANGLING", "true");
+        process.setProcessEnvironment(env);
+    }
+
     process.setArguments(arguments);
     qDebug() << Q_FUNC_INFO << "Starting:" << process.program() << process.arguments();
     process.start();
