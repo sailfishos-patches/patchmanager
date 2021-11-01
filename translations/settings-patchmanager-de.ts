@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="49"/>
         <location filename="../src/qml/PatchManagerPage.qml" line="142"/>
-        <source>About</source>
+        <source>About Patchmanager</source>
         <translation>Über Patchmanager</translation>
     </message>
     <message>
@@ -14,8 +14,18 @@
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="53"/>
-        <source>Patchmanager will automatically apply patches in 10 seconds.</source>
-        <translation>Patchmanager wendet Patches automatisch in 10 Sekunden an.</translation>
+        <source>Patchmanager will automatically apply all patches in 10 seconds.</source>
+        <translation>Patchmanager wendet alle Patches automatisch in 10 Sekunden an.</translation>
+    </message>
+    <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="136"/>
+        <source>Applied patches successfully.</source>
+        <translation>Patches wurden erfolgreich angewendet.</translation>
+    </message>
+    <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="137"/>
+        <source>Failed to apply patches!</source>
+        <translation>Fehler beim Anwenden der Patches!</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="66"/>
@@ -25,20 +35,10 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="28"/>
         <source>Applying patches</source>
-        <translation>Anwenden von Patches</translation>
+        <translation>Anwenden der Patches</translation>
     </message>
     <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="136"/>
-        <source>Appled successfully!</source>
-        <translation>Erfolgreich angewendet!</translation>
-    </message>
-    <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="137"/>
-        <source>Failed applying patches!</source>
-        <translation>Fehler beim Anwenden von Patches!</translation>
-    </message>
-    <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="213"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="222"/>
         <location filename="../src/bin/dialog/dialog.qml" line="165"/>
         <location filename="../src/qml/AboutPage.qml" line="63"/>
         <source>Patchmanager</source>
@@ -50,131 +50,166 @@
         <translation>Version: %1</translation>
     </message>
     <message>
-        <location filename="../src/qml/AboutPage.qml" line="81"/>
+        <location filename="../src/qml/AboutPage.qml" line="82"/>
         <source>Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.</source>
-        <translation>Patchmanager ermöglicht es durch Patches Veränderungen am System vorzunehmen. Patchmanager besteht zum einen aus einem Daemon, welcher für die Verarbeitung der Patches zuständig ist und zum anderen aus der GUI, mit welcher sich die Patches installieren oder entfernen lassen.</translation>
+        <translation>Patchmanager ermöglicht es durch Patches Veränderungen am System vorzunehmen. Patchmanager besteht zum einen aus einem Daemon, welcher für die Verarbeitung der Patches zuständig ist, und zum anderen aus einer GUI, mit welcher sich Patches installieren/entfernen lassen.</translation>
     </message>
     <message>
-        <location filename="../src/qml/AboutPage.qml" line="95"/>
+        <location filename="../src/qml/AboutPage.qml" line="96"/>
         <source>Licensed under the terms of the&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; BSD 3-Clause License&lt;/a&gt;</source>
-        <translation>Lizenziert unter den Bedingungen der&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; BSD 3-Clause License&lt;/a&gt;</translation>
+        <translation>Lizenziert unter den Bedingungen der&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; &quot;BSD-3-Clause&quot; Lizenz&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qml/AboutPage.qml" line="105"/>
+        <location filename="../src/qml/AboutPage.qml" line="106"/>
         <source>Sources and Issue Tracker&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;on GitHub&lt;/a&gt;</source>
-        <translation>Sources and Issue Tracker&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;on GitHub&lt;/a&gt;</translation>
+        <translation>Quellcode und Issue-Tracking&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;auf GitHub&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qml/AboutPage.qml" line="122"/>
+        <location filename="../src/qml/AboutPage.qml" line="123"/>
         <source>Credits and Thanks&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Developers&lt;/a&gt;</source>
         <translation>Danksagungen&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Entwickler&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qml/AboutPage.qml" line="141"/>
+        <location filename="../src/qml/AboutPage.qml" line="148"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="210"/>
+        <source>Donations</source>
+        <translation>Spenden</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/AboutPage.qml" line="160"/>
+        <source>If you appreciate our work, please consider a donation to help covering the hosting costs for Openrepos. Openrepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of patches is hosted there.</source>
+        <translation>Wenn sie unsere Arbeit schätzen, bitten wir eine Spende in Erwägung zu ziehen, um die Hosting-Kosten für Openrepos zu decken. Openrepos stellt gerade für Patchmanager eine kritische Infrastruktur dar, weil der Web Katalog für Patches dort beheimatet ist.</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/AboutPage.qml" line="181"/>
+        <source>If for some reason you can not donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).</source>
+        <translation>Wenn sie aus irgendeinem Grund nicht an Openrepos spenden möchten, so schätzen wir auch eine Spenden an die Free Software Foundation Europe (FSFE).</translation>
+    </message>
+    <message>
         <location filename="../src/qml/WebPatchPage.qml" line="246"/>
         <source>Donate</source>
         <translation>Spenden</translation>
     </message>
     <message>
-        <location filename="../src/qml/DevelopersPage.qml" line="107"/>
+        <location filename="../src/qml/DevelopersPage.qml" line="157"/>
         <source>Developers</source>
         <translation>Entwickler</translation>
     </message>
     <message>
-        <location filename="../src/qml/DevelopersPage.qml" line="146"/>
+        <location filename="../src/qml/DevelopersPage.qml" line="196"/>
         <source>%1&apos;s webpage</source>
         <translation>%1&apos;s Webseite</translation>
     </message>
     <message>
-        <location filename="../src/qml/DevelopersPage.qml" line="151"/>
-        <source>%1&apos;s Twitter account</source>
-        <translation>%1&apos;s Twitter-Account</translation>
+        <location filename="../src/qml/DevelopersPage.qml" line="201"/>
+        <source>%1&apos;s %2 account</source>
+        <translation>%1&apos;s %2-Account</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="52"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="52"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="65"/>
         <source>Patch being applied</source>
         <translation>Patch wird angewendet</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="54"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="54"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="67"/>
         <source>Unapply patch</source>
         <translation>Patch entfernen</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="55"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="55"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="68"/>
         <source>Apply patch</source>
         <translation>Patch anwenden</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="63"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="63"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="85"/>
         <source>Load engine before applying patches</source>
         <translation>Engine laden, ehe Patches angewendet werden</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="73"/>
         <location filename="../src/qml/WebPatchPage.qml" line="85"/>
         <source>Patch information</source>
         <translation>Informationen zum Patch</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="83"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="83"/>
-        <source>This patch is no available anymore. You won&apos;t be able to reinstall it.</source>
-        <translation>Dieser Patch ist nicht mehr verfügbar und kann nicht mehr installiert werden.</translation>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="107"/>
+        <source>This patch is not available anymore. You will not be able to reinstall it.</source>
+        <translation>Dieser Patch ist nicht mehr verfügbar. Sie werden ihn nicht wieder installieren können.</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="87"/>
-        <source>Name</source>
-        <translation>Name</translation>
-    </message>
-    <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="114"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="116"/>
         <source>Maintainer</source>
         <translation>Betreuer</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="128"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="101"/>
-        <source>Possible conflicts</source>
-        <translation>Eventuelle Konflikte</translation>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="165"/>
+        <source>This patch uses the legacy format for its patch.json file. If you are the maintainer, do consider updating to the new format. If you are using Web Catalog you should not include a patch.json file at all in your upload.&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for more information.</source>
+        <translation>Dieser Patch nutzt das &quot;Legacy Format&quot; für seine patch.json Datei. Wenn sie dessen Betreuer sind, ziehen sie in Erwägung auf das neue Format zu aktualisieren. Wenn sie den Web-Katalog verwenden, sollen sie keine patch.json Datei mit hochladen.&lt;br /&gt;Siehe den Entwickler-Abschnitt im &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; für weitere Informationen.</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="141"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="141"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="171"/>
         <source>Description</source>
         <translation>Beschreibung</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="153"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="154"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="196"/>
+        <source>Discussion</source>
+        <translation>Diskussion</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="252"/>
         <source>Patch log</source>
         <translation>Patch-Protokoll</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="162"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="164"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="261"/>
+        <source>Press and hold to copy to Clipboard</source>
+        <translation>Lange gedrückt halten, um in die Zwischenablage zu kopieren</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="274"/>
         <source>No log yet</source>
         <translation>Noch kein Protokoll vorhanden</translation>
     </message>
     <message>
-        <location filename="../src/qml/NewPatchPage.qml" line="87"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="116"/>
         <source>Author</source>
         <translation>Autor</translation>
     </message>
     <message>
-        <location filename="../src/qml/LegacyPatchPage.qml" line="100"/>
-        <location filename="../src/qml/NewPatchPage.qml" line="115"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="48"/>
+        <source>Log copied to Clipboard!</source>
+        <translation>Log in die Zwischenablage kopiert!</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="75"/>
+        <source>Uninstall patch</source>
+        <translation>Patch entfernen</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="78"/>
+        <source>Patch %1 uninstalled.</source>
+        <translation>Patch %1 entfernt.</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="120"/>
         <source>Version</source>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="../src/qml/NewPatchPage.qml" line="128"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="121"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="126"/>
+        <source>not available</source>
+        <translation>nicht verfügbar</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="125"/>
         <source>Compatible</source>
         <translation>Kompatibel</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="137"/>
+        <source>May conflict with:</source>
+        <translation>Kollidiert möglicherweise mit:</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="147"/>
@@ -228,32 +263,37 @@
         <translation>Kompatibel mit:</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="484"/>
-        <source>May have conflicts</source>
-        <translation>Kann Konfilkte verursachen</translation>
+        <location filename="../src/qml/PatchManagerPage.qml" line="485"/>
+        <source>May conflict with another patch, see %1</source>
+        <translation>Könnte mit einem anderen Patch kollidieren, siehe %1</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="487"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="486"/>
+        <source>May conflict with %2 other patches, see %1</source>
+        <translation>Könnte mit %2 anderen Patches kollidieren, siehe %1</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
         <source>Patch info</source>
         <translation>Patchinformation</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="491"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
         <source>Unapply</source>
         <translation>Rückgängig machen</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="491"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
         <source>Apply</source>
         <translation>Anwenden</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="496"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="499"/>
         <source>Uninstall</source>
         <translation>Deinstallieren</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="510"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="513"/>
         <location filename="../src/qml/WebCatalogPage.qml" line="248"/>
         <source>No patches available</source>
         <translation>Keine Patches verfügbar</translation>
@@ -335,6 +375,7 @@
         <translation>Autor: %1</translation>
     </message>
     <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="185"/>
         <location filename="../src/qml/WebPatchPage.qml" line="204"/>
         <source>Links</source>
         <translation>Links</translation>
@@ -345,6 +386,7 @@
         <translation>Link zur Diskussion</translation>
     </message>
     <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="203"/>
         <location filename="../src/qml/WebPatchPage.qml" line="267"/>
         <source>Sources</source>
         <translation>Quellen</translation>
@@ -380,52 +422,52 @@
         <translation>Kompatibel zu: %1 </translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="224"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="232"/>
         <source>Patch installed</source>
         <translation>Patch installiert</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="225"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="233"/>
         <source>Patch %1 installed</source>
         <translation>Patch %1 installiert</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="228"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="236"/>
         <source>Patch removed</source>
         <translation>Patch entfernt</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="229"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="237"/>
         <source>Patch %1 removed</source>
         <translation>Patch %1 entfernt</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="232"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="240"/>
         <source>Failed to install patch</source>
         <translation>Patch konnte nicht installiert werden</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="233"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="241"/>
         <source>Patch %1 installation failed</source>
         <translation>Patch %1 konnte nicht installiert werden</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="236"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="244"/>
         <source>Failed to remove patch</source>
         <translation>Patch konnte nicht entfernt werden</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="237"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="245"/>
         <source>Patch %1 removal failed</source>
         <translation>Patch %1 konnte nicht entfernt werden</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="240"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="248"/>
         <source>Update available</source>
         <translation>Aktualisierung verfügbar</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="241"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="249"/>
         <source>Patch %1 have update candidate</source>
         <translation>Aktualisierung für Patch %1 verfügbar</translation>
     </message>
@@ -443,7 +485,7 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="21"/>
         <source>Apply all enabled patches when the system starts</source>
-        <translation>Wendet alle gewählten Patches beim Systemstart an</translation>
+        <translation>Alle gewählten Patches beim Systemstart anwenden</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="28"/>
@@ -459,73 +501,73 @@
 <context>
     <name>Sections</name>
     <message>
-        <location filename="../src/qml/patchmanager.cpp" line="49"/>
+        <location filename="../src/qml/patchmanager.cpp" line="50"/>
         <source>browser</source>
         <translation>Browser</translation>
     </message>
     <message>
-        <location filename="../src/qml/patchmanager.cpp" line="50"/>
+        <location filename="../src/qml/patchmanager.cpp" line="51"/>
         <source>camera</source>
         <translation>Kamera</translation>
     </message>
     <message>
-        <location filename="../src/qml/patchmanager.cpp" line="51"/>
+        <location filename="../src/qml/patchmanager.cpp" line="52"/>
         <source>calendar</source>
         <translation>Kalender</translation>
     </message>
     <message>
-        <location filename="../src/qml/patchmanager.cpp" line="52"/>
+        <location filename="../src/qml/patchmanager.cpp" line="53"/>
         <source>clock</source>
         <translation>Uhr</translation>
     </message>
     <message>
-        <location filename="../src/qml/patchmanager.cpp" line="53"/>
+        <location filename="../src/qml/patchmanager.cpp" line="54"/>
         <source>contacts</source>
         <translation>Kontakte</translation>
     </message>
     <message>
-        <location filename="../src/qml/patchmanager.cpp" line="54"/>
+        <location filename="../src/qml/patchmanager.cpp" line="55"/>
         <source>email</source>
         <translation>E-Mail</translation>
     </message>
     <message>
-        <location filename="../src/qml/patchmanager.cpp" line="55"/>
+        <location filename="../src/qml/patchmanager.cpp" line="56"/>
         <source>gallery</source>
         <translation>Gallerie</translation>
     </message>
     <message>
-        <location filename="../src/qml/patchmanager.cpp" line="56"/>
+        <location filename="../src/qml/patchmanager.cpp" line="57"/>
         <source>homescreen</source>
         <translation>Startbildschirm</translation>
     </message>
     <message>
-        <location filename="../src/qml/patchmanager.cpp" line="57"/>
+        <location filename="../src/qml/patchmanager.cpp" line="58"/>
         <source>media</source>
         <translation>Medien</translation>
     </message>
     <message>
-        <location filename="../src/qml/patchmanager.cpp" line="58"/>
+        <location filename="../src/qml/patchmanager.cpp" line="59"/>
         <source>messages</source>
         <translation>Nachrichten</translation>
     </message>
     <message>
-        <location filename="../src/qml/patchmanager.cpp" line="59"/>
+        <location filename="../src/qml/patchmanager.cpp" line="60"/>
         <source>phone</source>
         <translation>Telefon</translation>
     </message>
     <message>
-        <location filename="../src/qml/patchmanager.cpp" line="60"/>
+        <location filename="../src/qml/patchmanager.cpp" line="61"/>
         <source>silica</source>
         <translation>Silica</translation>
     </message>
     <message>
-        <location filename="../src/qml/patchmanager.cpp" line="61"/>
+        <location filename="../src/qml/patchmanager.cpp" line="62"/>
         <source>settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../src/qml/patchmanager.cpp" line="62"/>
-        <location filename="../src/qml/patchmanager.cpp" line="215"/>
+        <location filename="../src/qml/patchmanager.cpp" line="63"/>
+        <location filename="../src/qml/patchmanager.cpp" line="216"/>
         <source>other</source>
         <translation>Andere</translation>
     </message>
