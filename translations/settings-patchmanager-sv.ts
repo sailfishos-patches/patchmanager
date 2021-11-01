@@ -263,27 +263,37 @@
         <translation>Kompatibel med:</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="488"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="485"/>
+        <source>May conflict with another patch, see %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/qml/PatchManagerPage.qml" line="486"/>
+        <source>May conflict with %2 other patches, see %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
         <source>Patch info</source>
         <translation>Korrigeringsinformation</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="492"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
         <source>Unapply</source>
         <translation>Koppla ifrån</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="492"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
         <source>Apply</source>
         <translation>Tillämpa</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="497"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="499"/>
         <source>Uninstall</source>
         <translation>Avinstallera</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="511"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="513"/>
         <location filename="../src/qml/WebCatalogPage.qml" line="248"/>
         <source>No patches available</source>
         <translation>Inga korrigeringsfiler tillgängliga</translation>
