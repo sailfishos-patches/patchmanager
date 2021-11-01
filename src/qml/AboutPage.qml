@@ -93,7 +93,7 @@ Page {
 
                 Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: qsTranslate("", "Licensed under the terms of the<br /><a href=\"%1\"> BSD 3-Clause License</a>").arg("https://opensource.org/licenses/BSD-3-Clause")
+                        text: qsTranslate("", "Licensed under the terms of the<br /><a href=\"%1\">BSD 3-Clause License</a>").arg("https://opensource.org/licenses/BSD-3-Clause")
                         textFormat: Text.StyledText
                         horizontalAlignment: Text.AlignHCenter
                         font.pixelSize: Theme.fontSizeSmall
@@ -120,7 +120,7 @@ Page {
 
                 Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: qsTranslate("", "Credits and Thanks<br /><a href=\"%1\">Developers</a>").arg("about:_blank")
+                        text: qsTranslate("", "Credits and Acknowledgements<br /><a href=\"%1\">Developers</a>").arg("about:_blank")
                         textFormat: Text.StyledText
                         horizontalAlignment: Text.AlignHCenter
                         font.pixelSize: Theme.fontSizeSmall
