@@ -53,7 +53,7 @@ Dialog {
                 anchors.right: parent.right; anchors.rightMargin: Theme.paddingMedium
                 wrapMode: Text.WordWrap
                 color: Theme.highlightColor
-                text: qsTranslate("", "Some services will be restarted now. Reloading the GUI of the device might take a little time.")
+                text: qsTranslate("", "Some services will be restarted now. Reloading the homescreen of the device might take a little time.")
             }
         }
     }
