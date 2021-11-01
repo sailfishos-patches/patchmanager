@@ -45,7 +45,7 @@ Page {
     Notification {
         id: popup
         appName: modelData.display_name
-        summary: qsTranslate("", "Log copied to Clipboard!")
+        summary: qsTranslate("", "Copied log to clipboard.")
         previewSummary: summary
         icon: "image://theme/icon-s-clipboard"
         category: "transfer.complete"
@@ -162,7 +162,7 @@ Page {
                 font.pixelSize: Theme.fontSizeSmall
                 textFormat: Text.StyledText
                 property string link: SOURCE_REPO + "/blob/master/README.md#for-developers"
-                text: qsTranslate("", "This patch uses the legacy format for its patch.json file. If you are the maintainer, do consider updating to the new format. If you are using Web Catalog you should not include a patch.json file at all in your upload.<br />See the developer section in the <a href=\"%1\">README</a> for more information.").arg(link)
+                text: qsTranslate("", "This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for details.").arg(link)
                 linkColor: Theme.highlightColor
                 onLinkActivated: Qt.openUrlExternally(link)
             }
@@ -258,7 +258,7 @@ Page {
                 anchors.rightMargin: Theme.horizontalPageMargin
                 anchors.leftMargin: Theme.horizontalPageMargin
                 color: Theme.secondaryHighlightColor
-                text: qsTranslate("", "Press and hold to copy to Clipboard")
+                text: qsTranslate("", "Press and hold to copy log to the clipboard")
                 font.pixelSize: Theme.fontSizeTiny
                 visible: modelData.log && log.visible
             }
@@ -271,7 +271,7 @@ Page {
                 readOnly: true
                 color: Theme.secondaryColor
                 text: modelData.log
-                placeholderText: qsTranslate("", "No log yet")
+                placeholderText: qsTranslate("", "No log exists yet")
                 wrapMode: Text.Wrap
                 //selectionMode: TextInput.SelectWords
                 font.family: "Courier"

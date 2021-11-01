@@ -354,7 +354,7 @@ Page {
                     if (PatchManager.developerMode || patchObject.details.isCompatible) {
                         patchObject.apply()
                     } else {
-                        errorMesageComponent.createObject(background, {text: qsTranslate("", "This patch is not compatible with SailfishOS version!")})
+                        errorMesageComponent.createObject(background, {text: qsTranslate("", "This patch is incompatible with the installed Sailfish OS version.")})
                     }
                 } else {
                     patchObject.unapply()
@@ -481,7 +481,9 @@ Page {
                     }
                     MenuLabel {
                         visible: !patchObject.details.patched && patchObject.details.conflicts.length > 0
-                        text: qsTr("May conflict with %n other patch(es), see %2", "", patchObject.details.conflicts.length).arg(patchinfoitem.text)
+                        text: (patchObject.details.conflicts.length == 1)
+                            ?  qsTranslate("" , "May conflict with another patch, see %1").arg(patchinfoitem.text)
+                            :  qsTranslate("" , "May conflict with %2 other patches, see %1").arg(patchinfoitem.text).arg(patchObject.details.conflicts.length)
                     }
                     MenuItem {
                         id: patchinfoitem

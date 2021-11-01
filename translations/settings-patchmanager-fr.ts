@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.1">
 <context>
     <name/>
     <message>
@@ -10,7 +10,7 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="45"/>
         <source>Apply patches</source>
-        <translation>Włącz łatki</translation>
+        <translation>Appliquer les patchs</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="53"/>
@@ -30,12 +30,12 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="66"/>
         <source>Exit</source>
-        <translation>Wyjdź</translation>
+        <translation>Quitter</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="28"/>
         <source>Applying patches</source>
-        <translation>Włączanie łatek</translation>
+        <translation>Patchs en cours d&apos;application</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="222"/>
@@ -47,12 +47,12 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="71"/>
         <source>Version: %1</source>
-        <translation>Wersja: %1</translation>
+        <translation>Version: %1</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="82"/>
         <source>Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.</source>
-        <translation>Patchmanager pozwala na modyfikacje systemu za pomocą łatek. Dostarcza on systemowego daemona, który wykonyje modyfikacje, jak i dostarcza GUI, aby móc zarządzać operacjami instalacji/usuwania łatek.</translation>
+        <translation>Patchmanager permet des modifications du système via des patchs. Il fournit un daemon système en charge d&apos;appliquer ces patchs mais également un GUI pour contrôler ces opérations d&apos;installation/suppression de patchs.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="96"/>
@@ -88,17 +88,17 @@
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="246"/>
         <source>Donate</source>
-        <translation>Wspomóż</translation>
+        <translation>Donation</translation>
     </message>
     <message>
         <location filename="../src/qml/DevelopersPage.qml" line="157"/>
         <source>Developers</source>
-        <translation>Deweloperzy</translation>
+        <translation>Développeurs</translation>
     </message>
     <message>
         <location filename="../src/qml/DevelopersPage.qml" line="196"/>
         <source>%1&apos;s webpage</source>
-        <translation>%1 strona internetowa</translation>
+        <translation>%1&apos;s webpage</translation>
     </message>
     <message>
         <location filename="../src/qml/DevelopersPage.qml" line="201"/>
@@ -108,27 +108,27 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="65"/>
         <source>Patch being applied</source>
-        <translation>Łatka została zastosowana</translation>
+        <translation>installation du patch</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="67"/>
         <source>Unapply patch</source>
-        <translation>Wyłącz łatkę</translation>
+        <translation>Désactiver le patch</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="68"/>
         <source>Apply patch</source>
-        <translation>Włącz łatkę</translation>
+        <translation>Installer le patch</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="85"/>
         <source>Load engine before applying patches</source>
-        <translation>Włącz silnik przed włączeniem łatek</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="85"/>
         <source>Patch information</source>
-        <translation>Informacje o łatce</translation>
+        <translation>Informations sur le patch</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="107"/>
@@ -138,7 +138,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="116"/>
         <source>Maintainer</source>
-        <translation>Opiekun</translation>
+        <translation>Mainteneur</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="165"/>
@@ -148,7 +148,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="171"/>
         <source>Description</source>
-        <translation>Opis</translation>
+        <translation>Description</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="196"/>
@@ -158,7 +158,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="252"/>
         <source>Patch log</source>
-        <translation>Logi łatki</translation>
+        <translation>Log de patch</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="261"/>
@@ -168,12 +168,12 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="274"/>
         <source>No log yet</source>
-        <translation>Brak logów</translation>
+        <translation>Pas encore de log</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="116"/>
         <source>Author</source>
-        <translation>Autor</translation>
+        <translation>Auteur</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="48"/>
@@ -193,7 +193,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="120"/>
         <source>Version</source>
-        <translation>Wersja</translation>
+        <translation>Version</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="121"/>
@@ -204,7 +204,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="125"/>
         <source>Compatible</source>
-        <translation>Kompatybilny</translation>
+        <translation>Compatible</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="137"/>
@@ -214,53 +214,53 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="147"/>
         <source>Unapply all patches</source>
-        <translation>Wyłącz wszystkie łatki</translation>
+        <translation>Désactiver tous les patchs</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="153"/>
         <source>Load engine</source>
-        <translation>Załaduj silnik</translation>
+        <translation>Charger le logiciel</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="159"/>
         <source>Updates available</source>
-        <translation>Dostępne aktualizacje</translation>
+        <translation>Mise à jour disponible</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="159"/>
         <location filename="../src/qml/WebCatalogPage.qml" line="101"/>
         <source>Web catalog</source>
-        <translation>Katalog internetowy</translation>
+        <translation>Catalogue web</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="165"/>
         <source>Restart preloaded services</source>
-        <translation>Restartuj załadowane usługi</translation>
+        <translation>Redémarrer les services préchargés</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="171"/>
         <source>Resolve failure</source>
-        <translation>Rozwiąż błąd</translation>
+        <translation>Résoudre l&apos;erreur</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="178"/>
         <source>Installed patches</source>
-        <translation>Zainstalowane łatki</translation>
+        <translation>Patchs installés</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="357"/>
         <source>This patch is not compatible with SailfishOS version!</source>
-        <translation>Łatka jest niekompatybilna z tą wersją SailfishOS! </translation>
+        <translation>Ce patch n&apos;est pas compatible avec la version de SailfishOS ! </translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="365"/>
         <source>Uninstalling patch %1</source>
-        <translation>Usuwanie łatki %1</translation>
+        <translation>Désinstaller le patch %1</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="470"/>
         <source>Compatible with:</source>
-        <translation>Kompatybilna z:</translation>
+        <translation>Compatible avec :</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="485"/>
@@ -275,54 +275,54 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
         <source>Patch info</source>
-        <translation>Informacja o łatce</translation>
+        <translation>Information du patch</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
         <source>Unapply</source>
-        <translation>Wyłącz</translation>
+        <translation>Désactiver</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
         <source>Apply</source>
-        <translation>Włącz</translation>
+        <translation>Appliquer</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="499"/>
         <source>Uninstall</source>
-        <translation>Odinstaluj</translation>
+        <translation>Désinstaller</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="513"/>
         <location filename="../src/qml/WebCatalogPage.qml" line="248"/>
         <source>No patches available</source>
-        <translation>Brak łatek</translation>
+        <translation>Pas de patch disponible</translation>
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="48"/>
         <source>Restart services</source>
-        <translation>Zrestartuj usługi</translation>
+        <translation>Redémarrer les services</translation>
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="56"/>
         <source>Some services will now be restarted. Phone interface might take time to load for a short moment.</source>
-        <translation>Niektóre usługi zostaną zrestartowane. Interfejs telefonu może się chwilę ładować.</translation>
+        <translation>Certains services vont maintenant être redémarrés. L&apos;interface du téléphone peut mettre un certain à se recharger.</translation>
     </message>
     <message>
         <location filename="../src/qml/ScreenshotsPage.qml" line="71"/>
         <location filename="../src/qml/WebPatchPage.qml" line="272"/>
         <source>Screenshots</source>
-        <translation>Zrzuty ekranu</translation>
+        <translation>Captures d&apos;écran</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="83"/>
         <source>Hide search field</source>
-        <translation>Ukryj pole wyszukiwania</translation>
+        <translation>Masquer la recherche</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="83"/>
         <source>Show search field</source>
-        <translation>Pokaż pole wyszukiwania</translation>
+        <translation>Afficher la recherche</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
@@ -337,7 +337,7 @@
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="101"/>
         <source>%1 patches</source>
-        <translation>%1 łatki</translation>
+        <translation>%1 patchs</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="102"/>
@@ -352,135 +352,135 @@
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="108"/>
         <source>Tap to enter search query</source>
-        <translation>Dotknij aby wprowadzić zapytanie</translation>
+        <translation>Appuyer pour lancer la recherche</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="235"/>
         <source>Update available: %1</source>
-        <translation>Aktualizacja dostępna: %1</translation>
+        <translation>Mises à jour disponibles : %1</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="75"/>
         <source>Fetching patch information...</source>
-        <translation>Pobieranie informacji o łatce...</translation>
+        <translation>Récupération des informations du patch ...</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="75"/>
         <source>Problem in fetching patch data</source>
-        <translation>Błąd pobierania danych łatki</translation>
+        <translation>Problème lors de la récupération des données du patch</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="188"/>
         <source>Author: %1</source>
-        <translation>Autor: %1</translation>
+        <translation>Auteur : %1</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="185"/>
         <location filename="../src/qml/WebPatchPage.qml" line="204"/>
         <source>Links</source>
-        <translation>Odnośniki</translation>
+        <translation>liens</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="225"/>
         <source>Open discussion link</source>
-        <translation>Otwórz odnośnik do dyskusji</translation>
+        <translation>Ouvrir le lien de discussion</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="203"/>
         <location filename="../src/qml/WebPatchPage.qml" line="267"/>
         <source>Sources</source>
-        <translation>Źródła</translation>
+        <translation>Sources</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="318"/>
         <source>Files</source>
-        <translation>Pliki</translation>
+        <translation>Fichiers</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="333"/>
         <source>This file is not compatible with SailfishOS version!</source>
-        <translation>Plik jest niekompatybilny z ta wersją SailfishOS!</translation>
+        <translation>Le fichier n&apos;est pas compatible avec la version de SailfishOS ! </translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="335"/>
         <source>Install patch %1</source>
-        <translation>Zainstaluj łatkę %1</translation>
+        <translation>Install patch %1</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="388"/>
         <source>[installed]</source>
-        <translation>[zainstalowany]</translation>
+        <translation>[Installé]</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="388"/>
         <source>[click to install]</source>
-        <translation>[dotknij aby zainstalować]</translation>
+        <translation>[clicker pour installer]</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="404"/>
         <source>Compatible: %1</source>
-        <translation>Kompatybilny: %1</translation>
+        <translation>Compatible: %1</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="232"/>
         <source>Patch installed</source>
-        <translation>Łatka zainstalowana</translation>
+        <translation>Patch installé</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="233"/>
         <source>Patch %1 installed</source>
-        <translation>Łatka %1 zainstalowana</translation>
+        <translation>Patch %1 installé</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="236"/>
         <source>Patch removed</source>
-        <translation>Łatka usunięta</translation>
+        <translation>Patch supprimé</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="237"/>
         <source>Patch %1 removed</source>
-        <translation>Łatka %1 usunięta</translation>
+        <translation>Patch %1 supprimé</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="240"/>
         <source>Failed to install patch</source>
-        <translation>Błąd instalacji łatki</translation>
+        <translation>Échec lors de d&apos;installation du patch</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="241"/>
         <source>Patch %1 installation failed</source>
-        <translation>Błąd instalacji łatki %1</translation>
+        <translation>L&apos;installation du patch %1 a échouée</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="244"/>
         <source>Failed to remove patch</source>
-        <translation>Nieudane usunięcie łatki</translation>
+        <translation>Échec de suppression du patch</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="245"/>
         <source>Patch %1 removal failed</source>
-        <translation>Nieudane usunięcie łatki %1</translation>
+        <translation>Échec de suppression du patch %1</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="248"/>
         <source>Update available</source>
-        <translation>Dostępna aktualizacja</translation>
+        <translation>Mise à jour disponible</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="249"/>
         <source>Patch %1 have update candidate</source>
-        <translation>Dostępna aktualizacja łatki %1</translation>
+        <translation>Le patch %1 a une mise à jour disponible</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="137"/>
         <location filename="../src/qml/SettingsPage.qml" line="16"/>
         <source>Settings</source>
-        <translation>Ustawienia</translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="20"/>
         <source>Apply on boot</source>
-        <translation>Włącz podcza bootowania</translation>
+        <translation>Appliquer au démarrage</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="21"/>
@@ -503,27 +503,27 @@
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="50"/>
         <source>browser</source>
-        <translation>wyszukiwarka</translation>
+        <translation>Parcourir</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="51"/>
         <source>camera</source>
-        <translation>aparat</translation>
+        <translation>appareil photo</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="52"/>
         <source>calendar</source>
-        <translation>kalendarz</translation>
+        <translation>calendrier</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="53"/>
         <source>clock</source>
-        <translation>zegar</translation>
+        <translation>horloge</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="54"/>
         <source>contacts</source>
-        <translation>kontakty</translation>
+        <translation>contacts</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="55"/>
@@ -533,27 +533,27 @@
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="56"/>
         <source>gallery</source>
-        <translation>galeria</translation>
+        <translation>galerie</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="57"/>
         <source>homescreen</source>
-        <translation>ekran domowy</translation>
+        <translation>écran d&apos;accueil</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="58"/>
         <source>media</source>
-        <translation>multimedia</translation>
+        <translation>médias</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="59"/>
         <source>messages</source>
-        <translation>wiadomości</translation>
+        <translation>messages</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="60"/>
         <source>phone</source>
-        <translation>telefon</translation>
+        <translation>téléphone</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="61"/>
@@ -563,13 +563,13 @@
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="62"/>
         <source>settings</source>
-        <translation>ustawienia</translation>
+        <translation>paramètres</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="63"/>
         <location filename="../src/qml/patchmanager.cpp" line="216"/>
         <source>other</source>
-        <translation>inne</translation>
+        <translation>autre</translation>
     </message>
 </context>
 </TS>
