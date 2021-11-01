@@ -492,7 +492,7 @@
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="29"/>
-        <source>Enable applying patches, which are not marked compatible with the installed Sailfish OS version. Note that patches, which are actually incompatible, will not work.</source>
+        <source>Enable applying patches, which are not marked as compatible with the installed Sailfish OS version. Note that patches, which are actually incompatible, will not work.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
