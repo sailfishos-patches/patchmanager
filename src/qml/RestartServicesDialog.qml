@@ -45,7 +45,6 @@ Dialog {
 
     Component.onCompleted: console.info("Will restart " + PatchManager.appsToRestart);
 
-<<<<<<< HEAD
     Column {
         spacing: Theme.paddingSmall
         width: parent.width
