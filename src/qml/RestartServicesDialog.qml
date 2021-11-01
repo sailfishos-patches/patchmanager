@@ -67,7 +67,10 @@ Dialog {
             Repeater {
                 model: PatchManager.appsToRestart
                 delegate: Component { TextSwitch {
-                    automaticCheck: false; checked: true; text: modelData;
+                    text: modelData //TODO: this displays the raw strings from the daemon. Should be formatted/enabled for translation
+                    automaticCheck: false
+                    checked: true
+                    enabled: true
                     description: {
                         if ((modelData == "homescreen") || (modelData == "silica"))   { return qsTranslate("","Note: this will close all apps!"); }
                         else if (modelData == "settings")  { return qsTranslate("","Note: this will close %1!").arg("Patchmanager"); }
