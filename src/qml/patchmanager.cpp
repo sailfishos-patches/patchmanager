@@ -199,10 +199,11 @@ bool PatchManager::applyOnBoot() const
 
 QStringList PatchManager::mangleCandidates() const
 {
-    QDBusPendingReply<QVariant> reply = m_interface->getMangleCandidates();
+    QDBusPendingReply<QStringList> reply = m_interface->getMangleCandidates();
     reply.waitForFinished();
     if (reply.isFinished()) {
-        return PatchManager::unwind(reply.value()).toStringList();
+        qDebug() << Q_FUNC_INFO << "mangleCandidates() dbus replied:" << reply.value();
+        return reply.value();
     }
     return QStringList();
 }
