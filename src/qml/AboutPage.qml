@@ -79,7 +79,7 @@ Page {
                 anchors.right: parent.right
                 anchors.margins: Theme.horizontalPageMargin
                 font.pixelSize: Theme.fontSizeSmall
-                text: qsTranslate("", "Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.")
+                text: qsTranslate("", "Patchmanager allows to automatically modify system files via patches. It provides a daemon that performs the application of those patches and a GUI to control those operations and the installation or removal of patches.")
             }
 
             Separator {
@@ -93,7 +93,7 @@ Page {
 
                 Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: qsTranslate("", "Licensed under the terms of the<br /><a href=\"%1\"> BSD 3-Clause License</a>").arg("https://opensource.org/licenses/BSD-3-Clause")
+                        text: qsTranslate("", "Licensed under the terms of the<br /><a href=\"%1\">BSD 3-Clause License</a>").arg("https://opensource.org/licenses/BSD-3-Clause")
                         textFormat: Text.StyledText
                         horizontalAlignment: Text.AlignHCenter
                         font.pixelSize: Theme.fontSizeSmall
@@ -120,7 +120,7 @@ Page {
 
                 Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: qsTranslate("", "Credits and Thanks<br /><a href=\"%1\">Developers</a>").arg("about:_blank")
+                        text: qsTranslate("", "Credits and Acknowledgements<br /><a href=\"%1\">Developers</a>").arg("about:_blank")
                         textFormat: Text.StyledText
                         horizontalAlignment: Text.AlignHCenter
                         font.pixelSize: Theme.fontSizeSmall
@@ -178,7 +178,7 @@ Page {
                     font.pixelSize: Theme.fontSizeSmall
                     wrapMode: Text.WordWrap
                     horizontalAlignment: Text.AlignJustify
-                    text: qsTranslate("", "If for some reason you can not donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).")
+                    text: qsTranslate("", "If for some reason you cannot donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).")
                 }
 
                 Text {
