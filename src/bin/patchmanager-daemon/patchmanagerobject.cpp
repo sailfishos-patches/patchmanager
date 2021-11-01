@@ -292,7 +292,8 @@ QStringList PatchManagerObject::getMangleCandidates()
 {
     if (m_mangleCandidates.empty()) {
         qDebug() << Q_FUNC_INFO;
-        m_mangleCandidates = QSettings(MANGLE_CONFIG_FILE, QSettings::IniFormat).value("MANGLE_CANDIDATES").toStringList();
+        auto mangleCandidates = QSettings(MANGLE_CONFIG_FILE, QSettings::IniFormat).value("MANGLE_CANDIDATES", "").toString();
+        m_mangleCandidates = mangleCandidates.split(' ', QString::SplitBehavior::SkipEmptyParts);
         qDebug() << "Loaded mangle candidates:" << m_mangleCandidates;
     }
     return m_mangleCandidates;
