@@ -482,7 +482,7 @@ Page {
                     MenuLabel {
                         visible: !patchObject.details.patched && patchObject.details.conflicts.length > 0
                         text: (patchObject.details.conflicts.length == 1)
-                            ?  qsTranslate("" , "May conflict with one other patch, see %1").arg(patchinfoitem.text)
+                            ?  qsTranslate("" , "May conflict with another patch, see %1").arg(patchinfoitem.text)
                             :  qsTranslate("" , "May conflict with %2 other patches, see %1").arg(patchinfoitem.text).arg(patchObject.details.conflicts.length)
                     }
                     MenuItem {

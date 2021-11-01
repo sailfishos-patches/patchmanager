@@ -266,7 +266,7 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="485"/>
-        <source>May conflict with one other patch, see %1</source>
+        <source>May conflict with another patch, see %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
