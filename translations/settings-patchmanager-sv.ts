@@ -486,7 +486,7 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="28"/>
         <source>Allow patches</source>
-        <translation>Tillåt korrigeringsfiler</translation>
+        <translation>Tillåt inkompatibla korrigeringsfiler</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="29"/>
