@@ -78,7 +78,9 @@ Dialog {
                         else if (modelData == "other")     { return "" }
                         else { return qsTranslate("","Note: this will close the %1 app!").arg(modelData); }
                     }
-                } }
+                    TouchBlocker { anchors.fill: parent}
+                  }
+                }
             }
         }
     }
