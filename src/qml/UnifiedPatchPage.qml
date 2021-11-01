@@ -45,7 +45,7 @@ Page {
     Notification {
         id: popup
         appName: modelData.display_name
-        summary: qsTranslate("", "Log copied to Clipboard!")
+        summary: qsTranslate("", "Log copied to Clipboard.")
         previewSummary: summary
         icon: "image://theme/icon-s-clipboard"
         category: "transfer.complete"
