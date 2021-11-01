@@ -17,8 +17,8 @@ Page {
             }
 
             TextSwitch {
-                text: qsTranslate("", "Apply on boot")
-                description: qsTranslate("", "Apply all enabled patches when the system starts")
+                text: qsTranslate("", "Apply patches when booting")
+                description: qsTranslate("", "Automatically apply all enabled patches when the system starts")
                 checked: PatchManager.applyOnBoot
                 onClicked: PatchManager.applyOnBoot = !PatchManager.applyOnBoot
                 automaticCheck: false
