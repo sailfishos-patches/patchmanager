@@ -53,12 +53,12 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="82"/>
-        <source>Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.</source>
+        <source>Patchmanager allows to automatically modify system files via patches. It provides a system daemon that performs the application of those patches, as well as a GUI to control those operations and the installation or removal of patches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="96"/>
-        <source>Licensed under the terms of the&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; BSD 3-Clause License&lt;/a&gt;</source>
+        <source>Licensed under the terms of the&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;BSD 3-Clause License&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -68,7 +68,7 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="123"/>
-        <source>Credits and Thanks&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Developers&lt;/a&gt;</source>
+        <source>Credits and Acknowledgements&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Developers&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -84,7 +84,7 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="181"/>
-        <source>If for some reason you can not donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).</source>
+        <source>If for some reason you cannot donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -144,7 +144,7 @@
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="165"/>
-        <source>This patch uses the legacy format for its patch.json file. If you are the maintainer, do consider updating to the new format. If you are using Web Catalog you should not include a patch.json file at all in your upload.&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for more information.</source>
+        <source>This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -179,7 +179,7 @@
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="48"/>
-        <source>Log copied to Clipboard!</source>
+        <source>Log copied to Clipboard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -251,7 +251,8 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="357"/>
-        <source>This patch is not compatible with SailfishOS version!</source>
+        <location filename="../src/qml/WebPatchPage.qml" line="333"/>
+        <source>This patch is incompatible with the installed Sailfish OS version.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -307,7 +308,7 @@
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="56"/>
-        <source>Some services will now be restarted. Phone interface might take time to load for a short moment.</source>
+        <source>Some services will now be restarted. Reloading the GUI of the device might take a little time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -399,11 +400,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="333"/>
-        <source>This file is not compatible with SailfishOS version!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qml/WebPatchPage.qml" line="335"/>
         <source>Install patch %1</source>
         <translation type="unfinished"></translation>
@@ -481,22 +477,22 @@
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="20"/>
-        <source>Apply on boot</source>
+        <source>Apply patches when booting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="21"/>
-        <source>Apply all enabled patches when the system starts</source>
+        <source>Automatically apply all enabled patches when the system starts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="28"/>
-        <source>Allow incompatible patches</source>
+        <source>Allow patches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="29"/>
-        <source>Apply patches which are not marked compatible with the installed Sailfish OS version. Note that this will not fix patches that are actually incompatible.</source>
+        <source>Enable applying patches, which are not marked compatible with the installed Sailfish OS version. Note that patches, which are actually incompatible, will not work.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
