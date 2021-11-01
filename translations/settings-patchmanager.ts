@@ -53,7 +53,7 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="82"/>
-        <source>Patchmanager allows to automatically modify system files via patches. It provides a daemon that performs the application of those patches, as well as a GUI to control those operations and the installation or removal of patches.</source>
+        <source>Patchmanager allows to automatically modify system files via patches. It provides a daemon that performs the application of those patches and a GUI to control those operations and the installation or removal of patches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -308,7 +308,7 @@
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="56"/>
-        <source>Some services will be restarted now. Reloading the GUI of the device might take a little time.</source>
+        <source>Some services will be restarted now. Reloading the homescreen of the device might take a little time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -482,7 +482,7 @@
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="21"/>
-        <source>Automatically apply all enabled patches when the system starts</source>
+        <source>Automatically apply all enabled patches when Sailfish OS starts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
