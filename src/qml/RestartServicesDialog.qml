@@ -45,6 +45,7 @@ Dialog {
 
     Component.onCompleted: console.info("Will restart " + PatchManager.appsToRestart);
 
+<<<<<<< HEAD
     Column {
         spacing: Theme.paddingSmall
         width: parent.width
@@ -55,7 +56,7 @@ Dialog {
             anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width -  Theme.horizontalPageMargin * 2
             color: Theme.highlightColor
-            text: qsTranslate("", "Some services will now be restarted. The phone interface might take a short moment to load.")
+            text: qsTranslate("", "Some services will be restarted now. Reloading the homescreen of the device might take a little time.")
             wrapMode: Text.WordWrap
             horizontalAlignment: Text.AlignJustify
         }
