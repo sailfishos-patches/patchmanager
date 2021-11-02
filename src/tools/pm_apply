@@ -234,9 +234,9 @@ fi
 # The main function that controls all the magic stuff
 #
 
-test_if_applied
-
 mangle_libpath
+
+test_if_applied
 
 verify_text_patch
 
