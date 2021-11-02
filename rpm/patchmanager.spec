@@ -50,7 +50,7 @@ rm -rf %{buildroot}
 
 /usr/lib/qt5/bin/qmlplugindump -noinstantiate -nonrelocatable org.SfietKonstantin.patchmanager 2.0 %{buildroot}%{_libdir}/qt5/qml \
 > %{buildroot}%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}/plugin.qmltypes 2> /dev/null || true
-sed -i 's#%{buildroot}##g' %{buildroot}%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}/plugin.qmltypes
+sed -i 's@%{buildroot}@@g' %{buildroot}%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}/plugin.qmltypes
 
 mkdir -p %{buildroot}%{_unitdir}/multi-user.target.wants/
 ln -s ../dbus-org.SfietKonstantin.patchmanager.service %{buildroot}%{_unitdir}/multi-user.target.wants/
