@@ -1,8 +1,8 @@
 This is an archive of the GitHub Wiki pages (https://github.com/sailfishos-patches/patchmanager/wiki)
 See https://github.com/sailfishos-patches/patchmanager/issues/100 for the discussion that lead to the creation of this archive.
 
-`wiki.bundle` is a git bundle which can be used to restore the wiki repository if necessary.
-To do that, follow the `git bundle` documentation, but basically:
+`wiki.bundle` is a git bundle which can be used to restore the legacy wiki repository if necessary.
+To do that, follow the `git bundle` documentation, i.e. basically:
 
     git init new-repo
     git verify /path/to/wiki.bundle
@@ -10,6 +10,4 @@ To do that, follow the `git bundle` documentation, but basically:
     git log --oneline
 
 
-`root` contains the newest versions of the wiki strure as a copy.
-
-
+`root` contains the latest version of the legacy wiki structure as a copy.
