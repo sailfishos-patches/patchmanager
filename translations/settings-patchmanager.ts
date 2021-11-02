@@ -487,7 +487,7 @@
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="28"/>
-        <source>Allow patches</source>
+        <source>Allow incompatible patches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

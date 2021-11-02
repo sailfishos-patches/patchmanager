@@ -51,13 +51,13 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="82"/>
-        <source>Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.</source>
+        <source>Patchmanager allows to automatically modify system files via patches. It provides a daemon that performs the application of those patches and a GUI to control those operations and the installation or removal of patches.</source>
         <translation>Patchmanager möjliggör systemändringar via korrigeringsfiler. Den tillhandahåller en systemtjänst som ansvarar för att utföra dessa korrigeringar, samt ett grafiskt gränssnitt för att kontrollera dessa åtgärder och installation/avinstallation av korrigeringsfiler.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="96"/>
-        <source>Licensed under the terms of the&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; BSD 3-Clause License&lt;/a&gt;</source>
-        <translation>Licensierad under villkoren för&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; BSD 3-Clause License&lt;/a&gt;</translation>
+        <source>Licensed under the terms of the&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;BSD 3-Clause License&lt;/a&gt;</source>
+        <translation>Licensierad under villkoren för&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;BSD 3-Clause License&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="106"/>
@@ -66,7 +66,7 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="123"/>
-        <source>Credits and Thanks&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Developers&lt;/a&gt;</source>
+        <source>Credits and Acknowledgements&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Developers&lt;/a&gt;</source>
         <translation>Erkännanden och tack&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Utvecklare&lt;/a&gt;</translation>
     </message>
     <message>
@@ -82,7 +82,7 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="181"/>
-        <source>If for some reason you can not donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).</source>
+        <source>If for some reason you cannot donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).</source>
         <translation>Om du av någon anledning inte kan donera till Openrepos uppskattar vi också donationer till Free Software Foundation Europe (FSFE).</translation>
     </message>
     <message>
@@ -142,8 +142,8 @@
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="165"/>
-        <source>This patch uses the legacy format for its patch.json file. If you are the maintainer, do consider updating to the new format. If you are using Web Catalog you should not include a patch.json file at all in your upload.&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for more information.</source>
-        <translation>Den här korrigeringen använder det äldre formatet för filen patch.json. Om du är dess utvecklare bör du överväga att uppdatera till det nya formatet. Om du använder webbkatalogen bör du inte inkludera en patch.json alls i uppladdningen. &lt;br /&gt;Se utvecklaravsnittet i &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; för mer information.</translation>
+        <source>This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for details.</source>
+        <translation>Den här korrigeringen använder det äldre formatet för filen patch.json. Om du är dess utvecklare bör du överväga att uppdatera till det nya formatet. Om du använder webbkatalogen skall du inte inkludera en patch.json alls i uppladdningen. &lt;br /&gt;Se utvecklaravsnittet i &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; för mer information.</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="171"/>
@@ -162,13 +162,13 @@
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="261"/>
-        <source>Press and hold to copy to Clipboard</source>
+        <source>Press and hold to copy log to the clipboard</source>
         <translation>Långtryck för att kopiera till urklipp</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="274"/>
-        <source>No log yet</source>
-        <translation>Ingen logg ännu</translation>
+        <source>No log exists yet</source>
+        <translation>Det finns ännu inga loggar</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="116"/>
@@ -177,8 +177,8 @@
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="48"/>
-        <source>Log copied to Clipboard!</source>
-        <translation>Logg kopierad till urklipp!</translation>
+        <source>Copied log to clipboard.</source>
+        <translation>Kopierade logg till urklipp</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="75"/>
@@ -249,8 +249,9 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="357"/>
-        <source>This patch is not compatible with SailfishOS version!</source>
-        <translation>Denna korrigeringsfil är inte kompatibel med din SailfishOS-version!</translation>
+        <location filename="../src/qml/WebPatchPage.qml" line="333"/>
+        <source>This patch is incompatible with the installed Sailfish OS version.</source>
+        <translation>Denna korrigeringsfil är inte kompatibel med den installerade SailfishOS-version!</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="365"/>
@@ -265,12 +266,12 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="485"/>
         <source>May conflict with another patch, see %1</source>
-        <translation type="unfinished"/>
+        <translation>Kan komma i konflikt med en annan korrigering, se %1</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="486"/>
         <source>May conflict with %2 other patches, see %1</source>
-        <translation type="unfinished"/>
+        <translation>Kan komma i konflikt med %2 andra korrigeringar, se %1</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
@@ -305,8 +306,8 @@
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="56"/>
-        <source>Some services will now be restarted. Phone interface might take time to load for a short moment.</source>
-        <translation>Vissa tjänster kommer att startas om. Det kan ta en kort stund att läsa in telefonens gränssnitt igen.</translation>
+        <source>Some services will be restarted now. Reloading the homescreen of the device might take a little time.</source>
+        <translation>Vissa tjänster kommer att startas om nu. Uppdatering av hemskärmen kan ta lite tid.</translation>
     </message>
     <message>
         <location filename="../src/qml/ScreenshotsPage.qml" line="71"/>
@@ -397,11 +398,6 @@
         <translation>Filer</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="333"/>
-        <source>This file is not compatible with SailfishOS version!</source>
-        <translation>Denna fil är inte kompatibel med din SailfishOS-version!</translation>
-    </message>
-    <message>
         <location filename="../src/qml/WebPatchPage.qml" line="335"/>
         <source>Install patch %1</source>
         <translation>Installera korrigeringfil %1</translation>
@@ -479,13 +475,13 @@
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="20"/>
-        <source>Apply on boot</source>
-        <translation>Tillämpa vid systemstart</translation>
+        <source>Apply patches when booting</source>
+        <translation>Tillämpa korrigeringar vid uppstart</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="21"/>
-        <source>Apply all enabled patches when the system starts</source>
-        <translation>Tillämpa alla aktiverade korrigeringar när systemet startas</translation>
+        <source>Automatically apply all enabled patches when Sailfish OS starts</source>
+        <translation>Tillämpa alla aktiverade korrigeringar när Sailfish OS startas</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="28"/>
@@ -494,8 +490,8 @@
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="29"/>
-        <source>Apply patches which are not marked compatible with the installed Sailfish OS version. Note that this will not fix patches that are actually incompatible.</source>
-        <translation>Tillämpa korrigeringar som inte är märkta, kompatibla med den installerade versionen av Sailfish OS. Notera att detta inte fixar korrigeringar som verkligen inte är kompatibla.</translation>
+        <source>Enable applying patches, which are not marked as compatible with the installed Sailfish OS version. Note that patches, which are actually incompatible, will not work.</source>
+        <translation>Tillåt tillämpning av korrigeringar som inte är märkta som kompatibla med den installerade versionen av Sailfish OS. Notera att korrigeringar som verkligen inte är kompatibla, inte kommer att fungera.</translation>
     </message>
 </context>
 <context>
