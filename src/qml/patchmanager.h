@@ -104,7 +104,6 @@ public:
 
 private slots:
     void requestListPatches(const QString &patch, bool installed);
-    void requestServicesToBeToggled();
 
 public slots:
     QDBusPendingCallWatcher *applyPatch(const QString &patch);

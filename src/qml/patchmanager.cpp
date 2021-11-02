@@ -278,25 +278,6 @@ void PatchManager::call(QDBusPendingCallWatcher *call)
     });
 }
 
-/*
-void PatchManager::requestServicesToBeToggled()
-{
-    qDebug() << Q_FUNC_INFO;
-
-    QDBusPendingCallWatcher *watch = new QDBusPendingCallWatcher(m_interface->getServicesToBeToggled(), this);
-    connect(watch, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
-        watcher->deleteLater();
-        QDBusPendingReply<QStringList> reply = *watcher;
-        if (reply.isError()) {
-            qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
-            return;
-        }
-        const QStringList list = reply.value();
-        m_servicesToBeToggled = list;
-    });
-}
-*/
-
 void PatchManager::requestListPatches(const QString &patch, bool installed)
 {
     qDebug() << Q_FUNC_INFO << patch << installed;
