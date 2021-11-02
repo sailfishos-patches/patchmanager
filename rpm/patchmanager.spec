@@ -16,6 +16,8 @@ URL:        https://github.com/sailfishos-patches/patchmanager
 Source0:    %{name}-%{version}.tar.bz2
 Requires:   unzip
 Requires:   patch
+Requires:   grep
+Requires:   sed
 Requires:   sailfish-version >= 3.4.0
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
