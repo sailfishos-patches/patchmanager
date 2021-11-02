@@ -10,6 +10,4 @@ To do that, follow the `git bundle` documentation, but basically:
     git log --oneline
 
 
-`root` contains the newest versions of the wiki strure as a copy.
-
-
+`root` contains the newest version of the wiki structure as a copy.
