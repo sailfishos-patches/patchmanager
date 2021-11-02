@@ -1168,6 +1168,10 @@ bool PatchManagerObject::putSettings(const QString &name, const QVariant &value)
     QVariant old = m_settings->value(key);
     if (old != value) {
         m_settings->setValue(key ,value);
+        if (name == QStringLiteral("bitnessMangle")) {
+            qDebug() << Q_FUNC_INFO << "Changing bitness mangle refreshes patch list";
+            refreshPatchList();
+        }
         return true;
     }
     return false;
