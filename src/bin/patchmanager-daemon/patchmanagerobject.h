@@ -181,6 +181,8 @@ private slots:
     void restartKeyboard();
     void doRestartKeyboard();
 
+    QStringList getMangleCandidates();
+
 private:
     void restartService(const QString &serviceName);
 
@@ -213,7 +215,6 @@ private:
     QSet<QString> getAppliedPatches() const;
     void setAppliedPatches(const QSet<QString> &patches);
 
-    void getMangleCandidates();
     void getVersion();
 
     void lateInitialize();
@@ -239,7 +240,7 @@ private:
 
     QString m_osRelease;
 
-    QVector<QStringList> m_mangleCandidates;
+    QStringList m_mangleCandidates;
 
     PatchManagerAdaptor *m_adaptor = nullptr;
     QNetworkAccessManager *m_nam = nullptr;
