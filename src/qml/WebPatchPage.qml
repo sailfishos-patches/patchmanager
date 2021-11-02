@@ -51,7 +51,7 @@ Page {
     onStatusChanged: {
         if (status == PageStatus.Active) {
             voteAction = PatchManager.checkVote(modelData.name)
-            console.log("versions:", JSON.stringify(versions))
+            console.info("versions:", JSON.stringify(versions))
 
             PatchManager.watchCall(PatchManager.downloadPatchInfo(modelData.name),
                                    function(d) {
@@ -330,14 +330,14 @@ Page {
 
                     onClicked: {
                         if (!PatchManager.developerMode && !isCompatible) {
-                            errorMesageComponent.createObject(fileDelegate, {text: qsTranslate("", "This patch is incompatible with the installed Sailfish OS version.")})
+                            errorMessageComponent.createObject(fileDelegate, {text: qsTranslate("", "This patch is incompatible with the installed Sailfish OS version.")})
                         } else if (!fileDelegate.isInstalled) {
                             remorseAction(qsTranslate("", "Install patch %1").arg(patchData.display_name), installPatch)
                         }
                     }
 
                     function removeAction() {
-                        console.log("###")
+                        console.info("###")
                     }
 
                     function installPatch() {
@@ -351,7 +351,7 @@ Page {
                                                    container.versionsChanged()
                                                },
                                                function(error) {
-                                                   console.log(error)
+                                                   console.error(error)
                                                })
                     }
 
@@ -417,7 +417,7 @@ Page {
                     }
 
                     Component {
-                        id: errorMesageComponent
+                        id: errorMessageComponent
                         ItemErrorComponent {}
                     }
                 }

@@ -47,11 +47,11 @@ Page {
         if (status == PageStatus.Active) {
             PatchManager.watchCall(PatchManager.listVersions(),
                 function(patches) {
-                    console.log(patches)
+                    console.debug(patches)
                     container.versions = patches
                 },
                 function(error) {
-                    console.log(error)
+                    console.warn(error)
                 }
             )
 //            patchmanagerDbusInterface.listVersions()
