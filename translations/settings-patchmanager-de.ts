@@ -15,7 +15,7 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="53"/>
         <source>Patchmanager will automatically apply all patches in 10 seconds.</source>
-        <translation>Patchmanager wendet alle Patches automatisch in 10 Sekunden an.</translation>
+        <translation>Patchmanager wendet alle Patches in 10 Sekunden automatisch an.</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="136"/>
@@ -51,13 +51,13 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="82"/>
-        <source>Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.</source>
-        <translation>Patchmanager ermöglicht es durch Patches Veränderungen am System vorzunehmen. Patchmanager besteht zum einen aus einem Daemon, welcher für die Verarbeitung der Patches zuständig ist, und zum anderen aus einer GUI, mit welcher sich Patches installieren/entfernen lassen.</translation>
+        <source>Patchmanager allows to automatically modify system files via patches. It provides a daemon that performs the application of those patches and a GUI to control those operations and the installation or removal of patches.</source>
+        <translation>Patchmanager ermöglicht es durch Patches System-Dateien zu verändern. Patchmanager besteht aus einem Daemon, welcher für die Verarbeitung der Patches zuständig ist, und aus einer GUI, die diese Funktionen sowie die Installation und das Entfernen von Patches steuert.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="96"/>
-        <source>Licensed under the terms of the&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; BSD 3-Clause License&lt;/a&gt;</source>
-        <translation>Lizenziert unter den Bedingungen der&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; &quot;BSD-3-Clause&quot; Lizenz&lt;/a&gt;</translation>
+        <source>Licensed under the terms of the&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;BSD 3-Clause License&lt;/a&gt;</source>
+        <translation>Lizensiert unter den Bedingungen der&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;&quot;BSD 3-Clause&quot; Lizenz&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="106"/>
@@ -66,7 +66,7 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="123"/>
-        <source>Credits and Thanks&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Developers&lt;/a&gt;</source>
+        <source>Credits and Acknowledgements&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Developers&lt;/a&gt;</source>
         <translation>Danksagungen&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Entwickler&lt;/a&gt;</translation>
     </message>
     <message>
@@ -82,7 +82,7 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="181"/>
-        <source>If for some reason you can not donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).</source>
+        <source>If for some reason you cannot donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).</source>
         <translation>Wenn sie aus irgendeinem Grund nicht an Openrepos spenden möchten, so schätzen wir auch eine Spenden an die Free Software Foundation Europe (FSFE).</translation>
     </message>
     <message>
@@ -142,8 +142,8 @@
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="165"/>
-        <source>This patch uses the legacy format for its patch.json file. If you are the maintainer, do consider updating to the new format. If you are using Web Catalog you should not include a patch.json file at all in your upload.&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for more information.</source>
-        <translation>Dieser Patch nutzt das &quot;Legacy Format&quot; für seine patch.json Datei. Wenn sie dessen Betreuer sind, ziehen sie in Erwägung auf das neue Format zu aktualisieren. Wenn sie den Web-Katalog verwenden, sollen sie keine patch.json Datei mit hochladen.&lt;br /&gt;Siehe den Entwickler-Abschnitt im &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; für weitere Informationen.</translation>
+        <source>This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for details.</source>
+        <translation>Dieser Patch nutzt das alte &quot;Legacy Format&quot; für seine patch.json Datei. Wenn du dessen Betreuer bist, bitte ziehe in Erwägung auf das neue Format zu aktualisieren; wenn du den Web-Katalog verwendest, sollst du keine patch.json Datei mit hochladen.&lt;br /&gt;Siehe den Entwickler-Abschnitt im &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; für weitere Informationen.</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="171"/>
@@ -162,13 +162,13 @@
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="261"/>
-        <source>Press and hold to copy to Clipboard</source>
-        <translation>Lange gedrückt halten, um in die Zwischenablage zu kopieren</translation>
+        <source>Press and hold to copy log to the clipboard</source>
+        <translation>Lange gedrückt halten, um das Log in die Zwischenablage zu kopieren</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="274"/>
-        <source>No log yet</source>
-        <translation>Noch kein Protokoll vorhanden</translation>
+        <source>No log exists yet</source>
+        <translation>Es existiert noch kein Log</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="116"/>
@@ -177,8 +177,8 @@
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="48"/>
-        <source>Log copied to Clipboard!</source>
-        <translation>Log in die Zwischenablage kopiert!</translation>
+        <source>Copied log to clipboard.</source>
+        <translation>Log zum Clipboard kopiert</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="75"/>
@@ -249,8 +249,9 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="357"/>
-        <source>This patch is not compatible with SailfishOS version!</source>
-        <translation>Dieser Patch ist nicht kompatibel mit der installierten SailfishOS Version!</translation>
+        <location filename="../src/qml/WebPatchPage.qml" line="333"/>
+        <source>This patch is incompatible with the installed Sailfish OS version.</source>
+        <translation>Dieser Patch ist inkompatibel mit der installierten Sailfish OS Version.</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="365"/>
@@ -305,8 +306,8 @@
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="56"/>
-        <source>Some services will now be restarted. Phone interface might take time to load for a short moment.</source>
-        <translation>Einige Dienste werden nun neu gestartet. Das Neustarten der Benutzeroberfläche wird einen kurzen Moment dauern.</translation>
+        <source>Some services will be restarted now. Reloading the homescreen of the device might take a little time.</source>
+        <translation>Einige Dienste werden nun neu gestartet. Das Neuladen der grafischen Oberfläche des Geräts kann ein wenig Zeit brauchen.</translation>
     </message>
     <message>
         <location filename="../src/qml/ScreenshotsPage.qml" line="71"/>
@@ -397,11 +398,6 @@
         <translation>Dateien</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="333"/>
-        <source>This file is not compatible with SailfishOS version!</source>
-        <translation>Diese Datei ist nicht kompatibel zu der SailfishOS Version!</translation>
-    </message>
-    <message>
         <location filename="../src/qml/WebPatchPage.qml" line="335"/>
         <source>Install patch %1</source>
         <translation>Patch %1 installieren</translation>
@@ -479,13 +475,13 @@
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="20"/>
-        <source>Apply on boot</source>
-        <translation>Beim Booten anwenden</translation>
+        <source>Apply patches when booting</source>
+        <translation>Patches beim Booten anwenden</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="21"/>
-        <source>Apply all enabled patches when the system starts</source>
-        <translation>Alle gewählten Patches beim Systemstart anwenden</translation>
+        <source>Automatically apply all enabled patches when Sailfish OS starts</source>
+        <translation>Automatisch alle aktivierten Patches beim Start von Sailfish OS anwenden</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="28"/>
@@ -494,8 +490,8 @@
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="29"/>
-        <source>Apply patches which are not marked compatible with the installed Sailfish OS version. Note that this will not fix patches that are actually incompatible.</source>
-        <translation>Patches anwenden, die nicht als kompatibel mit der installierten Sailfish OS Version markiert sind. NB: Das behebt keine Fehler durch tatsächlich inkompatible Patches.</translation>
+        <source>Enable applying patches, which are not marked as compatible with the installed Sailfish OS version. Note that patches, which are actually incompatible, will not work.</source>
+        <translation>Ermögliche Patches anzuwenden, die nicht als kompatibel mit der installierten Sailfish OS Version gekennzeichnet sind. NB: Patches, die tatsächlich inkompatibel sind, werden nicht funktionieren.</translation>
     </message>
 </context>
 <context>
