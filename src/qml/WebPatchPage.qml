@@ -330,7 +330,7 @@ Page {
 
                     onClicked: {
                         if (!PatchManager.developerMode && !isCompatible) {
-                            errorMesageComponent.createObject(fileDelegate, {text: qsTranslate("", "This patch is incompatible with the installed Sailfish OS version.")})
+                            errorMessageComponent.createObject(fileDelegate, {text: qsTranslate("", "This patch is incompatible with the installed Sailfish OS version.")})
                         } else if (!fileDelegate.isInstalled) {
                             remorseAction(qsTranslate("", "Install patch %1").arg(patchData.display_name), installPatch)
                         }
@@ -417,7 +417,7 @@ Page {
                     }
 
                     Component {
-                        id: errorMesageComponent
+                        id: errorMessageComponent
                         ItemErrorComponent {}
                     }
                 }
