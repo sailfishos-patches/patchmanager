@@ -143,11 +143,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="165"/>
-        <source>This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for details.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="171"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
@@ -211,6 +206,11 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="137"/>
         <source>May conflict with:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="165"/>
+        <source>This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&amp;lt;br /&amp;gt;See the developer section in the &amp;lt;a href=&amp;quot;%1&amp;quot;&amp;gt;README&amp;lt;/a&amp;gt; for details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -302,13 +302,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/RestartServicesDialog.qml" line="48"/>
-        <source>Restart services</source>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="52"/>
+        <source>Restart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/RestartServicesDialog.qml" line="56"/>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="58"/>
         <source>Some services will be restarted now. Reloading the homescreen of the device might take a little time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="62"/>
+        <source>List of services:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="75"/>
+        <source>Note: this will close all apps!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="76"/>
+        <source>Note: this will close %1!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="79"/>
+        <source>Note: this will close the %1 app!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
