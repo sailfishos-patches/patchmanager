@@ -98,22 +98,6 @@ PatchManager::PatchManager(QObject *parent)
 
     });
 
-    QDBusPendingCallWatcher *watchGetToggleServicesList = new QDBusPendingCallWatcher(m_interface->getToggleServicesList(), this);
-    connect(watchGetToggleServicesList, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
-        watcher->deleteLater();
-        QDBusPendingReply<QStringList> reply = *watcher;
-        if (reply.isError()) {
-            qWarning() << Q_FUNC_INFO << reply.error().type() << reply.error().name() << reply.error().message();
-            return;
-        }
-
-        qDebug() << Q_FUNC_INFO << reply.value();
-
-        m_servicesToBeToggled = reply.value();
-        emit toggleServicesListChanged(m_servicesToBeToggled);
-    });
-
-
     QDBusPendingCallWatcher *watchGetToggleServices = new QDBusPendingCallWatcher(m_interface->getToggleServices(), this);
     connect(watchGetToggleServices, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
         watcher->deleteLater();
@@ -251,7 +235,16 @@ QString PatchManager::patchmanagerVersion() const
 
 QStringList PatchManager::toggleServicesList() const
 {
-    return m_servicesToBeToggled;
+    QStringList list;
+
+    QDBusPendingReply<QStringList> reply = m_interface->getToggleServicesList();
+    reply.waitForFinished();
+    if (reply.isFinished()) {
+        qDebug() << Q_FUNC_INFO << "dbus replied:" << reply.value();
+        list = reply.value();;
+        return list;
+    }
+    return list;
 }
 
 bool PatchManager::toggleServices() const

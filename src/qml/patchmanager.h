@@ -177,8 +177,6 @@ private:
     PatchManagerInterface *m_interface;
     PatchManagerTranslator *m_translator;
 
-    QStringList m_servicesToBeToggled;
-
     bool m_toggleServices = false;
     bool m_failed = false;
     bool m_loaded = false;
