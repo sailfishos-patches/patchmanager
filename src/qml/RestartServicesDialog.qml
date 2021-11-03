@@ -67,7 +67,7 @@ Dialog {
             Repeater {
                 model: PatchManager.appsToRestart
                 delegate: Component { TextSwitch {
-                    text: modelData //TODO: this displays the raw strings from the daemon. Should be formatted/enabled for translation
+                    text: qsTranslate("Sections", modelData)
                     automaticCheck: false
                     checked: true
                     enabled: true
