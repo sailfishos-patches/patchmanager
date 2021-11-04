@@ -195,7 +195,7 @@ Page {
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         font.pixelSize: Theme.fontSizeExtraSmall
-                        text: container.sortByDate ? model.category : model.author
+                        text: container.sortByDate ? qsTranslate("Sections", model.category) : model.author
                         color: Theme.secondaryHighlightColor
                     }
                 }
