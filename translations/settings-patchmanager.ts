@@ -501,73 +501,73 @@
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="50"/>
         <source>browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Browser</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="51"/>
         <source>camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Camera</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="52"/>
         <source>calendar</source>
-        <translation type="unfinished"></translation>
+        <translation>Calendar</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="53"/>
         <source>clock</source>
-        <translation type="unfinished"></translation>
+        <translation>Clock</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="54"/>
         <source>contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>Contacts</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="55"/>
         <source>email</source>
-        <translation type="unfinished"></translation>
+        <translation>Email</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="56"/>
         <source>gallery</source>
-        <translation type="unfinished"></translation>
+        <translation>Gallery</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="57"/>
         <source>homescreen</source>
-        <translation type="unfinished"></translation>
+        <translation>Homescreen</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="58"/>
         <source>media</source>
-        <translation type="unfinished"></translation>
+        <translation>Media</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="59"/>
         <source>messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Messages</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="60"/>
         <source>phone</source>
-        <translation type="unfinished"></translation>
+        <translation>Phone</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="61"/>
         <source>silica</source>
-        <translation type="unfinished"></translation>
+        <translation>Silica</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="62"/>
         <source>settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Settings</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="63"/>
         <location filename="../src/qml/patchmanager.cpp" line="216"/>
         <source>other</source>
-        <translation type="unfinished"></translation>
+        <translation>Other</translation>
     </message>
 </context>
 </TS>
