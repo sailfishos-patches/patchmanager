@@ -127,8 +127,9 @@
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="85"/>
-        <source>Patch information</source>
-        <translation>Informationen zum Patch</translation>
+        <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
+        <source>Patch details</source>
+        <translation>Patch-Details</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="107"/>
@@ -272,11 +273,6 @@
         <location filename="../src/qml/PatchManagerPage.qml" line="486"/>
         <source>May conflict with %2 other patches, see %1</source>
         <translation>Könnte mit %2 anderen Patches kollidieren, siehe %1</translation>
-    </message>
-    <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
-        <source>Patch info</source>
-        <translation>Informationen</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
