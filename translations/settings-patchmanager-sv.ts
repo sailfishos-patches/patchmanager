@@ -20,12 +20,12 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="136"/>
         <source>Applied patches successfully.</source>
-        <translation>Tillämpning slutförd.</translation>
+        <translation>Korrigeringsfiler tillämpning slutförd.</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="137"/>
         <source>Failed to apply patches!</source>
-        <translation>Kunde inte tillämpa korrigeringar!</translation>
+        <translation>Kunde inte tillämpa korrigeringsfiler!</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="66"/>
@@ -544,7 +544,7 @@
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="59"/>
         <source>messages</source>
-        <translation>Meddelande</translation>
+        <translation>Meddelanden</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="60"/>
