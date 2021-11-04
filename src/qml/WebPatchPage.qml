@@ -82,7 +82,7 @@ Page {
             spacing: Theme.paddingMedium
 
             PageHeader {
-                title: qsTranslate("", "Patch information")
+                title: qsTranslate("", "Patch details")
             }
 
             Label {
