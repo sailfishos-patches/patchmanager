@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="82"/>
         <source>Patchmanager allows to automatically modify system files via patches. It provides a daemon that performs the application of those patches and a GUI to control those operations and the installation or removal of patches.</source>
-        <translation>Patchmanager ermöglicht es durch Patches System-Dateien zu verändern. Patchmanager besteht aus einem Daemon, welcher für die Verarbeitung der Patches zuständig ist, und aus einer GUI, die diese Funktionen sowie die Installation und das Entfernen von Patches steuert.</translation>
+        <translation>Patchmanager ermöglicht automatisch durch Patches System-Dateien zu verändern. Patchmanager besteht aus einem Daemon, welcher für die Verarbeitung der Patches zuständig ist, und aus einer GUI, die diese Funktionen sowie die Installation und das Entfernen von Patches steuert.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="96"/>
@@ -276,12 +276,12 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
         <source>Patch info</source>
-        <translation>Patchinformation</translation>
+        <translation>Informationen</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
         <source>Unapply</source>
-        <translation>Rückgängig machen</translation>
+        <translation>Entfernen</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
@@ -486,7 +486,7 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="28"/>
         <source>Allow incompatible patches</source>
-        <translation>Nicht kompatible Patches erlauben</translation>
+        <translation>Inkompatible Patches erlauben</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="29"/>
