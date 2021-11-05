@@ -10,7 +10,7 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="45"/>
         <source>Apply patches</source>
-        <translation>Patches anwenden</translation>
+        <translation>Patches aktivieren</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="53"/>
@@ -25,7 +25,7 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="137"/>
         <source>Failed to apply patches!</source>
-        <translation>Fehler beim Anwenden der Patches!</translation>
+        <translation>Fehler beim Aktivieren der Patches!</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="66"/>
@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="28"/>
         <source>Applying patches</source>
-        <translation>Anwenden der Patches</translation>
+        <translation>Aktivieren der Patches</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="222"/>
