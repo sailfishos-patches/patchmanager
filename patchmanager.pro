@@ -37,6 +37,11 @@ qm.commands += lupdate -noobsolete $${TRANSLATION_SOURCES} -ts $${TS_FILE} && \
 # create the qm files
 qm.commands += ; [ $$HAVE_TRANSLATIONS -eq 1 ] && lrelease -nounfinished $${TRANSLATIONS_OUT} || :
 
+# special case: as TS_FILE serves as both source file as well as
+# the English translation source, create the en qm file from it:
+qm.files += $$replace(TS_FILE, \.ts, -en.qm)
+qm.commands += ; [ $$HAVE_TRANSLATIONS -eq 1 ] && lrelease -nounfinished $$TS_FILE -qm $$replace(TS_FILE, \.ts, -en.qm) || :
+
 INSTALLS += qm
 
 OTHER_FILES += $$TRANSLATIONS
