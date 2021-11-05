@@ -10,12 +10,12 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="45"/>
         <source>Apply patches</source>
-        <translation>Patches anwenden</translation>
+        <translation>Patches aktivieren</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="53"/>
         <source>Patchmanager will automatically apply all patches in 10 seconds.</source>
-        <translation>Patchmanager wendet alle Patches in 10 Sekunden automatisch an.</translation>
+        <translation>Patchmanager aktiviert alle Patches in 10 Sekunden automatisch.</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="136"/>
@@ -25,7 +25,7 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="137"/>
         <source>Failed to apply patches!</source>
-        <translation>Fehler beim Anwenden der Patches!</translation>
+        <translation>Fehler beim Aktivieren der Patches!</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="66"/>
@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="28"/>
         <source>Applying patches</source>
-        <translation>Anwenden der Patches</translation>
+        <translation>Aktivieren der Patches</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="222"/>
@@ -113,17 +113,17 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="67"/>
         <source>Unapply patch</source>
-        <translation>Patch entfernen</translation>
+        <translation>Patch deaktivieren</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="68"/>
         <source>Apply patch</source>
-        <translation>Patch anwenden</translation>
+        <translation>Patch aktivieren</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="85"/>
         <source>Load engine before applying patches</source>
-        <translation>Engine laden, ehe Patches angewendet werden</translation>
+        <translation>Engine laden, ehe Patches aktiviert werden</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="85"/>
@@ -215,7 +215,7 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="147"/>
         <source>Unapply all patches</source>
-        <translation>Alle Patches entfernen</translation>
+        <translation>Alle Patches deaktivieren</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="153"/>
@@ -277,12 +277,12 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
         <source>Unapply</source>
-        <translation>Entfernen</translation>
+        <translation>Deaktivieren</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
         <source>Apply</source>
-        <translation>Anwenden</translation>
+        <translation>Aktivieren</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="499"/>
@@ -472,12 +472,12 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="20"/>
         <source>Apply patches when booting</source>
-        <translation>Patches beim Booten anwenden</translation>
+        <translation>Patches beim Systemstart aktivieren</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="21"/>
         <source>Automatically apply all enabled patches when Sailfish OS starts</source>
-        <translation>Automatisch alle aktivierten Patches beim Start von Sailfish OS anwenden</translation>
+        <translation>Automatisch alle ausgewählten Patches beim Start von Sailfish OS aktivieren.</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="28"/>
