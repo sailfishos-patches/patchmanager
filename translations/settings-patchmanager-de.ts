@@ -10,7 +10,7 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="45"/>
         <source>Apply patches</source>
-        <translation>Patches anwenden</translation>
+        <translation>Patches aktivieren</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="53"/>
@@ -25,7 +25,7 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="137"/>
         <source>Failed to apply patches!</source>
-        <translation>Fehler beim Anwenden der Patches!</translation>
+        <translation>Fehler beim Aktivieren der Patches!</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="66"/>
@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="28"/>
         <source>Applying patches</source>
-        <translation>Anwenden der Patches</translation>
+        <translation>Aktivieren der Patches</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="222"/>
@@ -118,7 +118,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="68"/>
         <source>Apply patch</source>
-        <translation>Patch anwenden</translation>
+        <translation>Patch aktivieren</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="85"/>
@@ -282,7 +282,7 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
         <source>Apply</source>
-        <translation>Anwenden</translation>
+        <translation>Aktivieren</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="499"/>
@@ -472,12 +472,12 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="20"/>
         <source>Apply patches when booting</source>
-        <translation>Patches beim Booten anwenden</translation>
+        <translation>Patches beim Systemstart aktivieren</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="21"/>
         <source>Automatically apply all enabled patches when Sailfish OS starts</source>
-        <translation>Automatisch alle aktivierten Patches beim Start von Sailfish OS anwenden</translation>
+        <translation>Automatisch alle ausgewählten Patches beim Start von Sailfish OS aktivieren.</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="28"/>
