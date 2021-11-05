@@ -72,11 +72,13 @@ Dialog {
                     checked: true
                     enabled: true
                     description: {
-                        if ((modelData == "homescreen") || (modelData == "silica"))   { return qsTranslate("","Note: this will close all apps!"); }
-                        else if (modelData == "settings")  { return qsTranslate("","Note: this will close %1!").arg("Patchmanager"); }
+                        if ((modelData == "homescreen")
+                         || (modelData == "silica"))
+                                                           { return qsTranslate("","Note: this will close all apps!"); }
+                        else if (modelData == "settings")  { return qsTranslate("","Note: this will close %1!").arg(qsTranslate("", "Patchmanager")); }
                         else if (modelData == "keyboard")  { return "" }
                         else if (modelData == "other")     { return "" }
-                        else { return qsTranslate("","Note: this will close the %1 app!").arg(modelData); }
+                        else { return qsTranslate("","Note: this will close the %1 app!").arg(text); }
                     }
                     TouchBlocker { anchors.fill: parent}
                   }
