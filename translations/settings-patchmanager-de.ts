@@ -10,7 +10,7 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="45"/>
         <source>Apply patches</source>
-        <translation>Patches anwenden</translation>
+        <translation>Patches aktivieren</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="53"/>
