@@ -10,12 +10,12 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="45"/>
         <source>Apply patches</source>
-        <translation>Patches anwenden</translation>
+        <translation>Patches aktivieren</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="53"/>
         <source>Patchmanager will automatically apply all patches in 10 seconds.</source>
-        <translation>Patchmanager wendet alle Patches in 10 Sekunden automatisch an.</translation>
+        <translation>Patchmanager aktiviert alle Patches in 10 Sekunden automatisch.</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="136"/>
@@ -25,7 +25,7 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="137"/>
         <source>Failed to apply patches!</source>
-        <translation>Fehler beim Anwenden der Patches!</translation>
+        <translation>Fehler beim Aktivieren der Patches!</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="66"/>
@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="28"/>
         <source>Applying patches</source>
-        <translation>Anwenden der Patches</translation>
+        <translation>Aktivieren der Patches</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="222"/>
@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="82"/>
         <source>Patchmanager allows to automatically modify system files via patches. It provides a daemon that performs the application of those patches and a GUI to control those operations and the installation or removal of patches.</source>
-        <translation>Patchmanager ermöglicht automatisch durch Patches System-Dateien zu verändern. Patchmanager besteht aus einem Daemon, welcher für die Verarbeitung der Patches zuständig ist, und aus einer GUI, die diese Funktionen sowie die Installation und das Entfernen von Patches steuert.</translation>
+        <translation>Patchmanager ermöglicht es, automatisch durch Patches Systemdateien zu verändern. Er besteht aus einem Daemon, welcher für die Verarbeitung der Patches zuständig ist, und aus einer GUI, die diese Funktionen sowie die Installation und das Deinstallation von Patches steuert.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="96"/>
@@ -78,12 +78,12 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="160"/>
         <source>If you appreciate our work, please consider a donation to help covering the hosting costs for Openrepos. Openrepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of patches is hosted there.</source>
-        <translation>Wenn sie unsere Arbeit schätzen, bitten wir eine Spende in Erwägung zu ziehen, um die Hosting-Kosten für Openrepos zu decken. Openrepos stellt gerade für Patchmanager eine kritische Infrastruktur dar, weil der Web Katalog für Patches dort beheimatet ist.</translation>
+        <translation>Wenn du unsere Arbeit schätzt, bitten wir eine Spende in Erwägung zu ziehen, um die Hosting-Kosten für Openrepos zu decken. Openrepos stellt gerade für Patchmanager eine kritische Infrastruktur dar, weil der Web Katalog für Patches dort beheimatet ist.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="181"/>
         <source>If for some reason you cannot donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).</source>
-        <translation>Wenn sie aus irgendeinem Grund nicht an Openrepos spenden möchten, so schätzen wir auch eine Spenden an die Free Software Foundation Europe (FSFE).</translation>
+        <translation>Wenn du aus irgendeinem Grund nicht an Openrepos spenden möchtest, so schätzen wir auch eine Spenden an die Free Software Foundation Europe (FSFE).</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="246"/>
@@ -113,17 +113,17 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="67"/>
         <source>Unapply patch</source>
-        <translation>Patch entfernen</translation>
+        <translation>Patch deaktivieren</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="68"/>
         <source>Apply patch</source>
-        <translation>Patch anwenden</translation>
+        <translation>Patch aktivieren</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="85"/>
         <source>Load engine before applying patches</source>
-        <translation>Engine laden, ehe Patches angewendet werden</translation>
+        <translation>Engine laden, ehe Patches aktiviert werden</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="85"/>
@@ -184,12 +184,12 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="75"/>
         <source>Uninstall patch</source>
-        <translation>Patch entfernen</translation>
+        <translation>Patch deinstallieren</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="78"/>
         <source>Patch %1 uninstalled.</source>
-        <translation>Patch %1 entfernt.</translation>
+        <translation>Patch %1 deinstalliert.</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="120"/>
@@ -215,7 +215,7 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="147"/>
         <source>Unapply all patches</source>
-        <translation>Alle Patches entfernen</translation>
+        <translation>Alle Patches deaktivieren</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="153"/>
@@ -277,12 +277,12 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
         <source>Unapply</source>
-        <translation>Entfernen</translation>
+        <translation>Deaktivieren</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
         <source>Apply</source>
-        <translation>Anwenden</translation>
+        <translation>Aktivieren</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="499"/>
@@ -472,12 +472,12 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="20"/>
         <source>Apply patches when booting</source>
-        <translation>Patches beim Booten anwenden</translation>
+        <translation>Patches beim Systemstart aktivieren</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="21"/>
         <source>Automatically apply all enabled patches when Sailfish OS starts</source>
-        <translation>Automatisch alle aktivierten Patches beim Start von Sailfish OS anwenden</translation>
+        <translation>Automatisch alle ausgewählten Patches beim Start von Sailfish OS aktivieren.</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="28"/>
@@ -487,7 +487,7 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="29"/>
         <source>Enable applying patches, which are not marked as compatible with the installed Sailfish OS version. Note that patches, which are actually incompatible, will not work.</source>
-        <translation>Ermögliche Patches anzuwenden, die nicht als kompatibel mit der installierten Sailfish OS Version gekennzeichnet sind. NB: Patches, die tatsächlich inkompatibel sind, werden nicht funktionieren.</translation>
+        <translation>Ermögliche es, Patches zu aktivieren, die nicht als kompatibel mit der installierten Sailfish OS Version gekennzeichnet sind. NB: Patches, die tatsächlich inkompatibel sind, werden nicht funktionieren.</translation>
     </message>
 </context>
 <context>
