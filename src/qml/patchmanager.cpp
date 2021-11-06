@@ -61,6 +61,7 @@ static const char *noop_strings[] = {
     QT_TRANSLATE_NOOP("Sections", "silica"),
     QT_TRANSLATE_NOOP("Sections", "settings"),
     QT_TRANSLATE_NOOP("Sections", "other"),
+    QT_TRANSLATE_NOOP("Sections", "keyboard"),
 };
 
 PatchManager::PatchManager(QObject *parent)

@@ -592,9 +592,14 @@
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="63"/>
-        <location filename="../src/qml/patchmanager.cpp" line="216"/>
+        <location filename="../src/qml/patchmanager.cpp" line="217"/>
         <source>other</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/patchmanager.cpp" line="64"/>
+        <source>keyboard</source>
+        <translation>Keyboard</translation>
     </message>
 </context>
 </TS>
