@@ -8,7 +8,7 @@
 Name:       patchmanager
 
 Summary:    Patchmanager allows for managing Sailfish OS patches
-Version:    3.1.0
+Version:    3.1.1
 Release:    1
 Group:      Qt/Qt
 License:    BSD-3-Clause
@@ -47,10 +47,6 @@ BuildRequires:  pkgconfig(popt)
 rm -rf %{buildroot}
 
 %qmake5_install
-
-/usr/lib/qt5/bin/qmlplugindump -noinstantiate -nonrelocatable org.SfietKonstantin.patchmanager 2.0 %{buildroot}%{_libdir}/qt5/qml \
-> %{buildroot}%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}/plugin.qmltypes 2> /dev/null || true
-sed -i 's#%{buildroot}##g' %{buildroot}%{_libdir}/qt5/qml/org/SfietKonstantin/%{name}/plugin.qmltypes
 
 mkdir -p %{buildroot}%{_unitdir}/multi-user.target.wants/
 ln -s ../dbus-org.SfietKonstantin.patchmanager.service %{buildroot}%{_unitdir}/multi-user.target.wants/

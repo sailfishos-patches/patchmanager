@@ -20,12 +20,12 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="136"/>
         <source>Applied patches successfully.</source>
-        <translation>Tillämpning slutförd.</translation>
+        <translation>Korrigeringsfiler tillämpning slutförd.</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="137"/>
         <source>Failed to apply patches!</source>
-        <translation>Kunde inte tillämpa korrigeringar!</translation>
+        <translation>Kunde inte tillämpa korrigeringsfiler!</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="66"/>
@@ -127,8 +127,9 @@
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="85"/>
-        <source>Patch information</source>
-        <translation>Korrigeringsinformation</translation>
+        <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
+        <source>Patch details</source>
+        <translation>Detaljerad korrigeringsinformation</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="107"/>
@@ -272,11 +273,6 @@
         <location filename="../src/qml/PatchManagerPage.qml" line="486"/>
         <source>May conflict with %2 other patches, see %1</source>
         <translation>Kan komma i konflikt med %2 andra korrigeringar, se %1</translation>
-    </message>
-    <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
-        <source>Patch info</source>
-        <translation>Korrigeringsinformation</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
@@ -544,7 +540,7 @@
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="59"/>
         <source>messages</source>
-        <translation>Meddelande</translation>
+        <translation>Meddelanden</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="60"/>
