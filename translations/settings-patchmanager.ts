@@ -43,6 +43,7 @@
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="222"/>
         <location filename="../src/bin/dialog/dialog.qml" line="165"/>
         <location filename="../src/qml/AboutPage.qml" line="63"/>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="78"/>
         <source>Patchmanager</source>
         <translation type="unfinished"></translation>
     </message>
@@ -317,17 +318,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/RestartServicesDialog.qml" line="75"/>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="77"/>
         <source>Note: this will close all apps!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/RestartServicesDialog.qml" line="76"/>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="78"/>
         <source>Note: this will close %1!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/RestartServicesDialog.qml" line="79"/>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="81"/>
         <source>Note: this will close the %1 app!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -451,41 +452,47 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="236"/>
-        <source>Patch removed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="237"/>
-        <source>Patch %1 removed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="240"/>
-        <source>Failed to install patch</source>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="245"/>
+        <source>Services need restart!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="241"/>
+        <source>Patch removed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="242"/>
+        <source>Patch %1 removed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="250"/>
+        <source>Failed to install patch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="251"/>
         <source>Patch %1 installation failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="244"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="254"/>
         <source>Failed to remove patch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="245"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="255"/>
         <source>Patch %1 removal failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="248"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="258"/>
         <source>Update available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="249"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="259"/>
         <source>Patch %1 have update candidate</source>
         <translation type="unfinished"></translation>
     </message>
