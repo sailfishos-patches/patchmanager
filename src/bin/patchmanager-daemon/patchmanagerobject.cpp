@@ -231,10 +231,20 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
     case NotifyActionSuccessApply:
         summary = qApp->translate("", "Patch installed");
         body = qApp->translate("", "Patch %1 installed").arg(patch);
+        if (getToggleServices()) {
+            body.append( ", " );
+            body.append( qApp->translate("", "Services need restart!") );
+            notification.setHintValue("icon", "icon-lock-warning");
+        };
         break;
     case NotifyActionSuccessUnapply:
         summary = qApp->translate("", "Patch removed");
         body = qApp->translate("", "Patch %1 removed").arg(patch);
+        if (getToggleServices()) {
+            body.append( ", " );
+            body.append( qApp->translate("", "Services need restart!") );
+            notification.setHintValue("icon", "icon-lock-warning");
+        };
         break;
     case NotifyActionFailedApply:
         summary = qApp->translate("", "Failed to install patch");
