@@ -5,7 +5,7 @@
         <location filename="../src/qml/AboutPage.qml" line="49"/>
         <location filename="../src/qml/PatchManagerPage.qml" line="142"/>
         <source>About Patchmanager</source>
-        <translation type="unfinished"/>
+        <translation>O Patchmanager</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="45"/>
@@ -15,17 +15,17 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="53"/>
         <source>Patchmanager will automatically apply all patches in 10 seconds.</source>
-        <translation type="unfinished"/>
+        <translation>Patchmanager automatycznie zastosuje wszystkie łatki w ciągu 10 sekund.</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="136"/>
         <source>Applied patches successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Włącznie zakończone sukcesem.</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="137"/>
         <source>Failed to apply patches!</source>
-        <translation type="unfinished"/>
+        <translation>Nie udało się zastosować łatek!</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="66"/>
@@ -51,39 +51,39 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="82"/>
-        <source>Patchmanager allows system modification via patches. It provides a system daemon that is in charge of performing those patches, as well as a GUI, to control those operations and installation/removal of patches.</source>
-        <translation>Patchmanager pozwala na modyfikacje systemu za pomocą łatek. Dostarcza on systemowego daemona, który wykonyje modyfikacje, jak i dostarcza GUI, aby móc zarządzać operacjami instalacji/usuwania łatek.</translation>
+        <source>Patchmanager allows to automatically modify system files via patches. It provides a daemon that performs the application of those patches and a GUI to control those operations and the installation or removal of patches.</source>
+        <translation>Patchmanager pozwala na automatyczną modyfikację plików systemowych za pomocą łatek. Udostępnia demona, który wykonuje aplikację tych łatek oraz GUI do kontrolowania tych operacji oraz instalowania lub usuwania łatek. </translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="96"/>
-        <source>Licensed under the terms of the&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; BSD 3-Clause License&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <source>Licensed under the terms of the&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;BSD 3-Clause License&lt;/a&gt;</source>
+        <translation>Licencjonowane na warunkach &lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;BSD 3-Clause License&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="106"/>
         <source>Sources and Issue Tracker&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;on GitHub&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Źródła i spis błędów&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;na GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="123"/>
-        <source>Credits and Thanks&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Developers&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <source>Credits and Acknowledgements&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Developers&lt;/a&gt;</source>
+        <translation>Podziękowania dla&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt; programistów&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="148"/>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="210"/>
         <source>Donations</source>
-        <translation type="unfinished"/>
+        <translation>Darowizny.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="160"/>
         <source>If you appreciate our work, please consider a donation to help covering the hosting costs for Openrepos. Openrepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of patches is hosted there.</source>
-        <translation type="unfinished"/>
+        <translation>Jeśli doceniasz naszą pracę, rozważ darowiznę, która pomoże pokryć koszty hostingu Openrepos. Openrepos jest infrastrukturą krytyczną specjalnie dla Patchmanagera, ponieważ jest tam hostowany katalog łatek. </translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="181"/>
-        <source>If for some reason you can not donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).</source>
-        <translation type="unfinished"/>
+        <source>If for some reason you cannot donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).</source>
+        <translation>Jeśli z jakiegoś powodu nie możesz przekazać darowizny na rzecz Openrepos, doceniamy również darowiznę na rzecz Free Software Foundation Europe (FSFE).</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="246"/>
@@ -103,7 +103,7 @@
     <message>
         <location filename="../src/qml/DevelopersPage.qml" line="201"/>
         <source>%1&apos;s %2 account</source>
-        <translation type="unfinished"/>
+        <translation>Konto %1 na %2</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="65"/>
@@ -127,13 +127,14 @@
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="85"/>
-        <source>Patch information</source>
-        <translation>Informacje o łatce</translation>
+        <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
+        <source>Patch details</source>
+        <translation>Szczegóły łatki</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="107"/>
         <source>This patch is not available anymore. You will not be able to reinstall it.</source>
-        <translation type="unfinished"/>
+        <translation>Ta łatka nie jest już dostępna. Nie będziesz mógł jej ponownie zainstalować. </translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="116"/>
@@ -142,8 +143,8 @@
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="165"/>
-        <source>This patch uses the legacy format for its patch.json file. If you are the maintainer, do consider updating to the new format. If you are using Web Catalog you should not include a patch.json file at all in your upload.&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for more information.</source>
-        <translation type="unfinished"/>
+        <source>This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for details.</source>
+        <translation>Ta łatka używa starszego formatu pliku patch.json. Jeśli jesteś jej opiekunem, rozważ aktualizację do nowego formatu; jeśli korzystasz z katalogu internetowego, nie dołączaj pliku patch.json do przesyłanego pliku!&lt;br /&gt; Szczegółowe informacje można znaleźć w sekcji dla programistów w pliku &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt;. </translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="171"/>
@@ -153,7 +154,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="196"/>
         <source>Discussion</source>
-        <translation type="unfinished"/>
+        <translation>Dyskusja</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="252"/>
@@ -162,13 +163,13 @@
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="261"/>
-        <source>Press and hold to copy to Clipboard</source>
-        <translation type="unfinished"/>
+        <source>Press and hold to copy log to the clipboard</source>
+        <translation>Dotknij i przytrzymaj, aby skopiować logi do schowka</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="274"/>
-        <source>No log yet</source>
-        <translation>Brak logów</translation>
+        <source>No log exists yet</source>
+        <translation>Nie istnieją jeszcze żadne logi</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="116"/>
@@ -177,18 +178,18 @@
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="48"/>
-        <source>Log copied to Clipboard!</source>
-        <translation type="unfinished"/>
+        <source>Copied log to clipboard.</source>
+        <translation>Logi skopiowane do schowka.</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="75"/>
         <source>Uninstall patch</source>
-        <translation type="unfinished"/>
+        <translation>Odinstaluj łatkę</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="78"/>
         <source>Patch %1 uninstalled.</source>
-        <translation type="unfinished"/>
+        <translation>Łatka %1 odinstalowana.</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="120"/>
@@ -199,7 +200,7 @@
         <location filename="../src/qml/UnifiedPatchPage.qml" line="121"/>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="126"/>
         <source>not available</source>
-        <translation type="unfinished"/>
+        <translation>niedostępny</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="125"/>
@@ -209,7 +210,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="137"/>
         <source>May conflict with:</source>
-        <translation type="unfinished"/>
+        <translation>Może być w konflikcie z:</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="147"/>
@@ -249,8 +250,9 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="357"/>
-        <source>This patch is not compatible with SailfishOS version!</source>
-        <translation>Łatka jest niekompatybilna z tą wersją SailfishOS! </translation>
+        <location filename="../src/qml/WebPatchPage.qml" line="333"/>
+        <source>This patch is incompatible with the installed Sailfish OS version.</source>
+        <translation>Ta łatka jest niezgodna z zainstalowaną wersją systemu operacyjnego Sailfish.</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="365"/>
@@ -265,17 +267,12 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="485"/>
         <source>May conflict with another patch, see %1</source>
-        <translation type="unfinished"/>
+        <translation>Może kolidować z inną łatką, zobacz %1</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="486"/>
         <source>May conflict with %2 other patches, see %1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
-        <source>Patch info</source>
-        <translation>Informacja o łatce</translation>
+        <translation>Może kolidować z %2 innymi łatkami, zobacz %1</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
@@ -305,8 +302,8 @@
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="56"/>
-        <source>Some services will now be restarted. Phone interface might take time to load for a short moment.</source>
-        <translation>Niektóre usługi zostaną zrestartowane. Interfejs telefonu może się chwilę ładować.</translation>
+        <source>Some services will be restarted now. Reloading the homescreen of the device might take a little time.</source>
+        <translation>Niektóre usługi zostaną teraz ponownie uruchomione. Ponowne załadowanie ekranu głównego urządzenia może trochę potrwać.</translation>
     </message>
     <message>
         <location filename="../src/qml/ScreenshotsPage.qml" line="71"/>
@@ -327,12 +324,12 @@
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
         <source>Sort by Category</source>
-        <translation type="unfinished"/>
+        <translation>Sortuj po Kategorii</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
         <source>Sort by Date</source>
-        <translation type="unfinished"/>
+        <translation>Sortuj po Dacie</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="101"/>
@@ -342,12 +339,12 @@
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="102"/>
         <source>(by date updated)</source>
-        <translation type="unfinished"/>
+        <translation>(po dacie)</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="102"/>
         <source>(by category)</source>
-        <translation type="unfinished"/>
+        <translation>(po kategorii)</translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="108"/>
@@ -395,11 +392,6 @@
         <location filename="../src/qml/WebPatchPage.qml" line="318"/>
         <source>Files</source>
         <translation>Pliki</translation>
-    </message>
-    <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="333"/>
-        <source>This file is not compatible with SailfishOS version!</source>
-        <translation>Plik jest niekompatybilny z ta wersją SailfishOS!</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="335"/>
@@ -479,23 +471,23 @@
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="20"/>
-        <source>Apply on boot</source>
-        <translation>Włącz podcza bootowania</translation>
+        <source>Apply patches when booting</source>
+        <translation>Zastosuj łatki podczas bootowania</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="21"/>
-        <source>Apply all enabled patches when the system starts</source>
-        <translation type="unfinished"/>
+        <source>Automatically apply all enabled patches when Sailfish OS starts</source>
+        <translation>Automatycznie zastosuj wszystkie włączone łatki po uruchomieniu Sailfish OS</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="28"/>
         <source>Allow incompatible patches</source>
-        <translation type="unfinished"/>
+        <translation>Zezwalaj na niekompatybilne łatki</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="29"/>
-        <source>Apply patches which are not marked compatible with the installed Sailfish OS version. Note that this will not fix patches that are actually incompatible.</source>
-        <translation type="unfinished"/>
+        <source>Enable applying patches, which are not marked as compatible with the installed Sailfish OS version. Note that patches, which are actually incompatible, will not work.</source>
+        <translation>Włącz stosowanie łatek, które nie są oznaczone jako kompatybilne z zainstalowaną wersją Sailfish OS. Zwróć uwagę, że łatki, które w rzeczywistości są niekompatybilne, nie będą działać. </translation>
     </message>
 </context>
 <context>
@@ -503,73 +495,73 @@
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="50"/>
         <source>browser</source>
-        <translation>wyszukiwarka</translation>
+        <translation>Wyszukiwarka</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="51"/>
         <source>camera</source>
-        <translation>aparat</translation>
+        <translation>Aparat</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="52"/>
         <source>calendar</source>
-        <translation>kalendarz</translation>
+        <translation>Kalendarz</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="53"/>
         <source>clock</source>
-        <translation>zegar</translation>
+        <translation>Zegar</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="54"/>
         <source>contacts</source>
-        <translation>kontakty</translation>
+        <translation>Kontakty</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="55"/>
         <source>email</source>
-        <translation>email</translation>
+        <translation>Email</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="56"/>
         <source>gallery</source>
-        <translation>galeria</translation>
+        <translation>Galeria</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="57"/>
         <source>homescreen</source>
-        <translation>ekran domowy</translation>
+        <translation>Ekran domowy</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="58"/>
         <source>media</source>
-        <translation>multimedia</translation>
+        <translation>Media</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="59"/>
         <source>messages</source>
-        <translation>wiadomości</translation>
+        <translation>Wiadomości</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="60"/>
         <source>phone</source>
-        <translation>telefon</translation>
+        <translation>Telefon</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="61"/>
         <source>silica</source>
-        <translation>silica</translation>
+        <translation>Silica</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="62"/>
         <source>settings</source>
-        <translation>ustawienia</translation>
+        <translation>Ustawienia</translation>
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="63"/>
         <location filename="../src/qml/patchmanager.cpp" line="216"/>
         <source>other</source>
-        <translation>inne</translation>
+        <translation>Inne</translation>
     </message>
 </context>
 </TS>
