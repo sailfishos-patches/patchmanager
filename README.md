@@ -1,6 +1,6 @@
 # Patchmanager
 
-Patchmanager is a tool for transparently modifying installed files by the patch utility and for managing the patches for doing so.
+Patchmanager is a tool for transparently modifying installed files per patch utility and for managing patch files ("patches") for doing so.
 Since version 3.0 it does not modify original files, but alters their content when they are loaded into RAM to be run.
 
 ## Information for users
@@ -20,9 +20,9 @@ To create a patch for Patchmanager, you must at least provide a patch file.
 If you package your patch as an RPM or archive file, you must also provide the JSON metadata: see below.
 If you use the Web Catalog to distribute your patch, you must not provide a JSON file, but input the corresponding data when submitting the patch to the Web Catalog.
 
-### The patch file
+### Patch files
 
-The patch file must be a diff of all the files to be patched in the filesystem. 
+A patch file must be a diff of all the files to be patched in the filesystem. 
 It will be applied on the root of the filesystem, with the `-p1` flag. 
 It must be named `unified_diff.patch`.
 
