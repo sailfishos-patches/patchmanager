@@ -33,6 +33,7 @@ Page {
             }
 
             TextSwitch {
+                id: fixBitSwitch
                 text: qsTranslate("", "Fix patches made for 32-bit or 64-bit only")
                 description: qsTranslate("", "Automatically fix lib or lib64 for select paths shown below.")
                 checked: PatchManager.bitnessMangle
@@ -41,9 +42,10 @@ Page {
             }
 
             TextArea {
-                visible: PatchManager.bitnessMangle
+                readOnly: true
                 text: PatchManager.mangleCandidates.join("\n")
-                enabled: false
+                enabled: fixBitSwitch.checked
+                width: parent.width
             }
         }
     }
