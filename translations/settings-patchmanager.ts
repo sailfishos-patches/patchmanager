@@ -129,8 +129,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="85"/>
         <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="85"/>
         <source>Patch details</source>
         <translation type="unfinished"></translation>
     </message>
@@ -315,17 +315,17 @@
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="77"/>
-        <source>Note: this will close all apps!</source>
+        <source>Note: this will close all apps.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="78"/>
-        <source>Note: this will close %1!</source>
+        <source>Note: this will close %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="81"/>
-        <source>Note: this will close the %1 app!</source>
+        <source>Note: this will close the %1 app.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -74,11 +74,11 @@ Dialog {
                     description: {
                         if ((modelData == "homescreen")
                          || (modelData == "silica"))
-                                                           { return qsTranslate("","Note: this will close all apps!"); }
-                        else if (modelData == "settings")  { return qsTranslate("","Note: this will close %1!").arg(qsTranslate("", "Patchmanager")); }
+                                                           { return qsTranslate("","Note: this will close all apps."); }
+                        else if (modelData == "settings")  { return qsTranslate("","Note: this will close %1.").arg(qsTranslate("", "Patchmanager")); }
                         else if (modelData == "keyboard")  { return "" }
                         else if (modelData == "other")     { return "" }
-                        else { return qsTranslate("","Note: this will close the %1 app!").arg(text); }
+                        else { return qsTranslate("","Note: this will close the %1 app.").arg(text); }
                     }
                     TouchBlocker { anchors.fill: parent}
                   }
