@@ -61,6 +61,7 @@ static const char *noop_strings[] = {
     QT_TRANSLATE_NOOP("Sections", "silica"),
     QT_TRANSLATE_NOOP("Sections", "settings"),
     QT_TRANSLATE_NOOP("Sections", "other"),
+    QT_TRANSLATE_NOOP("Sections", "keyboard"),
 };
 
 PatchManager::PatchManager(QObject *parent)
@@ -231,6 +232,20 @@ QStringList PatchManager::getUpdatesNames() const
 QString PatchManager::patchmanagerVersion() const
 {
     return m_patchmanagerVersion;
+}
+
+QStringList PatchManager::toggleServicesList() const
+{
+    QStringList list;
+
+    QDBusPendingReply<QStringList> reply = m_interface->getToggleServicesList();
+    reply.waitForFinished();
+    if (reply.isFinished()) {
+        qDebug() << Q_FUNC_INFO << "dbus replied:" << reply.value();
+        list = reply.value();;
+        return list;
+    }
+    return list;
 }
 
 bool PatchManager::toggleServices() const

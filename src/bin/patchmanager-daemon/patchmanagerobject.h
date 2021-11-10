@@ -124,6 +124,7 @@ public slots:
     void patchToggleService(const QString &patch);
 
     bool getToggleServices() const;
+    QStringList getToggleServicesList() const;
     bool getFailure() const;
     bool getLoaded() const;
     void resolveFailure();

@@ -91,6 +91,10 @@
             <arg name="patch" type="s" direction="in" />
             <arg name="activate" type="b" direction="in" />
         </method>
+        <method name="getToggleServicesList">
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QStringList"/>
+            <arg name="services" type="a{s}" direction="out" />
+        </method>
         <method name="getToggleServices">
             <arg name="toggle" type="b" direction="out" />
         </method>
