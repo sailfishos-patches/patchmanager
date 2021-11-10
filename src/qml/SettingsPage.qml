@@ -16,6 +16,18 @@ Page {
                 title: qsTranslate("", "Settings")
             }
 
+            SectionHeader { text: qsTranslate("", "General") }
+
+            TextSwitch {
+                text: qsTranslate("", "Show notification on success")
+                description: qsTranslate("", "If this is off, notifications will only be shown when something went wrong")
+                checked: PatchManager.notifyOnSuccess
+                onClicked: PatchManager.notifyOnSuccess = !PatchManager.notifyOnSuccess
+                automaticCheck: false
+            }
+
+            SectionHeader { text: qsTranslate("", "Advanced") }
+
             TextSwitch {
                 text: qsTranslate("", "Apply patches when booting")
                 description: qsTranslate("", "Automatically apply all enabled patches when Sailfish OS starts")

@@ -66,6 +66,7 @@ class PatchManager: public QObject
     Q_PROPERTY(QString serverMediaUrl READ serverMediaUrl CONSTANT)
     Q_PROPERTY(bool developerMode READ developerMode WRITE setDeveloperMode NOTIFY developerModeChanged)
     Q_PROPERTY(bool applyOnBoot READ applyOnBoot WRITE setApplyOnBoot NOTIFY applyOnBootChanged)
+    Q_PROPERTY(bool notifyOnSuccess READ notifyOnSuccess WRITE setNotifyOnSuccess NOTIFY notifyOnSuccessChanged)
     Q_PROPERTY(PatchManagerModel *installedModel READ installedModel CONSTANT)
     Q_PROPERTY(QVariantMap updates READ getUpdates NOTIFY updatesChanged)
     Q_PROPERTY(QStringList updatesNames READ getUpdatesNames NOTIFY updatesChanged)
@@ -82,7 +83,9 @@ public:
     bool developerMode() const;
     void setDeveloperMode(bool developerMode);
     bool applyOnBoot() const;
+    bool notifyOnSuccess() const;
     void setApplyOnBoot(bool applyOnBoot);
+    void setNotifyOnSuccess(bool notifyOnSuccess);
     PatchManagerModel *installedModel();
     QString trCategory(const QString &category) const;
     QVariantMap getUpdates() const;
@@ -156,6 +159,7 @@ signals:
     void easterReceived(const QString & easterText);
     void developerModeChanged(bool developerMode);
     void applyOnBootChanged(bool applyOnBoot);
+    void notifyOnSuccessChanged(bool notifyOnSuccess);
     void updatesChanged();
     void toggleServicesChanged(bool toggleServices);
     void failureChanged(bool failed);

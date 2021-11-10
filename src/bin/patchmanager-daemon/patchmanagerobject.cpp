@@ -219,15 +219,16 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
     qDebug() << Q_FUNC_INFO << patch << action;
 
     Notification notification;
-    notification.setAppName(qApp->translate("", "Patchmanager"));
-    notification.setHintValue("app_icon", "icon-m-patchmanager2");
-    notification.setTimestamp(QDateTime::currentDateTime());
 
     QString summary;
     QString body;
     QVariantList remoteActions;
 
     switch (action) {
+    case NotifyActionNone:
+        qDebug() << Q_FUNC_INFO << "Notification suppressed.";
+        return;
+        break; //well...
     case NotifyActionSuccessApply:
         summary = qApp->translate("", "Patch installed");
         body = qApp->translate("", "Patch %1 installed").arg(patch);
@@ -263,6 +264,10 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
     }
 
     qDebug() << Q_FUNC_INFO << summary << body;
+
+    notification.setAppName(qApp->translate("", "Patchmanager"));
+    notification.setHintValue("app_icon", "icon-m-patchmanager2");
+    notification.setTimestamp(QDateTime::currentDateTime());
 
     if (!remoteActions.isEmpty()) {
         qDebug() << Q_FUNC_INFO << remoteActions;
@@ -1817,8 +1822,13 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
         }
     }
 
+    // is this used anywhere??
     if (!params.value(QStringLiteral("dont_notify"), false).toBool()) {
-        notify(displayName.toString(), apply ? ok ? NotifyActionSuccessApply : NotifyActionFailedApply : ok ? NotifyActionSuccessUnapply : NotifyActionFailedUnapply);
+        if (getSettings(QStringLiteral("notifyOnSuccess"), true).toBool()) {
+            notify(displayName.toString(), apply ? ok ? NotifyActionSuccessApply : NotifyActionFailedApply : ok ? NotifyActionSuccessUnapply : NotifyActionFailedUnapply);
+        } else {
+            notify(displayName.toString(), apply ? ok ? NotifyActionNone : NotifyActionFailedApply : ok ? NotifyActionNone : NotifyActionFailedUnapply);
+        }
     }
 
     if (message.isDelayedReply()) {

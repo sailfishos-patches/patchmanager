@@ -204,6 +204,18 @@ void PatchManager::setApplyOnBoot(bool applyOnBoot)
     }
 }
 
+bool PatchManager::notifyOnSuccess() const
+{
+    return getSettingsSync(QStringLiteral("notifyOnSuccess"), true).toBool();
+}
+
+void PatchManager::setNotifyOnSuccess(bool notifyOnSuccess)
+{
+    if (putSettingsSync(QStringLiteral("notifyOnSuccess"), notifyOnSuccess)) {
+        emit notifyOnSuccessChanged(notifyOnSuccess);
+    }
+}
+
 PatchManagerModel *PatchManager::installedModel()
 {
     return m_installedModel;
