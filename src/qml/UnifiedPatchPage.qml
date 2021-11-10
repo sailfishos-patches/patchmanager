@@ -233,7 +233,8 @@ Page {
                                 Icon {
                                     anchors.verticalCenter: parent.verticalCenter
                                     source: "image://theme/" + iconname
-                                    sourceSize: Theme.iconSizeMedium
+                                    sourceSize.width: Theme.iconSizeMedium
+                                    sourceSize.height: sourceSize.width
                                 }
                                 Label {
                                     anchors.verticalCenter: parent.verticalCenter
