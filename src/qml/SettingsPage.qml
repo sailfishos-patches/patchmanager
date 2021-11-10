@@ -48,7 +48,7 @@ Page {
                   leftMargin: fixBitSwitch.leftMargin + Theme.paddingLarge
                 }
                 color: Theme.secondaryColor
-                text.pixelSize: Theme.fontSizeSmall
+                font.pixelSize: Theme.fontSizeSmall
                 readOnly: true
                 text: PatchManager.mangleCandidates.join("\n")
                 enabled: fixBitSwitch.checked
