@@ -61,6 +61,7 @@ static const char *noop_strings[] = {
     QT_TRANSLATE_NOOP("Sections", "silica"),
     QT_TRANSLATE_NOOP("Sections", "settings"),
     QT_TRANSLATE_NOOP("Sections", "other"),
+    QT_TRANSLATE_NOOP("Sections", "keyboard"),
 };
 
 PatchManager::PatchManager(QObject *parent)
@@ -197,6 +198,17 @@ bool PatchManager::applyOnBoot() const
     return getSettingsSync(QStringLiteral("applyOnBoot"), false).toBool();
 }
 
+QStringList PatchManager::mangleCandidates() const
+{
+    QDBusPendingReply<QStringList> reply = m_interface->getMangleCandidates();
+    reply.waitForFinished();
+    if (reply.isFinished()) {
+        qDebug() << Q_FUNC_INFO << "mangleCandidates() dbus replied:" << reply.value();
+        return reply.value();
+    }
+    return QStringList();
+}
+
 void PatchManager::setApplyOnBoot(bool applyOnBoot)
 {
     if (putSettingsSync(QStringLiteral("applyOnBoot"), applyOnBoot)) {
@@ -213,6 +225,18 @@ void PatchManager::setNotifyOnSuccess(bool notifyOnSuccess)
 {
     if (putSettingsSync(QStringLiteral("notifyOnSuccess"), notifyOnSuccess)) {
         emit notifyOnSuccessChanged(notifyOnSuccess);
+    }
+}
+
+bool PatchManager::bitnessMangle() const
+{
+    return getSettingsSync(QStringLiteral("bitnessMangle"), false).toBool();
+}
+
+void PatchManager::setBitnessMangle(bool bitnessMangle)
+{
+    if (putSettingsSync(QStringLiteral("bitnessMangle"), bitnessMangle)) {
+        emit bitnessMangleChanged(bitnessMangle);
     }
 }
 
@@ -243,6 +267,20 @@ QStringList PatchManager::getUpdatesNames() const
 QString PatchManager::patchmanagerVersion() const
 {
     return m_patchmanagerVersion;
+}
+
+QStringList PatchManager::toggleServicesList() const
+{
+    QStringList list;
+
+    QDBusPendingReply<QStringList> reply = m_interface->getToggleServicesList();
+    reply.waitForFinished();
+    if (reply.isFinished()) {
+        qDebug() << Q_FUNC_INFO << "dbus replied:" << reply.value();
+        list = reply.value();;
+        return list;
+    }
+    return list;
 }
 
 bool PatchManager::toggleServices() const

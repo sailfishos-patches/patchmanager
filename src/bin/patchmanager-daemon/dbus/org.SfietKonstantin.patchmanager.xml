@@ -59,6 +59,9 @@
             <arg name="def" type="v" direction="in" />
             <arg name="value" type="v" direction="out" />
         </method>
+        <method name="getMangleCandidates">
+            <arg name="result" type="as" direction="out" />
+        </method>
         <method name="checkEaster">
             <arg name="easter" type="s" direction="out" />
         </method>
@@ -90,6 +93,10 @@
             <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
             <arg name="patch" type="s" direction="in" />
             <arg name="activate" type="b" direction="in" />
+        </method>
+        <method name="getToggleServicesList">
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QStringList"/>
+            <arg name="services" type="a{s}" direction="out" />
         </method>
         <method name="getToggleServices">
             <arg name="toggle" type="b" direction="out" />

@@ -15,17 +15,23 @@ PM_LOG_FILE="$PM_VAR_DIR/patchmanager.log"
 PM_PATCH_BACKUP_ROOT_DIR="$PM_VAR_DIR/patches"
 PM_PATCH_BACKUP_DIR="$PM_PATCH_BACKUP_ROOT_DIR/$1"
 
+SYS_BITNESS=$(/usr/bin/getconf LONG_BIT)
+
 # Constants
 PATCH_NAME="unified_diff.patch"
 PATCH_PATH="$PATCH_DIR/$PATCH_NAME"
 PATCH_BACKUP="$PM_PATCH_BACKUP_DIR/$PATCH_NAME"
+PATCH_EDITED_NAME="unified_diff_${SYS_BITNESS}bit.patch"
+PATCH_EDITED_BACKUP="$PM_PATCH_BACKUP_DIR"/"$PATCH_EDITED_NAME"
 
 ROOT_DIR="/tmp/patchmanager"
 
 # Applications
 PATCH_EXEC="/usr/bin/patch"
 
-if [ -f "$PATCH_BACKUP" ]; then
+if [ -f "$PATCH_EDITED_BACKUP" ]; then
+  PATCH_FILE="$PATCH_EDITED_BACKUP"
+elif [ -f "$PATCH_BACKUP" ]; then
   PATCH_FILE="$PATCH_BACKUP"
 else
   PATCH_FILE="$PATCH_PATH"
@@ -110,6 +116,8 @@ log "----------------------------------"
 log
 
 log "$(basename "$PATCH_DIR")"
+
+log "Using PATCH_FILE=$PATCH_FILE"
 
 if [ -f "$PATCH_FILE" ]; then
   log "  contains text patch"

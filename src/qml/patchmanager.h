@@ -67,9 +67,12 @@ class PatchManager: public QObject
     Q_PROPERTY(bool developerMode READ developerMode WRITE setDeveloperMode NOTIFY developerModeChanged)
     Q_PROPERTY(bool applyOnBoot READ applyOnBoot WRITE setApplyOnBoot NOTIFY applyOnBootChanged)
     Q_PROPERTY(bool notifyOnSuccess READ notifyOnSuccess WRITE setNotifyOnSuccess NOTIFY notifyOnSuccessChanged)
+    Q_PROPERTY(bool bitnessMangle READ bitnessMangle WRITE setBitnessMangle NOTIFY bitnessMangleChanged)
+    Q_PROPERTY(QStringList mangleCandidates READ mangleCandidates)
     Q_PROPERTY(PatchManagerModel *installedModel READ installedModel CONSTANT)
     Q_PROPERTY(QVariantMap updates READ getUpdates NOTIFY updatesChanged)
     Q_PROPERTY(QStringList updatesNames READ getUpdatesNames NOTIFY updatesChanged)
+    Q_PROPERTY(QStringList appsToRestart READ toggleServicesList NOTIFY toggleServicesListChanged)
     Q_PROPERTY(bool appsNeedRestart READ toggleServices NOTIFY toggleServicesChanged)
     Q_PROPERTY(bool failure READ failure NOTIFY failureChanged)
     Q_PROPERTY(bool loaded READ loaded NOTIFY loadedChanged)
@@ -86,11 +89,15 @@ public:
     bool notifyOnSuccess() const;
     void setApplyOnBoot(bool applyOnBoot);
     void setNotifyOnSuccess(bool notifyOnSuccess);
+    bool bitnessMangle() const;
+    void setBitnessMangle(bool bitnessMangle);
+    QStringList mangleCandidates() const;
     PatchManagerModel *installedModel();
     QString trCategory(const QString &category) const;
     QVariantMap getUpdates() const;
     QStringList getUpdatesNames() const;
     QString patchmanagerVersion() const;
+    QStringList toggleServicesList() const;
 
     bool toggleServices() const;
     bool failure() const;
@@ -160,11 +167,13 @@ signals:
     void developerModeChanged(bool developerMode);
     void applyOnBootChanged(bool applyOnBoot);
     void notifyOnSuccessChanged(bool notifyOnSuccess);
+    void bitnessMangleChanged(bool bitnessMangle);
     void updatesChanged();
     void toggleServicesChanged(bool toggleServices);
     void failureChanged(bool failed);
     void loadedChanged(bool loaded);
     void patchmanagerVersionChanged(const QString &patchmanagerVersion);
+    void toggleServicesListChanged(const QStringList &servicesToBeToggled);
 
 private:
     void successCall(QJSValue callback, const QVariant &value);

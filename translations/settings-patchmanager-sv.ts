@@ -41,6 +41,7 @@
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="222"/>
         <location filename="../src/bin/dialog/dialog.qml" line="165"/>
         <location filename="../src/qml/AboutPage.qml" line="63"/>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="78"/>
         <source>Patchmanager</source>
         <translation>Patchmanager</translation>
     </message>
@@ -126,8 +127,8 @@
         <translation>Starta motorn före tillämpning av korrigeringar</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="85"/>
         <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="85"/>
         <source>Patch details</source>
         <translation>Detaljerad korrigeringsinformation</translation>
     </message>
@@ -140,11 +141,6 @@
         <location filename="../src/qml/UnifiedPatchPage.qml" line="116"/>
         <source>Maintainer</source>
         <translation>Ansvarig</translation>
-    </message>
-    <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="165"/>
-        <source>This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for details.</source>
-        <translation>Den här korrigeringen använder det äldre formatet för filen patch.json. Om du är dess utvecklare bör du överväga att uppdatera till det nya formatet. Om du använder webbkatalogen skall du inte inkludera en patch.json alls i uppladdningen. &lt;br /&gt;Se utvecklaravsnittet i &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; för mer information.</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="171"/>
@@ -211,6 +207,11 @@
         <location filename="../src/qml/UnifiedPatchPage.qml" line="137"/>
         <source>May conflict with:</source>
         <translation>Kan hamna i konflikt med:</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="165"/>
+        <source>This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&amp;lt;br /&amp;gt;See the developer section in the &amp;lt;a href=&amp;quot;%1&amp;quot;&amp;gt;README&amp;lt;/a&amp;gt; for details.</source>
+        <translation>Den här korrigeringen använder det äldre formatet för filen patch.json. Om du är dess utvecklare bör du överväga att uppdatera till det nya formatet. Om du använder webbkatalogen skall du inte inkludera en patch.json alls i uppladdningen.&amp;lt;br /&amp;gt;Se utvecklaravsnittet i &amp;lt;a href=&amp;quot;%1&amp;quot;&amp;gt;README&amp;lt;/a&amp;gt; för detaljerad information.</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="147"/>
@@ -296,14 +297,34 @@
         <translation>Inga korrigeringsfiler tillgängliga</translation>
     </message>
     <message>
-        <location filename="../src/qml/RestartServicesDialog.qml" line="48"/>
-        <source>Restart services</source>
-        <translation>Starta om tjänster</translation>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="52"/>
+        <source>Restart</source>
+        <translation>Starta om</translation>
     </message>
     <message>
-        <location filename="../src/qml/RestartServicesDialog.qml" line="56"/>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="58"/>
         <source>Some services will be restarted now. Reloading the homescreen of the device might take a little time.</source>
         <translation>Vissa tjänster kommer att startas om nu. Uppdatering av hemskärmen kan ta lite tid.</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="62"/>
+        <source>List of services:</source>
+        <translation>Tjänstlista:</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="77"/>
+        <source>Note: this will close all apps.</source>
+        <translation>Notera att detta stänger alla appar.</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="78"/>
+        <source>Note: this will close %1.</source>
+        <translation>Notera att detta stänger %1.</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="81"/>
+        <source>Note: this will close the %1 app.</source>
+        <translation>Notera att detta stänger appen %1.</translation>
     </message>
     <message>
         <location filename="../src/qml/ScreenshotsPage.qml" line="71"/>
@@ -425,41 +446,47 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="236"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="245"/>
+        <source>Services need restart!</source>
+        <translation>Tjänster behöver startas om!</translation>
+    </message>
+    <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="241"/>
         <source>Patch removed</source>
         <translation>Korrigering borttagen</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="237"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="242"/>
         <source>Patch %1 removed</source>
         <translation>Korrigering %1 borttagen</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="240"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="250"/>
         <source>Failed to install patch</source>
         <translation>Kunde inte installera korrigering</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="241"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="251"/>
         <source>Patch %1 installation failed</source>
         <translation>Korrigeringsfil %1 kunde inte installeras</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="244"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="254"/>
         <source>Failed to remove patch</source>
         <translation>Kunde inte ta bort korrigering</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="245"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="255"/>
         <source>Patch %1 removal failed</source>
         <translation>Korrigering %1 kunde inte tas bort</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="248"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="258"/>
         <source>Update available</source>
         <translation>Uppdatering tillgänglig</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="249"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="259"/>
         <source>Patch %1 have update candidate</source>
         <translation>Korrigeringsfil %1 har en uppdateringskandidat</translation>
     </message>
@@ -559,9 +586,14 @@
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="63"/>
-        <location filename="../src/qml/patchmanager.cpp" line="216"/>
+        <location filename="../src/qml/patchmanager.cpp" line="217"/>
         <source>other</source>
         <translation>Annat</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/patchmanager.cpp" line="64"/>
+        <source>keyboard</source>
+        <translation>Tangentbord</translation>
     </message>
 </context>
 </TS>
