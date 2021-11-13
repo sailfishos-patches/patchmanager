@@ -198,6 +198,17 @@ bool PatchManager::applyOnBoot() const
     return getSettingsSync(QStringLiteral("applyOnBoot"), false).toBool();
 }
 
+QStringList PatchManager::mangleCandidates() const
+{
+    QDBusPendingReply<QStringList> reply = m_interface->getMangleCandidates();
+    reply.waitForFinished();
+    if (reply.isFinished()) {
+        qDebug() << Q_FUNC_INFO << "mangleCandidates() dbus replied:" << reply.value();
+        return reply.value();
+    }
+    return QStringList();
+}
+
 void PatchManager::setApplyOnBoot(bool applyOnBoot)
 {
     if (putSettingsSync(QStringLiteral("applyOnBoot"), applyOnBoot)) {
@@ -205,6 +216,17 @@ void PatchManager::setApplyOnBoot(bool applyOnBoot)
     }
 }
 
+bool PatchManager::bitnessMangle() const
+{
+    return getSettingsSync(QStringLiteral("bitnessMangle"), false).toBool();
+}
+
+void PatchManager::setBitnessMangle(bool bitnessMangle)
+{
+    if (putSettingsSync(QStringLiteral("bitnessMangle"), bitnessMangle)) {
+        emit bitnessMangleChanged(bitnessMangle);
+    }
+}
 PatchManagerModel *PatchManager::installedModel()
 {
     return m_installedModel;

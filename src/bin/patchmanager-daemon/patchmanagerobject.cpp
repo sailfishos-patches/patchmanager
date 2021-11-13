@@ -86,7 +86,7 @@ static const QString PATCHES_WORK_DIR_PREFIX = QStringLiteral("/tmp/patchmanager
 static const QString PATCHES_WORK_DIR = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR_PREFIX, "work");
 static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR_PREFIX, "patches");
 static const QString PATCH_FILE = QStringLiteral("patch.json");
-
+static const QString MANGLE_CONFIG_FILE = QStringLiteral("/etc/patchmanager/manglelist.conf");
 static const QString NAME_KEY = QStringLiteral("name");
 static const QString DESCRIPTION_KEY = QStringLiteral("description");
 static const QString CATEGORY_KEY = QStringLiteral("category");
@@ -296,6 +296,17 @@ QSet<QString> PatchManagerObject::getAppliedPatches() const
 void PatchManagerObject::setAppliedPatches(const QSet<QString> &patches)
 {
     putSettings(QStringLiteral("applied"), QStringList(patches.toList()));
+}
+
+QStringList PatchManagerObject::getMangleCandidates()
+{
+    if (m_mangleCandidates.empty()) {
+        qDebug() << Q_FUNC_INFO;
+        auto mangleCandidates = QSettings(MANGLE_CONFIG_FILE, QSettings::IniFormat).value("MANGLE_CANDIDATES", "").toString();
+        m_mangleCandidates = mangleCandidates.split(' ', QString::SplitBehavior::SkipEmptyParts);
+        qDebug() << "Loaded mangle candidates:" << m_mangleCandidates;
+    }
+    return m_mangleCandidates;
 }
 
 void PatchManagerObject::getVersion()
@@ -1167,6 +1178,10 @@ bool PatchManagerObject::putSettings(const QString &name, const QVariant &value)
     QVariant old = m_settings->value(key);
     if (old != value) {
         m_settings->setValue(key ,value);
+        if (name == QStringLiteral("bitnessMangle")) {
+            qDebug() << Q_FUNC_INFO << "Changing bitness mangle refreshes patch list";
+            refreshPatchList();
+        }
         return true;
     }
     return false;
@@ -1584,6 +1599,18 @@ void PatchManagerObject::doRefreshPatchList()
 {
     qDebug() << Q_FUNC_INFO;
 
+    // Create mangling replacement tokens.
+    QStringList toManglePaths{}, mangledPaths{};
+    if(getSettings(QStringLiteral("bitnessMangle"), false).toBool()) {
+        toManglePaths = getMangleCandidates();
+        mangledPaths = getMangleCandidates().replaceInStrings("/usr/lib/", "/usr/lib64/");
+        if (Q_PROCESSOR_WORDSIZE == 4) { // 32 bit
+            std::swap(toManglePaths, mangledPaths);
+        }
+    }
+    qDebug() << Q_FUNC_INFO << "toManglePaths" << toManglePaths;
+    qDebug() << Q_FUNC_INFO << "mangledPaths" << mangledPaths;
+
     // load applied patches
 
     m_appliedPatches = getAppliedPatches();
@@ -1605,6 +1632,14 @@ void PatchManagerObject::doRefreshPatchList()
             if (line.startsWith(QByteArrayLiteral("+++ "))) {
                 const QString toPatch = QString::fromLatin1(line.split(' ')[1].split('\t')[0].split('\n')[0]);
                 QString path = toPatch;
+
+                for (int i = 0; i < toManglePaths.size(); i++) {
+                    if (path.startsWith(toManglePaths[i])) {
+                        qDebug() << Q_FUNC_INFO << "Editing path: " << path;
+                        path.replace(toManglePaths[i], mangledPaths[i]);
+                    }
+                }
+
                 while (!QFileInfo::exists(path) && path.count('/') > 1) {
                     path = path.mid(path.indexOf('/', 1));
                 }
@@ -1782,6 +1817,13 @@ bool PatchManagerObject::doPatch(const QString &patchName, bool apply, QString *
 
     QStringList arguments;
     arguments.append(patchName);
+
+    if (false == getSettings(QStringLiteral("bitnessMangle"), false).toBool()) {
+        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+        qDebug() << Q_FUNC_INFO << "DISABLE_MANGLING=true";
+        env.insert("DISABLE_MANGLING", "true");
+        process.setProcessEnvironment(env);
+    }
 
     process.setArguments(arguments);
     qDebug() << Q_FUNC_INFO << "Starting:" << process.program() << process.arguments();

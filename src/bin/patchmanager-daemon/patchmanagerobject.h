@@ -40,6 +40,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QVariantMap>
 #include <QtCore/QVariantList>
+#include <QtCore/QVector>
 #include <QtCore/QDir>
 
 #include <QDBusConnection>
@@ -181,6 +182,8 @@ private slots:
     void restartKeyboard();
     void doRestartKeyboard();
 
+    QStringList getMangleCandidates();
+
 private:
     void restartService(const QString &serviceName);
 
@@ -237,6 +240,8 @@ private:
     QVariantMap m_updates;
 
     QString m_osRelease;
+
+    QStringList m_mangleCandidates;
 
     PatchManagerAdaptor *m_adaptor = nullptr;
     QNetworkAccessManager *m_nam = nullptr;

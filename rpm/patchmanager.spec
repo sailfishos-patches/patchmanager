@@ -16,6 +16,8 @@ URL:        https://github.com/sailfishos-patches/patchmanager
 Source0:    %{name}-%{version}.tar.bz2
 Requires:   unzip
 Requires:   patch
+Requires:   grep
+Requires:   sed
 Requires:   sailfish-version >= 3.4.0
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
@@ -164,6 +166,7 @@ systemctl-user daemon-reload
 %{_userunitdir}/lipstick.service.wants/lipstick-patchmanager.service
 %{_libdir}/libpreload%{name}.so
 %{_sysconfdir}/firejail/whitelist-common-%{name}.local
+%config(noreplace) %{_sysconfdir}/%{name}/manglelist.conf
 
 %attr(0755,root,root) %{_libexecdir}/pm_apply
 %attr(0755,root,root) %{_libexecdir}/pm_unapply

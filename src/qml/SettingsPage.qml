@@ -31,6 +31,28 @@ Page {
                 onClicked: PatchManager.developerMode = !PatchManager.developerMode
                 automaticCheck: false
             }
+
+            TextSwitch {
+                id: fixBitSwitch
+                text: qsTranslate("", "Fix patches made for 32-bit or 64-bit only")
+                description: qsTranslate("", "Automatically fix lib or lib64 for select paths shown below.")
+                checked: PatchManager.bitnessMangle
+                onClicked: PatchManager.bitnessMangle = !PatchManager.bitnessMangle
+                automaticCheck: false
+            }
+
+            TextArea {
+                // align to the right of TextSwitch indicator
+                anchors {
+                  left: fixBitSwitch.left
+                  leftMargin: fixBitSwitch.leftMargin + Theme.paddingLarge
+                }
+                color: Theme.secondaryColor
+                font.pixelSize: Theme.fontSizeSmall
+                readOnly: true
+                text: PatchManager.mangleCandidates.join("\n")
+                enabled: fixBitSwitch.checked
+            }
         }
     }
 }
