@@ -162,7 +162,7 @@ Page {
                 font.pixelSize: Theme.fontSizeSmall
                 textFormat: Text.StyledText
                 property string link: SOURCE_REPO + "/blob/master/README.md#for-developers"
-                text: qsTranslate("", "This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for details.").arg(link)
+                text: qsTranslate("", "This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!<br />See the developer section in the <a href=\"%1\">README</a> for details.").arg(link)
                 linkColor: Theme.highlightColor
                 onLinkActivated: Qt.openUrlExternally(link)
             }
@@ -233,7 +233,8 @@ Page {
                                 Icon {
                                     anchors.verticalCenter: parent.verticalCenter
                                     source: "image://theme/" + iconname
-                                    sourceSize: Theme.iconSizeMedium
+                                    sourceSize.width: Theme.iconSizeMedium
+                                    sourceSize.height: sourceSize.width
                                 }
                                 Label {
                                     anchors.verticalCenter: parent.verticalCenter
