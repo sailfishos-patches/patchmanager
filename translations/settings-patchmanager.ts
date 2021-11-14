@@ -145,6 +145,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="165"/>
+        <source>This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for details.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="171"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
@@ -155,17 +160,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="252"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="253"/>
         <source>Patch log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="261"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="262"/>
         <source>Press and hold to copy log to the clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="274"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="275"/>
         <source>No log exists yet</source>
         <translation type="unfinished"></translation>
     </message>
@@ -208,11 +213,6 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="137"/>
         <source>May conflict with:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="165"/>
-        <source>This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&amp;lt;br /&amp;gt;See the developer section in the &amp;lt;a href=&amp;quot;%1&amp;quot;&amp;gt;README&amp;lt;/a&amp;gt; for details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -518,6 +518,16 @@
         <source>Enable applying patches, which are not marked as compatible with the installed Sailfish OS version. Note that patches, which are actually incompatible, will not work.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="37"/>
+        <source>Convert Patches between 32 bit and 64 bit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="38"/>
+        <source>Automatically fix lib or lib64 for select paths shown below.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Sections</name>
@@ -588,7 +598,7 @@
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="63"/>
-        <location filename="../src/qml/patchmanager.cpp" line="217"/>
+        <location filename="../src/qml/patchmanager.cpp" line="239"/>
         <source>other</source>
         <translation>Other</translation>
     </message>
