@@ -225,10 +225,6 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
     QVariantList remoteActions;
 
     switch (action) {
-    case NotifyActionNone:
-        qDebug() << Q_FUNC_INFO << "Notification suppressed.";
-        return;
-        break; //well...
     case NotifyActionSuccessApply:
         summary = qApp->translate("", "Patch installed");
         body = qApp->translate("", "Patch %1 installed").arg(patch);
@@ -1879,12 +1875,13 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
         }
     }
 
-    // is this used anywhere??
+    // is this parameter used anywhere??
     if (!params.value(QStringLiteral("dont_notify"), false).toBool()) {
-        if (getSettings(QStringLiteral("notifyOnSuccess"), true).toBool()) {
-            notify(displayName.toString(), apply ? ok ? NotifyActionSuccessApply : NotifyActionFailedApply : ok ? NotifyActionSuccessUnapply : NotifyActionFailedUnapply);
+        bool donotify = getSettings(QStringLiteral("notifyOnSuccess"), true).toBool();
+        if (ok && donotify) {
+            notify(displayName.toString(), apply ? NotifyActionSuccessApply : NotifyActionSuccessUnapply);
         } else {
-            notify(displayName.toString(), apply ? ok ? NotifyActionNone : NotifyActionFailedApply : ok ? NotifyActionNone : NotifyActionFailedUnapply);
+            notify(displayName.toString(), apply ? NotifyActionFailedApply : NotifyActionFailedUnapply);
         }
     }
 
