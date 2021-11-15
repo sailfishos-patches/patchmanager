@@ -143,6 +143,11 @@
         <translation>Ansvarig</translation>
     </message>
     <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="165"/>
+        <source>This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for details.</source>
+        <translation>Den här korrigeringen använder det äldre formatet för filen patch.json. Om du är dess utvecklare bör du överväga att uppdatera till det nya formatet. Om du använder webbkatalogen skall du inte inkludera en patch.json alls i uppladdningen. &lt;br /&gt;Se utvecklaravsnittet i &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; för mer information.</translation>
+    </message>
+    <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="171"/>
         <source>Description</source>
         <translation>Beskrivning</translation>
@@ -153,17 +158,17 @@
         <translation>Diskussion</translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="252"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="253"/>
         <source>Patch log</source>
         <translation>Korrigeringslogg</translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="261"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="262"/>
         <source>Press and hold to copy log to the clipboard</source>
         <translation>Långtryck för att kopiera till urklipp</translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="274"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="275"/>
         <source>No log exists yet</source>
         <translation>Det finns ännu inga loggar</translation>
     </message>
@@ -207,11 +212,6 @@
         <location filename="../src/qml/UnifiedPatchPage.qml" line="137"/>
         <source>May conflict with:</source>
         <translation>Kan hamna i konflikt med:</translation>
-    </message>
-    <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="165"/>
-        <source>This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&amp;lt;br /&amp;gt;See the developer section in the &amp;lt;a href=&amp;quot;%1&amp;quot;&amp;gt;README&amp;lt;/a&amp;gt; for details.</source>
-        <translation>Den här korrigeringen använder det äldre formatet för filen patch.json. Om du är dess utvecklare bör du överväga att uppdatera till det nya formatet. Om du använder webbkatalogen skall du inte inkludera en patch.json alls i uppladdningen.&amp;lt;br /&amp;gt;Se utvecklaravsnittet i &amp;lt;a href=&amp;quot;%1&amp;quot;&amp;gt;README&amp;lt;/a&amp;gt; för detaljerad information.</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="147"/>
@@ -516,6 +516,16 @@
         <source>Enable applying patches, which are not marked as compatible with the installed Sailfish OS version. Note that patches, which are actually incompatible, will not work.</source>
         <translation>Tillåt tillämpning av korrigeringar som inte är märkta som kompatibla med den installerade versionen av Sailfish OS. Notera att korrigeringar som verkligen inte är kompatibla, inte kommer att fungera.</translation>
     </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="37"/>
+        <source>Convert Patches between 32 bit and 64 bit</source>
+        <translation>Konvertera korrigeringar mellan 32- och 64-bit</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="38"/>
+        <source>Automatically fix lib or lib64 for select paths shown below.</source>
+        <translation>Fixar automatiskt lib eller lib64 för valda sökvägar som visas nedan.</translation>
+    </message>
 </context>
 <context>
     <name>Sections</name>
@@ -586,7 +596,7 @@
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="63"/>
-        <location filename="../src/qml/patchmanager.cpp" line="217"/>
+        <location filename="../src/qml/patchmanager.cpp" line="239"/>
         <source>other</source>
         <translation>Annat</translation>
     </message>
