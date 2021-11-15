@@ -41,6 +41,7 @@
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="222"/>
         <location filename="../src/bin/dialog/dialog.qml" line="165"/>
         <location filename="../src/qml/AboutPage.qml" line="63"/>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="78"/>
         <source>Patchmanager</source>
         <translation>Gestor de parches</translation>
     </message>
@@ -126,8 +127,8 @@
         <translation>Cargar motor antes de aplicar parches</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="85"/>
         <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="85"/>
         <source>Patch details</source>
         <translation>Detalles del parche</translation>
     </message>
@@ -157,17 +158,17 @@
         <translation>Discusión</translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="252"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="253"/>
         <source>Patch log</source>
         <translation>Registro del parche</translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="261"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="262"/>
         <source>Press and hold to copy log to the clipboard</source>
         <translation>Mantén pulsado para copiar registro al portapapeles</translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="274"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="275"/>
         <source>No log exists yet</source>
         <translation>No hay registros aún</translation>
     </message>
@@ -296,14 +297,34 @@
         <translation>No hay parches disponibles</translation>
     </message>
     <message>
-        <location filename="../src/qml/RestartServicesDialog.qml" line="48"/>
-        <source>Restart services</source>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="52"/>
+        <source>Restart</source>
         <translation>Reiniciar</translation>
     </message>
     <message>
-        <location filename="../src/qml/RestartServicesDialog.qml" line="56"/>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="58"/>
         <source>Some services will be restarted now. Reloading the homescreen of the device might take a little time.</source>
         <translation>Ahora se van a reiniciar algunos servicios. Volver a cargar la pantalla de inicio del dispositivo puede tardar un poco.</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="62"/>
+        <source>List of services:</source>
+        <translation>Lista de servicios:</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="77"/>
+        <source>Note: this will close all apps.</source>
+        <translation>Nota: esto cerrará todas las aplicaciones.</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="78"/>
+        <source>Note: this will close %1.</source>
+        <translation>Nota: esto cerrará %1.</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="81"/>
+        <source>Note: this will close the %1 app.</source>
+        <translation>Nota: esto cerrará la aplicación %1.</translation>
     </message>
     <message>
         <location filename="../src/qml/ScreenshotsPage.qml" line="71"/>
@@ -425,41 +446,47 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="236"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="245"/>
+        <source>Services need restart!</source>
+        <translation>¡Los servicios deben reiniciarse!</translation>
+    </message>
+    <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="241"/>
         <source>Patch removed</source>
         <translation>Parche eliminado</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="237"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="242"/>
         <source>Patch %1 removed</source>
         <translation>Parche %1 eliminado</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="240"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="250"/>
         <source>Failed to install patch</source>
         <translation>Error al instalar parche</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="241"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="251"/>
         <source>Patch %1 installation failed</source>
         <translation>Falló la instalación del parche %1</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="244"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="254"/>
         <source>Failed to remove patch</source>
         <translation>Error al eliminar parche</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="245"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="255"/>
         <source>Patch %1 removal failed</source>
         <translation>Falló la eliminación del parche %1</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="248"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="258"/>
         <source>Update available</source>
         <translation>Actualización disponible</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="249"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="259"/>
         <source>Patch %1 have update candidate</source>
         <translation>Hay actualizaciones para %1</translation>
     </message>
@@ -488,6 +515,16 @@
         <location filename="../src/qml/SettingsPage.qml" line="29"/>
         <source>Enable applying patches, which are not marked as compatible with the installed Sailfish OS version. Note that patches, which are actually incompatible, will not work.</source>
         <translation>Se aplican los parches que no están marcados como compatibles con la versión instalada de Sailfish OS. Ten en cuenta que los parches que realmente no son compatibles no funcionarán.</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="37"/>
+        <source>Convert Patches between 32 bit and 64 bit</source>
+        <translation>Convertir parches entre 32 bit y 64 bit</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="38"/>
+        <source>Automatically fix lib or lib64 for select paths shown below.</source>
+        <translation>Corrige automáticamente lib o lib64 para las rutas mostradas a continuación.</translation>
     </message>
 </context>
 <context>
@@ -559,9 +596,14 @@
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="63"/>
-        <location filename="../src/qml/patchmanager.cpp" line="216"/>
+        <location filename="../src/qml/patchmanager.cpp" line="239"/>
         <source>other</source>
         <translation>Otros</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/patchmanager.cpp" line="64"/>
+        <source>keyboard</source>
+        <translation>Teclado</translation>
     </message>
 </context>
 </TS>
