@@ -2400,6 +2400,7 @@ void PatchManagerObject::requestCheckForUpdates()
 
                 QString latestVersion = patchVersion;
 
+                QStringList compatibleNow{}; // Used to detect changes in 'compatible' field.
                 const QVariantList files = project.value("files").toList();
                 for (const QVariant &fileVar : files) {
                     const QVariantMap file = fileVar.toMap();
@@ -2407,12 +2408,21 @@ void PatchManagerObject::requestCheckForUpdates()
                     if (!compatible.contains(m_osRelease)) {
                         continue;
                     }
+                    compatibleNow = compatible;
                     const QString version = file.value("version").toString();
                     latestVersion = PatchManagerObject::maxVersion(latestVersion, version);
                 }
 
                 if (latestVersion == patchVersion) {
                     qDebug() << Q_FUNC_INFO << projectName << "versions match";
+                    if (compatibleNow.length()) {
+                        if (m_metadata[projectName][COMPATIBLE_KEY] != compatibleNow) {
+                            qDebug() << Q_FUNC_INFO << projectName << "update the compatibility to " << compatibleNow;
+                            m_metadata[projectName][COMPATIBLE_KEY] = compatibleNow;
+                        }
+                        // This only marks the flag in-memory. The patch.json file is not re-downloaded.
+                        m_metadata[projectName][ISCOMPATIBLE_KEY] = compatibleNow.contains(m_osRelease);
+                    }
                     return;
                 }
                 qDebug() << Q_FUNC_INFO << "available:" << projectName << "version:" << latestVersion;
