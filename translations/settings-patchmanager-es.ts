@@ -145,7 +145,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="165"/>
         <source>This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for details.</source>
-        <translation>Este parche usa el formato heredado para su archivo patch.json. Si eres el responsable de mantenerlo, considera la posibilidad de actualizar al nuevo formato; ¡si estás usando el catálogo web, no debes incluir un archivo patch.json en su carga!&lt;br /&gt;Consulta la sección de desarrolladores en el &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; para obtener más detalles.</translation>
+        <translation>Este parche usa el formato heredado para su archivo patch.json. Si eres el responsable de mantenerlo, considera la posibilidad de actualizar al nuevo formato; ¡si estás usando el catálogo web, no debes incluir un archivo patch.json!&lt;br /&gt;Consulta la sección de desarrolladores en el &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; para obtener más detalles.</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="171"/>
