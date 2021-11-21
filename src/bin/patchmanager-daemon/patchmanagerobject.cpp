@@ -214,6 +214,54 @@ bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, Q
     return true;
 }
 
+void PatchManagerObject::updatePatchCompatibility(const QString &projectName, const QStringList compatibility)
+{
+    auto& json = m_metadata[projectName];
+    if (json[COMPATIBLE_KEY] != compatibility) {
+        qInfo() << Q_FUNC_INFO << projectName << " updating the compatibility to " << compatibility;
+        // In memory
+        json[COMPATIBLE_KEY] = compatibility;
+        json[ISCOMPATIBLE_KEY] = compatibility.contains(m_osRelease);
+
+        // Read patch.json
+        auto patchPath = json[PATCH_KEY].toString();
+        auto patchDir = QDir(PATCHES_DIR);
+        if (!patchDir.cd(patchPath)) {
+            qWarning() << Q_FUNC_INFO << "Cannot cd to " << patchDir.path();
+            return;
+        }
+
+        QFile file(patchDir.absoluteFilePath(PATCH_FILE));
+        if (!file.open(QIODevice::ReadOnly)) {
+            qWarning() << Q_FUNC_INFO << "Cannot find " << file.fileName() << " in " << patchDir.path();
+            return;
+        }
+
+
+        QJsonParseError error;
+        QJsonDocument document = QJsonDocument::fromJson(file.readAll(), &error);
+        QJsonObject jsonObject = document.object();
+        file.close();
+
+        // Write patch.json
+        jsonObject[COMPATIBLE_KEY] = QJsonArray::fromStringList(compatibility);
+
+        if (error.error != QJsonParseError::NoError) {
+            qWarning() << Q_FUNC_INFO << error.errorString();
+            return;
+        }
+
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+            qWarning() << Q_FUNC_INFO << "Cannot write " << file.fileName() << " in " << patchDir.path();
+            return;
+        }
+
+        file.write(QJsonDocument(jsonObject).toJson());
+
+    }
+}
+
+
 void PatchManagerObject::notify(const QString &patch, NotifyAction action)
 {
     qDebug() << Q_FUNC_INFO << patch << action;
@@ -2416,12 +2464,7 @@ void PatchManagerObject::requestCheckForUpdates()
                 if (latestVersion == patchVersion) {
                     qDebug() << Q_FUNC_INFO << projectName << "versions match";
                     if (compatibleNow.length()) {
-                        if (m_metadata[projectName][COMPATIBLE_KEY] != compatibleNow) {
-                            qDebug() << Q_FUNC_INFO << projectName << "update the compatibility to " << compatibleNow;
-                            m_metadata[projectName][COMPATIBLE_KEY] = compatibleNow;
-                        }
-                        // This only marks the flag in-memory. The patch.json file is not re-downloaded.
-                        m_metadata[projectName][ISCOMPATIBLE_KEY] = compatibleNow.contains(m_osRelease);
+                        updatePatchCompatibility(projectName, compatibleNow);
                     }
                     return;
                 }
