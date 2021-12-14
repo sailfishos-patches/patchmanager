@@ -219,9 +219,6 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
     qDebug() << Q_FUNC_INFO << patch << action;
 
     Notification notification;
-    notification.setAppName(qApp->translate("", "Patchmanager"));
-    notification.setHintValue("app_icon", "icon-m-patchmanager2");
-    notification.setTimestamp(QDateTime::currentDateTime());
 
     QString summary;
     QString body;
@@ -273,6 +270,10 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
     }
 
     qDebug() << Q_FUNC_INFO << summary << body;
+
+    notification.setAppName(qApp->translate("", "Patchmanager"));
+    notification.setHintValue("app_icon", "icon-m-patchmanager2");
+    notification.setTimestamp(QDateTime::currentDateTime());
 
     if (!remoteActions.isEmpty()) {
         qDebug() << Q_FUNC_INFO << remoteActions;
@@ -1874,8 +1875,14 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
         }
     }
 
+    // is this parameter used anywhere??
     if (!params.value(QStringLiteral("dont_notify"), false).toBool()) {
-        notify(displayName.toString(), apply ? ok ? NotifyActionSuccessApply : NotifyActionFailedApply : ok ? NotifyActionSuccessUnapply : NotifyActionFailedUnapply);
+        bool donotify = getSettings(QStringLiteral("notifyOnSuccess"), true).toBool();
+        if (ok && donotify) {
+            notify(displayName.toString(), apply ? NotifyActionSuccessApply : NotifyActionSuccessUnapply);
+        } else {
+            notify(displayName.toString(), apply ? NotifyActionFailedApply : NotifyActionFailedUnapply);
+        }
     }
 
     if (message.isDelayedReply()) {

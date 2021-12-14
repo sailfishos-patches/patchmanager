@@ -216,6 +216,18 @@ void PatchManager::setApplyOnBoot(bool applyOnBoot)
     }
 }
 
+bool PatchManager::notifyOnSuccess() const
+{
+    return getSettingsSync(QStringLiteral("notifyOnSuccess"), true).toBool();
+}
+
+void PatchManager::setNotifyOnSuccess(bool notifyOnSuccess)
+{
+    if (putSettingsSync(QStringLiteral("notifyOnSuccess"), notifyOnSuccess)) {
+        emit notifyOnSuccessChanged(notifyOnSuccess);
+    }
+}
+
 bool PatchManager::bitnessMangle() const
 {
     return getSettingsSync(QStringLiteral("bitnessMangle"), false).toBool();
@@ -227,6 +239,7 @@ void PatchManager::setBitnessMangle(bool bitnessMangle)
         emit bitnessMangleChanged(bitnessMangle);
     }
 }
+
 PatchManagerModel *PatchManager::installedModel()
 {
     return m_installedModel;
