@@ -15,7 +15,7 @@ PM_LOG_FILE="$PM_VAR_DIR/patchmanager.log"
 PM_PATCH_BACKUP_ROOT_DIR="$PM_VAR_DIR/patches"
 PM_PATCH_BACKUP_DIR="$PM_PATCH_BACKUP_ROOT_DIR/$1"
 
-SYS_BITNESS=$(/usr/bin/getconf LONG_BIT)
+SYS_BITNESS="$(/usr/bin/getconf LONG_BIT)"
 
 # Constants
 PATCH_NAME="unified_diff.patch"
@@ -76,7 +76,7 @@ test_if_applied() {
 
     $PATCH_EXEC -R -p 1 -d "$ROOT_DIR" --dry-run < "$PATCH_PATH" 2>&1 | tee -a "$PM_LOG_FILE"
 
-    if [ $? -eq 0 ]; then
+    if [ $? = 0 ]; then
       success
     fi
   fi
@@ -87,14 +87,14 @@ mangle_libpath() {
     if [ -f "$PATCH_PATH" ]; then
       log
       log "----------------------------------"
-      [ $SYS_BITNESS -eq 32 ] && log "Checking paths for 32->64bit conversion"
-      [ $SYS_BITNESS -eq 64 ] && log "Checking paths for 64->32bit conversion"
+      [ "$SYS_BITNESS" = 32 ] && log "Checking paths for 32->64bit conversion"
+      [ "$SYS_BITNESS" = 64 ] && log "Checking paths for 64->32bit conversion"
       log "----------------------------------"
       log
 
       found=0
       candidates="$MANGLE_CANDIDATES"
-      if [ $SYS_BITNESS -eq 32 ]; then
+      if [ "$SYS_BITNESS" = 32 ]; then
         # first, convert the candidate list
         # variable expansion ${foo/lib/lib64} would work on bash, but not POSIX/ash/busybox
         candidates=$(printf '%s' "$MANGLE_CANDIDATES" | sed 's@/usr/lib/@/usr/lib64/@g' )
@@ -103,11 +103,11 @@ mangle_libpath() {
       for p in $candidates; do
         totl_lines=$(grep -c "^+++" "$PATCH_PATH")
         cand_lines=$(grep -c "^+++ $p" "$PATCH_PATH")
-        if [ $cand_lines -eq 0 ]; then
+        if [ $cand_lines = 0 ]; then
           continue # nothing found, try next
         else
           found=$(( $found + $cand_lines ))
-          if [ $totl_lines -ne $cand_lines ]; then
+          if [ $totl_lines != $cand_lines ]; then
             # if there are several references in the patch file our mangling might do too much and cause the patch to fail.
             log "WARNING: mixed patch, conversion might not work"
           fi
@@ -119,15 +119,15 @@ mangle_libpath() {
         mkdir -p "$PM_PATCH_BACKUP_DIR"
         # prepare the pattern
         pr=""
-        if [ $SYS_BITNESS -eq 32 ]; then
+        if [ "$SYS_BITNESS" = 32 ]; then
           pr=$(printf '%s' "$p" | sed 's@/usr/lib64/@/usr/lib/@')
-        elif [ $SYS_BITNESS -eq 64 ]; then
+        elif [ "$SYS_BITNESS" = 64 ]; then
           pr=$(printf '%s' "$p" | sed 's@/usr/lib/@/usr/lib64/@')
         fi
         # doit
-        printf '#\n# patch converted to %sbit library paths from original by Patchmanager 3.1\n# Date: %s\n#\n' $SYS_BITNESS $(date -Iseconds) > "$patch_edited_path"
+        printf '#\n# patch converted to %sbit library paths from original by Patchmanager 3.x\n# Date: %s\n#\n' $SYS_BITNESS $(date -Iseconds) > "$patch_edited_path"
         sed "s@^+++ $p@+++ $pr@;s@^--- $p@--- $pr@" "$PATCH_PATH" >> "$patch_edited_path"
-        if [ $? -ne 0 ]; then
+        if [ $? != 0 ]; then
           failure
         fi
         log
@@ -137,7 +137,7 @@ mangle_libpath() {
         PATCH_PATH="$patch_edited_path"
         return
       done
-      if [ $found -eq 0 ]; then
+      if [ $found = 0 ]; then
         log
         log "OK, found nothing to convert"
         log
