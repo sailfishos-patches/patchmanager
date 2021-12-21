@@ -125,7 +125,7 @@ mangle_libpath() {
           pr=$(printf '%s' "$p" | sed 's@/usr/lib/@/usr/lib64/@')
         fi
         # doit
-        printf '#\n# patch converted to %sbit library paths from original by Patchmanager 3.1\n# Date: %s\n#\n' $SYS_BITNESS $(date -Iseconds) > "$patch_edited_path"
+        printf '#\n# patch converted to %sbit library paths from its original by Patchmanager >= 3.1\n# Date: %s\n#\n' $SYS_BITNESS $(date -Iseconds) > "$patch_edited_path"
         sed "s@^+++ $p@+++ $pr@;s@^--- $p@--- $pr@" "$PATCH_PATH" >> "$patch_edited_path"
         if [ $? -ne 0 ]; then
           failure
