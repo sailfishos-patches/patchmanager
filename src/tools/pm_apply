@@ -24,7 +24,7 @@ PATCH_EDITED_NAME="unified_diff_${SYS_BITNESS}bit.patch"
 
 # list of candidate paths to attempt 32/64bit library path correction
 MANGLE_CANDIDATES=""
-if [ -z "$DISABLE_MANGLING" ] && [ -r "etc/patchmanager/manglelist.conf" ] ; then
+if [ -z "$DISABLE_MANGLING" ] && [ -r "/etc/patchmanager/manglelist.conf" ] ; then
     source /etc/patchmanager/manglelist.conf
 fi
 
@@ -234,7 +234,7 @@ fi
 # The main function that controls all the magic stuff
 #
 
-mangle_libpath
+[ -n "$MANGLE_CANDIDATES" ] && mangle_libpath
 
 test_if_applied
 
