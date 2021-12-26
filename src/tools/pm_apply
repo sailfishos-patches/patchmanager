@@ -234,7 +234,7 @@ fi
 # The main function that controls all the magic stuff
 #
 
-mangle_libpath
+[ -n "$MANGLE_CANDIDATES" ] && mangle_libpath
 
 test_if_applied
 
