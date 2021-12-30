@@ -104,7 +104,7 @@ mangle_libpath() {
         totl_lines=$(grep -c "^+++" "$PATCH_PATH")
         cand_lines=$(grep -c "^+++ $p" "$PATCH_PATH")
         if [ $cand_lines -eq 0 ]; then
-          continue # nothing found, try next
+          continue  # nothing found, try next
         else
           found=$(( $found + $cand_lines ))
           if [ $totl_lines -ne $cand_lines ]; then
@@ -112,12 +112,9 @@ mangle_libpath() {
             log "WARNING: mixed patch, conversion might not work"
           fi
         fi
-
-        patch_edited_path="$PM_PATCH_BACKUP_DIR"/"$PATCH_EDITED_NAME"
         log "found: ${p}, replacing libpath references"
-
-        mkdir -p "$PM_PATCH_BACKUP_DIR"
-        # prepare the pattern
+        
+        # prepare the replacement pattern
         pr=""
         if [ $SYS_BITNESS -eq 32 ]; then
           pr=$(printf '%s' "$p" | sed 's@/usr/lib64/@/usr/lib/@')
@@ -125,23 +122,26 @@ mangle_libpath() {
           pr=$(printf '%s' "$p" | sed 's@/usr/lib/@/usr/lib64/@')
         fi
         # doit
-        printf '#\n# patch converted to %sbit library paths from its original by Patchmanager >= 3.1\n# Date: %s\n#\n' $SYS_BITNESS $(date -Iseconds) > "$patch_edited_path"
+        mkdir -p "$PM_PATCH_BACKUP_DIR"
+        patch_edited_path="$PM_PATCH_BACKUP_DIR"/"$PATCH_EDITED_NAME"
+        printf '#\n# Patch converted to %sbit library paths from its original by Patchmanager > 3.1\n# Date: %s\n#\n' $SYS_BITNESS $(date -Iseconds) > "$patch_edited_path"
         sed "s@^+++ $p@+++ $pr@;s@^--- $p@--- $pr@" "$PATCH_PATH" >> "$patch_edited_path"
         if [ $? -ne 0 ]; then
           failure
         fi
-        log
-        log "OK, conversion produced: $patch_edited_path"
-        log
-        # set the patch to apply to the new one:
-        PATCH_PATH="$patch_edited_path"
-        return
+        break
       done
       if [ $found -eq 0 ]; then
         log
-        log "OK, found nothing to convert"
+        log "OK, found nothing to convert."
         log
-       fi
+      else
+        log
+        log "OK, replaced $found paths and created: $patch_edited_path"
+        log
+        # set the patch to apply to the new one:
+        PATCH_PATH="$patch_edited_path"
+      fi
     fi
 }
 
