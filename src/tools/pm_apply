@@ -137,7 +137,7 @@ mangle_libpath() {
         log
       else
         log
-        log "OK, replaced $found paths and created: $patch_edited_path"
+        log "OK, replaced $found libpath references and created: $patch_edited_path"
         log
         # set the patch to apply to the new one:
         PATCH_PATH="$patch_edited_path"
