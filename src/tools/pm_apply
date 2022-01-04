@@ -122,14 +122,16 @@ mangle_libpath() {
           pr=$(printf '%s' "$p" | sed 's@/usr/lib/@/usr/lib64/@')
         fi
         # doit
-        mkdir -p "$PM_PATCH_BACKUP_DIR"
-        patch_edited_path="$PM_PATCH_BACKUP_DIR"/"$PATCH_EDITED_NAME"
-        printf '#\n# Patch converted to %sbit library paths from its original by Patchmanager > 3.1\n# Date: %s\n#\n' $SYS_BITNESS $(date -Iseconds) > "$patch_edited_path"
-        sed "s@^+++ $p@+++ $pr@;s@^--- $p@--- $pr@" "$PATCH_PATH" >> "$patch_edited_path"
+        if [ $found -eq $cand_lines ]; then  # first run in loop
+          mkdir -p "$PM_PATCH_BACKUP_DIR"
+          patch_edited_path="$PM_PATCH_BACKUP_DIR"/"$PATCH_EDITED_NAME"
+          printf '#\n# Patch converted to %sbit library paths from its original by Patchmanager > 3.1\n# Date: %s\n#\n' $SYS_BITNESS $(date -Iseconds) > "$patch_edited_path"
+          cat "$PATCH_PATH" >> "$patch_edited_path"
+        fi
+        sed -i "s@^+++ $p@+++ $pr@;s@^--- $p@--- $pr@" "$patch_edited_path"  # patch the Patch
         if [ $? -ne 0 ]; then
           failure
         fi
-        break
       done
       if [ $found -eq 0 ]; then
         log
