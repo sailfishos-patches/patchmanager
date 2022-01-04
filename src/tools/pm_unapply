@@ -117,7 +117,7 @@ log
 
 log "$(basename "$PATCH_DIR")"
 
-log "Using PATCH_FILE: $PATCH_FILE"
+log "Using patch file: $PATCH_FILE"
 
 if [ -f "$PATCH_FILE" ]; then
   log "  contains text patch"
@@ -131,7 +131,7 @@ if [ ! -x "$PATCH_EXEC" ]; then
 fi
 
 if [ ! -f "$PATCH_FILE" ]; then
-  log "ERROR: Cannot find patch file $PATCH_FILE"
+  log "ERROR: Cannot find patch file!"
   failure
 fi
 
