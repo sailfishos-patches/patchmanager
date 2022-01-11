@@ -245,7 +245,7 @@ Page {
 
         ViewPlaceholder {
             enabled: patchModel.count == 0
-            text: qsTranslate("", "No patches available")
+            text: qsTranslate("", "No Patches available")
         }
 
         VerticalScrollDecorator {}
