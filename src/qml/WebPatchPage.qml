@@ -72,7 +72,7 @@ Page {
 
         ViewPlaceholder {
             enabled: !patchData
-            text: fetching ? qsTranslate("", "Fetching patch information...") : qsTranslate("", "Problem in fetching patch data")
+            text: fetching ? qsTranslate("", "Fetching patch data") : qsTranslate("", "Failed to fetch Patch data")
         }
 
         Column {
@@ -332,7 +332,7 @@ Page {
                         if (!PatchManager.developerMode && !isCompatible) {
                             errorMessageComponent.createObject(fileDelegate, {text: qsTranslate("", "This Patch is incompatible with the installed SailfishOS version.")})
                         } else if (!fileDelegate.isInstalled) {
-                            remorseAction(qsTranslate("", "Install patch %1").arg(patchData.display_name), installPatch)
+                            remorseAction(qsTranslate("", "Install Patch %1").arg(patchData.display_name), installPatch)
                         }
                     }
 
