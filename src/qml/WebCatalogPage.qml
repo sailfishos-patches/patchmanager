@@ -86,7 +86,7 @@ Page {
                 }
             }
             MenuItem {
-                text: sortByDate ? qsTranslate("", "Sort by Category") : qsTranslate("", "Sort by Date")
+                text: sortByDate ? qsTranslate("", "Sort by category") : qsTranslate("", "Sort by date updated")
                 onClicked: {
                     sortByDate = !sortByDate
                 }
@@ -98,7 +98,7 @@ Page {
             Column {
                 width: view.width
                 PageHeader {
-                    title: container.author ? qsTranslate("", "%1 patches").arg(container.author) : qsTranslate("", "Web Catalog") 
+                    title: container.author ? qsTranslate("", "%1 Patches").arg(container.author) : qsTranslate("", "Web Catalog") 
                     description: container.sortByDate ? qsTranslate("", "(by date updated)") : qsTranslate("", "(by category)")
                 }
 
@@ -259,5 +259,4 @@ Page {
         size: BusyIndicatorSize.Large
     }
 }
-
 
