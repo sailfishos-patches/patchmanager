@@ -30,7 +30,7 @@ Page {
 
             TextSwitch {
                 text: qsTranslate("", "Apply Patches when booting")
-                description: qsTranslate("", "Automatically apply all enabled Patches when SailfishOS starts")
+                description: qsTranslate("", "Automatically apply all enabled Patches when SailfishOS starts.")
                 checked: PatchManager.applyOnBoot
                 onClicked: PatchManager.applyOnBoot = !PatchManager.applyOnBoot
                 automaticCheck: false
