@@ -79,7 +79,7 @@ Page {
                 anchors.right: parent.right
                 anchors.margins: Theme.horizontalPageMargin
                 font.pixelSize: Theme.fontSizeSmall
-                text: qsTranslate("", "Patchmanager allows to automatically modify system files via Patches. It provides a daemon that performs the automatic activation of Patches, plus a GUI to configure these operations and the installation or removal of patches.")
+                text: qsTranslate("", "Patchmanager allows to automatically modify system files via Patches. It provides a daemon which performs the automatic activation of Patches, plus a GUI to configure these operations and the installation or removal of Patches.")
             }
 
             Separator {
@@ -157,7 +157,7 @@ Page {
                     font.pixelSize: Theme.fontSizeSmall
                     wrapMode: Text.WordWrap
                     horizontalAlignment: Text.AlignJustify
-                    text: qsTranslate("", "If you appreciate our work, please consider a donation to help covering the hosting costs for Openrepos. Openrepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of patches is hosted there.")
+                    text: qsTranslate("", "If you appreciate our work, please consider a donation to help covering the hosting costs for Openrepos. Openrepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of Patches is hosted there.")
                 }
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
