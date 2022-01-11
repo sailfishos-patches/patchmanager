@@ -330,7 +330,7 @@ Page {
 
                     onClicked: {
                         if (!PatchManager.developerMode && !isCompatible) {
-                            errorMessageComponent.createObject(fileDelegate, {text: qsTranslate("", "This patch is incompatible with the installed Sailfish OS version.")})
+                            errorMessageComponent.createObject(fileDelegate, {text: qsTranslate("", "This Patch is incompatible with the installed SailfishOS version.")})
                         } else if (!fileDelegate.isInstalled) {
                             remorseAction(qsTranslate("", "Install patch %1").arg(patchData.display_name), installPatch)
                         }
@@ -344,7 +344,7 @@ Page {
                         PatchManager.watchCall(PatchManager.installPatch(modelData.project, modelData.version, modelData.document),
                                                function(ok) {
                                                    if (!ok) {
-                                                       console.warn("Unsuccessful installation!")
+                                                       console.warn("Installation failed!")
                                                        return
                                                    }
                                                    container.versions[patchData.name] = modelData.version
