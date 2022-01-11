@@ -50,7 +50,7 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="82"/>
-        <source>Patchmanager allows to automatically modify system files via patches. It provides a daemon that performs the application of those patches and a GUI to control those operations and the installation or removal of patches.</source>
+        <source>Patchmanager allows to automatically modify system files via Patches. It provides a daemon that performs the automatic activation of Patches, plus a GUI to configure these operations and the installation or removal of patches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
