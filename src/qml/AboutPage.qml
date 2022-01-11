@@ -79,7 +79,7 @@ Page {
                 anchors.right: parent.right
                 anchors.margins: Theme.horizontalPageMargin
                 font.pixelSize: Theme.fontSizeSmall
-                text: qsTranslate("", "Patchmanager allows to automatically modify system files via patches. It provides a daemon that performs the application of those patches and a GUI to control those operations and the installation or removal of patches.")
+                text: qsTranslate("", "Patchmanager allows to automatically modify system files via Patches. It provides a daemon that performs the automatic activation of Patches, plus a GUI to configure these operations and the installation or removal of patches.")
             }
 
             Separator {
