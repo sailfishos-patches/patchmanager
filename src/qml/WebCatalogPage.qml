@@ -98,7 +98,7 @@ Page {
             Column {
                 width: view.width
                 PageHeader {
-                    title: container.author ? qsTranslate("", "%1 patches").arg(container.author) : qsTranslate("", "Web catalog") 
+                    title: container.author ? qsTranslate("", "%1 patches").arg(container.author) : qsTranslate("", "Web Catalog") 
                     description: container.sortByDate ? qsTranslate("", "(by date updated)") : qsTranslate("", "(by category)")
                 }
 
