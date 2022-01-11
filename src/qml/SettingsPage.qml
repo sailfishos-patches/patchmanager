@@ -29,8 +29,8 @@ Page {
             SectionHeader { text: qsTranslate("", "Advanced") }
 
             TextSwitch {
-                text: qsTranslate("", "Apply Patches when booting")
-                description: qsTranslate("", "Automatically apply all enabled Patches when SailfishOS starts.")
+                text: qsTranslate("", "Activate Patches when booting")
+                description: qsTranslate("", "Automatically activate all enabled Patches when SailfishOS starts.")
                 checked: PatchManager.applyOnBoot
                 onClicked: PatchManager.applyOnBoot = !PatchManager.applyOnBoot
                 automaticCheck: false
@@ -38,7 +38,7 @@ Page {
 
             TextSwitch {
                 text: qsTranslate("", "Allow incompatible Patches")
-                description: qsTranslate("", "Enable applying Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.")
+                description: qsTranslate("", "Enable activating Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.")
                 checked: PatchManager.developerMode
                 onClicked: PatchManager.developerMode = !PatchManager.developerMode
                 automaticCheck: false
