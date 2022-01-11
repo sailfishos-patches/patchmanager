@@ -354,7 +354,7 @@ Page {
                     if (PatchManager.developerMode || patchObject.details.isCompatible) {
                         patchObject.apply()
                     } else {
-                        errorMessageComponent.createObject(background, {text: qsTranslate("", "This patch is incompatible with the installed Sailfish OS version.")})
+                        errorMessageComponent.createObject(background, {text: qsTranslate("", "This Patch is incompatible with the installed SailfishOS version.")})
                     }
                 } else {
                     patchObject.unapply()
@@ -362,7 +362,7 @@ Page {
             }
 
             function removeAction() {
-                remorseAction(qsTranslate("", "Uninstalling patch %1").arg(name), doRemove)
+                remorseAction(qsTranslate("", "Removing Patch %1").arg(name), doRemove)
             }
 
             function doUninstall() {
@@ -482,8 +482,8 @@ Page {
                     MenuLabel {
                         visible: !patchObject.details.patched && patchObject.details.conflicts.length > 0
                         text: (patchObject.details.conflicts.length == 1)
-                            ?  qsTranslate("" , "May conflict with another patch, see %1").arg(patchinfoitem.text)
-                            :  qsTranslate("" , "May conflict with %2 other patches, see %1").arg(patchinfoitem.text).arg(patchObject.details.conflicts.length)
+                            ?  qsTranslate("" , "May conflict with another Patch, see %1").arg(patchinfoitem.text)
+                            :  qsTranslate("" , "May conflict with %2 other Patches, see %1").arg(patchinfoitem.text).arg(patchObject.details.conflicts.length)
                     }
                     MenuItem {
                         id: patchinfoitem
@@ -491,12 +491,12 @@ Page {
                         onClicked: background.openPatchInfo()
                     }
                     MenuItem {
-                        text: patchObject.details.patched ? qsTranslate("", "Unapply") : qsTranslate("", "Apply")
+                        text: patchObject.details.patched ? qsTranslate("", "Deactivate") : qsTranslate("", "Activate")
                         onClicked: background.doPatch()
                     }
                     MenuItem {
                         visible: !patchObject.details.patched && patchObject.details.patch != "sailfishos-patchmanager-unapplyall"
-                        text: qsTranslate("", "Uninstall")
+                        text: qsTranslate("", "Remove")
                         onClicked: background.removeAction()
                     }
                 }
@@ -510,7 +510,7 @@ Page {
 
         ViewPlaceholder {
             enabled: view.count == 0
-            text: qsTranslate("", "No patches available")
+            text: qsTranslate("", "No Patches available")
         }
         RemorsePopup { id: menuRemorse }
         VerticalScrollDecorator {}
@@ -524,5 +524,3 @@ Page {
 //        size: BusyIndicatorSize.Large
 //    }
 }
-
-
