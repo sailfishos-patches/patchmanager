@@ -524,3 +524,4 @@ Page {
 //        size: BusyIndicatorSize.Large
 //    }
 }
+
