@@ -62,27 +62,27 @@ Page {
             busy: container.delegate.applying
             MenuItem {
                 text: container.delegate.applying
-                    ? qsTranslate("", "Patch being applied")
+                    ? qsTranslate("", "Activating Patch")
                     : (modelData.patched
-                        ? qsTranslate("", "Unapply patch")
-                        : qsTranslate("", "Apply patch"))
+                        ? qsTranslate("", "Deactivate Patch")
+                        : qsTranslate("", "Activate Patch"))
                 enabled: !container.delegate.applying && PatchManager.loaded
                 onClicked: {
                     container.delegate.doPatch()
                 }
             }
             MenuItem {
-                text: qsTranslate("", "Uninstall patch")
+                text: qsTranslate("", "Remove Patch")
                 enabled: !modelData.patched
                 onClicked: {
-                    Remorse.popupAction(container, qsTranslate("", "Patch %1 uninstalled.").arg(modelData.display_name), 
+                    Remorse.popupAction(container, qsTranslate("", "Patch %1 removed.").arg(modelData.display_name), 
                         function() { container.delegate.doUninstall(); pageStack.pop(); }
                     )
                 }
             }
             MenuLabel {
                 visible: !PatchManager.loaded
-                text: qsTranslate("", "Load engine before applying patches")
+                text: qsTranslate("", "Start Patchmanager daemon before activating Patches")
             }
         }
 
@@ -104,7 +104,7 @@ Page {
                 color: Theme.primaryColor
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeLarge
-                text: qsTranslate("", "This patch is not available anymore. You will not be able to reinstall it.")
+                text: qsTranslate("", "This Patch is not available anymore. You will not be able to reinstall it.")
             }
 
             Column {
@@ -162,7 +162,7 @@ Page {
                 font.pixelSize: Theme.fontSizeSmall
                 textFormat: Text.StyledText
                 property string link: SOURCE_REPO + "/blob/master/README.md#for-developers"
-                text: qsTranslate("", "This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!<br />See the developer section in the <a href=\"%1\">README</a> for details.").arg(link)
+                text: qsTranslate("", "This Patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!<br />See the developer section in the <a href=\"%1\">README</a> for details.").arg(link)
                 linkColor: Theme.highlightColor
                 onLinkActivated: Qt.openUrlExternally(link)
             }
