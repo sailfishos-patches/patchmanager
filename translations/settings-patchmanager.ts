@@ -516,12 +516,12 @@
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="32"/>
-        <source>Apply Patches when booting</source>
+        <source>Activate Patches when booting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="33"/>
-        <source>Automatically apply all enabled Patches when SailfishOS starts.</source>
+        <source>Automatically activate all enabled Patches when SailfishOS starts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -531,7 +531,7 @@
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="41"/>
-        <source>Enable applying Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.</source>
+        <source>Enable activating Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -625,3 +625,4 @@
     </message>
 </context>
 </TS>
+
