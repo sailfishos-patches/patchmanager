@@ -20,7 +20,7 @@ Page {
 
             TextSwitch {
                 text: qsTranslate("", "Show notification on success")
-                description: qsTranslate("", "If this is off, notifications will only be shown when something went wrong")
+                description: qsTranslate("", "If this is off, notifications will only be shown when something went wrong.")
                 checked: PatchManager.notifyOnSuccess
                 onClicked: PatchManager.notifyOnSuccess = !PatchManager.notifyOnSuccess
                 automaticCheck: false
@@ -29,16 +29,16 @@ Page {
             SectionHeader { text: qsTranslate("", "Advanced") }
 
             TextSwitch {
-                text: qsTranslate("", "Apply patches when booting")
-                description: qsTranslate("", "Automatically apply all enabled patches when Sailfish OS starts")
+                text: qsTranslate("", "Apply Patches when booting")
+                description: qsTranslate("", "Automatically apply all enabled Patches when SailfishOS starts")
                 checked: PatchManager.applyOnBoot
                 onClicked: PatchManager.applyOnBoot = !PatchManager.applyOnBoot
                 automaticCheck: false
             }
 
             TextSwitch {
-                text: qsTranslate("", "Allow incompatible patches")
-                description: qsTranslate("", "Enable applying patches, which are not marked as compatible with the installed Sailfish OS version. Note that patches, which are actually incompatible, will not work.")
+                text: qsTranslate("", "Allow incompatible Patches")
+                description: qsTranslate("", "Enable applying Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.")
                 checked: PatchManager.developerMode
                 onClicked: PatchManager.developerMode = !PatchManager.developerMode
                 automaticCheck: false
@@ -47,7 +47,7 @@ Page {
             TextSwitch {
                 id: fixBitSwitch
                 text: qsTranslate("", "Convert Patches between 32 bit and 64 bit")
-                description: qsTranslate("", "Automatically fix lib or lib64 for select paths shown below.")
+                description: qsTranslate("", "Automatically convert lib or lib64 for select paths shown below.")
                 checked: PatchManager.bitnessMangle
                 onClicked: PatchManager.bitnessMangle = !PatchManager.bitnessMangle
                 automaticCheck: false
