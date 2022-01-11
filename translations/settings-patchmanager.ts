@@ -10,33 +10,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="28"/>
         <location filename="../src/bin/dialog/dialog.qml" line="45"/>
-        <source>Apply patches</source>
+        <source>Activate all Patches marked active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="53"/>
-        <source>Patchmanager will automatically apply all patches in 10 seconds.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="136"/>
-        <source>Applied patches successfully.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="137"/>
-        <source>Failed to apply patches!</source>
+        <source>Patchmanager will activate all Patches marked active in 10 seconds.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="66"/>
-        <source>Exit</source>
+        <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="28"/>
-        <source>Applying patches</source>
+        <location filename="../src/bin/dialog/dialog.qml" line="136"/>
+        <source>Successfully activated all Patches marked active.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="137"/>
+        <source>Failed to activate all Patches marked active!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -438,58 +434,58 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="232"/>
-        <source>Patch installed</source>
+        <source>Patch activated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="233"/>
-        <source>Patch %1 installed</source>
+        <source>Patch %1 activated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="236"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="247"/>
+        <source>some service should be restarted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="243"/>
+        <source>Patch deactivated"</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="245"/>
-        <source>Services need restart!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="241"/>
-        <source>Patch removed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="242"/>
-        <source>Patch %1 removed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="250"/>
-        <source>Failed to install patch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="251"/>
-        <source>Patch %1 installation failed</source>
+        <source>Patch %1 deactivated"</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="254"/>
-        <source>Failed to remove patch</source>
+        <source>Failed to activate Patch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="255"/>
-        <source>Patch %1 removal failed</source>
+        <source>Activating Patch %1 failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="258"/>
-        <source>Update available</source>
+        <source>Failed to deactivate Patch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="259"/>
-        <source>Patch %1 have update candidate</source>
+        <source>Deactivating Patch %1 failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="262"/>
+        <source>Update available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="263"/>
+        <source>An update for Patch %1 exits.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
