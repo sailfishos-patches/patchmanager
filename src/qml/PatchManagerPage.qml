@@ -144,19 +144,19 @@ Page {
             }
 
             MenuItem {
-                text: qsTranslate("", "Unapply all patches")
+                text: qsTranslate("", "Deactivate all Patches")
                 onClicked: menuRemorse.execute( text, function() { PatchManager.call(PatchManager.unapplyAllPatches()) } )
                 visible: PatchManager.loaded
             }
 
             MenuItem {
-                text: qsTranslate("", "Load engine")
+                text: qsTranslate("", "Start Patchmanager's daemon")
                 onClicked: PatchManager.call(PatchManager.loadRequest(true))
                 visible: !PatchManager.loaded
             }
 
             MenuItem {
-                text: PatchManager.updatesNames.length > 0 ? qsTranslate("", "Updates available") : qsTranslate("", "Web catalog")
+                text: PatchManager.updatesNames.length > 0 ? qsTranslate("", "Updates available") : qsTranslate("", "Web Catalog")
 
                 onClicked: pageStack.push(Qt.resolvedUrl("WebCatalogPage.qml"))
             }
@@ -175,7 +175,7 @@ Page {
         }
 
         header: PageHeader {
-            title: qsTranslate("", "Installed patches")
+            title: qsTranslate("", "Installed Patches")
         }
         model: PatchManager.installedModel
 
