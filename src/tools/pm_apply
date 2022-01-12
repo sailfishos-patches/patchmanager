@@ -181,8 +181,8 @@ create_backup_patch() {
 
   mkdir -p "$PM_PATCH_BACKUP_DIR" > /dev/null 2>&1
   cp -f "$PATCH_DIR/$PATCH_NAME" "$PM_PATCH_BACKUP_DIR" > /dev/null 2>&1
-  log "Created backup"
-  log "  backup: $PM_PATCH_BACKUP_DIR"
+  log "Created backup: $PM_PATCH_BACKUP_DIR"
+  log
 }
 
 #
@@ -192,12 +192,12 @@ create_backup_patch() {
 mkdir -p "$PM_VAR_DIR" > /dev/null 2>&1
 
 if [ ! -f "$PM_LOG_FILE" ]; then
-  log "*** Patch Log Created by Apply $(date) ***"
+  log "*** Patch-log created by pm_apply script $(date) ***"
 fi
 
 log
 log "----------------------------------"
-log "PM APPLY $(date)"
+log "pm_apply $(date)"
 log "----------------------------------"
 log
 
@@ -210,12 +210,12 @@ fi
 log
 
 if [ ! -x "$PATCH_EXEC" ]; then
-  log "ERROR: Cannot find $PATCH_EXEC"
+  log "ERROR: Cannot find patch executable $PATCH_EXEC"
   failure
 fi
 
 if [ -z "$PATCH_DIR" ]; then
-  log "ERROR: PATCH_DIR must be given for installing"
+  log "ERROR: PATCH_DIR must be provided for installing!"
   failure
 fi
 
@@ -225,7 +225,7 @@ if [ ! -d "$PATCH_DIR" ]; then
 fi
 
 if [ ! -f "$PATCH_PATH" ]; then
-  log "ERROR: Cannot find patch file !"
+  log "ERROR: Cannot find patch file!"
   failure
 fi
 
