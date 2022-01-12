@@ -82,7 +82,7 @@ Page {
             }
             MenuLabel {
                 visible: !PatchManager.loaded
-                text: qsTranslate("", "Start Patchmanager daemon before activating Patches")
+                text: qsTranslate("", "Start Patchmanager's daemon before activating Patches")
             }
         }
 
