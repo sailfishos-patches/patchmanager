@@ -9,6 +9,7 @@ PM_VAR_DIR="/tmp/patchmanager3"
 PATCH_ROOT_DIR="/usr/share/patchmanager/patches"
 
 # Paths / Files
+PARAMETER="$1"
 PATCH_DIR="$PATCH_ROOT_DIR/$1"
 
 PM_LOG_FILE="$PM_VAR_DIR/patchmanager.log"
@@ -192,30 +193,17 @@ create_backup_patch() {
 mkdir -p "$PM_VAR_DIR" > /dev/null 2>&1
 
 if [ ! -f "$PM_LOG_FILE" ]; then
-  log "*** Patch-log created by pm_apply script $(date) ***"
+  log "*** Patch-log created by pm_apply script $(date -Iseconds) ***"
 fi
 
 log
 log "----------------------------------"
-log "pm_apply $(date)"
+log "pm_apply $(date -Iseconds)"
 log "----------------------------------"
 log
 
-log "$(basename "$PATCH_DIR")"
-
-if [ -f "$PATCH_PATH" ]; then
-  log "  contains text patch"
-fi
-
-log
-
-if [ ! -x "$PATCH_EXEC" ]; then
-  log "ERROR: Cannot find patch executable $PATCH_EXEC"
-  failure
-fi
-
-if [ -z "$PATCH_DIR" ]; then
-  log "ERROR: PATCH_DIR must be provided for installing!"
+if [ -z "$PARAMETER" ]; then
+  log "ERROR: A parameter must be provided for applying!"
   failure
 fi
 
@@ -223,6 +211,16 @@ if [ ! -d "$PATCH_DIR" ]; then
   log "ERROR: $PATCH_DIR is not a directory or does not exist!"
   failure
 fi
+
+log "$(basename "$PATCH_DIR")"
+log
+
+if [ ! -x "$PATCH_EXEC" ]; then
+  log "ERROR: Cannot use patch executable ${PATCH_EXEC}!"
+  failure
+fi
+
+log "Using patch file: $PATCH_PATH"
 
 if [ ! -f "$PATCH_PATH" ]; then
   log "ERROR: Cannot find patch file!"
