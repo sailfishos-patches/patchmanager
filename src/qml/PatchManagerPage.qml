@@ -524,4 +524,3 @@ Page {
 //        size: BusyIndicatorSize.Large
 //    }
 }
-
