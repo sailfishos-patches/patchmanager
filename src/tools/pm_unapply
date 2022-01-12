@@ -121,6 +121,11 @@ if [ -z "$PARAMETER" ]; then
   failure
 fi
 
+if [ ! -d "$PATCH_DIR" ]; then
+  log "ERROR: $PATCH_DIR is not a directory or does not exist!"
+  failure
+fi
+
 log "$(basename "$PATCH_DIR")"
 log
 
