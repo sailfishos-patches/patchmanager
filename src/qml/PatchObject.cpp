@@ -1,8 +1,13 @@
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
+ * Copyright (c) 2021, Patchmanager for SailfishOS contributors:
+ *                  - olf "Olf0" <https://github.com/Olf0>
+ *                  - Peter G. "nephros" <sailfish@nephros.org>
+ *                  - Vlad G. "b100dian" <https://github.com/b100dian>
  *
- * You may use this file under the terms of the BSD license as follows:
+ * You may use this file under the terms of the 3-clause BSD license,
+ * as follows:
  *
  * "Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
