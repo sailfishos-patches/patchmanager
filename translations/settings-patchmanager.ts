@@ -136,7 +136,7 @@
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="85"/>
-        <source>Start Patchmanager daemon before activating Patches</source>
+        <source>Start Patchmanager's daemon before activating Patches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
