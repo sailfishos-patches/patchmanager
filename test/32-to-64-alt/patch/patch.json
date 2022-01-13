@@ -1,0 +1,13 @@
+{
+  "description": "Patchmanager Test Case: Mangle 32-to-64 bit. uses plain diff (+++ /path/to/foo)",
+  "name": "pm-test-case-32-to-64-alt",
+  "display_name": "PM Test Case 1-2",
+  "category": "other",
+  "author": "patchmanager",
+  "version": "1.0.0",
+  "compatible": [
+    "4.0.1.48",
+    "4.1.0.24",
+    "4.2.0.21"
+  ]
+}
