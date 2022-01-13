@@ -1,0 +1,4 @@
+module org.SfietKonstantin.patchmanagertests
+TestCase1Item 1.0 TestCase1Item.qml
+TestCase2Item 1.0 TestCase2Item.qml
+TestCase3Item 1.0 TestCase3Item.qml
