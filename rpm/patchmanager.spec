@@ -40,6 +40,8 @@ BuildRequires:  pkgconfig(popt)
 %package test-cases
 Summary: test cases for %{name}
 Group: Development
+BuildArch: noarch
+Requires: libsailfishapp-launcher
 
 %description test-cases
 %{summary}.
@@ -181,9 +183,12 @@ systemctl daemon-reload
 systemctl-user daemon-reload
 
 %files test-cases
-%{_datadir}/%{name}-test-cases/
-%{_libdir}/qt5/qml/%{name}-test-cases/
+%dir %{_libdir}/qt5/qml/org/SfietKonstantin/patchmanagertests
+%{_libdir}/qt5/qml/org/SfietKonstantin/patchmanagertests/*
 %{_datadir}/%{name}/patches/pm-test-case-*
+%{_datadir}/applications/patchmanager-testcase.desktop
+%{_datadir}/patchmanager-testcase/*
+%{_datadir}/patchmanager-test/testfile
 
 %files
 %defattr(-,root,root,-)
