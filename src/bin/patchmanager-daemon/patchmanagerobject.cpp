@@ -214,6 +214,54 @@ bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, Q
     return true;
 }
 
+void PatchManagerObject::updatePatchCompatibility(const QString &projectName, const QStringList compatibility)
+{
+    auto& json = m_metadata[projectName];
+    if (json[COMPATIBLE_KEY] != compatibility) {
+        qInfo() << Q_FUNC_INFO << projectName << " updating the compatibility to " << compatibility;
+        // In memory
+        json[COMPATIBLE_KEY] = compatibility;
+        json[ISCOMPATIBLE_KEY] = compatibility.contains(m_osRelease);
+
+        // Read patch.json
+        auto patchPath = json[PATCH_KEY].toString();
+        auto patchDir = QDir(PATCHES_DIR);
+        if (!patchDir.cd(patchPath)) {
+            qWarning() << Q_FUNC_INFO << "Cannot cd to " << patchDir.path();
+            return;
+        }
+
+        QFile file(patchDir.absoluteFilePath(PATCH_FILE));
+        if (!file.open(QIODevice::ReadOnly)) {
+            qWarning() << Q_FUNC_INFO << "Cannot find " << file.fileName() << " in " << patchDir.path();
+            return;
+        }
+
+
+        QJsonParseError error;
+        QJsonDocument document = QJsonDocument::fromJson(file.readAll(), &error);
+        QJsonObject jsonObject = document.object();
+        file.close();
+
+        // Write patch.json
+        jsonObject[COMPATIBLE_KEY] = QJsonArray::fromStringList(compatibility);
+
+        if (error.error != QJsonParseError::NoError) {
+            qWarning() << Q_FUNC_INFO << error.errorString();
+            return;
+        }
+
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+            qWarning() << Q_FUNC_INFO << "Cannot write " << file.fileName() << " in " << patchDir.path();
+            return;
+        }
+
+        file.write(QJsonDocument(jsonObject).toJson());
+
+    }
+}
+
+
 void PatchManagerObject::notify(const QString &patch, NotifyAction action)
 {
     qDebug() << Q_FUNC_INFO << patch << action;
@@ -2407,6 +2455,7 @@ void PatchManagerObject::requestCheckForUpdates()
 
                 QString latestVersion = patchVersion;
 
+                QStringList compatibleNow{}; // Used to detect changes in 'compatible' field.
                 const QVariantList files = project.value("files").toList();
                 for (const QVariant &fileVar : files) {
                     const QVariantMap file = fileVar.toMap();
@@ -2414,12 +2463,16 @@ void PatchManagerObject::requestCheckForUpdates()
                     if (!compatible.contains(m_osRelease)) {
                         continue;
                     }
+                    compatibleNow = compatible;
                     const QString version = file.value("version").toString();
                     latestVersion = PatchManagerObject::maxVersion(latestVersion, version);
                 }
 
                 if (latestVersion == patchVersion) {
                     qDebug() << Q_FUNC_INFO << projectName << "versions match";
+                    if (compatibleNow.length()) {
+                        updatePatchCompatibility(projectName, compatibleNow);
+                    }
                     return;
                 }
                 qDebug() << Q_FUNC_INFO << "available:" << projectName << "version:" << latestVersion;

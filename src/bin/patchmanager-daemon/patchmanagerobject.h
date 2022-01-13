@@ -211,6 +211,7 @@ private:
 
     QList<QVariantMap> listPatchesFromDir(const QString &dir, QSet<QString> &existingPatches, bool existing = true);
     bool makePatch(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available);
+    void updatePatchCompatibility(const QString &projectName, const QStringList compatibility);
     void notify(const QString &patch, PatchManagerObject::NotifyAction action);
 
     QSet<QString> getAppliedPatches() const;
