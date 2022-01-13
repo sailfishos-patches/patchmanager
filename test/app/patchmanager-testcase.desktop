@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+X-Nemo-Application-Type=silica-qt5
+Exec=invoker --type=silica-qt5 sailfish-qml patchmanager-testcase
+Name=PM Test Case
