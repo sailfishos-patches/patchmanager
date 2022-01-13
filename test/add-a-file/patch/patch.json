@@ -1,5 +1,5 @@
 {
-  "description": "Patchmanager Test Case: Add new files, register in plugin qmldir",
+  "description": "Patchmanager Test Case: Add new files, register in plugin qmldir\nToo see results, open the PM Test app. The app should fail to lanch if something went wrong.",
   "name": "pm-test-case-add-a-file",
   "display_name": "PM Test Case 3",
   "category": "other",
