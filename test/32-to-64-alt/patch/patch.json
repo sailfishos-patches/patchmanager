@@ -1,7 +1,7 @@
 {
-  "description": "Patchmanager Test Case: Mangle 32-to-64 bit. uses plain diff (+++ /path/to/foo)",
+  "description": "Patchmanager Test Case: Mangle 32-to-64 bit.\nThis patch contains 32 bit paths.\nUses plain diff (+++ /path/to/foo)\nToo see results, open the PM Test app and look at the first UI element",
   "name": "pm-test-case-32-to-64-alt",
-  "display_name": "PM Test Case 1-2",
+  "display_name": "PM Test Case 1: 2/2",
   "category": "other",
   "author": "patchmanager",
   "version": "1.0.0",
