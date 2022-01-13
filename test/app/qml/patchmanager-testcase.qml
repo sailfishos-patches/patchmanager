@@ -9,8 +9,10 @@ ApplicationWindow {
             id: page
             Column {
                 id: column
+                spacing: Theme.paddingLarge
                 width: parent.width - Theme.horizontalPageMargin * 2
                 anchors.horizontalCenter: parent.horizontalCenter
+                PageHeader{ title: "Test Case Application" }
                 TestCase1Item { anchors.horizontalCenter: parent.horizontalCenter }
                 TestCase2Item { anchors.horizontalCenter: parent.horizontalCenter }
             }
