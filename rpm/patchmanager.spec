@@ -37,6 +37,13 @@ BuildRequires:  qt5-qttools-linguist
 BuildRequires:  pkgconfig(rpm)
 BuildRequires:  pkgconfig(popt)
 
+%package test-cases
+Summary: test cases for %{name}
+Group: Development
+
+%description test-cases
+%{summary}.
+
 %description
 Patchmanager is a tool for transparently modifying installed files by the patch
 utility and for managing the special patch files ("Patches") for doing so.
@@ -172,6 +179,11 @@ esac
 dbus-send --system --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 systemctl daemon-reload
 systemctl-user daemon-reload
+
+%files test-cases
+%{_datadir}/%{name}-test-cases/
+%{_libdir}/qt5/qml/%{name}-test-cases/
+%{_datadir}/%{name}/patches/pm-test-case-*
 
 %files
 %defattr(-,root,root,-)
