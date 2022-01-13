@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
-SUBDIRS = src
+SUBDIRS = src test
 
 OTHER_FILES += rpm/patchmanager.spec
 

@@ -1,6 +1,6 @@
 import QtQuick 2.1
 import Sailfish.Silica 1.0
-import org.SfietKonstantin.patchmanager-tests 1.0
+import org.SfietKonstantin.patchmanagertests 1.0
 
 ApplicationWindow {
     id: app
