@@ -1,7 +1,7 @@
 {
-  "description": "Patchmanager Test Case: Mangle 32-to-64 bit",
+  "description": "Patchmanager Test Case: Mangle 32-to-64 bit. Uses git-style diff (+++ a/path/to/foo)",
   "name": "pm-test-case-32-to-64",
-  "display_name": "PM Test Case 1",
+  "display_name": "PM Test Case 1-1",
   "category": "other",
   "author": "patchmanager",
   "version": "1.0.0",

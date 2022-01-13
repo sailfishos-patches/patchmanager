@@ -1,0 +1,17 @@
+diff -aur /usr/lib/qt5/qml/org/SfietKonstantin/patchmanagertests/TestCase1Item.qml /usr/lib/qt5/qml/org/SfietKonstantin/patchmanagertests/TestCase1Item.qml
+--- /usr/lib/qt5/qml/org/SfietKonstantin/patchmanagertests/TestCase1Item.qml	2022-01-13 22:57:01.146436801 +0100
++++ /usr/lib/qt5/qml/org/SfietKonstantin/patchmanagertests/TestCase1Item.qml	2022-01-13 22:57:01.113436784 +0100
+@@ -3,5 +3,5 @@
+ 
+ DetailItem {
+ 	label: "Case 1"
+-	value: "unpatched"
++	value: "patched successfully"
+ }
+Only in a/usr/lib/qt5/qml/org/SfietKonstantin/patchmanagertests: TestCase2Item.qml
+diff -aur a/usr/share/patchmanager-test/testfile b/usr/share/patchmanager-test/testfile
+--- a/usr/share/patchmanager-test/testfile	2022-01-13 22:57:01.109436782 +0100
++++ b/usr/share/patchmanager-test/testfile	2022-01-13 22:57:01.116436786 +0100
+@@ -1 +1 @@
+-this should not be affected
++this should not be affected, but still patched
