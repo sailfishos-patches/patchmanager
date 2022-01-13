@@ -1,8 +1,13 @@
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
+ * Copyright (c) 2021, Patchmanager for SailfishOS contributors:
+ *                  - olf "Olf0" <https://github.com/Olf0>
+ *                  - Peter G. "nephros" <sailfish@nephros.org>
+ *                  - Vlad G. "b100dian" <https://github.com/b100dian>
  *
- * You may use this file under the terms of the BSD license as follows:
+ * You may use this file under the terms of the 3-clause BSD license,
+ * as follows:
  *
  * "Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -79,7 +84,7 @@ Page {
                 anchors.right: parent.right
                 anchors.margins: Theme.horizontalPageMargin
                 font.pixelSize: Theme.fontSizeSmall
-                text: qsTranslate("", "Patchmanager allows to automatically modify system files via patches. It provides a daemon that performs the application of those patches and a GUI to control those operations and the installation or removal of patches.")
+                text: qsTranslate("", "Patchmanager allows to automatically modify system files via Patches. It provides a daemon which performs the activation of Patches, plus a GUI to configure these operations and to install or remove Patches.")
             }
 
             Separator {
@@ -157,7 +162,7 @@ Page {
                     font.pixelSize: Theme.fontSizeSmall
                     wrapMode: Text.WordWrap
                     horizontalAlignment: Text.AlignJustify
-                    text: qsTranslate("", "If you appreciate our work, please consider a donation to help covering the hosting costs for Openrepos. Openrepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of patches is hosted there.")
+                    text: qsTranslate("", "If you appreciate our work, please consider a donation to help covering the hosting costs for Openrepos. Openrepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of Patches is hosted there.")
                 }
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter

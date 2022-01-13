@@ -1,8 +1,13 @@
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
+ * Copyright (c) 2021, Patchmanager for SailfishOS contributors:
+ *                  - olf "Olf0" <https://github.com/Olf0>
+ *                  - Peter G. "nephros" <sailfish@nephros.org>
+ *                  - Vlad G. "b100dian" <https://github.com/b100dian>
  *
- * You may use this file under the terms of the BSD license as follows:
+ * You may use this file under the terms of the 3-clause BSD license,
+ * as follows:
  *
  * "Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -72,7 +77,7 @@ Page {
 
         ViewPlaceholder {
             enabled: !patchData
-            text: fetching ? qsTranslate("", "Fetching patch information...") : qsTranslate("", "Problem in fetching patch data")
+            text: fetching ? qsTranslate("", "Fetching patch data") : qsTranslate("", "Failed to fetch Patch data")
         }
 
         Column {
@@ -330,9 +335,9 @@ Page {
 
                     onClicked: {
                         if (!PatchManager.developerMode && !isCompatible) {
-                            errorMessageComponent.createObject(fileDelegate, {text: qsTranslate("", "This patch is incompatible with the installed Sailfish OS version.")})
+                            errorMessageComponent.createObject(fileDelegate, {text: qsTranslate("", "This Patch is incompatible with the installed SailfishOS version.")})
                         } else if (!fileDelegate.isInstalled) {
-                            remorseAction(qsTranslate("", "Install patch %1").arg(patchData.display_name), installPatch)
+                            remorseAction(qsTranslate("", "Install Patch %1").arg(patchData.display_name), installPatch)
                         }
                     }
 
@@ -344,7 +349,7 @@ Page {
                         PatchManager.watchCall(PatchManager.installPatch(modelData.project, modelData.version, modelData.document),
                                                function(ok) {
                                                    if (!ok) {
-                                                       console.warn("Unsuccessful installation!")
+                                                       console.warn("Installation failed!")
                                                        return
                                                    }
                                                    container.versions[patchData.name] = modelData.version

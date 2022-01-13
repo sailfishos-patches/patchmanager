@@ -1,8 +1,13 @@
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
+ * Copyright (c) 2021, Patchmanager for SailfishOS contributors:
+ *                  - olf "Olf0" <https://github.com/Olf0>
+ *                  - Peter G. "nephros" <sailfish@nephros.org>
+ *                  - Vlad G. "b100dian" <https://github.com/b100dian>
  *
- * You may use this file under the terms of the BSD license as follows:
+ * You may use this file under the terms of the 3-clause BSD license,
+ * as follows:
  *
  * "Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -86,7 +91,7 @@ Page {
                 }
             }
             MenuItem {
-                text: sortByDate ? qsTranslate("", "Sort by Category") : qsTranslate("", "Sort by Date")
+                text: sortByDate ? qsTranslate("", "Sort by category") : qsTranslate("", "Sort by date updated")
                 onClicked: {
                     sortByDate = !sortByDate
                 }
@@ -98,7 +103,7 @@ Page {
             Column {
                 width: view.width
                 PageHeader {
-                    title: container.author ? qsTranslate("", "%1 patches").arg(container.author) : qsTranslate("", "Web catalog") 
+                    title: container.author ? qsTranslate("", "%1 Patches").arg(container.author) : qsTranslate("", "Web Catalog") 
                     description: container.sortByDate ? qsTranslate("", "(by date updated)") : qsTranslate("", "(by category)")
                 }
 
@@ -245,7 +250,7 @@ Page {
 
         ViewPlaceholder {
             enabled: patchModel.count == 0
-            text: qsTranslate("", "No patches available")
+            text: qsTranslate("", "No Patches available")
         }
 
         VerticalScrollDecorator {}
@@ -259,5 +264,3 @@ Page {
         size: BusyIndicatorSize.Large
     }
 }
-
-

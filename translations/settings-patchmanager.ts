@@ -4,39 +4,35 @@
 <context>
     <name></name>
     <message>
-        <location filename="../src/qml/AboutPage.qml" line="49"/>
-        <location filename="../src/qml/PatchManagerPage.qml" line="142"/>
-        <source>About Patchmanager</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="28"/>
         <location filename="../src/bin/dialog/dialog.qml" line="45"/>
-        <source>Apply patches</source>
+        <source>Activate all Patches marked active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="53"/>
-        <source>Patchmanager will automatically apply all patches in 10 seconds.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="136"/>
-        <source>Applied patches successfully.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="137"/>
-        <source>Failed to apply patches!</source>
+        <source>Patchmanager will activate all Patches marked active in 10 seconds.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="66"/>
-        <source>Exit</source>
+        <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="28"/>
-        <source>Applying patches</source>
+        <location filename="../src/bin/dialog/dialog.qml" line="136"/>
+        <source>Successfully activated all Patches marked active.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="137"/>
+        <source>Failed to activate all Patches marked active!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/AboutPage.qml" line="49"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="142"/>
+        <source>About Patchmanager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -54,7 +50,7 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="82"/>
-        <source>Patchmanager allows to automatically modify system files via patches. It provides a daemon that performs the application of those patches and a GUI to control those operations and the installation or removal of patches.</source>
+        <source>Patchmanager allows to automatically modify system files via Patches. It provides a daemon which performs the activation of Patches, plus a GUI to configure these operations and to install or remove Patches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -80,7 +76,7 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="160"/>
-        <source>If you appreciate our work, please consider a donation to help covering the hosting costs for Openrepos. Openrepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of patches is hosted there.</source>
+        <source>If you appreciate our work, please consider a donation to help covering the hosting costs for Openrepos. Openrepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of Patches is hosted there.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -109,34 +105,48 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="48"/>
+        <source>Copied log to clipboard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="65"/>
-        <source>Patch being applied</source>
+        <source>Activating Patch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="67"/>
-        <source>Unapply patch</source>
+        <source>Deactivate Patch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="68"/>
-        <source>Apply patch</source>
+        <source>Activate Patch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="75"/>
+        <source>Remove Patch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="78"/>
+        <source>Patch %1 removed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="85"/>
-        <source>Load engine before applying patches</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
-        <location filename="../src/qml/WebPatchPage.qml" line="85"/>
-        <source>Patch details</source>
+        <source>Start Patchmanager's daemon before activating Patches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="107"/>
-        <source>This patch is not available anymore. You will not be able to reinstall it.</source>
+        <source>This Patch is not available anymore. You will not be able to reinstall it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="116"/>
+        <source>Author</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -145,8 +155,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="120"/>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="121"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="126"/>
+        <source>not available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="125"/>
+        <source>Compatible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="137"/>
+        <source>May conflict with:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="165"/>
-        <source>This patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for details.</source>
+        <source>This Patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -175,54 +206,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="116"/>
-        <source>Author</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="48"/>
-        <source>Copied log to clipboard.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="75"/>
-        <source>Uninstall patch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="78"/>
-        <source>Patch %1 uninstalled.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="120"/>
-        <source>Version</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="121"/>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="126"/>
-        <source>not available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="125"/>
-        <source>Compatible</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="137"/>
-        <source>May conflict with:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="147"/>
-        <source>Unapply all patches</source>
+        <source>Deactivate all Patches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="153"/>
-        <source>Load engine</source>
+        <source>Start Patchmanager's daemon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -233,7 +223,7 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="159"/>
         <location filename="../src/qml/WebCatalogPage.qml" line="101"/>
-        <source>Web catalog</source>
+        <source>Web Catalog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -248,18 +238,18 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="178"/>
-        <source>Installed patches</source>
+        <source>Installed Patches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="357"/>
         <location filename="../src/qml/WebPatchPage.qml" line="333"/>
-        <source>This patch is incompatible with the installed Sailfish OS version.</source>
+        <source>This Patch is incompatible with the installed SailfishOS version.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="365"/>
-        <source>Uninstalling patch %1</source>
+        <source>Removing Patch %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -269,33 +259,39 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="485"/>
-        <source>May conflict with another patch, see %1</source>
+        <source>May conflict with another Patch, see %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="486"/>
-        <source>May conflict with %2 other patches, see %1</source>
+        <source>May conflict with %2 other Patches, see %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="85"/>
+        <source>Patch details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
-        <source>Unapply</source>
+        <source>Deactivate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="494"/>
-        <source>Apply</source>
+        <source>Activate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="499"/>
-        <source>Uninstall</source>
+        <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="513"/>
         <location filename="../src/qml/WebCatalogPage.qml" line="248"/>
-        <source>No patches available</source>
+        <source>No Patches available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -315,17 +311,17 @@
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="77"/>
-        <source>Note: this will close all apps.</source>
+        <source>Note that this will close all apps.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="78"/>
-        <source>Note: this will close %1.</source>
+        <source>Note that this will close %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="81"/>
-        <source>Note: this will close the %1 app.</source>
+        <source>Note that this will close the %1 app.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -346,17 +342,17 @@
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
-        <source>Sort by Category</source>
+        <source>Sort by category</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
-        <source>Sort by Date</source>
+        <source>Sort by date updated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/WebCatalogPage.qml" line="101"/>
-        <source>%1 patches</source>
+        <source>%1 Patches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -381,12 +377,12 @@
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="75"/>
-        <source>Fetching patch information...</source>
+        <source>Fetching Patch data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="75"/>
-        <source>Problem in fetching patch data</source>
+        <source>Failed to fetch Patch data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -418,7 +414,7 @@
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="335"/>
-        <source>Install patch %1</source>
+        <source>Install Patch %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -438,58 +434,58 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="232"/>
-        <source>Patch installed</source>
+        <source>Patch activated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="233"/>
-        <source>Patch %1 installed</source>
+        <source>Patch %1 activated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="236"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="247"/>
+        <source>some service should be restarted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="243"/>
+        <source>Patch deactivated"</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="245"/>
-        <source>Services need restart!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="241"/>
-        <source>Patch removed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="242"/>
-        <source>Patch %1 removed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="250"/>
-        <source>Failed to install patch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="251"/>
-        <source>Patch %1 installation failed</source>
+        <source>Patch %1 deactivated"</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="254"/>
-        <source>Failed to remove patch</source>
+        <source>Failed to activate Patch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="255"/>
-        <source>Patch %1 removal failed</source>
+        <source>Activating Patch %1 failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="258"/>
-        <source>Update available</source>
+        <source>Failed to deactivate Patch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="259"/>
-        <source>Patch %1 have update candidate</source>
+        <source>Deactivating Patch %1 failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="262"/>
+        <source>Update available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="263"/>
+        <source>An update for Patch %1 exits.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -499,33 +495,53 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="20"/>
-        <source>Apply patches when booting</source>
+        <location filename="../src/qml/SettingsPage.qml" line="19"/>
+        <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="21"/>
-        <source>Automatically apply all enabled patches when Sailfish OS starts</source>
+        <location filename="../src/qml/SettingsPage.qml" line="22"/>
+        <source>Show notification on success</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="28"/>
-        <source>Allow incompatible patches</source>
+        <location filename="../src/qml/SettingsPage.qml" line="23"/>
+        <source>If this is off, notifications will only be shown when something went wrong.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="29"/>
-        <source>Enable applying patches, which are not marked as compatible with the installed Sailfish OS version. Note that patches, which are actually incompatible, will not work.</source>
+        <source>Advanced</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="37"/>
+        <location filename="../src/qml/SettingsPage.qml" line="32"/>
+        <source>Activate Patches when booting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="33"/>
+        <source>Automatically activate all enabled Patches when SailfishOS starts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="40"/>
+        <source>Allow incompatible Patches</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="41"/>
+        <source>Enable activating Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="49"/>
         <source>Convert Patches between 32 bit and 64 bit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="38"/>
-        <source>Automatically fix lib or lib64 for select paths shown below.</source>
+        <location filename="../src/qml/SettingsPage.qml" line="50"/>
+        <source>Automatically convert lib or lib64 for select paths shown below.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

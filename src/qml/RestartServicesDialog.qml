@@ -1,12 +1,13 @@
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
- * Copyright (c) 2021, Patchmanger for SailfishOS contributors:
+ * Copyright (c) 2021, Patchmanager for SailfishOS contributors:
  *                  - olf "Olf0" <https://github.com/Olf0>
  *                  - Peter G. "nephros" <sailfish@nephros.org>
  *                  - Vlad G. "b100dian" <https://github.com/b100dian>
  *
- * You may use this file under the terms of the BSD license as follows:
+ * You may use this file under the terms of the 3-clause BSD license,
+ * as follows:
  *
  * "Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -74,11 +75,11 @@ Dialog {
                     description: {
                         if ((modelData == "homescreen")
                          || (modelData == "silica"))
-                                                           { return qsTranslate("","Note: this will close all apps."); }
-                        else if (modelData == "settings")  { return qsTranslate("","Note: this will close %1.").arg(qsTranslate("", "Patchmanager")); }
+                                                           { return qsTranslate("","Note that this will close all apps."); }
+                        else if (modelData == "settings")  { return qsTranslate("","Note that this will close %1.").arg(qsTranslate("", "Patchmanager")); }
                         else if (modelData == "keyboard")  { return "" }
                         else if (modelData == "other")     { return "" }
-                        else { return qsTranslate("","Note: this will close the %1 app.").arg(text); }
+                        else { return qsTranslate("","Note that this will close the %1 app.").arg(text); }
                     }
                     TouchBlocker { anchors.fill: parent}
                   }
