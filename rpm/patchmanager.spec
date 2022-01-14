@@ -7,7 +7,7 @@
 
 Name:       patchmanager
 
-Summary:    manages Patches for SailfishOS
+Summary:    Allows to manage Patches for Sailfish OS
 Version:    3.2.1
 Release:    1
 Group:      Qt/Qt
@@ -50,10 +50,10 @@ Categories:
  - Utility
 Custom:
   Repo: https://github.com/sailfishos-patches/patchmanager
-Icon: https://raw.githubusercontent.com/sailfishos-patches/patchmanager/master/src/icons/svgs/icon-m-patchmanager2.svg
+Icon: https://raw.githubusercontent.com/sailfishos-patches/patchmanager/master/src/plugin/icon-m-patchmanager.png
 Url:
   Homepage: https://openrepos.net/content/patchmanager/patchmanager
-  # Help will default to GitHub discussions, which we don't use.
+  # Help will default to GitHub discussions, which we don't use for this.
   # Pointing to the README right now, as the Wiki is not user-friendly at this point.
   Help: https://github.com/sailfishos-patches/patchmanager/blob/master/README.md
   # Bugtracker will default to GitHub issues. Prefer the SFOS Forum link.
