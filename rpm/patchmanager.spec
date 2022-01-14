@@ -156,7 +156,7 @@ systemctl-user daemon-reload
 %{_sbindir}/%{name}
 %dir %{_datadir}/%{name}/patches
 %{_datadir}/%{name}/tools
-%{_datadir}/dbus-1/
+%{_datadir}/dbus-1/*/org.SfietKonstantin.patchmanager.*
 %config %{_sysconfdir}/dbus-1/system.d/org.SfietKonstantin.patchmanager.conf
 %{_unitdir}/dbus-org.SfietKonstantin.patchmanager.service
 %{_unitdir}/multi-user.target.wants/dbus-org.SfietKonstantin.patchmanager.service
