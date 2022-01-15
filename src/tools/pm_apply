@@ -102,8 +102,8 @@ mangle_libpath() {
       fi
 
       for p in $candidates; do
-        totl_lines=$(grep -c "^+++" "$PATCH_PATH")
-        cand_lines=$(grep -c "^+++ $p" "$PATCH_PATH")
+        totl_lines=$(grep -c "^\+\+\+" "$PATCH_PATH")
+        cand_lines=$(grep -c "^\+\+\+ [^/]*$p" "$PATCH_PATH")
         if [ $cand_lines -eq 0 ]; then
           continue  # nothing found, try next
         else
@@ -114,7 +114,7 @@ mangle_libpath() {
           fi
         fi
         log "found: ${p}, replacing libpath references"
-        
+
         # prepare the replacement pattern
         pr=""
         if [ $SYS_BITNESS -eq 32 ]; then
@@ -129,7 +129,7 @@ mangle_libpath() {
           printf '#\n# Patch converted to %sbit library paths from its original by Patchmanager > 3.1\n# Date: %s\n#\n' $SYS_BITNESS $(date -Iseconds) \
           | cat - "$PATCH_PATH" > "$patch_edited_path"
         fi
-        sed -i "s@^+++ $p@+++ $pr@;s@^--- $p@--- $pr@" "$patch_edited_path" || failure || true  # patch the Patch
+        sed -i "s@^\+\+\+ \([^/]*\)$p@+++ \1$pr@;s@^--- \([^/]*\)$p@--- \1$pr@" "$patch_edited_path" || failure || true  # patch the Patch
       done
       if [ $found -eq 0 ]; then
         log
