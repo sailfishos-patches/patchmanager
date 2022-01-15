@@ -5,7 +5,7 @@ While this is still supported in Patchmanager 3, if possible switch to [the new 
 
     {
         "name": "Example Patch Name",
-        "description": "This is a long description of what the patch does.\nIt will be displayed on the patch page.",
+        "description": "This is a long description of what this Patch does.\nIt will be displayed on the Patch page.",
         "category": "email",
         "infos": {
             "maintainer": "username"
@@ -14,10 +14,10 @@ While this is still supported in Patchmanager 3, if possible switch to [the new 
 
 ### Description of options:
 
- - name: The "display name" of the patch, which will be shown on the patch list.
- - description: Explanation of what the patch does.
- - category: This is used to structure the list of patches in categories, but also certain categories will cause patchmanager to restart affected system services or applications.  For example, patches in the category "homescreen" will prompt the user to restart Lipstick after applying.
- - maintainer: The name of the principal patch author or maintainer.  Either use your real name, as displayed on Github or Twitter, or your usual nickname.
+ - name: The "display name" of the patch, which will be shown on the Patch list.
+ - description: Explanation of what the Patch does.
+ - category: This is used to structure the list of Patches in categories, but also certain categories will cause Patchmanager to restart affected system services or applications.  For example, Patches in the category "homescreen" will prompt the user to restart Lipstick after their activation.
+ - maintainer: The name of the principal Patch author or maintainer.  Either use your real name, as displayed on Github or Twitter, or your usual nickname.
 
 ### List of supported categories:
 
