@@ -1,24 +1,24 @@
 # Patchmanager
 
-Patchmanager is a tool for transparently modifying installed files per patch utility and for managing patch files ("patches") for doing so.
+Patchmanager is a tool for transparently modifying installed files per patch utility and for managing the special patch files ("Patches") for doing so.
 Since version 3.0 it does not modify original files, but alters their content when they are loaded into RAM to be run.
 
 ## Information for users
 
-Note that Patchmanager does not install an application icon on the launcher, but creates a new entry in Sailfish OS' Settings app.
+Note that Patchmanager does not install an application icon on the launcher, but creates a new entry in SailfishOS' Settings app.
 
 To install Patchmanager you should install [Storeman](https://openrepos.net/content/osetr/storeman-installer) to install Patchmanager 3.x from OpenRepos using Storeman.  Alternatively you may download the [recent Patchmanager RPM from OpenRepos](https://openrepos.net/content/patchmanager/patchmanager) and install it manually.
 
 Modern patches for Patchmanager are provided via [the Web Catalog](https://coderus.openrepos.net/pm2/projects/), while older patches were provided as [RPMs at Openrepos](https://openrepos.net/category/patches) and some of them are still maintained.
-Mind that many patches were first released at Openrepos but later migrated to the Web Catalog: For these you will find outdated RPMs, hence always search in the Web Catalog first.
+Mind that many Patches were first released at OpenRepos but later migrated to the Web Catalog: For these you will find outdated RPMs, hence always search in the Web Catalog first.
 
 If you want to translate ("localise") Patchmanager to a language you know well or enhance an existing translation, please use [Patchmanager's Transifex page](https://www.transifex.com/coderus/patchmanager3/).
 
-## Information for patch developers
+## Information for Patch developers
 
 To create a patch for Patchmanager, you must at least provide a patch file.
-If you package your patch as an RPM or archive file, you must also provide the JSON metadata: see below.
-If you use the Web Catalog to distribute your patch, you must not provide a JSON file, but input the corresponding data when submitting the patch to the Web Catalog.
+If you package your Patch as an RPM or archive file, you must also provide the JSON metadata: see below.
+If you use the Web Catalog to distribute your Patch, you must not provide a JSON file, but input the corresponding data when submitting the patch file to the Web Catalog.
 
 ### Patch files
 
@@ -31,8 +31,8 @@ Usually, you can generate such patch file using the following command, with the 
 
 ### The JSON metadata file
 
-The metadata file contains information about a patch.  It is a simple JSON file, that must be named `patch.json`.
-This file contains the title of the patch, a short description of the patch, a category, and additional information.  For the documentation of this JSON file format see:
+The metadata file contains information about a Patch.  It is a simple JSON file, that must be named `patch.json`.
+This file contains the title of the Patch, a short description of the Patch, a category, and additional information.  For the documentation of this JSON file format see:
  - for the [modern format](./doc/example_patch.json.md)
  - for the much simpler [legacy format](./doc/example_legacy_patch.json.md)
 
@@ -50,20 +50,20 @@ All these files must be placed in the same folder.
 
 ## Patch distribution using Patchmanager's Web Catalog
 
-Patchmanager supports installing patches from its Web Catalog. 
-Patch developers can upload patches to https://coderus.openrepos.net/pm2 to enlist them for the Web Catalog. 
-When uploading a patch there, the patch developer should not provide a `patch.json` file with metadata and must fill the necessary fields on the webpage before uploading: The Web Catalog will encode this metadata automatically and add it to the downloadable file.
+Patchmanager supports installing Patches from its Web Catalog. 
+Patch developers can upload Patches to https://coderus.openrepos.net/pm2 to enlist them for the Web Catalog. 
+When uploading a Patch there, the Patch developer should not provide a `patch.json` file with metadata and must fill the necessary fields on the webpage before uploading: The Web Catalog will encode this metadata automatically and add it to the downloadable file.
 Side note: If a JSON file is provided in the upload at the Web Catalog, it does not replace or mangle it; pay attention not to provide inconsistent data this way!
 
 For more information about the requirements for using the Web Catalog, see https://coderus.openrepos.net/pm2/usage/
 
 ## Patch distribution at OpenRepos.net and other repositories
 
-Patches can be too complex for Patchmanager's Web Catalog.  In this case the developer may package the patch as an RPM and upload it at https://openrepos.net or another user-accessible package repository.
+Patches can be too complex for Patchmanager's Web Catalog.  In this case the developer may package the Patch as an RPM and upload it at https://openrepos.net or another user-accessible package repository.
 OpenRepos provides a [category "Patches"](https://openrepos.net/category/patches) and a [tag "Patch"](https://openrepos.net/tags/patch) for this, which both should be used.
 
-For RPM patches, the patch content should be installed in a directory `/usr/share/patchmanager/patches/<patch-name>/`; its [additional files](#additional-files) for this patch should also be placed there.
+For RPM Patches, the Patch content should be installed in a directory `/usr/share/patchmanager/patches/<patch-name>/`; its [additional files](#additional-files) for this patch should also be placed there.
 
-Additionaly, when a patch developer decides to package a patch as an RPM, the compatibility of a patch (to Sailfish OS release versions, the software infrastructure it uses etc.) should be properly defined by RPM spec file dependencies ("Requires:", "Conflicts:" etc.).
+Additionaly, when a Patch developer decides to package a Patch as an RPM, the compatibility of a Patch (to SailfishOS release versions, the software infrastructure it uses etc.) should be properly defined by RPM spec file dependencies ("Requires:", "Conflicts:" etc.).
 
-For an RPM patch example, see https://github.com/CODeRUS/sailfishos-disable-glass-avatar
+For an RPM Patch example, see https://github.com/CODeRUS/sailfishos-disable-glass-avatar
