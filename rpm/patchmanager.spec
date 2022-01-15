@@ -36,9 +36,9 @@ BuildRequires:  pkgconfig(popt)
 
 %description
 Patchmanager is a tool for transparently modifying installed files by the patch
-utility and for managing the special Patches for doing so.  Since version 3.0
-it does not modify original files, but alters their content when they are loaded
-into RAM to be run.
+utility and for managing the special patch files ("Patches") for doing so.
+Since version 3.0 it does not modify original files, but alters their content
+when they are loaded into RAM to be run.
 
 # Chum metadata. See https://github.com/sailfishos-chum/main/blob/main/Metadata.md
 %if "%{?vendor}" == "chum"
