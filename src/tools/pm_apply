@@ -46,11 +46,6 @@ log() {
   echo "$@" | tee -a "$PM_LOG_FILE"
 }
 
-log "Mangle candidates"
-log $MANGLE_CANDIDATES
-log "Disable mangling"
-log $DISABLE_MANGLING
-
 failure() {
   log
   log "*** FAILED ***"
@@ -92,6 +87,7 @@ mangle_libpath() {
       [ $SYS_BITNESS -eq 64 ] && log "Checking paths for 64->32bit conversion"
       log "----------------------------------"
       log
+      log "Mangle candidates: $MANGLE_CANDIDATES"
 
       found=0
       candidates="$MANGLE_CANDIDATES"
