@@ -7,7 +7,7 @@
 
 Name:       patchmanager
 
-Summary:    Patchmanager allows for managing Sailfish OS patches
+Summary:    Allows to manage Patches for Sailfish OS
 Version:    3.2.1
 Release:    1
 Group:      Qt/Qt
@@ -35,7 +35,30 @@ BuildRequires:  pkgconfig(rpm)
 BuildRequires:  pkgconfig(popt)
 
 %description
-%{summary} on your device easily.
+Patchmanager is a tool for transparently modifying installed files by the patch
+utility and for managing the special patch files ("Patches") for doing so.
+Since version 3.0 it does not modify original files, but alters their content
+when they are loaded into RAM to be run.
+
+# Chum metadata. See https://github.com/sailfishos-chum/main/blob/main/Metadata.md
+%if "%{?vendor}" == "chum"
+PackageName: Patchmanager
+Type: desktop-application
+Categories:
+ - System
+ - Settings
+ - Utility
+Custom:
+  Repo: https://github.com/sailfishos-patches/patchmanager
+Icon: https://raw.githubusercontent.com/sailfishos-patches/patchmanager/master/src/plugin/icon-m-patchmanager.png
+Url:
+  Homepage: https://openrepos.net/content/patchmanager/patchmanager
+  # Help will default to GitHub discussions, which we don't use for this.
+  # Pointing to the README right now, as the Wiki is not user-friendly at this point.
+  Help: https://github.com/sailfishos-patches/patchmanager/blob/master/README.md
+  # Bugtracker will default to GitHub issues. Prefer the SFOS Forum link.
+  Bugtracker: https://forum.sailfishos.org/t/bugs-in-patchmanager-3-1-0/8552
+%endif
 
 %prep
 %setup -q -n %{name}-%{version}
