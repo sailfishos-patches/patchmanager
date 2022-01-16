@@ -46,11 +46,6 @@ log() {
   echo "$@" | tee -a "$PM_LOG_FILE"
 }
 
-log "Mangle candidates"
-log $MANGLE_CANDIDATES
-log "Disable mangling"
-log $DISABLE_MANGLING
-
 failure() {
   log
   log "*** FAILED ***"
@@ -93,14 +88,16 @@ mangle_libpath() {
       log "----------------------------------"
       log
 
-      found=0
       candidates="$MANGLE_CANDIDATES"
       if [ $SYS_BITNESS -eq 32 ]; then
         # first, convert the candidate list
-        # variable expansion ${foo/lib/lib64} would work on bash, but not POSIX/ash/busybox
-        candidates=$(printf '%s' "$MANGLE_CANDIDATES" | sed 's@/usr/lib/@/usr/lib64/@g' )
+        # variable expansion ${foo/lib/lib64} would work on bash, but not POSIX sh or busybox's ash
+        candidates=$(printf '%s' "$MANGLE_CANDIDATES" | sed 's@/usr/lib/@/usr/lib64/@g')
       fi
+      log "Mangle candidates: $candidates"
+      log
 
+      found=0
       for p in $candidates; do
         totl_lines=$(grep -c "^\+\+\+" "$PATCH_PATH")
         cand_lines=$(grep -c "^\+\+\+ [^/]*$p" "$PATCH_PATH")
