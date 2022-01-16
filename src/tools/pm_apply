@@ -80,66 +80,65 @@ test_if_applied() {
 
 # see issue #71: https://github.com/sailfishos-patches/patchmanager/issues/71
 mangle_libpath() {
-    if [ -f "$PATCH_PATH" ]; then
-      log
-      log "----------------------------------"
-      [ $SYS_BITNESS -eq 32 ] && log "Checking paths for 32->64bit conversion"
-      [ $SYS_BITNESS -eq 64 ] && log "Checking paths for 64->32bit conversion"
-      log "----------------------------------"
-      log
+  if [ -f "$PATCH_PATH" ]; then
+    log
+    log "----------------------------------"
+    [ $SYS_BITNESS -eq 32 ] && log "Checking paths for 32->64bit conversion"
+    [ $SYS_BITNESS -eq 64 ] && log "Checking paths for 64->32bit conversion"
+    log "----------------------------------"
+    log
 
-      candidates="$MANGLE_CANDIDATES"
-      if [ $SYS_BITNESS -eq 32 ]; then
-        # first, convert the candidate list
-        # variable expansion ${foo/lib/lib64} would work on bash, but not POSIX sh or busybox's ash
-        candidates=$(printf '%s' "$MANGLE_CANDIDATES" | sed 's@/usr/lib/@/usr/lib64/@g')
-      fi
-      log "Mangle candidates: $candidates"
-      log
-
-      found=0
-      for p in $candidates; do
-        totl_lines=$(grep -c "^\+\+\+" "$PATCH_PATH")
-        cand_lines=$(grep -c "^\+\+\+ [^/]*$p" "$PATCH_PATH")
-        if [ $cand_lines -eq 0 ]; then
-          continue  # nothing found, try next
-        else
-          found=$(( $found + $cand_lines ))
-          if [ $totl_lines -ne $cand_lines ]; then
-            # if there are several references in the patch file our mangling might do too much and cause the patch to fail.
-            log "WARNING: mixed patch, conversion might not work"
-          fi
-        fi
-        log "found: ${p}, replacing libpath references"
-
-        # prepare the replacement pattern
-        pr=""
-        if [ $SYS_BITNESS -eq 32 ]; then
-          pr=$(printf '%s' "$p" | sed 's@/usr/lib64/@/usr/lib/@')
-        elif [ $SYS_BITNESS -eq 64 ]; then
-          pr=$(printf '%s' "$p" | sed 's@/usr/lib/@/usr/lib64/@')
-        fi
-        # doit
-        if [ $found -eq $cand_lines ]; then  # first run in loop
-          mkdir -p "$PM_PATCH_BACKUP_DIR"
-          patch_edited_path="$PM_PATCH_BACKUP_DIR"/"$PATCH_EDITED_NAME"
-          printf '#\n# Patch converted to %sbit library paths from its original by Patchmanager > 3.1\n# Date: %s\n#\n' $SYS_BITNESS $(date -Iseconds) \
-          | cat - "$PATCH_PATH" > "$patch_edited_path"
-        fi
-        sed -i "s@^\+\+\+ \([^/]*\)$p@+++ \1$pr@;s@^--- \([^/]*\)$p@--- \1$pr@" "$patch_edited_path" || failure || true  # patch the Patch
-      done
-      if [ $found -eq 0 ]; then
-        log
-        log "OK, found nothing to convert."
-        log
-      else
-        log
-        log "OK, replaced $found libpath references and created: $patch_edited_path"
-        log
-        # set the patch to apply to the new one:
-        PATCH_PATH="$patch_edited_path"
-      fi
+    candidates="$MANGLE_CANDIDATES"
+    if [ $SYS_BITNESS -eq 32 ]; then
+      # first, convert the candidate list
+      # variable expansion ${foo/lib/lib64} would work on bash, but not POSIX sh or busybox's ash
+      candidates=$(printf '%s' "$MANGLE_CANDIDATES" | sed 's@/usr/lib/@/usr/lib64/@g')
     fi
+    log "Mangle candidates: $candidates"
+    log
+
+    found=0
+    for p in $candidates; do
+      totl_lines=$(grep -c "^\+\+\+" "$PATCH_PATH")
+      cand_lines=$(grep -c "^\+\+\+ [^/]*$p" "$PATCH_PATH")
+      if [ $cand_lines -eq 0 ]; then
+        continue  # nothing found, try next
+      else
+        found=$(( $found + $cand_lines ))
+        if [ $totl_lines -ne $cand_lines ]; then
+          # if there are several references in the patch file our mangling might do too much and cause the patch to fail.
+          log "WARNING: mixed patch, conversion might not work"
+        fi
+      fi
+      log "found: ${p}, replacing libpath references"
+      # prepare the replacement pattern
+      pr=""
+      if [ $SYS_BITNESS -eq 32 ]; then
+        pr=$(printf '%s' "$p" | sed 's@/usr/lib64/@/usr/lib/@')
+      elif [ $SYS_BITNESS -eq 64 ]; then
+        pr=$(printf '%s' "$p" | sed 's@/usr/lib/@/usr/lib64/@')
+      fi
+      # doit
+      if [ $found -eq $cand_lines ]; then  # first run in loop
+        mkdir -p "$PM_PATCH_BACKUP_DIR"
+        patch_edited_path="$PM_PATCH_BACKUP_DIR"/"$PATCH_EDITED_NAME"
+        printf '#\n# Patch converted to %sbit library paths from its original by Patchmanager > 3.1\n# Date: %s\n#\n' $SYS_BITNESS $(date -Iseconds) \
+        | cat - "$PATCH_PATH" > "$patch_edited_path"
+      fi
+      sed -i "s@^\+\+\+ \([^/]*\)$p@+++ \1$pr@;s@^--- \([^/]*\)$p@--- \1$pr@" "$patch_edited_path" || failure || true  # patch the Patch
+    done
+    if [ $found -eq 0 ]; then
+      log
+      log "OK, found nothing to convert."
+      log
+    else
+      log
+      log "OK, replaced $found libpath references and created: $patch_edited_path"
+      log
+      # set the patch to apply to the new one:
+      PATCH_PATH="$patch_edited_path"
+    fi
+  fi
 }
 
 verify_text_patch() {
