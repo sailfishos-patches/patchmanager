@@ -14,6 +14,9 @@ Group:      Qt/Qt
 License:    BSD-3-Clause
 URL:        https://github.com/sailfishos-patches/patchmanager
 Source0:    %{name}-%{version}.tar.bz2
+# note that it *must* be named that according to
+# https://en.opensuse.org/openSUSE:Packaging_checks#Building_Packages_in_spite_of_errors
+Source99:   patchmanager-rpmlintrc
 Requires:   unzip
 Requires:   patch
 Requires:   grep
@@ -167,17 +170,12 @@ systemctl-user daemon-reload
 %files
 %defattr(-,root,root,-)
 
-%doc README.md
-%doc doc/example_legacy_patch.json.md
-%doc doc/example_patch.json.md
-%doc doc/example_patch-rpm.spec
-
 %{_bindir}/%{name}-dialog
 %{_sbindir}/%{name}
 %dir %{_datadir}/%{name}/patches
 %{_datadir}/%{name}/tools
-%{_datadir}/dbus-1/
-%{_sysconfdir}/dbus-1/system.d/
+%{_datadir}/dbus-1/*/org.SfietKonstantin.patchmanager.*
+%config %{_sysconfdir}/dbus-1/system.d/org.SfietKonstantin.patchmanager.conf
 %{_unitdir}/dbus-org.SfietKonstantin.patchmanager.service
 %{_unitdir}/multi-user.target.wants/dbus-org.SfietKonstantin.patchmanager.service
 %{_unitdir}/checkForUpdates-org.SfietKonstantin.patchmanager.service
@@ -188,8 +186,8 @@ systemctl-user daemon-reload
 %{_userunitdir}/lipstick-patchmanager.service
 %{_userunitdir}/lipstick.service.wants/lipstick-patchmanager.service
 %{_libdir}/libpreload%{name}.so
-%{_sysconfdir}/firejail/whitelist-common-%{name}.local
 %config(noreplace) %{_sysconfdir}/%{name}/manglelist.conf
+%config(noreplace) %{_sysconfdir}/firejail/whitelist-common-%{name}.local
 
 %attr(0755,root,root) %{_libexecdir}/pm_apply
 %attr(0755,root,root) %{_libexecdir}/pm_unapply

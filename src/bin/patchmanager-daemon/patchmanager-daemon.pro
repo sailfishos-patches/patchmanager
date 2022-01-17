@@ -9,6 +9,9 @@ PKGCONFIG += rpm
 PKGCONFIG += popt
 
 INCLUDEPATH += /usr/include/rpm
+QMAKE_CFLAGS += -fPIE
+QMAKE_CXXFLAGS += -fPIE
+QMAKE_LFLAGS += -pie
 
 isEmpty(PROJECT_PACKAGE_VERSION) {
     BUILD_VERSION = "3.0.0"
