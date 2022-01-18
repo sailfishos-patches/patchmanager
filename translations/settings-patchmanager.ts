@@ -536,7 +536,7 @@
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="49"/>
-        <source>Convert Patches between 32 bit and 64 bit</source>
+        <source>Convert Patches between 32-bit and 64-bit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
