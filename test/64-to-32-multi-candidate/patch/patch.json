@@ -1,0 +1,13 @@
+{
+  "description": "Patchmanager Test Case: Mangle 64-to-32 bit.\nThis patch contains multiple 64 bit paths.\nTo see results, open the PM Test app and look at the second UI element.",
+  "name": "64-to-32-multi-candidate",
+  "display_name": "PM Test Case 2-2",
+  "category": "other",
+  "author": "patchmanager",
+  "version": "1.0.0",
+  "compatible": [
+    "4.0.1.48",
+    "4.1.0.24",
+    "4.2.0.21"
+  ]
+}

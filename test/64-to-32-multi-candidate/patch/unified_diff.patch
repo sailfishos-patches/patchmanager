@@ -1,0 +1,43 @@
+diff -Naur a/usr/lib64/jolla-mediaplayer/plugins/jolla/TestCaseItem.qml b/usr/lib64/jolla-mediaplayer/plugins/jolla/TestCaseItem.qml
+--- a/usr/lib64/jolla-mediaplayer/plugins/jolla/TestCaseItem.qml	1970-01-01 01:00:00.000000000 +0100
++++ b/usr/lib64/jolla-mediaplayer/plugins/jolla/TestCaseItem.qml	2022-01-18 16:25:12.131546847 +0100
+@@ -0,0 +1,7 @@
++import QtQuick 2.1
++import Sailfish.Silica 1.0
++
++DetailItem {
++	label: "Case 1"
++	value: "unpatched"
++}
+diff -Naur a/usr/lib64/maliit/plugins/jolla-keyboard.qml b/usr/lib64/maliit/plugins/jolla-keyboard.qml
+--- a/usr/lib64/maliit/plugins/jolla-keyboard.qml	2022-01-18 15:50:48.785362836 +0100
++++ b/usr/lib64/maliit/plugins/jolla-keyboard.qml	2022-01-18 15:50:48.791362804 +0100
+@@ -29,6 +29,12 @@
+  *
+  */
+ 
++/*
++ *
++ * this comment has been added by a Patchmanager Test Case patch
++ *
++ */
++
+ import QtQuick 2.0
+ import com.jolla 1.0
+ import QtFeedback 5.0
+diff -Naur a/usr/lib64/qt5/qml/org/SfietKonstantin/patchmanagertests/TestCase2Item.qml b/usr/lib64/qt5/qml/org/SfietKonstantin/patchmanagertests/TestCase2Item.qml
+--- a/usr/lib64/qt5/qml/org/SfietKonstantin/patchmanagertests/TestCase2Item.qml	2022-01-18 15:29:00.144669103 +0100
++++ b/usr/lib64/qt5/qml/org/SfietKonstantin/patchmanagertests/TestCase2Item.qml	2022-01-18 15:50:48.793362793 +0100
+@@ -3,5 +3,5 @@
+ 
+ DetailItem {
+ 	label: "Case 2"
+-	value: "unpatched"
++	value: "patched successfully (case 2.2)"
+ }
+diff -Naur a/usr/share/patchmanager-test/testfile b/usr/share/patchmanager-test/testfile
+--- a/usr/share/patchmanager-test/testfile	2022-01-18 15:50:48.789362815 +0100
++++ b/usr/share/patchmanager-test/testfile	2022-01-18 15:50:48.795362782 +0100
+@@ -1 +1 @@
+-this should not be affected
++this should not be affected, but still patched
