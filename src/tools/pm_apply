@@ -130,6 +130,7 @@ mangle_libpath() {
       | cat - "$PATCH_PATH" > "$patch_edited_path"
       sed -i "$sedcmd" "$patch_edited_path" || failure || true  # patch the Patch
 
+      log
       log "OK, replaced $found libpath references and created: $patch_edited_path"
       log
       # set the patch to apply to the new one:
