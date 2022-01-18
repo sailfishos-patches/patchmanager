@@ -123,11 +123,12 @@ mangle_libpath() {
       log "OK, found nothing to convert."
       log
     else
-      # doit
+      # create new patch file and add a note to it
       mkdir -p "$PM_PATCH_BACKUP_DIR"
       patch_edited_path="$PM_PATCH_BACKUP_DIR"/"$PATCH_EDITED_NAME"
       printf '#\n# Patch converted to %sbit library paths from its original by Patchmanager > 3.1\n# Date: %s\n#\n' $SYS_BITNESS $(date -Iseconds) \
       | cat - "$PATCH_PATH" > "$patch_edited_path"
+      # now execute the mangling proper
       sed -i "$sedcmd" "$patch_edited_path" || failure || true  # patch the Patch
 
       log
