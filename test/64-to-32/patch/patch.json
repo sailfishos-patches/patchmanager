@@ -1,7 +1,7 @@
 {
-  "description": "Patchmanager Test Case: Mangle 64-to-32 bit.\nThis patch contains 64 bit paths.\nToo see results, open the PM Test app and look at the second UI element.",
+  "description": "Patchmanager Test Case: Mangle 64-to-32 bit.\nThis patch contains a 64 bit path.\nTo see results, open the PM Test app and look at the second UI element.",
   "name": "pm-test-case-64-to-32",
-  "display_name": "PM Test Case 2",
+  "display_name": "PM Test Case 2-1",
   "category": "other",
   "author": "patchmanager",
   "version": "1.0.0",

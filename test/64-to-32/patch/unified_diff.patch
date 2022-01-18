@@ -1,17 +1,17 @@
 Only in a/usr/lib64/qt5/qml/org/SfietKonstantin/patchmanagertests: TestCase1Item.qml
 diff -aur a/usr/lib64/qt5/qml/org/SfietKonstantin/patchmanagertests/TestCase2Item.qml b/usr/lib64/qt5/qml/org/SfietKonstantin/patchmanagertests/TestCase2Item.qml
---- a/usr/lib64/qt5/qml/org/SfietKonstantin/patchmanagertests/TestCase2Item.qml	2022-01-13 22:57:01.148436802 +0100
-+++ b/usr/lib64/qt5/qml/org/SfietKonstantin/patchmanagertests/TestCase2Item.qml	2022-01-13 22:57:01.134436795 +0100
+--- a/usr/lib64/qt5/qml/org/SfietKonstantin/patchmanagertests/TestCase2Item.qml	2022-01-18 15:29:00.144669103 +0100
++++ b/usr/lib64/qt5/qml/org/SfietKonstantin/patchmanagertests/TestCase2Item.qml	2022-01-18 15:57:23.017219645 +0100
 @@ -3,5 +3,5 @@
  
  DetailItem {
  	label: "Case 2"
 -	value: "unpatched"
-+	value: "patched successfully"
++	value: "patched successfully (case 2-1)"
  }
 diff -aur a/usr/share/patchmanager-test/testfile b/usr/share/patchmanager-test/testfile
---- a/usr/share/patchmanager-test/testfile	2022-01-13 22:57:01.130436793 +0100
-+++ b/usr/share/patchmanager-test/testfile	2022-01-13 22:57:01.136436796 +0100
+--- a/usr/share/patchmanager-test/testfile	2022-01-18 15:29:00.123669124 +0100
++++ b/usr/share/patchmanager-test/testfile	2022-01-18 15:29:00.127669120 +0100
 @@ -1 +1 @@
 -this should not be affected
 +this should not be affected, but still patched
