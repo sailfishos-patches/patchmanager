@@ -99,42 +99,47 @@ mangle_libpath() {
 
     found=0
     sedcmd=""
-    # look for lines to replace, if found add pattern to sed commad
+    # look for lines to convert, if some are found add pattern to sed scriptlet
     for p in $candidates; do
       cand_lines=$(grep -c "^\+\+\+ [^/]*$p" "$PATCH_PATH")
       if [ $cand_lines -eq 0 ]; then
         continue  # nothing found, try next
-      else
-        found=$(( $found + $cand_lines ))
       fi
-      log "found: ${p}, replacing libpath references"
-      # prepare the replacement pattern
+      found=$(( $found + $cand_lines ))
+      log "Converting library path reference $p $cand_lines times"
+
+      # prepare the path replacement pattern
       pr=""
       if [ $SYS_BITNESS -eq 32 ]; then
         pr=$(printf '%s' "$p" | sed 's@/usr/lib64/@/usr/lib/@')
       elif [ $SYS_BITNESS -eq 64 ]; then
         pr=$(printf '%s' "$p" | sed 's@/usr/lib/@/usr/lib64/@')
-       fi
-      # append to the start so we can separate using ';'
+      else
+        failure
+      fi
+      # append at the front so ';' can be easily used for separation 
       sedcmd="s@^\+\+\+ \([^/]*\)$p@+++ \1$pr@;s@^--- \([^/]*\)$p@--- \1$pr@;$sedcmd"
     done
+
     if [ $found -eq 0 ]; then
       log
       log "OK, found nothing to convert."
       log
     else
-      # create new patch file and add a note to it
       mkdir -p "$PM_PATCH_BACKUP_DIR"
       patch_edited_path="$PM_PATCH_BACKUP_DIR"/"$PATCH_EDITED_NAME"
-      printf '#\n# Patch converted to %sbit library paths from its original by Patchmanager > 3.1\n# Date: %s\n#\n' $SYS_BITNESS $(date -Iseconds) \
-      | cat - "$PATCH_PATH" > "$patch_edited_path"
-      # now execute the mangling proper
-      sed -i "$sedcmd" "$patch_edited_path" || failure || true  # patch the Patch
 
+      # create mangled patch file and add a note to it
+      printf '#\n# Patch converted to %sbit library paths from its original by Patchmanager > 3.1\n# Date: %s\n#\n' $SYS_BITNESS $(date -Iseconds) \
+      | cat - "$PATCH_PATH" | sed "$sedcmd" > "$patch_edited_path"  # patch the Patch
+      if [ $? -ne 0 ]; then
+        failure
+      fi
+    
       log
-      log "OK, replaced $found libpath references and created: $patch_edited_path"
+      log "OK, converted $found library path references and created: $patch_edited_path"
       log
-      # set the patch to apply to the new one:
+      # set the patch path to the new one:
       PATCH_PATH="$patch_edited_path"
     fi
   fi
@@ -149,7 +154,6 @@ verify_text_patch() {
     log
 
     $PATCH_EXEC -p 1 -d "$ROOT_DIR" --dry-run < "$PATCH_PATH" 2>&1 | tee -a "$PM_LOG_FILE"
-
     if [ $? -ne 0 ]; then
       failure
     fi
