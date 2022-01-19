@@ -118,7 +118,7 @@ mangle_libpath() {
         failure
       fi
       # append at the front so ';' can be easily used for separation 
-      sedcmd="s@^+++ \([^/]*\)$p@+++ \1$pr@;s@^--- \([^/]*\)$p@--- \1$pr@;$sedcmd"
+      sedcmd="s@^+++ \([^/]*\)$p@+++ \1$pr@g;s@^--- \([^/]*\)$p@--- \1$pr@g;$sedcmd"
     done
 
     if [ $found -eq 0 ]; then
