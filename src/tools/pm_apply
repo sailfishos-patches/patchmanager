@@ -101,7 +101,7 @@ mangle_libpath() {
     sedcmd=""
     # look for lines to convert, if some are found add pattern to sed scriptlet
     for p in $candidates; do
-      cand_lines=$(grep -c "^\+\+\+ [^/]*$p" "$PATCH_PATH")
+      cand_lines=$(grep -c "^+++ [^/]*$p" "$PATCH_PATH")
       if [ $cand_lines -eq 0 ]; then
         continue  # nothing found, try next
       fi
@@ -118,7 +118,7 @@ mangle_libpath() {
         failure
       fi
       # append at the front so ';' can be easily used for separation 
-      sedcmd="s@^\+\+\+ \([^/]*\)$p@+++ \1$pr@;s@^--- \([^/]*\)$p@--- \1$pr@;$sedcmd"
+      sedcmd="s@^+++ \([^/]*\)$p@+++ \1$pr@;s@^--- \([^/]*\)$p@--- \1$pr@;$sedcmd"
     done
 
     if [ $found -eq 0 ]; then
