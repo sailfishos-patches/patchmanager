@@ -60,8 +60,8 @@ ApplicationWindow {
         Page {
             onStatusChanged: {
                 if (status == PageStatus.Active && !appWindow.remorseItem) {
-                    remorse.execute(button, qsTranslate("", "Activate all Patches marked active"), function() {
-                        console.info("Accepted activation of all Patches marked active.")
+                    remorse.execute(button, qsTranslate("", "Activate all enabled Patches"), function() {
+                        console.info("Accepted activation of all enabled Patches.")
                         dbusPm.call("loadRequest", [true])
                     }, 10000)
                     appWindow.remorseItem = remorse
@@ -77,7 +77,7 @@ ApplicationWindow {
                     width: parent.width
 
                     PageHeader {
-                        title: qsTranslate("", "Activate all Patches marked active")
+                        title: qsTranslate("", "Activate all enabled Patches")
                     }
 
                     Label {
@@ -85,7 +85,7 @@ ApplicationWindow {
                         anchors.right: parent.right
                         anchors.margins: Theme.horizontalPageMargin
                         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                        text: qsTranslate("", "Patchmanager will activate all Patches marked active in 10 seconds.")
+                        text: qsTranslate("", "Patchmanager will start to activate all enabled Patches in 10 seconds.")
                     }
 
                     Item {
@@ -105,7 +105,7 @@ ApplicationWindow {
                             RemorseItem {
                                 id: remorse
                                 onCanceled: {
-                                    console.info("Cancelled activation of all Patches marked active.")
+                                    console.info("Cancelled activation of all enabled Patches.")
                                     dbusPm.call("loadRequest", [false])
                                     Qt.quit()
                                 }
@@ -168,8 +168,8 @@ ApplicationWindow {
                 function autoApplyingFinished(success) {
                     console.info(success)
                     button.enabled = true
-                    progress.label = success ? qsTranslate("", "Successfully activated all Patches marked active.")
-                                             : qsTranslate("", "Failed to activate all Patches marked active!")
+                    progress.label = success ? qsTranslate("", "Successfully activated all enabled Patches.")
+                                             : qsTranslate("", "Failed to activate all enabled Patches!")
                 }
             }
         }
