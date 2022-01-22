@@ -36,10 +36,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="222"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="283"/>
         <location filename="../src/bin/dialog/dialog.qml" line="200"/>
         <location filename="../src/qml/AboutPage.qml" line="68"/>
-        <location filename="../src/qml/RestartServicesDialog.qml" line="78"/>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="79"/>
         <source>Patchmanager</source>
         <translation type="unfinished"></translation>
     </message>
@@ -222,7 +222,7 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="164"/>
-        <location filename="../src/qml/WebCatalogPage.qml" line="101"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="106"/>
         <source>Web Catalog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -402,7 +402,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/UnifiedPatchPage.qml" line="203"/>
+        <location filename="../src/qml/UnifiedPatchPage.qml" line="208"/>
         <location filename="../src/qml/WebPatchPage.qml" line="272"/>
         <source>Sources</source>
         <translation type="unfinished"></translation>
