@@ -90,17 +90,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/DevelopersPage.qml" line="157"/>
+        <location filename="../src/qml/DevelopersPage.qml" line="162"/>
         <source>Developers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/DevelopersPage.qml" line="196"/>
+        <location filename="../src/qml/DevelopersPage.qml" line="201"/>
         <source>%1&apos;s webpage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/DevelopersPage.qml" line="201"/>
+        <location filename="../src/qml/DevelopersPage.qml" line="206"/>
         <source>%1&apos;s %2 account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -290,37 +290,37 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="518"/>
-        <location filename="../src/qml/WebCatalogPage.qml" line="248"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="253"/>
         <source>No Patches available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/RestartServicesDialog.qml" line="52"/>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="53"/>
         <source>Restart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/RestartServicesDialog.qml" line="58"/>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="59"/>
         <source>Some services will be restarted now. Reloading the homescreen of the device might take a little time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/RestartServicesDialog.qml" line="62"/>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="63"/>
         <source>List of services:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/RestartServicesDialog.qml" line="77"/>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="78"/>
         <source>Note that this will close all apps.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/RestartServicesDialog.qml" line="78"/>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="79"/>
         <source>Note that this will close %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/RestartServicesDialog.qml" line="81"/>
+        <location filename="../src/qml/RestartServicesDialog.qml" line="82"/>
         <source>Note that this will close the %1 app.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -331,47 +331,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="83"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="88"/>
         <source>Hide search field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="83"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="88"/>
         <source>Show search field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="94"/>
         <source>Sort by category</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="89"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="94"/>
         <source>Sort by date updated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="101"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="106"/>
         <source>%1 Patches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="102"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="107"/>
         <source>(by date updated)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="102"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="107"/>
         <source>(by category)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="108"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="113"/>
         <source>Tap to enter search query</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="235"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="240"/>
         <source>Update available: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -386,7 +386,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="188"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="193"/>
         <source>Author: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -433,63 +433,63 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="232"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="234"/>
         <source>Patch activated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="233"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="235"/>
         <source>Patch %1 activated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="236"/>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="247"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="238"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="249"/>
         <source>some service should be restarted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="243"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="245"/>
         <source>Patch deactivated"</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="245"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="247"/>
         <source>Patch %1 deactivated"</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="254"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="256"/>
         <source>Failed to activate Patch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="255"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="257"/>
         <source>Activating Patch %1 failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="258"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="260"/>
         <source>Failed to deactivate Patch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="259"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="261"/>
         <source>Deactivating Patch %1 failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="262"/>
-        <source>Update available</source>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="264"/>
+        <source>Update available</source
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="263"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="265"/>
         <source>An update for Patch %1 exits.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="137"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="142"/>
         <location filename="../src/qml/SettingsPage.qml" line="53"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
