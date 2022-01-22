@@ -439,13 +439,13 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="235"/>
-        <source>Patch %1 activated</source>
+        <source>Patch %1 activated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="238"/>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="249"/>
-        <source>some service should be restarted.</source>
+        <source>some service(s) should be restarted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -455,7 +455,7 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="247"/>
-        <source>Patch %1 deactivated</source>
+        <source>Patch %1 deactivated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -485,7 +485,7 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="265"/>
-        <source>An update for Patch %1 exits.</source>
+        <source>An update for Patch %1 exists.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
