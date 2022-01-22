@@ -6,12 +6,12 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="63"/>
         <location filename="../src/bin/dialog/dialog.qml" line="80"/>
-        <source>Activate all Patches marked active</source>
+        <source>Activate all enabled Patches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="88"/>
-        <source>Patchmanager will activate all Patches marked active in 10 seconds.</source>
+        <source>Patchmanager will start to activate all enabled Patches in 10 seconds.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -21,12 +21,12 @@
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="171"/>
-        <source>Successfully activated all Patches marked active.</source>
+        <source>Successfully activated all enabled Patches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="172"/>
-        <source>Failed to activate all Patches marked active!</source>
+        <source>Failed to activate all enabled Patches!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
