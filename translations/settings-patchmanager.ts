@@ -485,7 +485,7 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="265"/>
-        <source>An update for Patch %1 exists.</source>
+        <source>An update for Patch %1 is available.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
