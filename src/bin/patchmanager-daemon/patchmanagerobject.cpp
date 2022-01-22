@@ -262,7 +262,7 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
         break;
     case NotifyActionUpdateAvailable:
         summary = qApp->translate("", "Update available");
-        body = qApp->translate("", "An update for Patch %1 exists.").arg(patch);
+        body = qApp->translate("", "An update for Patch %1 is available.").arg(patch);
 
         remoteActions << Notification::remoteAction(
             QStringLiteral("default"),
