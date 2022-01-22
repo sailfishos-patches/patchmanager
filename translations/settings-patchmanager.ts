@@ -450,12 +450,12 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="245"/>
-        <source>Patch deactivated"</source>
+        <source>Patch deactivated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="247"/>
-        <source>Patch %1 deactivated"</source>
+        <source>Patch %1 deactivated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
