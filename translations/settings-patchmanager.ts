@@ -480,7 +480,7 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="264"/>
-        <source>Update available</source
+        <source>Update available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
