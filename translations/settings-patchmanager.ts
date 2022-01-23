@@ -443,6 +443,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="238"/>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="249"/>
         <source>some service(s) should be restarted.</source>
         <translation type="unfinished"></translation>
@@ -450,11 +451,6 @@
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="245"/>
         <source>Patch deactivated</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="238"/>
-        <source>some service should be restarted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
