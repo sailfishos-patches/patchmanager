@@ -232,7 +232,7 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
     switch (action) {
     case NotifyActionSuccessApply:
         summary = qApp->translate("", "Patch activated");
-        body = qApp->translate("", "Patch %1 activated").arg(patch);
+        body = qApp->translate("", "Patch %1 activated.").arg(patch);
         if (getToggleServices()) {
             body.append( ", " );
             body.append( qApp->translate("", "some service should be restarted.") );
@@ -243,10 +243,10 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
         break;
     case NotifyActionSuccessUnapply:
         summary = qApp->translate("", "Patch deactivated");
-        body = qApp->translate("", "Patch %1 deactivated").arg(patch);
+        body = qApp->translate("", "Patch %1 deactivated.").arg(patch);
         if (getToggleServices()) {
             body.append( ", " );
-            body.append( qApp->translate("", "some service should be restarted.") );
+            body.append( qApp->translate("", "some service(s) should be restarted.") );
             notification.setHintValue("icon", "icon-lock-warning");
         } else {
             body.append( "." );
@@ -262,7 +262,7 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
         break;
     case NotifyActionUpdateAvailable:
         summary = qApp->translate("", "Update available");
-        body = qApp->translate("", "An update for Patch %1 exits.").arg(patch);
+        body = qApp->translate("", "An update for Patch %1 is available.").arg(patch);
 
         remoteActions << Notification::remoteAction(
             QStringLiteral("default"),

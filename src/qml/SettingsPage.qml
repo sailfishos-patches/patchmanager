@@ -83,7 +83,7 @@ Page {
 
             TextSwitch {
                 id: fixBitSwitch
-                text: qsTranslate("", "Convert Patches between 32 bit and 64 bit")
+                text: qsTranslate("", "Convert Patches between 32-bit and 64-bit")
                 description: qsTranslate("", "Automatically convert lib or lib64 for select paths shown below.")
                 checked: PatchManager.bitnessMangle
                 onClicked: PatchManager.bitnessMangle = !PatchManager.bitnessMangle
