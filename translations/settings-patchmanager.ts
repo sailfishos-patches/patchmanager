@@ -136,7 +136,7 @@
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="90"/>
-        <source>Start Patchmanager's daemon before activating Patches</source>
+        <source>Start Patchmanager&apos;s daemon before activating Patches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -212,7 +212,7 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="158"/>
-        <source>Start Patchmanager's daemon</source>
+        <source>Start Patchmanager&apos;s daemon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -377,12 +377,12 @@
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="80"/>
-        <source>Fetching Patch data</source>
+        <source>Failed to fetch Patch data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="80"/>
-        <source>Failed to fetch Patch data</source>
+        <source>Fetching patch data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -454,7 +454,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="247"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="246"/>
         <source>Patch %1 deactivated.</source>
         <translation type="unfinished"></translation>
     </message>

@@ -235,7 +235,7 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
         body = qApp->translate("", "Patch %1 activated.").arg(patch);
         if (getToggleServices()) {
             body.append( ", " );
-            body.append( qApp->translate("", "some service should be restarted.") );
+            body.append( qApp->translate("", "some service(s) should be restarted.") );
             notification.setHintValue("icon", "icon-lock-warning");
         } else {
             body.append( "." );
