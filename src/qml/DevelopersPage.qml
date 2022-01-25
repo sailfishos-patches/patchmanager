@@ -125,7 +125,7 @@ Page {
         ListElement {
             icon: "/usr/share/patchmanager/data/jakibaki.jpeg"
             category: "Thanks to"
-            name: "Jakob Dietrich"
+            name: "Emily Dietrich"
             nickname: "Jakibaki"
             description: "Prepatch developer"
             socialmedia: ""
