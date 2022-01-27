@@ -46,6 +46,30 @@ Requires: libsailfishapp-launcher
 %description test-cases
 %{summary}.
 
+This package installs a small app and a couple of patches which can help with
+testing changes to the Patchmanager utility.  
+
+You probably do not need this unless you want to test development versions of
+Patchmanager.
+
+%if "%{?vendor}" == "chum"
+PackageName: Patchmanager Test Cases
+Type: addon
+Categories:
+ - Development
+Custom:
+  Repo: https://github.com/sailfishos-patches/patchmanager
+Icon: https://raw.githubusercontent.com/sailfishos-patches/patchmanager/master/src/plugin/icon-m-patchmanager.png
+Url:
+  Homepage: https://openrepos.net/content/patchmanager/patchmanager
+  # Help will default to GitHub discussions, which we don't use for this.
+  # Pointing to the README right now, as the Wiki is not user-friendly at this point.
+  Help: https://github.com/sailfishos-patches/patchmanager/discussions/232
+  # For this package, use the Github bugtracker:
+  Bugtracker: https://github.com/sailfishos-patches/patchmanager/issues
+%endif
+
+
 %description
 Patchmanager is a tool for transparently modifying installed files by the patch
 utility and for managing the special patch files ("Patches") for doing so.
