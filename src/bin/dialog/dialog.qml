@@ -81,6 +81,7 @@ ApplicationWindow {
                     }
 
                     Label {
+                        id: label
                         anchors.left: parent.left
                         anchors.right: parent.right
                         anchors.margins: Theme.horizontalPageMargin
@@ -122,6 +123,7 @@ ApplicationWindow {
                                 duration: 150
                             }
                         }
+                        property var runTimeStart
                     }
 
                     Label {
@@ -153,6 +155,7 @@ ApplicationWindow {
                     progress.minimumValue = 0
                     progress.value = 0
                     progress.visible = true
+                    progress.runTimeStart = new Date().getTime();
                 }
 
                 function autoApplyingPatch(patch) {
@@ -169,6 +172,9 @@ ApplicationWindow {
                 function autoApplyingFinished(success) {
                     console.info(success)
                     console.timeEnd("Applying on start took") // this string is an ID, use the same in time()
+                    var t = new Date().getTime();
+                    var runtime = Math.floor( ( t - progress.runTimeStart ) / 1000 ) ;
+                    label.text = qsTranslate("", "Activaton of all enabled Patches took %1.").arg(Format.formatDuration(runtime, Formatter.DurationShort));
                     button.enabled = true
                     progress.label = success ? qsTranslate("", "Successfully activated all enabled Patches.")
                                              : qsTranslate("", "Failed to activate all enabled Patches!")
