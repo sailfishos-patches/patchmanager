@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
- * Copyright (c) 2021, Patchmanager for SailfishOS contributors:
+ * Copyright (c) 2021-2022, Patchmanager for SailfishOS contributors:
  *                  - olf "Olf0" <https://github.com/Olf0>
  *                  - Peter G. "nephros" <sailfish@nephros.org>
  *
@@ -53,7 +53,7 @@ ApplicationWindow {
              '  </interface>\n'
 
         function show() {
-            console.warn("Function show is called.")
+            console.warn("Function show is called.");
         }
     }
     initialPage: Component {
@@ -61,8 +61,8 @@ ApplicationWindow {
             onStatusChanged: {
                 if (status == PageStatus.Active && !appWindow.remorseItem) {
                     remorse.execute(button, qsTranslate("", "Activate all enabled Patches"), function() {
-                        console.info("Accepted activation of all enabled Patches.")
-                        dbusPm.call("loadRequest", [true])
+                        console.info("Accepted activation of all enabled Patches.");
+                        dbusPm.call("loadRequest", [true]);
                     }, 10000)
                     appWindow.remorseItem = remorse
                 }
@@ -106,9 +106,9 @@ ApplicationWindow {
                             RemorseItem {
                                 id: remorse
                                 onCanceled: {
-                                    console.info("Cancelled activation of all enabled Patches.")
-                                    dbusPm.call("loadRequest", [false])
-                                    Qt.quit()
+                                    console.info("Cancelled activation of all enabled Patches.");
+                                    dbusPm.call("loadRequest", [false]);
+                                    Qt.quit();
                                 }
                             }
                         }
@@ -149,33 +149,33 @@ ApplicationWindow {
                 signalsEnabled: true
 
                 function autoApplyingStarted(count) {
-                    console.debug(count)
-                    console.time("Applying on start took") // this string is an ID, use the same in timeEnd()
-                    progress.maximumValue = count
-                    progress.minimumValue = 0
-                    progress.value = 0
-                    progress.visible = true
+                    console.debug(count);
+                    console.time("Applying on start took") // this string is an ID, use the same in timeEnd();
+                    progress.maximumValue = count;
+                    progress.minimumValue = 0;
+                    progress.value = 0;
+                    progress.visible = true;
                     progress.runTimeStart = new Date().getTime();
                 }
 
                 function autoApplyingPatch(patch) {
-                    console.info(patch)
-                    progress.value += 1
-                    progress.label = patch
+                    console.info(patch);
+                    progress.value += 1;
+                    progress.label = patch;
                 }
 
                 function autoApplyingFailed(patch) {
-                    console.warn(patch)
-                    failed.text += "%1\n".arg(patch)
+                    console.warn(patch);
+                    failed.text += "%1\n".arg(patch);
                 }
 
                 function autoApplyingFinished(success) {
-                    console.info(success)
-                    console.timeEnd("Applying on start took") // this string is an ID, use the same in time()
+                    console.info(success);
+                    console.timeEnd("Applying on start took") // this string is an ID, use the same in time();
                     var t = new Date().getTime();
                     var runtime = Math.floor( ( t - progress.runTimeStart ) / 1000 ) ;
                     label.text = qsTranslate("", "Activaton of all enabled Patches took %1.").arg(Format.formatDuration(runtime, Formatter.DurationShort));
-                    button.enabled = true
+                    button.enabled = true;
                     progress.label = success ? qsTranslate("", "Successfully activated all enabled Patches.")
                                              : qsTranslate("", "Failed to activate all enabled Patches!")
                 }
@@ -213,8 +213,8 @@ ApplicationWindow {
                 CoverAction {
                     iconSource: "image://theme/icon-cover-cancel"
                     onTriggered: {
-                        appWindow.remorseItem.cancel()
-                        Qt.quit()
+                        appWindow.remorseItem.cancel();
+                        Qt.quit();
                     }
                 }
             }
