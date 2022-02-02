@@ -150,7 +150,7 @@ ApplicationWindow {
 
                 function autoApplyingStarted(count) {
                     console.debug(count);
-                    console.time("autoApplyingRuntime") // this string is an ID, use the same in timeEnd();
+                    console.time("autoApplyingRuntime"); // this string is an ID, use the same in timeEnd();
                     progress.maximumValue = count;
                     progress.minimumValue = 0;
                     progress.value = 0;
@@ -171,7 +171,7 @@ ApplicationWindow {
 
                 function autoApplyingFinished(success) {
                     console.info(success);
-                    console.timeEnd("autoApplyingRuntime") // this string is an ID, use the same in time();
+                    console.timeEnd("autoApplyingRuntime"); // this string is an ID, use the same in time();
                     var t = new Date().getTime();
                     var runtime = Math.round( ( t - progress.runTimeStart ) / 1000 ) ;
                     label.text = qsTranslate("", "Activating all enabled Patches took %L1 seconds.").arg(runtime);
