@@ -173,8 +173,8 @@ ApplicationWindow {
                     console.info(success);
                     console.timeEnd("autoApplyingRuntime") // this string is an ID, use the same in time();
                     var t = new Date().getTime();
-                    var runtime = Math.floor( ( t - progress.runTimeStart ) / 1000 ) ;
-                    label.text = qsTranslate("", "Activating all enabled Patches took %1.").arg(Format.formatDuration(runtime, Formatter.DurationShort));
+                    var runtime = Math.round( ( t - progress.runTimeStart ) / 1000 ) ;
+                    label.text = qsTranslate("", "Activating all enabled Patches took %L1 seconds.").arg(runtime);
                     button.enabled = true;
                     progress.label = success ? qsTranslate("", "Successfully activated all enabled Patches.")
                                              : qsTranslate("", "Failed to activate all enabled Patches!")
