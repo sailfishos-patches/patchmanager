@@ -75,12 +75,12 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="165"/>
         <source>If you appreciate our work, please consider a donation to help covering the hosting costs for Openrepos. Openrepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of Patches is hosted there.</source>
-        <translation>Wenn du unsere Arbeit schätzt, bitten erwäge eine Spende, um die Hosting-Kosten für Openrepos zu decken. Openrepos stellt gerade für Patchmanager eine kritische Infrastruktur dar, weil der Web Katalog für Patches dort beheimatet ist.</translation>
+        <translation>Wenn du unsere Arbeit schätzt, bitte erwäge eine Spende, um die Hosting-Kosten für Openrepos zu decken. Openrepos stellt gerade für Patchmanager eine kritische Infrastruktur dar, weil der Web Katalog für Patches dort beheimatet ist.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="186"/>
         <source>If for some reason you cannot donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).</source>
-        <translation>Wenn du aus irgendeinem Grund nicht an Openrepos spenden möchtest, so schätzen wir auch eine Spenden an die Free Software Foundation Europe (FSFE).</translation>
+        <translation>Wenn du aus irgendeinem Grund nicht an Openrepos spenden möchtest, so schätzen wir auch eine Spende an die Free Software Foundation Europe (FSFE).</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="251"/>
