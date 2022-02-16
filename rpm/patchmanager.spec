@@ -7,7 +7,7 @@
 
 Name:       patchmanager
 
-Summary:    Allows to manage Patches for Sailfish OS
+Summary:    Allows to manage Patches for SailfishOS
 Version:    3.2.1
 Release:    1
 Group:      Qt/Qt
@@ -40,8 +40,8 @@ BuildRequires:  pkgconfig(popt)
 %description
 Patchmanager is a tool for transparently modifying installed files by the patch
 utility and for managing the special patch files ("Patches") for doing so.
-Since version 3.0 it does not modify original files, but alters their content
-when they are loaded into RAM to be run.
+Since version 3.0 Patchmanager does not modify original files on mass storage, 
+it merely alters their content when they are loaded into RAM to be executed.
 
 # Chum metadata. See https://github.com/sailfishos-chum/main/blob/main/Metadata.md
 %if "%{?vendor}" == "chum"
