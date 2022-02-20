@@ -139,8 +139,9 @@ Page {
             busy: view.busy
             enabled: !busy
             MenuItem {
-                text: qsTranslate("", "Settings")
-                onClicked: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
+                text: qsTranslate("", "Deactivate all Patches")
+                onClicked: menuRemorse.execute( text, function() { PatchManager.call(PatchManager.unapplyAllPatches()) } )
+                visible: PatchManager.loaded
             }
 
             MenuItem {
@@ -149,9 +150,8 @@ Page {
             }
 
             MenuItem {
-                text: qsTranslate("", "Deactivate all Patches")
-                onClicked: menuRemorse.execute( text, function() { PatchManager.call(PatchManager.unapplyAllPatches()) } )
-                visible: PatchManager.loaded
+                text: qsTranslate("", "Settings")
+                onClicked: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
             }
 
             MenuItem {
