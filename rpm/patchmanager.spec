@@ -43,8 +43,8 @@ utility and for managing the special patch files ("Patches") for doing so.
 Since version 3.0, Patchmanager does not modify original files on mass storage,
 it merely alters their content when they are loaded into RAM to be executed.
 
-# Chum metadata. See https://github.com/sailfishos-chum/main/blob/main/Metadata.md
 %if "%{?vendor}" == "chum"
+# Chum metadata. See https://github.com/sailfishos-chum/main/blob/main/Metadata.md
 PackageName: Patchmanager
 Type: desktop-application
 Categories:
