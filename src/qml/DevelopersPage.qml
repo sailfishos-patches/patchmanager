@@ -43,16 +43,6 @@ Page {
     ListModel {
         id: model
         ListElement {
-            icon: "/usr/share/patchmanager/data/webosinternals.png"
-            category: "AUSMT"
-            name: "webOS Internals"
-            nickname: ""
-            description: "Team behind AUSMT"
-            socialmedia: "https://twitter.com/webosinternals"
-            socialmedianame: "Twitter"
-            website: "http://www.webos-internals.org/wiki/Main_Page"
-        }
-        ListElement {
             icon: "/usr/share/patchmanager/data/sfiet_konstantin.jpg"
             category: "Patchmanager"
             name: "Lucien Xu"
