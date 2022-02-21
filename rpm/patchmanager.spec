@@ -37,13 +37,19 @@ BuildRequires:  qt5-qttools-linguist
 BuildRequires:  pkgconfig(rpm)
 BuildRequires:  pkgconfig(popt)
 
+# The description section includes the metadata for SailfishOS:Chum, see
+# https://github.com/sailfishos-chum/main/blob/main/Metadata.md
+# "Help:" there would default to GitHub discussions, which is used for internal
+# discussions among the Patchmanager maintainers, hence pointing to the README,
+# because the Wiki is not suitable for simple users.
+# "Bugtracker:" would default to GitHub issues; prefer to link to the
+# corresponding SFOS Forum thread instead.
 %description
 Patchmanager is a tool for transparently modifying installed files by the patch
 utility and for managing the special patch files ("Patches") for doing so.
-Since version 3.0 Patchmanager does not modify original files on mass storage, 
+Since version 3.0, Patchmanager does not modify original files on mass storage,
 it merely alters their content when they are loaded into RAM to be executed.
 
-# Chum metadata. See https://github.com/sailfishos-chum/main/blob/main/Metadata.md
 %if "%{?vendor}" == "chum"
 PackageName: Patchmanager
 Type: desktop-application
@@ -56,10 +62,7 @@ Custom:
 Icon: https://raw.githubusercontent.com/sailfishos-patches/patchmanager/master/src/plugin/icon-m-patchmanager.png
 Url:
   Homepage: https://openrepos.net/content/patchmanager/patchmanager
-  # Help will default to GitHub discussions, which we don't use for this.
-  # Pointing to the README right now, as the Wiki is not user-friendly at this point.
   Help: https://github.com/sailfishos-patches/patchmanager/blob/master/README.md
-  # Bugtracker will default to GitHub issues. Prefer the SFOS Forum link.
   Bugtracker: https://forum.sailfishos.org/t/bugs-in-patchmanager-3-1-0/8552
 %endif
 
