@@ -39,9 +39,11 @@ BuildRequires:  pkgconfig(popt)
 
 # The description section includes the metadata for SailfishOS:Chum, see
 # https://github.com/sailfishos-chum/main/blob/main/Metadata.md
-# "Help:" there would default to GitHub discussions, which we don't use for this,
-# hence pointing to the README right now, as the Wiki is not intended for users.
-# "Bugtracker:" would default to GitHub issues; prefer the corresponding SFOS Forum thread.
+# "Help:" there would default to GitHub discussions, which is used for internal
+# discussions among the Patchmanager maintainers, hence pointing to the README,
+# because the Wiki is not suitable for simple users.
+# "Bugtracker:" would default to GitHub issues; prefer to link to the
+# corresponding SFOS Forum thread instead.
 %description
 Patchmanager is a tool for transparently modifying installed files by the patch
 utility and for managing the special patch files ("Patches") for doing so.
