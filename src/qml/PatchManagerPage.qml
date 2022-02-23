@@ -138,10 +138,10 @@ Page {
         PullDownMenu {
             busy: view.busy
             enabled: !busy
-            
+
             /*
             Disabled due to discussion at https://github.com/sailfishos-patches/patchmanager/pull/272#issuecomment-1047685536
-            
+
             MenuItem {
                 text: qsTranslate("", "Deactivate all Patches")
                 onClicked: menuRemorse.execute( text, function() { PatchManager.call(PatchManager.unapplyAllPatches()) } )
