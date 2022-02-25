@@ -7,14 +7,14 @@
 
 Name:       patchmanager
 
-Summary:    Allows to manage Patches for SailfishOS
+Summary:    Patchmanager allows to manage Patches for SailfishOS
 Version:    3.2.2
 Release:    1
 Group:      Qt/Qt
 License:    BSD-3-Clause
 URL:        https://github.com/sailfishos-patches/patchmanager
 Source0:    %{name}-%{version}.tar.bz2
-# note that it *must* be named that according to
+# Note that it *must* be named exactly so according to
 # https://en.opensuse.org/openSUSE:Packaging_checks#Building_Packages_in_spite_of_errors
 Source99:   patchmanager-rpmlintrc
 Requires:   unzip
@@ -40,6 +40,7 @@ BuildRequires:  pkgconfig(popt)
 %description
 Patchmanager is a tool for transparently modifying installed files by the patch
 utility and for managing the special patch files ("Patches") for doing so.
+
 Since version 3.0, Patchmanager does not modify original files on mass storage,
 it merely alters their content when they are loaded into RAM to be executed.
 
@@ -51,7 +52,7 @@ it merely alters their content when they are loaded into RAM to be executed.
 # - The "Bugtracker:" field would default to GitHub issues; prefer to guide
 #   end-users to the corresponding SFOS Forum thread, first.
 %if "%{?vendor}" == "chum"
-PackageName: Patchmanager
+PackageName: Patchmanager for SailfishOS
 Type: desktop-application
 Categories:
  - System
