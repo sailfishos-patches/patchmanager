@@ -43,7 +43,7 @@ utility and for managing the special patch files ("Patches") for doing so.
 Since version 3.0, Patchmanager does not modify original files on mass storage,
 it merely alters their content when they are loaded into RAM to be executed.
 
-# This description section includes the metadata for SailfishOS:Chum, see
+# This description section includes metadata for SailfishOS:Chum, see
 # https://github.com/sailfishos-chum/main/blob/main/Metadata.md
 # - The "Help:" field here would default to GitHub discussions, which is used
 #   for internal discussions among the Patchmanager maintainers, hence pointing
