@@ -47,9 +47,9 @@ it merely alters their content when they are loaded into RAM to be executed.
 # https://github.com/sailfishos-chum/main/blob/main/Metadata.md
 # - The "Help:" field here would default to GitHub discussions, which is used
 #   for internal discussions among the Patchmanager maintainers, hence pointing
-#   to the README, because the Wiki is not suitable for simple users.
-# - The "Bugtracker:" field would default to GitHub issues; prefer to link to
-#   the corresponding SFOS Forum thread instead.
+#   to the README, because the Wiki is not suitable for end-users.
+# - The "Bugtracker:" field would default to GitHub issues; prefer to guide
+#   end-users to the corresponding SFOS Forum thread, first.
 %if "%{?vendor}" == "chum"
 PackageName: Patchmanager
 Type: desktop-application
