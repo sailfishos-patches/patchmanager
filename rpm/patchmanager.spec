@@ -40,9 +40,11 @@ BuildRequires:  pkgconfig(popt)
 %description
 Patchmanager is a tool for transparently modifying installed files by the patch
 utility and for managing the special patch files ("Patches") for doing so.
-
 Since version 3.0, Patchmanager does not modify original files on mass storage,
 it merely alters their content when they are loaded into RAM to be executed.
+
+Note that Patchmanager does not install an application icon on the launcher,
+but creates a new entry in SailfishOS' Settings application.
 
 # This description section includes metadata for SailfishOS:Chum, see
 # https://github.com/sailfishos-chum/main/blob/main/Metadata.md
