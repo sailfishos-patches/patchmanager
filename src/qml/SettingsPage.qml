@@ -90,7 +90,7 @@ Page {
 
             TextSwitch {
                 text: qsTranslate("", "Show 'Deactivate all Patches' menu")
-                description: qsTranslate("", "Temporarily enable the menu option to deactivate all Patches.")
+                description: qsTranslate("", "Enable a menu option to deactivate all Patches.")
                 checked: uisettings.showUnapplyAll
                 onClicked: uisettings.showUnapplyAll = !uisettings.showUnapplyAll
                 automaticCheck: false
