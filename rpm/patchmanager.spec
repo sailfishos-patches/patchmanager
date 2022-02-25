@@ -22,6 +22,7 @@ Requires:   patch
 Requires:   grep
 Requires:   sed
 Requires:   sailfish-version >= 3.4.0
+Requires:   qml(Nemo.Configuration)
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Qml)
