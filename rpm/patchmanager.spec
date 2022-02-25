@@ -8,7 +8,7 @@
 Name:       patchmanager
 
 Summary:    Allows to manage Patches for SailfishOS
-Version:    3.2.1
+Version:    3.2.2
 Release:    1
 Group:      Qt/Qt
 License:    BSD-3-Clause
@@ -37,19 +37,19 @@ BuildRequires:  qt5-qttools-linguist
 BuildRequires:  pkgconfig(rpm)
 BuildRequires:  pkgconfig(popt)
 
-# The description section includes the metadata for SailfishOS:Chum, see
-# https://github.com/sailfishos-chum/main/blob/main/Metadata.md
-# "Help:" there would default to GitHub discussions, which is used for internal
-# discussions among the Patchmanager maintainers, hence pointing to the README,
-# because the Wiki is not suitable for simple users.
-# "Bugtracker:" would default to GitHub issues; prefer to link to the
-# corresponding SFOS Forum thread instead.
 %description
 Patchmanager is a tool for transparently modifying installed files by the patch
 utility and for managing the special patch files ("Patches") for doing so.
 Since version 3.0, Patchmanager does not modify original files on mass storage,
 it merely alters their content when they are loaded into RAM to be executed.
 
+# This description section includes the metadata for SailfishOS:Chum, see
+# https://github.com/sailfishos-chum/main/blob/main/Metadata.md
+# The "Help:" field here would default to GitHub discussions, which is used for
+# internal discussions among the Patchmanager maintainers, hence pointing to the
+# README, because the Wiki is not suitable for simple users.
+# The "Bugtracker:" field would default to GitHub issues; prefer to link to the
+# corresponding SFOS Forum thread instead.
 %if "%{?vendor}" == "chum"
 PackageName: Patchmanager
 Type: desktop-application
