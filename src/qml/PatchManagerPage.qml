@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
- * Copyright (c) 2021, Patchmanager for SailfishOS contributors:
+ * Copyright (c) 2021, 2022, Patchmanager for SailfishOS contributors:
  *                  - olf "Olf0" <https://github.com/Olf0>
  *                  - Peter G. "nephros" <sailfish@nephros.org>
  *                  - Vlad G. "b100dian" <https://github.com/b100dian>
@@ -37,10 +37,25 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import Nemo.Configuration 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
 Page {
     id: container
+
+    /*
+     * usually config values are set through the patchmanager plugin on the
+     * daemon which stores in /etc/patchmanager2.conf.
+     * this config group is for UI settings which do not affect PM behaviour
+     * and thus need not be managed there.
+    */
+    ConfigurationGroup {
+        id: uisettings
+        path: "/org/SfietKonstantin/patchmanager/uisettings"
+
+        property bool showUnapplyAll: false
+    }
+
 
     Timer {
         id : startTimer
@@ -141,13 +156,13 @@ Page {
 
             /*
             Disabled due to discussion at https://github.com/sailfishos-patches/patchmanager/pull/272#issuecomment-1047685536
+            */
 
             MenuItem {
                 text: qsTranslate("", "Deactivate all Patches")
                 onClicked: menuRemorse.execute( text, function() { PatchManager.call(PatchManager.unapplyAllPatches()) } )
-                visible: PatchManager.loaded
+                visible: uisettings.showUnapplyAll
             }
-            */
 
             MenuItem {
                 text: qsTranslate("", "About Patchmanager")
