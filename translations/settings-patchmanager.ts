@@ -10,22 +10,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="88"/>
+        <location filename="../src/bin/dialog/dialog.qml" line="89"/>
         <source>Patchmanager will start to activate all enabled Patches in 10 seconds.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="101"/>
+        <location filename="../src/bin/dialog/dialog.qml" line="102"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="171"/>
+        <location filename="../src/bin/dialog/dialog.qml" line="177"/>
+        <source>Activating all enabled Patches took %L1 seconds.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bin/dialog/dialog.qml" line="179"/>
         <source>Successfully activated all enabled Patches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/dialog/dialog.qml" line="172"/>
+        <location filename="../src/bin/dialog/dialog.qml" line="180"/>
         <source>Failed to activate all enabled Patches!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -37,7 +42,7 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="283"/>
-        <location filename="../src/bin/dialog/dialog.qml" line="200"/>
+        <location filename="../src/bin/dialog/dialog.qml" line="208"/>
         <location filename="../src/qml/AboutPage.qml" line="68"/>
         <location filename="../src/qml/RestartServicesDialog.qml" line="79"/>
         <source>Patchmanager</source>
