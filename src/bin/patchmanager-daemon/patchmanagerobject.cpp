@@ -1886,9 +1886,11 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
 
     // is this parameter used anywhere??
     if (!params.value(QStringLiteral("dont_notify"), false).toBool()) {
-        bool donotify = getSettings(QStringLiteral("notifyOnSuccess"), true).toBool();
-        if (ok && donotify) {
-            notify(displayName.toString(), apply ? NotifyActionSuccessApply : NotifyActionSuccessUnapply);
+        if (ok) {
+            bool donotify = getSettings(QStringLiteral("notifyOnSuccess"), true).toBool();
+            if (donotify) {
+                notify(displayName.toString(), apply ? NotifyActionSuccessApply : NotifyActionSuccessUnapply);
+            }
         } else {
             notify(displayName.toString(), apply ? NotifyActionFailedApply : NotifyActionFailedUnapply);
         }
