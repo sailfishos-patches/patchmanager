@@ -1,13 +1,14 @@
-# Patchmanager
+# Patchmanager for SailfishOS
 
-Patchmanager is a tool for transparently modifying installed files per patch utility and for managing the special patch files ("Patches") for doing so.
-Since version 3.0 it does not modify original files, but alters their content when they are loaded into RAM to be run.
+Patchmanager is a tool for transparently modifying installed files by the patch utility and for managing the special patch files ("Patches") for doing so.
+Since version 3.0, Patchmanager does not modify original files on mass storage, it merely alters their content when they are loaded into RAM to be executed.
 
 ## Information for users
 
 Note that Patchmanager does not install an application icon on the launcher, but creates a new entry in SailfishOS' Settings app.
 
-To install Patchmanager you should install [Storeman](https://openrepos.net/content/osetr/storeman-installer) to install Patchmanager 3.x from OpenRepos using Storeman.  Alternatively you may download the [recent Patchmanager RPM from OpenRepos](https://openrepos.net/content/patchmanager/patchmanager) and install it manually.
+To install Patchmanager you should use Storeman, which can be installed via the [Storeman-Installer](https://openrepos.net/content/osetr/storeman-installer), but you also may download the [recent Patchmanager RPM from OpenRepos](https://openrepos.net/content/patchmanager/patchmanager) and install it manually.
+The modern alternative to using OpenRepos is the SailfishOS:Chum community repository, which can be easily accessed with the SailfishOS:Chum GUI application or with the ususal command line tools (`pkcon`, `zypper`), after downloading either the SailfishOS:Chum GUI application RPM or the SailfishOS:Chum repo helper RPM from [chumrpm.netlify.app](https://chumrpm.netlify.app/) and installing it.  Both RPMs are also offered at OpenRepos (but the GUI app only for the recent SailfishOS release) and hence are installable by Storeman.
 
 Modern patches for Patchmanager are provided via [the Web Catalog](https://coderus.openrepos.net/pm2/projects/), while older patches were provided as [RPMs at Openrepos](https://openrepos.net/category/patches) and some of them are still maintained.
 Mind that many Patches were first released at OpenRepos but later migrated to the Web Catalog: For these you will find outdated RPMs, hence always search in the Web Catalog first.
