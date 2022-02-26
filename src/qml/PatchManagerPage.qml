@@ -44,10 +44,10 @@ Page {
     id: container
 
     /*
-     * usually config values are set through the patchmanager plugin on the
-     * daemon which stores in /etc/patchmanager2.conf.
-     * this config group is for UI settings which do not affect PM behaviour
-     * and thus need not be managed there.
+     * The usual, system-wide configuration values are set via D-Bus plugin by the
+     * Patchmanager daemon, which stores them in /etc/patchmanager2.conf
+     * This configuration group "uisettings" is for settings which *solely* affect
+     * the PM GUI application and consequently also are per-user settings.
     */
     ConfigurationGroup {
         id: uisettings
