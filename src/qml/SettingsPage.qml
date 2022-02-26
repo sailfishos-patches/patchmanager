@@ -90,7 +90,7 @@ Page {
 
             TextSwitch {
                 text: qsTranslate("", "Show 'Deactivate all Patches' pulley menu entry")
-                description: qsTranslate("", "Enable an additional pulley menu entry at Patchmanager's main page to deactivate all Patches.")
+                description: qsTranslate("", "Enable an additional pulley menu entry for Patchmanager's main page to deactivate all Patches.")
                 checked: uisettings.showUnapplyAll
                 onClicked: uisettings.showUnapplyAll = !uisettings.showUnapplyAll
                 automaticCheck: false
