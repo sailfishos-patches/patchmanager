@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
- * Copyright (c) 2021, Patchmanager for SailfishOS contributors:
+ * Copyright (c) 2021, 2022, Patchmanager for SailfishOS contributors:
  *                  - olf "Olf0" <https://github.com/Olf0>
  *                  - Peter G. "nephros" <sailfish@nephros.org>
  *                  - Vlad G. "b100dian" <https://github.com/b100dian>
@@ -37,9 +37,24 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import Nemo.Configuration 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
 Page {
+
+    /*
+     * The usual, system-wide configuration values are set via D-Bus plugin by the
+     * Patchmanager daemon, which stores them in /etc/patchmanager2.conf
+     * This configuration group "uisettings" is for settings which *solely* affect
+     * the PM GUI application and consequently also are per-user settings.
+    */
+    ConfigurationGroup {
+        id: uisettings
+        path: "/org/SfietKonstantin/patchmanager/uisettings"
+
+        property bool showUnapplyAll: false
+    }
+
     SilicaFlickable {
         id: flick
         anchors.fill: parent
@@ -70,6 +85,14 @@ Page {
                 description: qsTranslate("", "Automatically activate all enabled Patches when SailfishOS starts.")
                 checked: PatchManager.applyOnBoot
                 onClicked: PatchManager.applyOnBoot = !PatchManager.applyOnBoot
+                automaticCheck: false
+            }
+
+            TextSwitch {
+                text: qsTranslate("", "Show 'Deactivate all Patches' pulley menu entry")
+                description: qsTranslate("", "Enable an additional pulley menu entry for Patchmanager's main page to deactivate all Patches.")
+                checked: uisettings.showUnapplyAll
+                onClicked: uisettings.showUnapplyAll = !uisettings.showUnapplyAll
                 automaticCheck: false
             }
 
