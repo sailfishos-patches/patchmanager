@@ -43,10 +43,10 @@ import org.SfietKonstantin.patchmanager 2.0
 Page {
 
     /*
-     * usually config values are set through the patchmanager plugin on the
-     * daemon which stores in /etc/patchmanager2.conf.
-     * this config group is for UI settings which do not affect PM behaviour
-     * and thus need not be managed there.
+     * The usual, system-wide configuration values are set via D-Bus plugin by the
+     * Patchmanager daemon, which stores them in /etc/patchmanager2.conf
+     * This configuration group "uisettings" is for settings which *solely* affect
+     * the PM GUI application and consequently also are per-user settings.
     */
     ConfigurationGroup {
         id: uisettings
@@ -89,8 +89,8 @@ Page {
             }
 
             TextSwitch {
-                text: qsTranslate("", "Show 'Deactivate all Patches' menu")
-                description: qsTranslate("", "Enable a menu option to deactivate all Patches.")
+                text: qsTranslate("", "Show 'Deactivate all Patches' pulley menu entry")
+                description: qsTranslate("", "Enable an additional pulley menu entry at Patchmanager's main page to deactivate all Patches.")
                 checked: uisettings.showUnapplyAll
                 onClicked: uisettings.showUnapplyAll = !uisettings.showUnapplyAll
                 automaticCheck: false
