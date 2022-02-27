@@ -38,13 +38,13 @@ BuildRequires:  qt5-qttools-linguist
 BuildRequires:  pkgconfig(rpm)
 BuildRequires:  pkgconfig(popt)
 
-%package %{name}-testcases
+%package testcases
 Summary: Provides test cases for Patchmanager
 Group: Development
 BuildArch: noarch
 Requires: libsailfishapp-launcher
 
-%description %{name}-testcases
+%description testcases
 The package patchmanager-testcases installs a small test application and a couple of
 Patches which are helpful for testing the internal functioning of Patchmanager, e.g.,
 when changes were made to it.
@@ -205,7 +205,7 @@ dbus-send --system --type=method_call --dest=org.freedesktop.DBus / org.freedesk
 systemctl daemon-reload
 systemctl-user daemon-reload
 
-%files %{name}-testcases
+%files testcases
 %defattr(-,root,root,-)
 %dir %{_libdir}/qt5/qml/org/SfietKonstantin/patchmanagertests
 %{_libdir}/qt5/qml/org/SfietKonstantin/patchmanagertests/*
