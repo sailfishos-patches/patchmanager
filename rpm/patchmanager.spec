@@ -207,11 +207,10 @@ systemctl-user daemon-reload
 
 %files testcases
 %defattr(-,root,root,-)
-%dir %{_libdir}/qt5/qml/org/SfietKonstantin/patchmanagertests
-%{_libdir}/qt5/qml/org/SfietKonstantin/patchmanagertests/*
+%{_libdir}/qt5/qml/org/SfietKonstantin/patchmanagertests
 %{_datadir}/%{name}/patches/pm-test-case-*
 %{_datadir}/applications/patchmanager-testcase.desktop
-%{_datadir}/patchmanager-testcase/*
+%{_datadir}/patchmanager-testcase
 %{_datadir}/patchmanager-test/testfile
 
 %files
