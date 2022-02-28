@@ -39,10 +39,11 @@ BuildRequires:  pkgconfig(rpm)
 BuildRequires:  pkgconfig(popt)
 
 %package testcases
-Summary: Provides test cases for Patchmanager
-Group: Development
-BuildArch: noarch
-Requires: libsailfishapp-launcher
+Summary:    Provides test cases for Patchmanager
+Group:      Development
+BuildArch:  noarch
+Requires:   %{name}
+Requires:   libsailfishapp-launcher
 
 %description testcases
 The package patchmanager-testcases installs a small test application and a couple of
