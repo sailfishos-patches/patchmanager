@@ -12,11 +12,11 @@ Version:    3.2.2
 Release:    1
 Group:      Qt/Qt
 License:    BSD-3-Clause
-URL:        https://github.com/sailfishos-patches/patchmanager
+URL:        https://github.com/sailfishos-patches/%{name}
 Source0:    %{name}-%{version}.tar.bz2
 # Note that it *must* be named exactly so according to
 # https://en.opensuse.org/openSUSE:Packaging_checks#Building_Packages_in_spite_of_errors
-Source99:   patchmanager-rpmlintrc
+Source99:   %{name}-rpmlintrc
 Requires:   unzip
 Requires:   patch
 Requires:   grep
@@ -38,36 +38,33 @@ BuildRequires:  qt5-qttools-linguist
 BuildRequires:  pkgconfig(rpm)
 BuildRequires:  pkgconfig(popt)
 
-%package test-cases
-Summary: test cases for %{name}
+%package testcases
+Summary: Provides test cases for Patchmanager
 Group: Development
 BuildArch: noarch
 Requires: libsailfishapp-launcher
 
-%description test-cases
-%{summary}.
+%description testcases
+The package patchmanager-testcases installs a small test application and a couple of
+Patches which are helpful for testing the internal functioning of Patchmanager, e.g.,
+when changes were made to it.
+Note that utilising these test cases requires a thorough understanding how Patchmanager
+internally works and hence is most likely only useful for developers.
 
-This package installs a small app and a couple of patches which can help with
-testing changes to the Patchmanager utility.  
-
-You probably do not need this unless you want to test development versions of
-Patchmanager.
-
+# This description section includes metadata for SailfishOS:Chum, see
+# https://github.com/sailfishos-chum/main/blob/main/Metadata.md
+# For the package patchmanager-testcases, point directly to the GitHub bugtracker.
 %if "%{?vendor}" == "chum"
-PackageName: Patchmanager Test Cases
+PackageName: Test cases for Patchmanager
 Type: addon
 Categories:
  - Development
 Custom:
-  Repo: https://github.com/sailfishos-patches/patchmanager
-Icon: https://raw.githubusercontent.com/sailfishos-patches/patchmanager/master/src/plugin/icon-m-patchmanager.png
+  Repo: %{url}
 Url:
-  Homepage: https://openrepos.net/content/patchmanager/patchmanager
-  # Help will default to GitHub discussions, which we don't use for this.
-  # Pointing to the README right now, as the Wiki is not user-friendly at this point.
-  Help: https://github.com/sailfishos-patches/patchmanager/discussions/232
-  # For this package, use the Github bugtracker:
-  Bugtracker: https://github.com/sailfishos-patches/patchmanager/issues
+  Homepage: https://build.sailfishos.org/package/show/sailfishos:chum/%{name}
+  Help: %{url}/discussions/232
+  Bugtracker: %{url}/issues
 %endif
 
 
@@ -95,13 +92,14 @@ Categories:
  - Settings
  - Utility
 Custom:
-  Repo: https://github.com/sailfishos-patches/patchmanager
+  Repo: %{url}
 Icon: https://raw.githubusercontent.com/sailfishos-patches/patchmanager/master/src/plugin/icon-m-patchmanager.png
 Url:
-  Homepage: https://openrepos.net/content/patchmanager/patchmanager
-  Help: https://github.com/sailfishos-patches/patchmanager/blob/master/README.md
+  Homepage: https://openrepos.net/content/patchmanager/%{name}
+  Help: %{url}/blob/master/README.md
   Bugtracker: https://forum.sailfishos.org/t/bugs-in-patchmanager-3-1-0/8552
 %endif
+
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -207,12 +205,12 @@ dbus-send --system --type=method_call --dest=org.freedesktop.DBus / org.freedesk
 systemctl daemon-reload
 systemctl-user daemon-reload
 
-%files test-cases
-%dir %{_libdir}/qt5/qml/org/SfietKonstantin/patchmanagertests
-%{_libdir}/qt5/qml/org/SfietKonstantin/patchmanagertests/*
+%files testcases
+%defattr(-,root,root,-)
+%{_libdir}/qt5/qml/org/SfietKonstantin/patchmanagertests
 %{_datadir}/%{name}/patches/pm-test-case-*
 %{_datadir}/applications/patchmanager-testcase.desktop
-%{_datadir}/patchmanager-testcase/*
+%{_datadir}/patchmanager-testcase
 %{_datadir}/patchmanager-test/testfile
 
 %files
