@@ -46,11 +46,12 @@ Requires:   %{name}
 Requires:   libsailfishapp-launcher
 
 %description testcases
-The package patchmanager-testcases installs a small test application and a couple of
-Patches which are helpful for testing the internal functioning of Patchmanager, e.g.,
-when changes were made to it.
-Note that utilising these test cases requires a thorough understanding how Patchmanager
-internally works and hence is most likely only useful for developers.
+The package patchmanager-testcases installs a small test application and a
+couple of Patches which are helpful for testing the internal functioning of
+Patchmanager, e.g., when changes were made to it.
+Note that utilising these test cases requires a thorough understanding how
+Patchmanager internally works and hence is most likely only useful for
+developers.
 
 # This description section includes metadata for SailfishOS:Chum, see
 # https://github.com/sailfishos-chum/main/blob/main/Metadata.md
