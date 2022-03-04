@@ -14,9 +14,9 @@
 # CATALOG_URL SERVER_URL "/" API_PATH
 # MEDIA_URL   SERVER_URL "/" MEDIA_PATH
 
-%define catalog_server https://coderus.openrepos.net
-%define catalog_api_uri pm2/api
-%define catalog_defines SERVER_URL=%{catalog_server} API_PATH=%{catalog_api_uri}
+%global catalog_server https://coderus.openrepos.net
+%global catalog_api_uri pm2/api
+%define catalog_defines -DSERVER_URL=%{catalog_server} -DAPI_PATH=%{catalog_api_uri}
 
 Name:       patchmanager
 
@@ -127,7 +127,7 @@ Url:
 %build
 
 %qtc_qmake5 "PROJECT_PACKAGE_VERSION=%{version}"
-%qtc_make %{?_smp_mflags} %{catalog_defines}
+%qtc_make %{?_smp_mflags} EXTRA_CFLAGS="$CFLAGS %{catalog_defines}"
 
 
 %install
