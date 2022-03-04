@@ -5,6 +5,19 @@
 %{!?qtc_make:%define qtc_make make}
 %{!?qmake5_install:%define qmake5_install make install INSTALL_ROOT=%{buildroot}}
 
+# override defines:
+# defined in src/bin/patchmanager-daemon/patchmanagerobject.h
+#            src/qml/webcatalog.h:
+#
+# SERVER_URL  "https://coderus.openrepos.net"
+# API_PATH    "pm2/api"
+# CATALOG_URL SERVER_URL "/" API_PATH
+# MEDIA_URL   SERVER_URL "/" MEDIA_PATH
+
+%define catalog_server https://coderus.openrepos.net
+%define catalog_api_uri pm2/api
+%define catalog_defines SERVER_URL=%{catalog_server} API_PATH=%{catalog_api_uri}
+
 Name:       patchmanager
 
 Summary:    Allows to manage Patches for SailfishOS
@@ -114,7 +127,7 @@ Url:
 %build
 
 %qtc_qmake5 "PROJECT_PACKAGE_VERSION=%{version}"
-%qtc_make %{?_smp_mflags}
+%qtc_make %{?_smp_mflags} %{catalog_defines}
 
 
 %install
