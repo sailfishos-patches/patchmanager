@@ -93,7 +93,7 @@ Categories:
  - Utility
 Custom:
   Repo: %{url}
-Icon: https://raw.githubusercontent.com/sailfishos-patches/patchmanager/master/src/plugin/icon-m-patchmanager.png
+Icon: %{url}/raw/master/src/share/patchmanager-big.png
 Url:
   Homepage: https://openrepos.net/content/patchmanager/%{name}
   Help: %{url}/blob/master/README.md
