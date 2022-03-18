@@ -28,11 +28,11 @@ case $1 in
   ;;
   -e|--export)
     if [ ! -w $(dirname "$2") ]; then
-      printf "Can not write to given location: %s. Exit.\n" "${2}" >&2
+      printf "Cannot write to given directory: %s\n" "${2}" >&2
       exit 2
     fi
     if [ -e "$2" ]; then
-      printf "File %s exists, will not overwrite. Exit.\n" "${2}" >&2
+      printf "File %s exists, will not overwrite.\n" "${2}" >&2
       exit 2
     else
       write_list $2
