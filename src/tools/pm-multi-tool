@@ -1,0 +1,71 @@
+#!/usr/bin/env sh
+
+PM_CONF=/etc/patchmanager2.conf
+
+function usage() {
+        printf "Patchmanager Multi-Patch operation tool.\n\n"
+        printf "USAGE: %s [-A|-U|-h] [-f FILE]\n\n" $0
+        printf "\t-A | --apply\t\t\tactivate/apply all patches marked active\n"
+        printf "\t-U | --unapply\t\t\tde-activate/unapply all patches marked active\n"
+        printf "\t-f | --file <filename>\t\tread list of patches from file\n"
+        printf "\t-e | --export <filename>\texport list of active patches to file\n"
+        printf "\t-h | --help\t\t\tprint this help\n"
+        printf "\nFILE must be a plain text file containing the (internal) names of patches, separated by white space\n"
+        printf "\n-A and -U options require you to be root to do something, and will simulate the actions otherwise\n"
+}
+function write_list() {
+        awk -F=  '/^applied/ {gsub(/\,/,"") ;  print $2} ' "${PM_CONF}" > "${1}"
+        exit 0
+}
+
+operation="-u"
+case $1 in
+    -A|--apply)
+        operation="--apply"
+    ;;
+    -U|--unapply)
+        operation="--unapply"
+    ;;
+    -e|--export)
+            if [ ! -w $(dirname "$2") ]; then
+            printf "Can not write to given location: %s. Exit.\n" "${2}" >&2
+            exit 2
+        fi
+        if [ -e "$2" ]; then
+            printf "File %s exists, will not overwrite. Exit.\n" "${2}" >&2
+            exit 2
+        else
+            write_list $2;
+            exit 0;
+        fi
+    ;;
+    -h|--help)
+        usage
+        exit 0
+    ;;
+    *) usage; exit 1 ;;
+esac
+
+plist=""
+
+case $2 in
+    -f|--file)
+        plist=$(< $3)
+    ;;
+    *)
+        plist=$(awk -F=  '/^applied/ {gsub(/\,/,"") ;  print $2} ' "${PM_CONF}")
+    ;;
+esac
+
+if [ ! $EUID -eq 0 ]; then
+        printf "Not running as root, printing command list only.\nYou can redirect this into a file and execute that as root.\n\n" >&2
+        printf "#!/usr/bin/env sh\n\n"
+fi
+for p in ${plist}; do
+  if [ $EUID -eq 0 ]; then
+    /usr/sbin/patchmanager $operation $p
+    sleep 0.2
+  else
+      printf "/usr/sbin/patchmanager %s %s; sleep 0.2\n" $operation $p
+  fi
+done
