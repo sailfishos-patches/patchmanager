@@ -60,7 +60,7 @@ case $2 in
 esac
 
 if [ ! $EUID -eq 0 ]; then
-  printf "Not running as root, printing command list only.\nYou can redirect this into a file and execute that as root.\n\n" >&2
+  printf "Not running as root, hnce only listing the commands to execute.\nYou can redirect this into a file and execute it as root.\n\n" >&2
   printf "#!/usr/bin/env sh\n\n"
 fi
 for p in ${plist}; do
