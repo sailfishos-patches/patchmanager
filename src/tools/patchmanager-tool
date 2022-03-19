@@ -5,14 +5,16 @@ PM_CONF=/etc/patchmanager2.conf
 function usage() {
   printf "Patchmanager Multi-Patch operation tool.\n\n"
   printf "USAGE: %s [-A|-U|-h] [-f FILE]\n\n" $0
-  printf "\t-A | --apply\t\t\tactivate/apply all patches marked active\n"
-  printf "\t-U | --unapply\t\t\tde-activate/unapply all patches marked active\n"
+  printf "\t-A | --activate\t\t\tactivate/apply all patches marked active\n"
+  printf "\t-d | --deactivate\t\tde-activate/unapply all patches marked active\n"
+  printf "\t-D | --deactivate-all\t\tde-activate/unapply all patches\n"
   printf "\t-f | --file <filename>\t\tread list of patches from file\n"
   printf "\t-e | --export <filename>\texport list of active patches to file\n"
   printf "\t-h | --help\t\t\tprint this help\n"
   printf "\nFILE must be a plain text file containing the (internal) names of patches, separated by white spaces.\n"
   printf "\nThe -A and -U options must be executed as root to be effective, otherwise they output a script with the commands to execute.\n"
 }
+
 function write_list() {
   awk -F= '/^applied/ {gsub(/\,/,"") ;  print $2} ' "${PM_CONF}" > "${1}"
   exit 0
@@ -20,11 +22,14 @@ function write_list() {
 
 operation=""
 case $1 in
-  -A|--apply)
+  -A|--activate)
     operation="-a"
   ;;
-  -U|--unapply)
+  -d|--deactivate)
     operation="-u"
+  ;;
+  -D|--deactivate-all)
+    operation="--unapply-all"
   ;;
   -e|--export)
     if [ ! -w $(dirname "$2") ]; then
