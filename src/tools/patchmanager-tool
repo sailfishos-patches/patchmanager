@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 PM_CONF=/etc/patchmanager2.conf
+PM_EXE=/usr/sbin/patchmanager
 
 function usage() {
   printf "Patchmanager Multi-Patch operation tool.\n\n"
@@ -71,9 +72,9 @@ if [ ! $uid -eq 0 ]; then
 fi
 for p in ${plist}; do
   if [ $uid -eq 0 ]; then
-    /usr/sbin/patchmanager $operation $p
+    $PM_EXE $operation $p
     sleep 0.2
   else
-    printf "/usr/sbin/patchmanager %s %s; sleep 0.2\n" $operation $p
+    printf "%s %s %s; sleep 0.2\n" $PM_EXE $operation $p
   fi
 done
