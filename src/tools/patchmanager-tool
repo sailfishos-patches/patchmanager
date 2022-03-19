@@ -18,13 +18,13 @@ function write_list() {
   exit 0
 }
 
-operation="-u"
+operation=""
 case $1 in
   -A|--apply)
-    operation="--apply"
+    operation="-a"
   ;;
   -U|--unapply)
-    operation="--unapply"
+    operation="-u"
   ;;
   -e|--export)
     if [ ! -w $(dirname "$2") ]; then
@@ -43,7 +43,7 @@ case $1 in
     usage
     exit 0
   ;;
-  *) 
+  *)
     usage
     exit 1
   ;;
