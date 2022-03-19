@@ -10,7 +10,7 @@ on:
       - patchmanager3
 
 env:
-  RELEASE: latest
+  RELEASE: 4.0.1.45
 
 jobs:
   build:
