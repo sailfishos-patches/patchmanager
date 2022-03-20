@@ -130,7 +130,7 @@ case "$1" in
       printf 'Too many parameters: %s\n' "$*"
       exit 1
     else
-      printf '%s' "$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2-)"
+      printf '%s\n' "$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2-)"
       exit 0
     fi
   ;;
