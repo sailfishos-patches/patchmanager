@@ -122,7 +122,7 @@ case "$1" in
           printf "File %s exists, will not overwrite.\n" "$filepath" >&2
           exit 2
         else
-          grep '^applied=' "$PM_CONF" | cut -s -d "=" -f 2- > "$filepath"
+          grep '^applied=' $PM_CONF | cut -s -d "=" -f 2- > "$filepath"
           exit 0
         fi
       fi
@@ -130,7 +130,7 @@ case "$1" in
       printf 'Too many parameters: %s\n' "$*"
       exit 1
     else
-      printf '%s' "$(grep '^applied=' "$PM_CONF" | cut -s -d "=" -f 2-)"
+      printf '%s' "$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2-)"
       exit 0
     fi
   ;;
