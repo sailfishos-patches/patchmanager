@@ -150,7 +150,7 @@ if [ ! $uid -eq 0 ]; then
   printf "#!/bin/sh\n\n"
 fi
 for p in $patchlist; do
-  if ! printf '%s' "$p" | grep -q '[[:alnum:]_.+-]'; then
+  if printf '%s' "$p" | grep -q '^[[:alnum:]_.+-]'; then
     printf 'Illegal character in Patch name: %s' "$p"
     exit 3
   elif [ $uid -eq 0 ]; then
