@@ -7,20 +7,25 @@ PM_CONF=/etc/patchmanager2.conf
 PM_EXE=/usr/sbin/patchmanager
 
 function usage() {
-  printf "Patchmanager tool is a front-end for the patchmanager executable.\n\n"
-  printf "USAGE: %s [-a|-A|-d|-D|-e|-h] [-f <filepath>]\n\n" $0
+  printf "Patchmanager tool is a front-end for the patchmanager executable.\n"
+  printf "USAGE: %s [-a|-A|-d|-D|-e|-h] [-f <filepath>]\n" $0
   printf "\t-a | --activate\t\t\tActivate / apply Patches from list or file (via -f).\n"
-  printf "\t-A | --activate-all\t\t\tActivate / apply all Patches formerly marked as active.\n"
+  printf "\t-A | --activate-all\t\tActivate / apply all Patches formerly marked as active.\n"
   printf "\t-d | --deactivate\t\tDeactivate / unapply Patches from list or file (via -f).\n"
   printf "\t-D | --deactivate-all\t\tDeactivate / unapply all Patches.\n"
-  printf "\t-f | --file <filepath>\t\Use <filepath> for the list of Patches.\n"
-  printf "\t-e | --export\tExport list of Patches marked as active either to STDout or (via -f) to a file.\n"
+  printf "\t-f | --file <filepath>\t\tUse <filepath> for the list of Patches.\n"
+  printf "\t-e | --export\t\t\tExport list of Patches marked as active either to STDout or (via -f) to a file.\n"
   printf "\t-h | --help\t\t\tPrint this help.\n"
-  printf "\nThe list must be comprised of (internal) names of patches, separated by white-spaces, commas or both.\n"
-  printf "\nFor writing to <filepath>, it must not already exist and must be in a writable directory.\n"
-  printf "\nFor reading from <filepath>, it must be a plain text file containing the (internal) names of patches, separated by white-spaces, commas or both.\n"
-  printf "\nThe -a, -A, -d, -D options must be executed as root to be effective, otherwise they output a script with the commands to execute.\n"
-  printf "\nIn order to use this tool as a drop-in replacement for calling the patchmanager executable, its options -u (synonym to -d), --unapply-all (synonym to -D) and --reset-system are also supported.\n"
+  printf "* The list must be comprised of (internal) names of patches, separated by white-spaces, commas or both.\n"
+  printf "* For writing to <filepath>, it must not already exist and must be in a writable directory.\n"
+  printf "* For reading from <filepath>, it must be a plain text file containing the (internal) names of patches, separated by white-spaces, commas or both.\n"
+  printf "* The -a, -A, -d, -D options must be executed as root to be effective, otherwise they output a script with the commands to execute.\n"
+  printf "* In order to use this tool as a drop-in replacement for calling the patchmanager executable, its options -u (synonym to -d), --unapply-all (synonym to -D) and --reset-system are also supported.\n"
+  printf "Exit codes:\n"
+  printf "\t0: All went fine.\n"
+  printf "\t1: Incorrect parameter(s) provided.\n"
+  printf "\t2: Error when interacting with the filesystem.\n"
+  printf "\t3: Malformed Patch name provided.\n"
 }
 
 patchlist=""
