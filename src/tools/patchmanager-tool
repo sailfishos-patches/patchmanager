@@ -1,47 +1,131 @@
-#!/usr/bin/env sh
+#!/bin/sh
+set -euCf
+export POSIXLY_CORRECT=1
+export LC_ALL=POSIX  # For details see https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_02
 
 PM_CONF=/etc/patchmanager2.conf
 PM_EXE=/usr/sbin/patchmanager
 
 function usage() {
-  printf "Patchmanager Multi-Patch operation tool.\n\n"
-  printf "USAGE: %s [-A|-U|-h] [-f FILE]\n\n" $0
-  printf "\t-A | --activate\t\t\tactivate/apply all patches marked active\n"
-  printf "\t-d | --deactivate\t\tde-activate/unapply all patches marked active\n"
-  printf "\t-D | --deactivate-all\t\tde-activate/unapply all patches\n"
-  printf "\t-f | --file <filename>\t\tread list of patches from file\n"
-  printf "\t-e | --export <filename>\texport list of active patches to file\n"
-  printf "\t-h | --help\t\t\tprint this help\n"
-  printf "\nFILE must be a plain text file containing the (internal) names of patches, separated by white spaces.\n"
-  printf "\nThe -A and -U options must be executed as root to be effective, otherwise they output a script with the commands to execute.\n"
+  printf "Patchmanager tool is a front-end for the patchmanager executable.\n\n"
+  printf "USAGE: %s [-a|-A|-d|-D|-e|-h] [-f <filepath>]\n\n" $0
+  printf "\t-a | --activate\t\t\tActivate / apply Patches from list or file (via -f).\n"
+  printf "\t-A | --activate-all\t\t\tActivate / apply all Patches formerly marked as active.\n"
+  printf "\t-d | --deactivate\t\tDeactivate / unapply Patches from list or file (via -f).\n"
+  printf "\t-D | --deactivate-all\t\tDeactivate / unapply all Patches.\n"
+  printf "\t-f | --file <filepath>\t\Use <filepath> for the list of Patches.\n"
+  printf "\t-e | --export\tExport list of Patches marked as active either to STDout or (via -f) to a file.\n"
+  printf "\t-h | --help\t\t\tPrint this help.\n"
+  printf "\nThe list must be comprised of (internal) names of patches, separated by white-spaces, commas or both.\n"
+  printf "\nFor writing to <filepath>, it must not already exist and must be in a writable directory.\n"
+  printf "\nFor reading from <filepath>, it must be a plain text file containing the (internal) names of patches, separated by white-spaces, commas or both.\n"
+  printf "\nThe -a, -A, -d, -D options must be executed as root to be effective, otherwise they output a script with the commands to execute.\n"
+  printf "\nIn order to use this tool as a drop-in replacement for calling the patchmanager executable, its options -u (synonym to -d), --unapply-all (synonym to -D) and --reset-system are also supported.\n"
 }
 
-function write_list() {
-  awk -F= '/^applied/ {gsub(/\,/,"") ;  print $2} ' "${PM_CONF}" > "${1}"
-  exit 0
-}
-
+patchlist=""
 operation=""
-case $1 in
-  -A|--activate)
+case "$1" in
+  -a|--activate)
     operation="-a"
+    shift
+    if [ "$1" = "-f" ] || [ "$1" = "--file" ]; then
+      shift
+      filepath="$1"
+      shift
+      if [ -n "$*" ]; then
+        printf 'Too many parameters: %s\n' "$*"
+        exit 1
+      else
+        if [ -r "$filepath" ] && [ -s "$filepath" ]; then
+          patchlist="$(tr ',[:blank:]' ' ' < "$filepath" | tr -s ' ')"
+        else
+          printf 'File %s does not exist, is empty or not readable.\n' "$filepath"
+          exit 2
+        fi
+      fi
+    else
+      patchlist="$(printf '%s' "$*" | tr ',[:blank:]' ' ' | tr -s ' ')"
+    fi
   ;;
-  -d|--deactivate)
+  -A|--activate-all)
+    operation="-a"
+    shift
+    if [ -n "$*" ]; then
+      printf 'Too many parameters: %s\n' "$*"
+    else
+      if [ -r $PM_CONF ] && [ -s $PM_CONF ] && [ -f $PM_CONF ]; then
+        patchlist="$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2- | tr ',[:blank:]' ' ' | tr -s ' ')"
+      else
+        printf 'File %s does not exist, is empty, not readable or not a regular file.\n' $PM_CONF
+        exit 2
+      fi
+    fi
+  ;;
+  -d|-u|--deactivate)
     operation="-u"
+    shift
+    if [ "$1" = "-f" ] || [ "$1" = "--file" ]; then
+      shift
+      filepath="$1"
+      shift
+      if [ -n "$*" ]; then
+        printf 'Too many parameters: %s\n' "$*"
+        exit 1
+      else
+        if [ -r "$filepath" ] && [ -s "$filepath" ]; then
+          patchlist="$(tr ',[:blank:]' ' ' < "$filepath" | tr -s ' ')"
+        else
+          printf 'File %s does not exist, is empty or not readable.\n' "$filepath"
+          exit 2
+        fi
+      fi
+    else
+      patchlist="$(printf '%s' "$*" | tr ',[:blank:]' ' ' | tr -s ' ')"
+    fi
   ;;
-  -D|--deactivate-all)
+  -D|--deactivate-all|--unapply-all)
     operation="--unapply-all"
+    shift
+    if [ -n "$*" ]; then
+      printf 'Too many parameters: %s\n' "$*"
+      exit 1
+    fi
+  ;;
+  --reset-system)
+    operation="--reset-system"
+    shift
+    if [ -n "$*" ]; then
+      printf 'Too many parameters: %s\n' "$*"
+      exit 1
+    fi
   ;;
   -e|--export)
-    if [ ! -w $(dirname "$2") ]; then
-      printf "Cannot write to given directory: %s\n" "${2}" >&2
-      exit 2
-    fi
-    if [ -e "$2" ]; then
-      printf "File %s exists, will not overwrite.\n" "${2}" >&2
-      exit 2
+    shift
+    if [ "$1" = "-f" ] || [ "$1" = "--file" ]; then
+      shift
+      filepath="$1"
+      shift
+      if [ -n "$*" ]; then
+        printf 'Too many parameters: %s\n' "$*"
+        exit 1
+      else
+        if [ ! -w $(dirname "$filepath") ]; then
+          printf "Cannot write to given directory: %s\n" "$filepath" >&2
+          exit 2
+        elif [ -e "$filepath" ]; then
+          printf "File %s exists, will not overwrite.\n" "$filepath" >&2
+          exit 2
+        else
+          grep '^applied=' "$PM_CONF" | cut -s -d "=" -f 2- > "$filepath"
+          exit 0
+        fi
+      fi
+    elif [ -n "$*" ]; then
+      printf 'Too many parameters: %s\n' "$*"
+      exit 1
     else
-      write_list $2
+      printf '%s' "$(grep '^applied=' "$PM_CONF" | cut -s -d "=" -f 2-)"
       exit 0
     fi
   ;;
@@ -55,23 +139,16 @@ case $1 in
   ;;
 esac
 
-plist=""
-case $2 in
-  -f|--file)
-    plist=$(< $3)
-  ;;
-  *)
-    plist=$(awk -F= '/^applied/ {gsub(/\,/,"") ;  print $2} ' "${PM_CONF}")
-  ;;
-esac
-
-uid=$(/usr/bin/id -u)
+uid=$(id -u)
 if [ ! $uid -eq 0 ]; then
-  printf "Not running as root, hnce only listing the commands to execute.\nYou can redirect this into a file and execute it as root.\n\n" >&2
-  printf "#!/usr/bin/env sh\n\n"
+  printf "Not running as root, hence only listing the commands to execute.\nYou can redirect this into a file and execute it as root.\n\n" >&2
+  printf "#!/bin/sh\n\n"
 fi
-for p in ${plist}; do
-  if [ $uid -eq 0 ]; then
+for p in $patchlist; do
+  if ! printf '%s' "$p" | grep -q '[[:alnum:]_.+-]'; then
+    printf 'Illegal character in Patch name: %s' "$p"
+    exit 3
+  elif [ $uid -eq 0 ]; then
     $PM_EXE $operation $p
     sleep 0.2
   else
