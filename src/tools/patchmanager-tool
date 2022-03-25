@@ -140,12 +140,12 @@ if [ -z "$patchlist" ] || printf %s "$patchlist" | grep -q '[$&();<>|]'; then
 fi
 
 uid="$(id -u)"
-if [ ! "$uid" = "0" ]; then
+if [ "$uid" != "0" ]; then
   printf "Not running as root, thus only listing the commands to execute.\nYou can redirect STDout into a file and execute it as root.\n\n" >&2
   printf "#!/bin/sh\n\n"
 fi
 for p in $patchlist; do
-  if printf '%s' "$p" | grep -vq '^[[:alpha:]][[:alnum:]_.+-]*[[:alnum:]]$'; then
+  if printf "%s" "$p" | grep -vq '^[[:alpha:]][[:alnum:]_.+-]*[[:alnum:]]$'; then
     printf 'Malformed Patch name "%s" provided!' "$p" >&2
     exit 3
   elif [ $uid -eq 0 ]; then
