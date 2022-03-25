@@ -6,9 +6,19 @@ export LC_ALL=POSIX  # For details see https://pubs.opengroup.org/onlinepubs/969
 PM_CONF=/etc/patchmanager2.conf
 PM_EXE=/usr/sbin/patchmanager
 
+called="$(basename $0)"
+
+function surplus() {
+  if [ -n "$*" ]; then
+    printf "Too many parameters: %s\n' "$*" >&2
+    printf "Call "%s -h" for a help page.\n" "$called" >&2
+    exit 1
+  fi
+}
+
 function usage() {
   printf "Patchmanager tool is a front-end for the patchmanager executable.\n"
-  printf "USAGE: %s [-a|-A|-d|-D|-e|-h] [<list-of-patches>|-f <filepath>]\n" $0
+  printf "USAGE: %s [-a|-A|-d|-D|-e|-h] [<patchlist>|-f <filepath>]\n" "$called"
   printf "\t-a | --activate\t\t\tActivate / apply Patches from list or file (via -f).\n"
   printf "\t-A | --activate-all\t\tActivate / apply all Patches formerly marked as active.\n"
   printf "\t-d | --deactivate\t\tDeactivate / unapply Patches from list or file (via -f).\n"
@@ -16,7 +26,7 @@ function usage() {
   printf "\t-f | --file <filepath>\t\tUse <filepath> for the list of Patches.\n"
   printf "\t-e | --export\t\t\tExport list of Patches marked as active either to STDout or (via -f) to a file.\n"
   printf "\t-h | --help\t\t\tPrint this help.\n"
-  printf "* The <list-of-patches> must be comprised of (internal) names of Patches, separated by white-spaces, commas or both.\n"
+  printf "* The <patchlist> must be comprised of (internal) names of Patches, separated by white-spaces, commas or both.\n"
   printf "* For writing to <filepath>, it must not already exist and must be in a writable directory.\n"
   printf "* For reading from <filepath>, it must be a plain text file containing the (internal) names of Patches, separated by white-spaces, commas or both.\n"
   printf "* The -a, -A, -d, -D options must be executed as root to be effective, otherwise they output a script with the commands to execute.\n"
@@ -38,16 +48,12 @@ case "$1" in
       shift
       filepath="$1"
       shift
-      if [ -n "$*" ]; then
-        printf 'Too many parameters: %s\n' "$*"
-        exit 1
+      surplus "$*"
+      if [ -r "$filepath" ] && [ -s "$filepath" ]; then
+        patchlist="$(tr ',[:blank:]' ' ' < "$filepath" | tr -s ' ')"
       else
-        if [ -r "$filepath" ] && [ -s "$filepath" ]; then
-          patchlist="$(tr ',[:blank:]' ' ' < "$filepath" | tr -s ' ')"
-        else
-          printf 'File %s does not exist, is empty or not readable.\n' "$filepath"
-          exit 2
-        fi
+        printf 'File "%s" does not exist, is empty or not readable!\n' "$filepath" >&2
+        exit 2
       fi
     else
       patchlist="$(printf '%s' "$*" | tr ',[:blank:]' ' ' | tr -s ' ')"
@@ -56,13 +62,12 @@ case "$1" in
   -A|--activate-all)
     operation="-a"
     shift
-    if [ -n "$*" ]; then
-      printf 'Too many parameters: %s\n' "$*"
+    surplus "$*"
     else
       if [ -r $PM_CONF ] && [ -s $PM_CONF ] && [ -f $PM_CONF ]; then
         patchlist="$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2- | tr ',[:blank:]' ' ' | tr -s ' ')"
       else
-        printf 'File %s does not exist, is empty, not readable or not a regular file.\n' $PM_CONF
+        printf 'File "%s" does not exist, is empty, not readable or not a regular file!\n' $PM_CONF >&2
         exit 2
       fi
     fi
@@ -70,20 +75,17 @@ case "$1" in
   -d|-u|--deactivate)
     operation="-u"
     shift
+    shift
     if [ "$1" = "-f" ] || [ "$1" = "--file" ]; then
       shift
       filepath="$1"
       shift
-      if [ -n "$*" ]; then
-        printf 'Too many parameters: %s\n' "$*"
-        exit 1
+      surplus "$*"
+      if [ -r "$filepath" ] && [ -s "$filepath" ]; then
+        patchlist="$(tr ',[:blank:]' ' ' < "$filepath" | tr -s ' ')"
       else
-        if [ -r "$filepath" ] && [ -s "$filepath" ]; then
-          patchlist="$(tr ',[:blank:]' ' ' < "$filepath" | tr -s ' ')"
-        else
-          printf 'File %s does not exist, is empty or not readable.\n' "$filepath"
-          exit 2
-        fi
+        printf 'File "%s" does not exist, is empty or not readable!\n' "$filepath" >&2
+        exit 2
       fi
     else
       patchlist="$(printf '%s' "$*" | tr ',[:blank:]' ' ' | tr -s ' ')"
@@ -92,18 +94,12 @@ case "$1" in
   -D|--deactivate-all|--unapply-all)
     operation="--unapply-all"
     shift
-    if [ -n "$*" ]; then
-      printf 'Too many parameters: %s\n' "$*"
-      exit 1
-    fi
+    surplus "$*"
   ;;
   --reset-system)
     operation="--reset-system"
     shift
-    if [ -n "$*" ]; then
-      printf 'Too many parameters: %s\n' "$*"
-      exit 1
-    fi
+    surplus "$*"
   ;;
   -e|--export)
     shift
@@ -111,47 +107,46 @@ case "$1" in
       shift
       filepath="$1"
       shift
-      if [ -n "$*" ]; then
-        printf 'Too many parameters: %s\n' "$*"
-        exit 1
+      surplus "$*"
+      if [ ! -w $(dirname "$filepath") ]; then
+        printf "Cannot write to given directory: %s\n" "$filepath" >&2
+        exit 2
+      elif [ -e "$filepath" ]; then
+        printf "File %s exists, will not overwrite.\n" "$filepath" >&2
+        exit 2
       else
-        if [ ! -w $(dirname "$filepath") ]; then
-          printf "Cannot write to given directory: %s\n" "$filepath" >&2
-          exit 2
-        elif [ -e "$filepath" ]; then
-          printf "File %s exists, will not overwrite.\n" "$filepath" >&2
-          exit 2
-        else
-          grep '^applied=' $PM_CONF | cut -s -d "=" -f 2- > "$filepath"
-          exit 0
-        fi
+        grep '^applied=' $PM_CONF | cut -s -d "=" -f 2- > "$filepath"
+        exit 0
       fi
-    elif [ -n "$*" ]; then
-      printf 'Too many parameters: %s\n' "$*"
-      exit 1
-    else
-      printf '%s\n' "$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2-)"
-      exit 0
-    fi
+    surplus "$*"
+    printf "%s\n" "$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2-)"
+    exit 0
   ;;
   -h|--help)
     usage
     exit 0
   ;;
   *)
-    usage
+    printf "Missing or wrong parameters!\n" >&2
+    printf 'Call "%s -h" for a help page.\n' "$called" >&2
     exit 1
   ;;
 esac
 
-uid=$(id -u)
-if [ ! $uid -eq 0 ]; then
-  printf "Not running as root, hence only listing the commands to execute.\nYou can redirect this into a file and execute it as root.\n\n" >&2
+if [ -z "$patchlist" ] || printf %s "$patchlist" | grep -q '[$&();<>|]'; then
+  printf "Patchlist is empty or contains illegal characters!\n" >&2
+  printf 'Call "%s -h" for a help page.\n' "$called" >&2
+  exit 1
+fi
+
+uid="$(id -u)"
+if [ ! "$uid" = "0" ]; then
+  printf "Not running as root, thus only listing the commands to execute.\nYou can redirect STDout into a file and execute it as root.\n\n" >&2
   printf "#!/bin/sh\n\n"
 fi
 for p in $patchlist; do
-  if printf '%s' "$p" | grep -q '^[[:alnum:]_.+-]'; then
-    printf 'Illegal character in Patch name: %s' "$p"
+  if printf '%s' "$p" | grep -vq '^[[:alpha:]][[:alnum:]_.+-]*[[:alnum:]]$'; then
+    printf 'Malformed Patch name "%s" provided!' "$p" >&2
     exit 3
   elif [ $uid -eq 0 ]; then
     $PM_EXE $operation $p
