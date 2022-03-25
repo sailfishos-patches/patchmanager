@@ -148,7 +148,7 @@ for p in $patchlist; do
   if printf "%s" "$p" | grep -vq '^[[:alpha:]][[:alnum:]_.+-]*[[:alnum:]]$'; then
     printf 'Malformed Patch name "%s" provided!' "$p" >&2
     exit 3
-  elif [ $uid -eq 0 ]; then
+  elif [ "$uid" = "0" ]; then
     $PM_EXE $operation $p
     sleep 0.2
   else
