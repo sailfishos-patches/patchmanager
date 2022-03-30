@@ -45,17 +45,18 @@ BuildArch:  noarch
 Requires:   %{name}
 Requires:   libsailfishapp-launcher
 
+# This description section includes metadata for SailfishOS:Chum, see
+# https://github.com/sailfishos-chum/main/blob/main/Metadata.md
+# For the patchmanager-testcases, point directly to the GitHub bugtracker.
 %description testcases
 The package patchmanager-testcases installs a small test application and a
 couple of Patches which are helpful for testing the internal functioning of
 Patchmanager, e.g., when changes were made to it.
+
 Note that utilising these test cases requires a thorough understanding how
 Patchmanager internally works and hence is most likely only useful for
 developers.
 
-# This description section includes metadata for SailfishOS:Chum, see
-# https://github.com/sailfishos-chum/main/blob/main/Metadata.md
-# For the package patchmanager-testcases, point directly to the GitHub bugtracker.
 %if "%{?vendor}" == "chum"
 PackageName: Test cases for Patchmanager
 Type: addon
@@ -70,6 +71,13 @@ Url:
 %endif
 
 
+# This description section includes metadata for SailfishOS:Chum, see
+# https://github.com/sailfishos-chum/main/blob/main/Metadata.md
+# - The "Help:" field here would default to GitHub discussions, which is used
+#   for internal discussions among the Patchmanager maintainers, hence pointing
+#   to the README, because the Wiki is not suitable for end-users.
+# - The "Bugtracker:" field would default to GitHub issues; prefer to guide
+#   end-users to the corresponding SFOS Forum thread, first.
 %description
 Patchmanager is a tool for transparently modifying installed files by the patch
 utility and for managing the special patch files ("Patches") for doing so.
@@ -79,13 +87,6 @@ it merely alters their content when they are loaded into RAM to be executed.
 Note that Patchmanager does not install an application icon on the launcher,
 but creates a new entry in SailfishOS' Settings app.
 
-# This description section includes metadata for SailfishOS:Chum, see
-# https://github.com/sailfishos-chum/main/blob/main/Metadata.md
-# - The "Help:" field here would default to GitHub discussions, which is used
-#   for internal discussions among the Patchmanager maintainers, hence pointing
-#   to the README, because the Wiki is not suitable for end-users.
-# - The "Bugtracker:" field would default to GitHub issues; prefer to guide
-#   end-users to the corresponding SFOS Forum thread, first.
 %if "%{?vendor}" == "chum"
 PackageName: Patchmanager for SailfishOS
 Type: desktop-application
