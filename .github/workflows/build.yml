@@ -27,7 +27,7 @@ jobs:
             mkdir -p build ;
             cd build ;
             cp -r /share/* . ;
-            mb2 -t SailfishOS-$RELEASE-armv7hl build ;
+            mb2 -t SailfishOS-$RELEASE-armv7hl build --enable-debug ;
             sudo cp -r RPMS/*.rpm /share/output"
 
     - name: Build aarch64
@@ -35,7 +35,7 @@ jobs:
             mkdir -p build ;
             cd build ;
             cp -r /share/* . ;
-            mb2 -t SailfishOS-$RELEASE-aarch64 build ;
+            mb2 -t SailfishOS-$RELEASE-aarch64 build --enable-debug ;
             sudo cp -r RPMS/*.rpm /share/output"
 
     - name: Build i486
@@ -43,7 +43,7 @@ jobs:
             mkdir -p build ;
             cd build ;
             cp -r /share/* . ;
-            mb2 -t SailfishOS-$RELEASE-i486 build ;
+            mb2 -t SailfishOS-$RELEASE-i486 build --enable-debug ;
             sudo cp -r RPMS/*.rpm /share/output"
 
     - name: Upload build result
