@@ -2,7 +2,7 @@
 name: Help form
 about: Questions about Patchmanager
 title: "[Help] "
-labels: 'question'
+labels: '#question'
 assignees: ''
 
 ---
