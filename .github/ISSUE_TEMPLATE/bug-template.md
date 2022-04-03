@@ -10,6 +10,7 @@ assignees: ''
 **SailfishOS VERSION** (Settings → About product → Build): 
 <br />**HARDWARE** (Settings → About product → Manufacturer & Product name): 
 <br />**PATCHMANAGER VERSION** (Settings → Patchmanager → [Top pulley] About): 
+<br />
 
 #### BUG DESCRIPTION
 
