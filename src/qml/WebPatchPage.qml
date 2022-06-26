@@ -409,7 +409,8 @@ Page {
 
                         Label {
                             width: parent.width
-                            text: qsTranslate("", "Compatible: %1").arg(modelData.compatible.join(", "))
+                            text: Theme.highlightText(qsTranslate("", "Compatible: %1").arg(modelData.compatible.join(", ")),PatchManager.osVersion, Theme.primaryColor)
+                            textFormat: Text.StyledText
                             font.pixelSize: Theme.fontSizeExtraSmall
                             color: fileDelegate.isCompatible ? Theme.highlightColor : Qt.tint(Theme.highlightColor, "red")
                             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
