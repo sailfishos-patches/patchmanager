@@ -332,12 +332,15 @@ Page {
                     contentHeight: filesContent.height
                     property bool isInstalled: !!container.versions && container.versions[modelData.project] == modelData.version
                     property bool isCompatible: modelData.compatible.indexOf(PatchManager.osVersion) >= 0
+                    property bool isReinstallable: isInstalled && isCompatible
 
                     onClicked: {
                         if (!PatchManager.developerMode && !isCompatible) {
                             errorMessageComponent.createObject(fileDelegate, {text: qsTranslate("", "This Patch is incompatible with the installed SailfishOS version.")})
                         } else if (!fileDelegate.isInstalled) {
                             remorseAction(qsTranslate("", "Install Patch %1").arg(patchData.display_name), installPatch)
+                        } else if (fileDelegate.isReinstallable) {
+                            remorseAction(qsTranslate("", "Re-Installing Patch %1").arg(patchData.display_name), installPatch)
                         }
                     }
 
@@ -390,7 +393,7 @@ Page {
                                     verticalCenter: parent.verticalCenter
                                 }
                                 color: Theme.highlightColor
-                                text: fileDelegate.isInstalled ? qsTranslate("", "[installed]") : qsTranslate("", "[click to install]")
+                                text: fileDelegate.isInstalled ? ( fileDelegate.isReinstallable ? qsTranslate("", "[click to re-install]") : qsTranslate("", "[installed]") ) : qsTranslate("", "[click to install]")
                             }
 
                             Label {
