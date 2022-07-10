@@ -340,7 +340,7 @@ Page {
                         } else if (!fileDelegate.isInstalled) {
                             remorseAction(qsTranslate("", "Install Patch %1").arg(patchData.display_name), installPatch)
                         } else if (fileDelegate.isReinstallable) {
-                            remorseAction(qsTranslate("", "Re-Installing Patch %1").arg(patchData.display_name), installPatch)
+                            remorseAction(qsTranslate("", "Re-Install Patch %1").arg(patchData.display_name), installPatch)
                         }
                     }
 
