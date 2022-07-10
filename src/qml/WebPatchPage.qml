@@ -393,7 +393,12 @@ Page {
                                     verticalCenter: parent.verticalCenter
                                 }
                                 color: Theme.highlightColor
-                                text: fileDelegate.isInstalled ? ( fileDelegate.isReinstallable ? qsTranslate("", "[click to re-install]") : qsTranslate("", "[installed]") ) : qsTranslate("", "[click to install]")
+                                text: fileDelegate.isInstalled
+                                    ? ( fileDelegate.isReinstallable
+                                        ? qsTranslate("", "[click to re-install]")
+                                        : qsTranslate("", "[installed]")
+                                      )
+                                    : qsTranslate("", "[click to install]")
                             }
 
                             Label {
