@@ -5,15 +5,12 @@
 %{!?qtc_make:%define qtc_make make}
 %{!?qmake5_install:%define qmake5_install make install INSTALL_ROOT=%{buildroot}}
 
-# override defines:
-# defined in src/bin/patchmanager-daemon/patchmanagerobject.h
-#            src/qml/webcatalog.h:
-#
+# Override these defines in both (!):
+# - src/bin/patchmanager-daemon/patchmanagerobject.h
+# - src/qml/webcatalog.h
 # SERVER_URL  "https://coderus.openrepos.net"
 # API_PATH    "pm2/api"
 # CATALOG_URL SERVER_URL "/" API_PATH
-# MEDIA_URL   SERVER_URL "/" MEDIA_PATH
-
 %global catalog_server https://coderus.openrepos.net
 %global catalog_api_uri pm2/api
 %define catalog_defines -DSERVER_URL=%{catalog_server} -DAPI_PATH=%{catalog_api_uri}
