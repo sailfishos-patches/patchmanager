@@ -10,8 +10,8 @@ called="$(basename $0)"
 
 function surplus() {
   if [ -n "$*" ]; then
-    printf "Too many parameters: %s\n' "$*" >&2
-    printf "Call "%s -h" for a help page.\n" "$called" >&2
+    printf 'Too many parameters: %s\n' "$*" >&2
+    printf 'Call "%s -h" for a help page.\n' "$called" >&2
     exit 1
   fi
 }
@@ -109,17 +109,17 @@ case "$1" in
       shift
       surplus "$*"
       if [ ! -w $(dirname "$filepath") ]; then
-        printf "Cannot write to given directory: %s\n" "$filepath" >&2
+        printf 'Cannot write to given directory: %s\n' "$filepath" >&2
         exit 2
       elif [ -e "$filepath" ]; then
-        printf "File %s exists, will not overwrite.\n" "$filepath" >&2
+        printf 'File %s exists, will not overwrite.\n' "$filepath" >&2
         exit 2
       else
         grep '^applied=' $PM_CONF | cut -s -d "=" -f 2- > "$filepath"
         exit 0
       fi
     surplus "$*"
-    printf "%s\n" "$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2-)"
+    printf '%s\n' "$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2-)"
     exit 0
   ;;
   -h|--help)
@@ -127,31 +127,31 @@ case "$1" in
     exit 0
   ;;
   *)
-    printf "Missing or wrong parameters!\n" >&2
+    printf 'Missing or wrong parameters!\n' >&2
     printf 'Call "%s -h" for a help page.\n' "$called" >&2
     exit 1
   ;;
 esac
 
 if [ -z "$patchlist" ] || printf %s "$patchlist" | grep -q '[$&();<>|]'; then
-  printf "Patchlist is empty or contains illegal characters!\n" >&2
+  printf 'Patchlist is empty or contains illegal characters!\n' >&2
   printf 'Call "%s -h" for a help page.\n' "$called" >&2
   exit 1
 fi
 
 uid="$(id -u)"
 if [ "$uid" != "0" ]; then
-  printf "Not running as root, thus only listing the commands to execute.\nYou can redirect STDout into a file and execute it as root.\n\n" >&2
-  printf "#!/bin/sh\n\n"
+  printf 'Not running as root, thus only listing the commands to execute.\nYou can redirect STDout into a file and execute it as root.\n\n' >&2
+  printf '#!/bin/sh\n\n'
 fi
 for p in $patchlist; do
-  if printf "%s" "$p" | grep -vq '^[[:alpha:]][[:alnum:]_.+-]*[[:alnum:]]$'; then
+  if printf '%s' "$p" | grep -vq '^[[:alpha:]][[:alnum:]_.+-]*[[:alnum:]]$'; then
     printf 'Malformed Patch name "%s" provided!' "$p" >&2
     exit 3
   elif [ "$uid" = "0" ]; then
     $PM_EXE $operation $p
     sleep 0.2
   else
-    printf "%s %s %s; sleep 0.2\n" $PM_EXE $operation $p
+    printf '%s %s %s; sleep 0.2\n' $PM_EXE $operation $p
   fi
 done
