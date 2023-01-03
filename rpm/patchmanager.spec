@@ -13,8 +13,8 @@ Release:    1
 Group:      Qt/Qt
 License:    BSD-3-Clause
 URL:        https://github.com/sailfishos-patches/%{name}
-Source0:    %{name}-%{version}.tar.bz2
-# Note that it *must* be named exactly so according to
+Source0:    %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+# Note that the rpmlintrc file MUST be named exactly so according to
 # https://en.opensuse.org/openSUSE:Packaging_checks#Building_Packages_in_spite_of_errors
 Source99:   %{name}-rpmlintrc
 Requires:   unzip
@@ -101,6 +101,7 @@ Url:
   Homepage: https://openrepos.net/content/patchmanager/%{name}
   Help: %{url}/blob/master/README.md
   Bugtracker: https://forum.sailfishos.org/t/bugs-in-patchmanager-3-1-0/8552
+  Donation: https://openrepos.net/donate
 %endif
 
 
