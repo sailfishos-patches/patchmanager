@@ -8,13 +8,13 @@
 Name:       patchmanager
 
 Summary:    Allows to manage Patches for SailfishOS
-Version:    3.2.2
+Version:    3.2.4
 Release:    1
 Group:      Qt/Qt
 License:    BSD-3-Clause
 URL:        https://github.com/sailfishos-patches/%{name}
-Source0:    %{name}-%{version}.tar.bz2
-# Note that it *must* be named exactly so according to
+Source0:    %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+# Note that the rpmlintrc file MUST be named exactly so according to
 # https://en.opensuse.org/openSUSE:Packaging_checks#Building_Packages_in_spite_of_errors
 Source99:   %{name}-rpmlintrc
 Requires:   unzip
@@ -101,6 +101,7 @@ Url:
   Homepage: https://openrepos.net/content/patchmanager/%{name}
   Help: %{url}/blob/master/README.md
   Bugtracker: https://forum.sailfishos.org/t/bugs-in-patchmanager-3-1-0/8552
+  Donation: https://openrepos.net/donate
 %endif
 
 
@@ -130,83 +131,98 @@ mkdir -p %{buildroot}%{_datadir}/%{name}/patches
 
 %pre
 export NO_PM_PRELOAD=1
-case "$*" in
-1)
-echo "Installing %{name}: pre section"
+case "$1" in
+1)  # Installation
+  echo "Installing %{name}: %%pre section"
 ;;
-2)
-echo "Updating %{name}: pre section"
-# Unapply all patches if Patchmanager 2.x is installed
-if [ ! -d /var/lib/patchmanager/ausmt/patches/ ]
-then
-    exit 0
-else
+[2-9])  # Update
+  echo "Updating %{name}: %%pre section"
+  # Unapply all patches if Patchmanager 2.x is installed
+  if [ -d /var/lib/patchmanager/ausmt/patches/ ]
+  then
     /usr/sbin/patchmanager --unapply-all || true
-fi
-if [ -n "$(ls -A /var/lib/patchmanager/ausmt/patches/)" ]
-then
-    echo "Unapply all patches before updating %{name}!"
-    exit 1
-fi
+    if [ -n "$(ls -A /var/lib/patchmanager/ausmt/patches/)" ]
+    then
+      echo "Unapply all patches before updating %{name}!"
+      exit 1  # An exit N with N ≠ 0 in a %%pre scriptlet might not constitute an
+              # appropriate way to terminate an update (here: from PM2 to PM3), see e.g.,
+              # https://docs.fedoraproject.org/en-US/packaging-guidelines/Scriptlets/#_syntax
+              # OTOH, how else might one achieve that?!?
+    fi
+  fi
 ;;
-*) echo "Case $* is not handled in pre section of %{name}!"
+*)
+  echo "Case $1 is not handled in %%pre section of %{name}!"
+;;
 esac
+exit 0
 
 %post
 export NO_PM_PRELOAD=1
-case "$*" in
-1)
-echo "Installing %{name}: post section"
+case "$1" in
+1)  # Installation
+  echo "Installing %{name}: %%post section"
 ;;
-2)
-echo "Updating %{name}: post section"
+[2-9])  # Update
+  echo "Updating %{name}: %%post section"
 ;;
-*) echo "Case $* is not handled in post section of %{name}!"
+*)
+  echo "Case $1 is not handled in %%post section of %{name}!"
+;;
 esac
 sed -i '/libpreload%{name}/ d' /etc/ld.so.preload
 echo '%{_libdir}/libpreload%{name}.so' >> /etc/ld.so.preload
 /sbin/ldconfig
-if ! grep -qsF 'include whitelist-common-%{name}.local' /etc/firejail/whitelist-common.local; then
-   echo 'include whitelist-common-%{name}.local' >> /etc/firejail/whitelist-common.local
+if ! grep -qsF 'include whitelist-common-%{name}.local' /etc/firejail/whitelist-common.local
+then
+  echo 'include whitelist-common-%{name}.local' >> /etc/firejail/whitelist-common.local
 fi
 dbus-send --system --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 systemctl daemon-reload
 systemctl-user daemon-reload
 systemctl restart dbus-org.SfietKonstantin.patchmanager.service
 systemctl restart checkForUpdates-org.SfietKonstantin.patchmanager.timer
+exit 0
 
 %preun
 export NO_PM_PRELOAD=1
-case "$*" in
-0)
-echo "Uninstalling %{name}: preun section"
-systemctl stop dbus-org.SfietKonstantin.patchmanager.service
+case "$1" in
+0)  # Removal ("uninstallation")
+  echo "Removing %{name}: %%preun section"
+  systemctl stop checkForUpdates-org.SfietKonstantin.patchmanager.timer
+  systemctl stop dbus-org.SfietKonstantin.patchmanager.service
 ;;
-1)
-echo "Updating %{name}: preun section"
+1)  # Update
+  echo "Updating %{name}: %%preun section"
 ;;
-*) echo "Case $* is not handled in preun section of %{name}!"
+*)
+  echo "Case $1 is not handled in %%preun section of %{name}!"
+;;
 esac
+exit 0
 
 %postun
 export NO_PM_PRELOAD=1
-case "$*" in
-0)
-echo "Uninstalling %{name}: postun section"
-sed -i '/whitelist-common-%{name}.local/ d' /etc/firejail/whitelist-common.local
-sed -i '/libpreload%{name}/ d' /etc/ld.so.preload
-/sbin/ldconfig
-rm -rf /tmp/patchmanager
-rm -f /tmp/patchmanager-socket
+case "$1" in
+0)  # Removal ("uninstallation")
+  echo "Removing %{name}: %%postun section"
+  sed -i '/whitelist-common-%{name}.local/ d' /etc/firejail/whitelist-common.local
+  sed -i '/libpreload%{name}/ d' /etc/ld.so.preload
+  /sbin/ldconfig
+  rm -rf /tmp/patchmanager
+  rm -f /tmp/patchmanager-socket
 ;;
-1)
-echo "Updating %{name}: postun section"
+1)  # Update
+  echo "Updating %{name}: %%postun section"
 ;;
-*) echo "Case $* is not handled in postun section of %{name}!"
+*)
+  echo "Case $1 is not handled in %%postun section of %{name}!"
+;;
 esac
 dbus-send --system --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 systemctl daemon-reload
 systemctl-user daemon-reload
+exit 0
 
 %files testcases
 %defattr(-,root,root,-)
