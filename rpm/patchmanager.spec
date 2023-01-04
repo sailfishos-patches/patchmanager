@@ -131,33 +131,32 @@ mkdir -p %{buildroot}%{_datadir}/%{name}/patches
 
 %pre
 export NO_PM_PRELOAD=1
-case "$*" in
+case "$1" in
 1)  # Installation
   echo "Installing %{name}: pre section"
 ;;
 2)  # Update
   echo "Updating %{name}: pre section"
   # Unapply all patches if Patchmanager 2.x is installed
-  if [ ! -d /var/lib/patchmanager/ausmt/patches/ ]
+  if [ -d /var/lib/patchmanager/ausmt/patches/ ]
   then
-    exit 0
-  else
     /usr/sbin/patchmanager --unapply-all || true
-  fi
-  if [ -n "$(ls -A /var/lib/patchmanager/ausmt/patches/)" ]
-  then
-    echo "Unapply all patches before updating %{name}!"
-    exit 1
+    if [ -n "$(ls -A /var/lib/patchmanager/ausmt/patches/)" ]
+    then
+      echo "Unapply all patches before updating %{name}!"
+      exit 1
+    fi
   fi
 ;;
 *)
-  echo "Case $* is not handled in pre section of %{name}!"
+  echo "Case $1 is not handled in pre section of %{name}!"
 ;;
 esac
+exit 0
 
 %post
 export NO_PM_PRELOAD=1
-case "$*" in
+case "$1" in
 1)  # Installation
   echo "Installing %{name}: post section"
 ;;
@@ -165,7 +164,7 @@ case "$*" in
   echo "Updating %{name}: post section"
 ;;
 *)
-  echo "Case $* is not handled in post section of %{name}!"
+  echo "Case $1 is not handled in post section of %{name}!"
 ;;
 esac
 sed -i '/libpreload%{name}/ d' /etc/ld.so.preload
@@ -179,10 +178,11 @@ systemctl daemon-reload
 systemctl-user daemon-reload
 systemctl restart dbus-org.SfietKonstantin.patchmanager.service
 systemctl restart checkForUpdates-org.SfietKonstantin.patchmanager.timer
+exit 0
 
 %preun
 export NO_PM_PRELOAD=1
-case "$*" in
+case "$1" in
 0)  # Removal ("uninstallation")
   echo "Removing %{name}: preun section"
   systemctl stop dbus-org.SfietKonstantin.patchmanager.service
@@ -191,13 +191,14 @@ case "$*" in
   echo "Updating %{name}: preun section"
 ;;
 *)
-  echo "Case $* is not handled in preun section of %{name}!"
+  echo "Case $1 is not handled in preun section of %{name}!"
 ;;
 esac
+exit 0
 
 %postun
 export NO_PM_PRELOAD=1
-case "$*" in
+case "$1" in
 0)  # Removal ("uninstallation")
   echo "Removing %{name}: postun section"
   sed -i '/whitelist-common-%{name}.local/ d' /etc/firejail/whitelist-common.local
@@ -210,12 +211,13 @@ case "$*" in
   echo "Updating %{name}: postun section"
 ;;
 *)
-  echo "Case $* is not handled in postun section of %{name}!"
+  echo "Case $1 is not handled in postun section of %{name}!"
 ;;
 esac
 dbus-send --system --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 systemctl daemon-reload
 systemctl-user daemon-reload
+exit 0
 
 %files testcases
 %defattr(-,root,root,-)
