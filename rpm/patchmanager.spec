@@ -144,7 +144,10 @@ case "$1" in
     if [ -n "$(ls -A /var/lib/patchmanager/ausmt/patches/)" ]
     then
       echo "Unapply all patches before updating %{name}!"
-      exit 1
+      exit 1  # An exit N with N ≠ 0 in a %%pre scriptlet might not constitute an
+              # appropriate way to terminate an update (here: from PM2 to PM3), see e.g.,
+              # https://docs.fedoraproject.org/en-US/packaging-guidelines/Scriptlets/#_syntax
+              # OTOH, how else might one achieve that?!?
     fi
   fi
 ;;
