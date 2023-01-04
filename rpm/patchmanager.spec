@@ -133,10 +133,10 @@ mkdir -p %{buildroot}%{_datadir}/%{name}/patches
 export NO_PM_PRELOAD=1
 case "$1" in
 1)  # Installation
-  echo "Installing %{name}: pre section"
+  echo "Installing %{name}: %%pre section"
 ;;
 [2-9])  # Update
-  echo "Updating %{name}: pre section"
+  echo "Updating %{name}: %%pre section"
   # Unapply all patches if Patchmanager 2.x is installed
   if [ -d /var/lib/patchmanager/ausmt/patches/ ]
   then
@@ -149,7 +149,7 @@ case "$1" in
   fi
 ;;
 *)
-  echo "Case $1 is not handled in pre section of %{name}!"
+  echo "Case $1 is not handled in %%pre section of %{name}!"
 ;;
 esac
 exit 0
@@ -158,13 +158,13 @@ exit 0
 export NO_PM_PRELOAD=1
 case "$1" in
 1)  # Installation
-  echo "Installing %{name}: post section"
+  echo "Installing %{name}: %%post section"
 ;;
 [2-9])  # Update
-  echo "Updating %{name}: post section"
+  echo "Updating %{name}: %%post section"
 ;;
 *)
-  echo "Case $1 is not handled in post section of %{name}!"
+  echo "Case $1 is not handled in %%post section of %{name}!"
 ;;
 esac
 sed -i '/libpreload%{name}/ d' /etc/ld.so.preload
@@ -185,14 +185,14 @@ exit 0
 export NO_PM_PRELOAD=1
 case "$1" in
 0)  # Removal ("uninstallation")
-  echo "Removing %{name}: preun section"
+  echo "Removing %{name}: %%preun section"
   systemctl stop dbus-org.SfietKonstantin.patchmanager.service
 ;;
 1)  # Update
-  echo "Updating %{name}: preun section"
+  echo "Updating %{name}: %%preun section"
 ;;
 *)
-  echo "Case $1 is not handled in preun section of %{name}!"
+  echo "Case $1 is not handled in %%preun section of %{name}!"
 ;;
 esac
 exit 0
@@ -201,7 +201,7 @@ exit 0
 export NO_PM_PRELOAD=1
 case "$1" in
 0)  # Removal ("uninstallation")
-  echo "Removing %{name}: postun section"
+  echo "Removing %{name}: %%postun section"
   sed -i '/whitelist-common-%{name}.local/ d' /etc/firejail/whitelist-common.local
   sed -i '/libpreload%{name}/ d' /etc/ld.so.preload
   /sbin/ldconfig
@@ -209,10 +209,10 @@ case "$1" in
   rm -f /tmp/patchmanager-socket
 ;;
 1)  # Update
-  echo "Updating %{name}: postun section"
+  echo "Updating %{name}: %%postun section"
 ;;
 *)
-  echo "Case $1 is not handled in postun section of %{name}!"
+  echo "Case $1 is not handled in %%postun section of %{name}!"
 ;;
 esac
 dbus-send --system --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
