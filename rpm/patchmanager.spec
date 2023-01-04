@@ -135,7 +135,7 @@ case "$1" in
 1)  # Installation
   echo "Installing %{name}: pre section"
 ;;
-2)  # Update
+[2-9])  # Update
   echo "Updating %{name}: pre section"
   # Unapply all patches if Patchmanager 2.x is installed
   if [ -d /var/lib/patchmanager/ausmt/patches/ ]
@@ -160,7 +160,7 @@ case "$1" in
 1)  # Installation
   echo "Installing %{name}: post section"
 ;;
-2)  # Update
+[2-9])  # Update
   echo "Updating %{name}: post section"
 ;;
 *)
