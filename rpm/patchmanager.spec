@@ -132,43 +132,47 @@ mkdir -p %{buildroot}%{_datadir}/%{name}/patches
 %pre
 export NO_PM_PRELOAD=1
 case "$*" in
-1)
-echo "Installing %{name}: pre section"
+1)  # Installation
+  echo "Installing %{name}: pre section"
 ;;
-2)
-echo "Updating %{name}: pre section"
-# Unapply all patches if Patchmanager 2.x is installed
-if [ ! -d /var/lib/patchmanager/ausmt/patches/ ]
-then
+2)  # Update
+  echo "Updating %{name}: pre section"
+  # Unapply all patches if Patchmanager 2.x is installed
+  if [ ! -d /var/lib/patchmanager/ausmt/patches/ ]
+  then
     exit 0
-else
+  else
     /usr/sbin/patchmanager --unapply-all || true
-fi
-if [ -n "$(ls -A /var/lib/patchmanager/ausmt/patches/)" ]
-then
+  fi
+  if [ -n "$(ls -A /var/lib/patchmanager/ausmt/patches/)" ]
+  then
     echo "Unapply all patches before updating %{name}!"
     exit 1
-fi
+  fi
 ;;
-*) echo "Case $* is not handled in pre section of %{name}!"
+*)
+  echo "Case $* is not handled in pre section of %{name}!"
+;;
 esac
 
 %post
 export NO_PM_PRELOAD=1
 case "$*" in
-1)
-echo "Installing %{name}: post section"
+1)  # Installation
+  echo "Installing %{name}: post section"
 ;;
-2)
-echo "Updating %{name}: post section"
+2)  # Update
+  echo "Updating %{name}: post section"
 ;;
-*) echo "Case $* is not handled in post section of %{name}!"
+*)
+  echo "Case $* is not handled in post section of %{name}!"
+;;
 esac
 sed -i '/libpreload%{name}/ d' /etc/ld.so.preload
 echo '%{_libdir}/libpreload%{name}.so' >> /etc/ld.so.preload
 /sbin/ldconfig
 if ! grep -qsF 'include whitelist-common-%{name}.local' /etc/firejail/whitelist-common.local; then
-   echo 'include whitelist-common-%{name}.local' >> /etc/firejail/whitelist-common.local
+  echo 'include whitelist-common-%{name}.local' >> /etc/firejail/whitelist-common.local
 fi
 dbus-send --system --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 systemctl daemon-reload
@@ -179,31 +183,35 @@ systemctl restart checkForUpdates-org.SfietKonstantin.patchmanager.timer
 %preun
 export NO_PM_PRELOAD=1
 case "$*" in
-0)
-echo "Uninstalling %{name}: preun section"
-systemctl stop dbus-org.SfietKonstantin.patchmanager.service
+0)  # Removal ("uninstallation")
+  echo "Removing %{name}: preun section"
+  systemctl stop dbus-org.SfietKonstantin.patchmanager.service
 ;;
-1)
-echo "Updating %{name}: preun section"
+1)  # Update
+  echo "Updating %{name}: preun section"
 ;;
-*) echo "Case $* is not handled in preun section of %{name}!"
+*)
+  echo "Case $* is not handled in preun section of %{name}!"
+;;
 esac
 
 %postun
 export NO_PM_PRELOAD=1
 case "$*" in
-0)
-echo "Uninstalling %{name}: postun section"
-sed -i '/whitelist-common-%{name}.local/ d' /etc/firejail/whitelist-common.local
-sed -i '/libpreload%{name}/ d' /etc/ld.so.preload
-/sbin/ldconfig
-rm -rf /tmp/patchmanager
-rm -f /tmp/patchmanager-socket
+0)  # Removal ("uninstallation")
+  echo "Removing %{name}: postun section"
+  sed -i '/whitelist-common-%{name}.local/ d' /etc/firejail/whitelist-common.local
+  sed -i '/libpreload%{name}/ d' /etc/ld.so.preload
+  /sbin/ldconfig
+  rm -rf /tmp/patchmanager
+  rm -f /tmp/patchmanager-socket
 ;;
-1)
-echo "Updating %{name}: postun section"
+1)  # Update
+  echo "Updating %{name}: postun section"
 ;;
-*) echo "Case $* is not handled in postun section of %{name}!"
+*)
+  echo "Case $* is not handled in postun section of %{name}!"
+;;
 esac
 dbus-send --system --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 systemctl daemon-reload
