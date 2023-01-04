@@ -189,6 +189,7 @@ export NO_PM_PRELOAD=1
 case "$1" in
 0)  # Removal ("uninstallation")
   echo "Removing %{name}: %%preun section"
+  systemctl stop checkForUpdates-org.SfietKonstantin.patchmanager.timer
   systemctl stop dbus-org.SfietKonstantin.patchmanager.service
 ;;
 1)  # Update
