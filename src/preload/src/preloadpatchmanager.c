@@ -96,17 +96,14 @@ static void pm_name(char new_name[]) {
     close(sockfd);
 }
 
-static uid_t user_uid()
-{
-    return getdef_num("UID_MIN", 100000);
-}
-
 static int pm_validate_uid(uid_t uid)
 {
 #ifdef ALLOW_ALL_USERS
+    (void)uid; // avoid -Wunused-parameter warning
     return 1;
 #else // #ifdef ALLOW_ALL_USERS
-    return uid >= user_uid();
+    uid_t user_uid = getdef_num("UID_MIN", 100000);
+    return uid >= user_uid;
 #endif // #ifdef ALLOW_ALL_USERS
 }
 
