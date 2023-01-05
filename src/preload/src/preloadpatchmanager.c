@@ -96,17 +96,14 @@ static void pm_name(char new_name[]) {
     close(sockfd);
 }
 
-static uid_t user_uid()
-{
-    return getdef_num("UID_MIN", 100000);
-}
-
 static int pm_validate_uid(uid_t uid)
 {
 #ifdef ALLOW_ALL_USERS
+    (void)uid; // avoid -Wunused-parameter warning
     return 1;
 #else // #ifdef ALLOW_ALL_USERS
-    return uid >= user_uid();
+    uid_t user_uid = getdef_num("UID_MIN", 100000);
+    return uid >= user_uid;
 #endif // #ifdef ALLOW_ALL_USERS
 }
 
@@ -165,7 +162,8 @@ int open64(const char *pathname, int flags, ...)
 #ifndef NO_INTERCEPT
 
     char new_name[PATH_MAX];
-    realpath(pathname, new_name);
+    // suppress -Wunused-result warning, see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66425#c34
+    (void) !realpath(pathname, new_name);
 
     const int d_no_preload = no_preload();
     const int d_pm_validate_uid = pm_validate_uid(getuid());
@@ -209,7 +207,8 @@ int open(const char *pathname, int flags, ...)
 #ifndef NO_INTERCEPT
 
     char new_name[PATH_MAX];
-    realpath(pathname, new_name);
+    // suppress -Wunused-result warning, see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66425#c34
+    (void) !realpath(pathname, new_name);
 
     const int d_no_preload = no_preload();
     const int d_pm_validate_uid = pm_validate_uid(getuid());
