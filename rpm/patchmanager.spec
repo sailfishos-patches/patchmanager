@@ -8,7 +8,7 @@
 Name:       patchmanager
 
 Summary:    Allows to manage Patches for SailfishOS
-Version:    3.2.4
+Version:    3.2.5
 Release:    1
 Group:      Qt/Qt
 License:    BSD-3-Clause
