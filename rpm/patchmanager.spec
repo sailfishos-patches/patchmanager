@@ -1,4 +1,4 @@
-%define theme sailfish-default
+%global theme sailfish-default
 
 # These macros should already be defined in the RPMbuild environment, see: rpm --showrc
 %{!?qtc_qmake5:%define qtc_qmake5 %qmake5}
@@ -37,6 +37,7 @@ BuildRequires:  pkgconfig(libshadowutils)
 BuildRequires:  qt5-qttools-linguist
 BuildRequires:  pkgconfig(rpm)
 BuildRequires:  pkgconfig(popt)
+
 
 %package testcases
 Summary:    Provides test cases for Patchmanager
@@ -106,15 +107,17 @@ Url:
 
 
 %prep
-%setup -q -n %{name}-%{version}
+
+%setup -q
+
 
 %build
 
 %qtc_qmake5 "PROJECT_PACKAGE_VERSION=%{version}"
 %qtc_make %{?_smp_mflags}
 
+
 %install
-rm -rf %{buildroot}
 
 %qmake5_install
 
@@ -128,6 +131,7 @@ mkdir -p %{buildroot}/%{_userunitdir}/lipstick.service.wants/
 ln -s ../lipstick-patchmanager.service %{buildroot}/%{_userunitdir}/lipstick.service.wants/
 
 mkdir -p %{buildroot}%{_datadir}/%{name}/patches
+
 
 %pre
 export NO_PM_PRELOAD=1
@@ -157,6 +161,7 @@ case "$1" in
 esac
 exit 0
 
+
 %post
 export NO_PM_PRELOAD=1
 case "$1" in
@@ -184,6 +189,7 @@ systemctl restart dbus-org.SfietKonstantin.patchmanager.service
 systemctl restart checkForUpdates-org.SfietKonstantin.patchmanager.timer
 exit 0
 
+
 %preun
 export NO_PM_PRELOAD=1
 case "$1" in
@@ -200,6 +206,7 @@ case "$1" in
 ;;
 esac
 exit 0
+
 
 %postun
 export NO_PM_PRELOAD=1
@@ -224,6 +231,7 @@ systemctl daemon-reload
 systemctl-user daemon-reload
 exit 0
 
+
 %files testcases
 %defattr(-,root,root,-)
 %{_libdir}/qt5/qml/org/SfietKonstantin/patchmanagertests
@@ -231,6 +239,7 @@ exit 0
 %{_datadir}/applications/patchmanager-testcase.desktop
 %{_datadir}/patchmanager-testcase
 %{_datadir}/patchmanager-test/testfile
+
 
 %files
 %defattr(-,root,root,-)
