@@ -4,6 +4,7 @@ PLUGIN_IMPORT_PATH = org/SfietKonstantin/patchmanager
 TEMPLATE = lib
 QT = core qml network dbus gui
 CONFIG += qt plugin hide_symbols
+QMAKE_CXXFLAGS += -Werror
 
 HEADERS += \
     patchmanager.h \

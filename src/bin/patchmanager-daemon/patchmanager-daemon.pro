@@ -9,6 +9,7 @@ PKGCONFIG += rpm
 PKGCONFIG += popt
 
 INCLUDEPATH += /usr/include/rpm
+QMAKE_CXXFLAGS += -Werror
 QMAKE_CFLAGS += -fPIE
 QMAKE_CXXFLAGS += -fPIE
 QMAKE_LFLAGS += -pie
