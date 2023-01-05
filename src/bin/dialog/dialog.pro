@@ -3,6 +3,7 @@ TARGET = patchmanager-dialog
 
 QT += dbus network
 CONFIG += sailfishapp c++11
+QMAKE_CXXFLAGS += -Werror
 
 dbus.files = dbus/org.SfietKonstantin.patchmanager.service
 dbus.path = /usr/share/dbus-1/services

@@ -1,6 +1,6 @@
+QMAKE_CXXFLAGS += -Werror
 TEMPLATE = subdirs
 SUBDIRS = src tests
-
 OTHER_FILES += rpm/patchmanager.spec
 
 TRANSLATIONS += $$files(translations/settings-$${TARGET}-*.ts)
