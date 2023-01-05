@@ -165,7 +165,8 @@ int open64(const char *pathname, int flags, ...)
 #ifndef NO_INTERCEPT
 
     char new_name[PATH_MAX];
-    realpath(pathname, new_name);
+    // suppress -Wunused-result warning, see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66425#c34
+    (void) !realpath(pathname, new_name);
 
     const int d_no_preload = no_preload();
     const int d_pm_validate_uid = pm_validate_uid(getuid());
@@ -209,7 +210,8 @@ int open(const char *pathname, int flags, ...)
 #ifndef NO_INTERCEPT
 
     char new_name[PATH_MAX];
-    realpath(pathname, new_name);
+    // suppress -Wunused-result warning, see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66425#c34
+    (void) !realpath(pathname, new_name);
 
     const int d_no_preload = no_preload();
     const int d_pm_validate_uid = pm_validate_uid(getuid());
