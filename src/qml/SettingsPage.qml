@@ -107,7 +107,7 @@ Page {
             }
 
             ComboBox {
-                label: qsTranslate("", "Version Checking")
+                label: qsTranslate("", "Compatability Check")
                 description: qsTranslate("", "Enable activating Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.")
                 onCurrentIndexChanged: PatchManager.sfosVersionCheck = currentIndex
                 currentIndex: (PatchManager.sfosVersionCheck) ? PatchManager.sfosVersionCheck : VersionCheck.Strict
@@ -116,7 +116,7 @@ Page {
                         MenuItem { text: qsTranslate("", "Strict") }
                         //MenuItem { text: qsTranslate("", "Relaxed") } // TODO
                         //MenuItem { text: qsTranslate("", "Careless") } // TODO
-                        MenuItem { text: qsTranslate("", "Accept any version") }
+                        MenuItem { text: qsTranslate("", "Allow any version") }
                 }
             }
 
