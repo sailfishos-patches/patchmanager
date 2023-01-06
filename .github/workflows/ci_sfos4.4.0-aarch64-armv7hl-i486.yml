@@ -22,7 +22,9 @@ jobs:
       uses: actions/cache@v3
       with:
         path: coderus/*sailfishos-platform-sdk*
-        key: cache    - name: Prepare
+        key: cache
+
+    - name: Prepare
       run: mkdir output
 
     - name: Build aarch64
