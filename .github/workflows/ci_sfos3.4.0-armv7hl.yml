@@ -15,9 +15,18 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    env:
+      SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Cache SDK images
+      id: cache-sdk
+      uses: actions/cache@v3
+      with:
+        path: coderus/*sailfishos-platform-sdk*
+        key: cache
 
     - name: Prepare
       run: mkdir output
@@ -29,7 +38,7 @@ jobs:
             cp -r /share/* . ;
             mb2 -t SailfishOS-$RELEASE-armv7hl build --enable-debug ;
             sudo cp -r RPMS/*.rpm /share/output"
-
+ 
     - name: Upload build result
       uses: actions/upload-artifact@v3
       with:
