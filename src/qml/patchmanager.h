@@ -68,7 +68,7 @@ class PatchManager: public QObject
     Q_PROPERTY(bool applyOnBoot READ applyOnBoot WRITE setApplyOnBoot NOTIFY applyOnBootChanged)
     Q_PROPERTY(bool notifyOnSuccess READ notifyOnSuccess WRITE setNotifyOnSuccess NOTIFY notifyOnSuccessChanged)
     Q_PROPERTY(bool bitnessMangle READ bitnessMangle WRITE setBitnessMangle NOTIFY bitnessMangleChanged)
-    Q_PROPERTY(QStringList mangleCandidates READ mangleCandidates)
+    Q_PROPERTY(QStringList mangleCandidates READ mangleCandidates NOTIFY mangleCandidatesChanged)
     Q_PROPERTY(PatchManagerModel *installedModel READ installedModel CONSTANT)
     Q_PROPERTY(QVariantMap updates READ getUpdates NOTIFY updatesChanged)
     Q_PROPERTY(QStringList updatesNames READ getUpdatesNames NOTIFY updatesChanged)
@@ -168,6 +168,7 @@ signals:
     void applyOnBootChanged(bool applyOnBoot);
     void notifyOnSuccessChanged(bool notifyOnSuccess);
     void bitnessMangleChanged(bool bitnessMangle);
+    void mangleCandidatesChanged(const QStringList &mangleCandidates);
     void updatesChanged();
     void toggleServicesChanged(bool toggleServices);
     void failureChanged(bool failed);
