@@ -170,11 +170,7 @@ Page {
 
             onClicked: {
                 pageStack.push(Qt.resolvedUrl("WebPatchPage.qml"),
-                               {
-                                   modelData: model,
-                                   delegate: background,
-                                   versions: versions
-                               })
+                               { modelData: model, versions: versions })
             }
 
             Column {
