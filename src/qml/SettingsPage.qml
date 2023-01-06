@@ -55,6 +55,16 @@ Page {
         property bool showUnapplyAll: false
     }
 
+    Component.onCompleted: migrateDevModeSettings()
+    function migrateDevModeSettings() {
+        if (PatchManager.developerMode === true) {
+            console.info("Migrating settings from deprecated developerMode setting.")
+            PatchManager.patchDevelMode = true
+            PatchManager.sfosVersionCheck = VersionCheck.RecklessChecking
+            PatchManager.developerMode = false
+        }
+    }
+
     SilicaFlickable {
         id: flick
         anchors.fill: parent
@@ -111,12 +121,23 @@ Page {
             }
 
             TextSwitch {
+                text: qsTranslate("", "Mode for Patch developers")
+                description: qsTranslate("", "Enable various functions to be used by Patch developers. Among other things, it shows debug log files for applying the patch file when a Patch is activated on its details page.")
+                checked: PatchManager.patchDevelMode
+                onClicked: PatchManager.patchDevelMode = !PatchManager.patchDevelMode
+                automaticCheck: false
+            }
+
+            /*
+            * legacy/deprecated Develper mode. See Issue #333
+            TextSwitch {
                 text: qsTranslate("", "Developer mode")
                 description: qsTranslate("", "Enable various functions to be used by Patch developers. Among other things, it shows debug log files for applying the patch file when a Patch is activated on its details page.")
                 checked: PatchManager.developerMode
                 onClicked: PatchManager.developerMode = !PatchManager.developerMode
                 automaticCheck: false
             }
+            */
 
             TextSwitch {
                 id: fixBitSwitch
