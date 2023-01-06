@@ -82,7 +82,7 @@ class PatchManager: public QObject
     Q_OBJECT
     Q_PROPERTY(QString serverMediaUrl READ serverMediaUrl CONSTANT)
     Q_PROPERTY(bool developerMode READ developerMode WRITE setDeveloperMode NOTIFY developerModeChanged)
-    Q_PROPERTY(bool patchDevelMode READ patchDevelMode WRITE setPatchDevelMode NOTIFY patchDevelMode)
+    Q_PROPERTY(bool patchDevelMode READ patchDevelMode WRITE setPatchDevelMode NOTIFY patchDevelModeChanged)
     Q_PROPERTY(int sfosVersionCheck READ sfosVersionCheck WRITE setSfosVersionCheck NOTIFY sfosVersionCheckChanged)
     Q_PROPERTY(bool applyOnBoot READ applyOnBoot WRITE setApplyOnBoot NOTIFY applyOnBootChanged)
     Q_PROPERTY(bool notifyOnSuccess READ notifyOnSuccess WRITE setNotifyOnSuccess NOTIFY notifyOnSuccessChanged)

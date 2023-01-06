@@ -208,7 +208,7 @@ bool PatchManager::patchDevelMode() const
 void PatchManager::setPatchDevelMode(bool patchDevelMode)
 {
     if (putSettingsSync(QStringLiteral("patchDevelMode"), patchDevelMode)) {
-        emit patchDevelMode(patchDevelMode);
+        emit patchDevelModeChanged(patchDevelMode);
     }
 }
 
