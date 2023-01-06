@@ -1,4 +1,4 @@
-name: CI on SFOS 3.4.0.24 (armv7hl)
+name: CI on SFOS 3.4.0 (armv7hl)
 
 on:
   push:
