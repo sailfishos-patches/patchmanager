@@ -1,4 +1,4 @@
-name: Github CI build
+name: CI on SFOS 3.4.0.24 (armv7hl)
 
 on:
   push:
@@ -10,14 +10,14 @@ on:
       - patchmanager3
 
 env:
-  RELEASE: 4.0.1.45
+  RELEASE: 3.4.0.24
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Prepare
       run: mkdir output
@@ -47,10 +47,10 @@ jobs:
             sudo cp -r RPMS/*.rpm /share/output"
 
     - name: Upload build result
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: output-rpms
-        path: output
+        path: output/
 
     - name: Create release
       if: contains(github.ref, 'release')
