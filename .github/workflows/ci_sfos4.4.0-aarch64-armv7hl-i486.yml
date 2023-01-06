@@ -11,11 +11,18 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    env:
+      SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
 
-    - name: Prepare
+    - name: Cache SDK images
+      id: cache-sdk
+      uses: actions/cache@v3
+      with:
+        path: coderus/*sailfishos-platform-sdk*
+        key: cache    - name: Prepare
       run: mkdir output
 
     - name: Build aarch64
