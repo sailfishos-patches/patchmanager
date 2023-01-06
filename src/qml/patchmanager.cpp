@@ -200,6 +200,18 @@ void PatchManager::setDeveloperMode(bool developerMode)
     }
 }
 
+bool PatchManager::patchDevelMode() const
+{
+    return getSettingsSync(QStringLiteral("patchDevelMode"), false).toBool();
+}
+
+void PatchManager::setPatchDevelMode(bool patchDevelMode)
+{
+    if (putSettingsSync(QStringLiteral("patchDevelMode"), patchDevelMode)) {
+        emit patchDevelMode(patchDevelMode);
+    }
+}
+
 int PatchManager::sfosVersionCheck() const
 {
     return getSettingsSync(QStringLiteral("sfosVersionCheck"), 0).toInt();

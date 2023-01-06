@@ -82,6 +82,7 @@ class PatchManager: public QObject
     Q_OBJECT
     Q_PROPERTY(QString serverMediaUrl READ serverMediaUrl CONSTANT)
     Q_PROPERTY(bool developerMode READ developerMode WRITE setDeveloperMode NOTIFY developerModeChanged)
+    Q_PROPERTY(bool patchDevelMode READ patchDevelMode WRITE setPatchDevelMode NOTIFY patchDevelMode)
     Q_PROPERTY(int sfosVersionCheck READ sfosVersionCheck WRITE setSfosVersionCheck NOTIFY sfosVersionCheckChanged)
     Q_PROPERTY(bool applyOnBoot READ applyOnBoot WRITE setApplyOnBoot NOTIFY applyOnBootChanged)
     Q_PROPERTY(bool notifyOnSuccess READ notifyOnSuccess WRITE setNotifyOnSuccess NOTIFY notifyOnSuccessChanged)
@@ -103,6 +104,8 @@ public:
     QString serverMediaUrl() const;
     bool developerMode() const;
     void setDeveloperMode(bool developerMode);
+    bool patchDevelMode() const;
+    void setPatchDevelMode(bool patchDevelMode);
     int sfosVersionCheck() const;
     void setSfosVersionCheck(int sfosVersionCheck);
     bool applyOnBoot() const;
@@ -185,6 +188,7 @@ public slots:
 signals:
     void easterReceived(const QString & easterText);
     void developerModeChanged(bool developerMode);
+    void patchDevelModeChanged(bool patchDevelMode);
     void sfosVersionCheckChanged(bool sfosVersionCheck);
     void applyOnBootChanged(bool applyOnBoot);
     void notifyOnSuccessChanged(bool notifyOnSuccess);
