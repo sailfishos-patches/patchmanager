@@ -198,6 +198,18 @@ void PatchManager::setDeveloperMode(bool developerMode)
     }
 }
 
+bool PatchManager::strictCompatability() const
+{
+    return getSettingsSync(QStringLiteral("strictCompatability"), true).toBool();
+}
+
+void PatchManager::setStrictCompatability(bool strictCompatability)
+{
+    if (putSettingsSync(QStringLiteral("strictCompatability"), strictCompatability)) {
+        emit strictCompatabilityChanged(strictCompatability);
+    }
+}
+
 bool PatchManager::applyOnBoot() const
 {
     return getSettingsSync(QStringLiteral("applyOnBoot"), false).toBool();

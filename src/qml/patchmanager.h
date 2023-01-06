@@ -65,6 +65,7 @@ class PatchManager: public QObject
     Q_OBJECT
     Q_PROPERTY(QString serverMediaUrl READ serverMediaUrl CONSTANT)
     Q_PROPERTY(bool developerMode READ developerMode WRITE setDeveloperMode NOTIFY developerModeChanged)
+    Q_PROPERTY(bool strictCompatability READ strictCompatability WRITE setStrictCompatability NOTIFY strictCompatabilityChanged)
     Q_PROPERTY(bool applyOnBoot READ applyOnBoot WRITE setApplyOnBoot NOTIFY applyOnBootChanged)
     Q_PROPERTY(bool notifyOnSuccess READ notifyOnSuccess WRITE setNotifyOnSuccess NOTIFY notifyOnSuccessChanged)
     Q_PROPERTY(bool bitnessMangle READ bitnessMangle WRITE setBitnessMangle NOTIFY bitnessMangleChanged)
@@ -85,6 +86,8 @@ public:
     QString serverMediaUrl() const;
     bool developerMode() const;
     void setDeveloperMode(bool developerMode);
+    bool strictCompatability() const;
+    void setStrictCompatability(bool strictCompatability);
     bool applyOnBoot() const;
     bool notifyOnSuccess() const;
     void setApplyOnBoot(bool applyOnBoot);
@@ -165,6 +168,7 @@ public slots:
 signals:
     void easterReceived(const QString & easterText);
     void developerModeChanged(bool developerMode);
+    void strictCompatabilityChanged(bool strictCompatability);
     void applyOnBootChanged(bool applyOnBoot);
     void notifyOnSuccessChanged(bool notifyOnSuccess);
     void bitnessMangleChanged(bool bitnessMangle);
