@@ -58,6 +58,23 @@ private:
 
 };
 
+class PatchManagerVersionCheck
+{
+    Q_GADGET
+
+public:
+    enum CheckMode {
+        StrictChecking,
+        RelaxedChecking,    // TODO, Issue #322
+        CarelessChecking,   // RESERVED for future use, see https://github.com/sailfishos-patches/patchmanager/issues/333#issuecomment-1374118045
+        RecklessChecking,
+    };
+    Q_ENUM(CheckMode)
+private:
+    explicit PatchManagerVersionCheck() {}
+};
+typedef PatchManagerVersionCheck::CheckMode VersionCheck;
+
 class QDBusPendingCallWatcher;
 class PatchManagerInterface;
 class PatchManager: public QObject
@@ -65,7 +82,7 @@ class PatchManager: public QObject
     Q_OBJECT
     Q_PROPERTY(QString serverMediaUrl READ serverMediaUrl CONSTANT)
     Q_PROPERTY(bool developerMode READ developerMode WRITE setDeveloperMode NOTIFY developerModeChanged)
-    Q_PROPERTY(bool strictCompatability READ strictCompatability WRITE setStrictCompatability NOTIFY strictCompatabilityChanged)
+    Q_PROPERTY(int sfosVersionCheck READ sfosVersionCheck WRITE setSfosVersionCheck NOTIFY sfosVersionCheckChanged)
     Q_PROPERTY(bool applyOnBoot READ applyOnBoot WRITE setApplyOnBoot NOTIFY applyOnBootChanged)
     Q_PROPERTY(bool notifyOnSuccess READ notifyOnSuccess WRITE setNotifyOnSuccess NOTIFY notifyOnSuccessChanged)
     Q_PROPERTY(bool bitnessMangle READ bitnessMangle WRITE setBitnessMangle NOTIFY bitnessMangleChanged)
@@ -86,8 +103,8 @@ public:
     QString serverMediaUrl() const;
     bool developerMode() const;
     void setDeveloperMode(bool developerMode);
-    bool strictCompatability() const;
-    void setStrictCompatability(bool strictCompatability);
+    int sfosVersionCheck() const;
+    void setSfosVersionCheck(int sfosVersionCheck);
     bool applyOnBoot() const;
     bool notifyOnSuccess() const;
     void setApplyOnBoot(bool applyOnBoot);
@@ -168,7 +185,7 @@ public slots:
 signals:
     void easterReceived(const QString & easterText);
     void developerModeChanged(bool developerMode);
-    void strictCompatabilityChanged(bool strictCompatability);
+    void sfosVersionCheckChanged(bool sfosVersionCheck);
     void applyOnBootChanged(bool applyOnBoot);
     void notifyOnSuccessChanged(bool notifyOnSuccess);
     void bitnessMangleChanged(bool bitnessMangle);

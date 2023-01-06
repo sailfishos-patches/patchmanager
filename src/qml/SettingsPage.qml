@@ -96,12 +96,18 @@ Page {
                 automaticCheck: false
             }
 
-            TextSwitch {
-                text: qsTranslate("", "Allow incompatible Patches")
+            ComboBox {
+                label: qsTranslate("", "Version Checking")
                 description: qsTranslate("", "Enable activating Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.")
-                checked: !PatchManager.strictCompatability
-                onClicked: PatchManager.strictCompatability = !PatchManager.strictCompatability
-                automaticCheck: false
+                onCurrentIndexChanged: PatchManager.sfosVersionCheck = currentIndex
+                currentIndex: (PatchManager.sfosVersionCheck) ? PatchManager.sfosVersionCheck : VersionCheck.StrictChecking
+                menu: ContextMenu {
+                        // FIXME: Use the PatchManager::VersionCheck enum, however, how to map enum to text?
+                        MenuItem { text: qsTranslate("", "Strict") }
+                        //MenuItem { text: qsTranslate("", "Relaxed") } // TODO
+                        //MenuItem { text: qsTranslate("", "Careless") } // TODO
+                        MenuItem { text: qsTranslate("", "Accept any version") }
+                }
             }
 
             TextSwitch {

@@ -198,15 +198,15 @@ void PatchManager::setDeveloperMode(bool developerMode)
     }
 }
 
-bool PatchManager::strictCompatability() const
+int PatchManager::sfosVersionCheck() const
 {
-    return getSettingsSync(QStringLiteral("strictCompatability"), true).toBool();
+    return getSettingsSync(QStringLiteral("sfosVersionCheck"), 0).toInt();
 }
 
-void PatchManager::setStrictCompatability(bool strictCompatability)
+void PatchManager::setSfosVersionCheck(int sfosVersionCheck)
 {
-    if (putSettingsSync(QStringLiteral("strictCompatability"), strictCompatability)) {
-        emit strictCompatabilityChanged(strictCompatability);
+    if (putSettingsSync(QStringLiteral("sfosVersionCheck"), sfosVersionCheck)) {
+        emit sfosVersionCheckChanged(sfosVersionCheck);
     }
 }
 
