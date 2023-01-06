@@ -106,7 +106,7 @@ Page {
 
             TextSwitch {
                 text: qsTranslate("", "Developer mode")
-                description: qsTranslate("", "Enable various functions aimed at use by Patch developers. Among other things, it shows debug log files for the Apply operations on the patch details pages.")
+                description: qsTranslate("", "Enable various functions to be used by Patch developers. Among other things, it shows debug log files for applying the patch file when a Patch is activated on its details page.")
                 checked: PatchManager.developerMode
                 onClicked: PatchManager.developerMode = !PatchManager.developerMode
                 automaticCheck: false
