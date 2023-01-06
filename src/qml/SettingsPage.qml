@@ -99,6 +99,14 @@ Page {
             TextSwitch {
                 text: qsTranslate("", "Allow incompatible Patches")
                 description: qsTranslate("", "Enable activating Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.")
+                checked: !PatchManager.strictCompatability
+                onClicked: PatchManager.strictCompatability = !PatchManager.strictCompatability
+                automaticCheck: false
+            }
+
+            TextSwitch {
+                text: qsTranslate("", "Developer mode")
+                description: qsTranslate("", "Enable various functions aimed at use by Patch developers. Among other things, it shows debug log files for the Apply operations on the patch details pages.")
                 checked: PatchManager.developerMode
                 onClicked: PatchManager.developerMode = !PatchManager.developerMode
                 automaticCheck: false
