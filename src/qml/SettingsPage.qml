@@ -60,7 +60,7 @@ Page {
         if (PatchManager.developerMode === true) {
             console.info("Migrating settings from deprecated developerMode setting.")
             PatchManager.patchDevelMode = true
-            PatchManager.sfosVersionCheck = VersionCheck.RecklessChecking
+            PatchManager.sfosVersionCheck = VersionCheck.NoCheck
             PatchManager.developerMode = false
         }
     }
@@ -110,7 +110,7 @@ Page {
                 label: qsTranslate("", "Version Checking")
                 description: qsTranslate("", "Enable activating Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.")
                 onCurrentIndexChanged: PatchManager.sfosVersionCheck = currentIndex
-                currentIndex: (PatchManager.sfosVersionCheck) ? PatchManager.sfosVersionCheck : VersionCheck.StrictChecking
+                currentIndex: (PatchManager.sfosVersionCheck) ? PatchManager.sfosVersionCheck : VersionCheck.Strict
                 menu: ContextMenu {
                         // FIXME: Use the PatchManager::VersionCheck enum, however, how to map enum to text?
                         MenuItem { text: qsTranslate("", "Strict") }

@@ -64,10 +64,10 @@ class PatchManagerVersionCheck
 
 public:
     enum CheckMode {
-        StrictChecking,
-        RelaxedChecking,    // TODO, Issue #322
-        CarelessChecking,   // RESERVED for future use, see https://github.com/sailfishos-patches/patchmanager/issues/333#issuecomment-1374118045
-        RecklessChecking,
+        Strict,
+        Relaxed,    // TODO, Issue #322
+        Careless,   // RESERVED for future use, see https://github.com/sailfishos-patches/patchmanager/issues/333#issuecomment-1374118045
+        NoCheck,
     };
     Q_ENUM(CheckMode)
 private:
