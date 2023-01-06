@@ -1,0 +1,47 @@
+name: CI on SFOS 3.4.0 (i486)
+
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  RELEASE: 3.4.0.24
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Prepare
+      run: mkdir output
+
+    - name: Build i486
+      run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
+            mkdir -p build ;
+            cd build ;
+            cp -r /share/* . ;
+            mb2 -t SailfishOS-$RELEASE-i486 build --enable-debug ;
+            sudo cp -r RPMS/*.rpm /share/output"
+
+    - name: Upload build result
+      uses: actions/upload-artifact@v3
+      with:
+        name: output-rpms
+        path: output/
+
+    - name: Create release
+      if: contains(github.ref, 'release')
+      run: |
+        set -x
+        assets=()
+        for asset in output/*.rpm; do
+          assets+=("-a" "$asset")
+        done
+        tag_name="${GITHUB_REF##*/}"
+        hub release create "${assets[@]}" -m "$tag_name" "$tag_name"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
