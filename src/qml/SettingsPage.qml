@@ -116,7 +116,7 @@ Page {
                         MenuItem { text: qsTranslate("", "Strict") }
                         //MenuItem { text: qsTranslate("", "Relaxed") } // TODO
                         //MenuItem { text: qsTranslate("", "Careless") } // TODO
-                        MenuItem { text: qsTranslate("", "Allow any version") }
+                        MenuItem { text: qsTranslate("", "No check") }
                 }
             }
 
