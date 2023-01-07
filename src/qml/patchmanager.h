@@ -58,6 +58,22 @@ private:
 
 };
 
+class PatchManagerVersionCheck
+{
+    Q_GADGET
+
+public:
+    enum CheckMode {
+        Strict,
+        NoCheck,
+        //Relaxed,    // TODO, Issue #322, also see https://github.com/sailfishos-patches/patchmanager/issues/333#issuecomment-1374118045
+    };
+    Q_ENUM(CheckMode)
+private:
+    explicit PatchManagerVersionCheck() {}
+};
+typedef PatchManagerVersionCheck::CheckMode VersionCheck;
+
 class QDBusPendingCallWatcher;
 class PatchManagerInterface;
 class PatchManager: public QObject
@@ -65,6 +81,8 @@ class PatchManager: public QObject
     Q_OBJECT
     Q_PROPERTY(QString serverMediaUrl READ serverMediaUrl CONSTANT)
     Q_PROPERTY(bool developerMode READ developerMode WRITE setDeveloperMode NOTIFY developerModeChanged)
+    Q_PROPERTY(bool patchDevelMode READ patchDevelMode WRITE setPatchDevelMode NOTIFY patchDevelModeChanged)
+    Q_PROPERTY(int sfosVersionCheck READ sfosVersionCheck WRITE setSfosVersionCheck NOTIFY sfosVersionCheckChanged)
     Q_PROPERTY(bool applyOnBoot READ applyOnBoot WRITE setApplyOnBoot NOTIFY applyOnBootChanged)
     Q_PROPERTY(bool notifyOnSuccess READ notifyOnSuccess WRITE setNotifyOnSuccess NOTIFY notifyOnSuccessChanged)
     Q_PROPERTY(bool bitnessMangle READ bitnessMangle WRITE setBitnessMangle NOTIFY bitnessMangleChanged)
@@ -85,6 +103,10 @@ public:
     QString serverMediaUrl() const;
     bool developerMode() const;
     void setDeveloperMode(bool developerMode);
+    bool patchDevelMode() const;
+    void setPatchDevelMode(bool patchDevelMode);
+    int sfosVersionCheck() const;
+    void setSfosVersionCheck(int sfosVersionCheck);
     bool applyOnBoot() const;
     bool notifyOnSuccess() const;
     void setApplyOnBoot(bool applyOnBoot);
@@ -165,6 +187,8 @@ public slots:
 signals:
     void easterReceived(const QString & easterText);
     void developerModeChanged(bool developerMode);
+    void patchDevelModeChanged(bool patchDevelMode);
+    void sfosVersionCheckChanged(bool sfosVersionCheck);
     void applyOnBootChanged(bool applyOnBoot);
     void notifyOnSuccessChanged(bool notifyOnSuccess);
     void bitnessMangleChanged(bool bitnessMangle);

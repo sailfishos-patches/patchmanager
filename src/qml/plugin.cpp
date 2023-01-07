@@ -73,6 +73,8 @@ public:
         qmlRegisterSingletonType<PatchManagerTranslator>(uri, 2, 0, "PatchManagerTranslator", patchmanagertransalator_singleton);
         qmlRegisterType<WebPatchesModel>(uri, 2, 0, "WebPatchesModel");
         qmlRegisterUncreatableType<QDBusPendingCallWatcher>(uri, 2, 0, "QDBusPendingCallWatcher", "Compatibility import");
+        qmlRegisterUncreatableType<PatchManagerVersionCheck>(uri, 2, 0, "VersionCheck", "Not creatable as it is an enum type.");
+
     }
 };
 

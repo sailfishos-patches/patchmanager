@@ -55,11 +55,22 @@ Page {
         property bool showUnapplyAll: false
     }
 
+    Component.onCompleted: migrateDevModeSettings()
+    function migrateDevModeSettings() {
+        if (PatchManager.developerMode === true) {
+            console.info("Migrating settings from deprecated developerMode setting.")
+            PatchManager.patchDevelMode = true
+            PatchManager.sfosVersionCheck = VersionCheck.NoCheck
+            PatchManager.developerMode = false
+        }
+    }
+
     SilicaFlickable {
         id: flick
         anchors.fill: parent
+        contentHeight: content.height
 
-        Column {
+        Column { id: content
             width: parent.width
 
             spacing: Theme.paddingMedium
@@ -78,8 +89,6 @@ Page {
                 automaticCheck: false
             }
 
-            SectionHeader { text: qsTranslate("", "Advanced") }
-
             TextSwitch {
                 text: qsTranslate("", "Activate Patches when booting")
                 description: qsTranslate("", "Automatically activate all enabled Patches when SailfishOS starts.")
@@ -96,13 +105,44 @@ Page {
                 automaticCheck: false
             }
 
-            TextSwitch {
-                text: qsTranslate("", "Allow incompatible Patches")
+            SectionHeader { text: qsTranslate("", "Advanced") }
+
+            ComboBox {
+                anchors {
+                    leftMargin: Theme.paddingLarge*2 // align to TextSwitch labels
+                    right: parent.right
+                    left: parent.left
+                }
+                label: qsTranslate("", "Version Check") + ":"
                 description: qsTranslate("", "Enable activating Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.")
+                onCurrentIndexChanged: PatchManager.sfosVersionCheck = currentIndex
+                currentIndex: (PatchManager.sfosVersionCheck) ? PatchManager.sfosVersionCheck : VersionCheck.Strict
+                menu: ContextMenu {
+                        // FIXME: Use the PatchManager::VersionCheck enum, however, how to map enum to text?
+                        MenuItem { text: qsTranslate("", "Strict") }
+                        MenuItem { text: qsTranslate("", "No check") }
+                        //MenuItem { text: qsTranslate("", "Relaxed") } // TODO, see `src/qml/patchmanager.h`, line 68
+                }
+            }
+
+            TextSwitch {
+                text: qsTranslate("", "Mode for Patch developers")
+                description: qsTranslate("", "Enable various functions to be used by Patch developers. Among other things, it shows debug log files for applying the patch file when a Patch is activated on its details page.")
+                checked: PatchManager.patchDevelMode
+                onClicked: PatchManager.patchDevelMode = !PatchManager.patchDevelMode
+                automaticCheck: false
+            }
+
+            /*
+            * legacy/deprecated Developer mode. See Issue #333 & MR #334
+            TextSwitch {
+                text: qsTranslate("", "Developer mode")
+                description: qsTranslate("", "Enable various functions to be used by Patch developers. Among other things, it shows debug log files for applying the patch file when a Patch is activated on its details page.")
                 checked: PatchManager.developerMode
                 onClicked: PatchManager.developerMode = !PatchManager.developerMode
                 automaticCheck: false
             }
+            */
 
             TextSwitch {
                 id: fixBitSwitch

@@ -188,13 +188,39 @@ QString PatchManager::serverMediaUrl() const
 
 bool PatchManager::developerMode() const
 {
+    qWarning() << Q_FUNC_INFO << "read from deprecated property developerMode";
     return getSettingsSync(QStringLiteral("developerMode"), false).toBool();
 }
 
 void PatchManager::setDeveloperMode(bool developerMode)
 {
+    qWarning() << Q_FUNC_INFO << "write to deprecated property developerMode";
     if (putSettingsSync(QStringLiteral("developerMode"), developerMode)) {
         emit developerModeChanged(developerMode);
+    }
+}
+
+bool PatchManager::patchDevelMode() const
+{
+    return getSettingsSync(QStringLiteral("patchDevelMode"), false).toBool();
+}
+
+void PatchManager::setPatchDevelMode(bool patchDevelMode)
+{
+    if (putSettingsSync(QStringLiteral("patchDevelMode"), patchDevelMode)) {
+        emit patchDevelModeChanged(patchDevelMode);
+    }
+}
+
+int PatchManager::sfosVersionCheck() const
+{
+    return getSettingsSync(QStringLiteral("sfosVersionCheck"), 0).toInt();
+}
+
+void PatchManager::setSfosVersionCheck(int sfosVersionCheck)
+{
+    if (putSettingsSync(QStringLiteral("sfosVersionCheck"), sfosVersionCheck)) {
+        emit sfosVersionCheckChanged(sfosVersionCheck);
     }
 }
 
