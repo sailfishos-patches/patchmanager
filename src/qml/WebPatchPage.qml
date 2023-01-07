@@ -105,7 +105,7 @@ Page {
             Item {
                 width: parent.width
                 height: Theme.itemSizeSmall
-                visible: patchData
+                visible: !!patchData
 
                 Image {
                     id: activationsIcon
@@ -120,7 +120,7 @@ Page {
                     anchors.left: activationsIcon.right
                     anchors.leftMargin: Theme.paddingSmall
                     anchors.verticalCenter: parent.verticalCenter
-                    text: patchData && patchData.total_activations ? patchData.total_activations : "0"
+                    text: !!patchData && patchData.total_activations ? patchData.total_activations : "0"
                 }
 
                 Image {
@@ -136,7 +136,7 @@ Page {
                     anchors.left: likeIcon.right
                     anchors.leftMargin: Theme.paddingSmall
                     anchors.verticalCenter: parent.verticalCenter
-                    text: patchData && patchData.rating ? patchData.rating : "0"
+                    text: !!patchData && patchData.rating ? patchData.rating : "0"
                 }
 
                 IconButton {
@@ -190,7 +190,7 @@ Page {
                         verticalCenter: parent.verticalCenter
                     }
                     font.pixelSize: Theme.fontSizeSmall
-                    text: patchData && patchData.author ? qsTranslate("", "Author: %1").arg(patchData.author) : ""
+                    text: !!patchData && patchData.author ? qsTranslate("", "Author: %1").arg(patchData.author) : ""
                 }
             }
 
@@ -202,18 +202,18 @@ Page {
                     margins: Theme.horizontalPageMargin
                 }
                 wrapMode: Text.WordWrap
-                text: patchData && patchData.description ? patchData.description : ""
+                text: !!patchData && patchData.description ? patchData.description : ""
             }
 
             SectionHeader {
                 text: qsTranslate("", "Links")
-                visible: patchData && (!!patchData.discussion || !!patchData.donations || !!patchData.sources)
+                visible: !!patchData && (!!patchData.discussion || !!patchData.donations || !!patchData.sources)
             }
 
             BackgroundItem {
                 width: parent.width
                 height: Theme.itemSizeExtraSmall
-                visible: patchData && !!patchData.discussion
+                visible: !!patchData && !!patchData.discussion
 
                 onClicked: {
                     Qt.openUrlExternally(patchData.discussion)
@@ -227,14 +227,14 @@ Page {
                         margins: Theme.horizontalPageMargin
                         verticalCenter: parent.verticalCenter
                     }
-                    text: patchData && patchData.discussion ? qsTranslate("", "Open discussion link") : ""
+                    text: !!patchData && patchData.discussion ? qsTranslate("", "Open discussion link") : ""
                 }
             }
 
             BackgroundItem {
                 width: parent.width
                 height: Theme.itemSizeExtraSmall
-                visible: patchData && !!patchData.donations
+                visible: !!patchData && !!patchData.donations
 
                 onClicked: {
                     Qt.openUrlExternally(patchData.donations)
@@ -248,14 +248,14 @@ Page {
                         margins: Theme.horizontalPageMargin
                         verticalCenter: parent.verticalCenter
                     }
-                    text: patchData && patchData.donations ? qsTranslate("", "Donate") : ""
+                    text: !!patchData && patchData.donations ? qsTranslate("", "Donate") : ""
                 }
             }
 
             BackgroundItem {
                 width: parent.width
                 height: Theme.itemSizeExtraSmall
-                visible: patchData && patchData.sources
+                visible: !!patchData && patchData.sources
 
                 onClicked: {
                     Qt.openUrlExternally(patchData.value.sources)
@@ -269,13 +269,13 @@ Page {
                         margins: Theme.horizontalPageMargin
                         verticalCenter: parent.verticalCenter
                     }
-                    text: patchData && patchData.sources ? qsTranslate("", "Sources") : ""
+                    text: !!patchData && patchData.sources ? qsTranslate("", "Sources") : ""
                 }
             }
 
             SectionHeader {
                 text: qsTranslate("", "Screenshots")
-                visible: patchData && !!patchData.screenshots && patchData.screenshots.length > 0
+                visible: !!patchData && !!patchData.screenshots && patchData.screenshots.length > 0
             }
 
             Flickable {
@@ -284,14 +284,14 @@ Page {
                 contentHeight: height
                 contentWidth: contentRow.width
                 flickableDirection: Flickable.HorizontalFlick
-                visible: patchData && patchData.screenshots && patchData.screenshots.length > 0
+                visible: !!patchData && patchData.screenshots && patchData.screenshots.length > 0
                 boundsBehavior: Flickable.StopAtBounds
 
                 Row {
                     id: contentRow
                     height: Screen.height / 4
                     Repeater {
-                        model: patchData && patchData.screenshots ? patchData.screenshots : 0
+                        model: !!patchData && patchData.screenshots ? patchData.screenshots : 0
                         delegate: MouseArea {
                             anchors.verticalCenter: parent.verticalCenter
                             width: imgItem.width * imgItem.scale
@@ -321,11 +321,11 @@ Page {
 
             SectionHeader {
                 text: qsTranslate("", "Files")
-                visible: patchData && patchData.files
+                visible: !!patchData && patchData.files
             }
 
             Repeater {
-                model: patchData && patchData.files ? patchData.files : 0
+                model: !!patchData && patchData.files ? patchData.files : 0
                 delegate: ListItem {
                     id: fileDelegate
                     width: parent.width
