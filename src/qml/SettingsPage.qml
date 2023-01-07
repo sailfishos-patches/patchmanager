@@ -114,8 +114,8 @@ Page {
                 menu: ContextMenu {
                         // FIXME: Use the PatchManager::VersionCheck enum, however, how to map enum to text?
                         MenuItem { text: qsTranslate("", "Strict") }
-                        //MenuItem { text: qsTranslate("", "Relaxed") } // TODO
-                        //MenuItem { text: qsTranslate("", "Careless") } // TODO
+                        //MenuItem { text: qsTranslate("", "Relaxed") } // TODO, see `src/qml/patchmanager.h`, line 68
+                        //MenuItem { text: qsTranslate("", "Careless") } // TODO, see `src/qml/patchmanager.h`, line 69
                         MenuItem { text: qsTranslate("", "No check") }
                 }
             }
