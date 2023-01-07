@@ -68,8 +68,9 @@ Page {
     SilicaFlickable {
         id: flick
         anchors.fill: parent
+        contentHeight: content.height
 
-        Column {
+        Column { id: content
             width: parent.width
 
             spacing: Theme.paddingMedium
