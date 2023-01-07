@@ -129,7 +129,7 @@ Page {
             }
 
             /*
-            * legacy/deprecated Develper mode. See Issue #333
+            * legacy/deprecated Developer mode. See Issue #333 & MR #334
             TextSwitch {
                 text: qsTranslate("", "Developer mode")
                 description: qsTranslate("", "Enable various functions to be used by Patch developers. Among other things, it shows debug log files for applying the patch file when a Patch is activated on its details page.")
