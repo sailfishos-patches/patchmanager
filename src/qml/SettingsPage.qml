@@ -107,7 +107,7 @@ Page {
             }
 
             ComboBox {
-                label: qsTranslate("", "Compatability Check")
+                label: qsTranslate("", "Version Check")
                 description: qsTranslate("", "Enable activating Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.")
                 onCurrentIndexChanged: PatchManager.sfosVersionCheck = currentIndex
                 currentIndex: (PatchManager.sfosVersionCheck) ? PatchManager.sfosVersionCheck : VersionCheck.Strict
