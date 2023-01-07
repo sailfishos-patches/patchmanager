@@ -88,8 +88,6 @@ Page {
                 automaticCheck: false
             }
 
-            SectionHeader { text: qsTranslate("", "Advanced") }
-
             TextSwitch {
                 text: qsTranslate("", "Activate Patches when booting")
                 description: qsTranslate("", "Automatically activate all enabled Patches when SailfishOS starts.")
@@ -105,6 +103,8 @@ Page {
                 onClicked: uisettings.showUnapplyAll = !uisettings.showUnapplyAll
                 automaticCheck: false
             }
+
+            SectionHeader { text: qsTranslate("", "Advanced") }
 
             ComboBox {
                 label: qsTranslate("", "Version Check")
