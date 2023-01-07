@@ -107,16 +107,16 @@ Page {
             }
 
             ComboBox {
-                label: qsTranslate("", "Compatability Check")
+                label: qsTranslate("", "Version Check")
                 description: qsTranslate("", "Enable activating Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.")
                 onCurrentIndexChanged: PatchManager.sfosVersionCheck = currentIndex
                 currentIndex: (PatchManager.sfosVersionCheck) ? PatchManager.sfosVersionCheck : VersionCheck.Strict
                 menu: ContextMenu {
                         // FIXME: Use the PatchManager::VersionCheck enum, however, how to map enum to text?
                         MenuItem { text: qsTranslate("", "Strict") }
-                        //MenuItem { text: qsTranslate("", "Relaxed") } // TODO
-                        //MenuItem { text: qsTranslate("", "Careless") } // TODO
-                        MenuItem { text: qsTranslate("", "Allow any version") }
+                        //MenuItem { text: qsTranslate("", "Relaxed") } // TODO, see `src/qml/patchmanager.h`, line 68
+                        //MenuItem { text: qsTranslate("", "Careless") } // TODO, see `src/qml/patchmanager.h`, line 69
+                        MenuItem { text: qsTranslate("", "No check") }
                 }
             }
 
@@ -129,7 +129,7 @@ Page {
             }
 
             /*
-            * legacy/deprecated Develper mode. See Issue #333
+            * legacy/deprecated Developer mode. See Issue #333 & MR #334
             TextSwitch {
                 text: qsTranslate("", "Developer mode")
                 description: qsTranslate("", "Enable various functions to be used by Patch developers. Among other things, it shows debug log files for applying the patch file when a Patch is activated on its details page.")
