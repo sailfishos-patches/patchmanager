@@ -81,7 +81,7 @@ Page {
         }
 
         PullDownMenu {
-                visible: PatchManager.developerMode
+                visible: PatchManager.patchDevelMode
                 MenuItem {
                     text: qsTranslate("", "Open Project Page")
                     // FIXME: do not hardcode location:
