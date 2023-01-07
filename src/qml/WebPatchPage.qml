@@ -80,6 +80,15 @@ Page {
             text: fetching ? qsTranslate("", "Fetching patch data") : qsTranslate("", "Failed to fetch Patch data")
         }
 
+        PullDownMenu {
+                visible: PatchManager.patchDevelMode
+                MenuItem {
+                    text: qsTranslate("", "Open Project Page")
+                    // FIXME: do not hardcode location:
+                    onClicked: Qt.openUrlExternally("https://coderus.openrepos.net/pm2/project/" + patchData.name)
+                }
+        }
+
         Column {
             id: content
             width: parent.width
