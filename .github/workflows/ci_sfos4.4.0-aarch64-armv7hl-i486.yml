@@ -45,11 +45,11 @@ jobs:
 
     - name: Build i486
       run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
-            mkdir -p build ;
-            cd build ;
-            cp -r /share/* . ;
-            mb2 -t SailfishOS-$RELEASE-i486 build --enable-debug ;
-            sudo cp -r RPMS/*.rpm /share/output"
+             mkdir -p build ;
+             cd build ;
+             cp -r /share/* . ;
+             mb2 -t SailfishOS-$RELEASE-i486 build --enable-debug ;
+             sudo cp -r RPMS/*.rpm /share/output"
 
     - name: Upload build result
       uses: actions/upload-artifact@v3
