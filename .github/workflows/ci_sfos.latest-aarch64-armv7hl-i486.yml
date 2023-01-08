@@ -1,4 +1,4 @@
-name: CI on SFOS 4.4.0 (aarch64,armv7hl,i486)
+name: CI on SFOS-latest (aarch64,armv7hl,i486)
 
 on:
   push:
@@ -69,4 +69,3 @@ jobs:
         hub release create "${assets[@]}" -m "$tag_name" "$tag_name"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
