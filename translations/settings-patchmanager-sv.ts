@@ -525,7 +525,7 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="70"/>
         <source>Automatically activate all enabled Patches when SailfishOS starts.</source>
-        <translation>Aktivera automatiskt alla aktiva korrigeringar när SailfishOS startas,</translation>
+        <translation>Tillämpa automatiskt alla aktiva korrigeringar när SailfishOS startas,</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="77"/>
