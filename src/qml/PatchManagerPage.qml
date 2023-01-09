@@ -159,7 +159,7 @@ Page {
             */
 
             MenuItem {
-                text: qsTranslate("", "Deactivate all Patches")
+                text: qsTranslate("", "Disable and deactivate all Patches")
                 onClicked: menuRemorse.execute( text, function() { PatchManager.call(PatchManager.unapplyAllPatches()) } )
                 visible: uisettings.showUnapplyAll
             }
