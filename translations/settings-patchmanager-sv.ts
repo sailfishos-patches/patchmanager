@@ -5,7 +5,7 @@
         <location filename="../src/bin/dialog/dialog.qml" line="63"/>
         <location filename="../src/bin/dialog/dialog.qml" line="80"/>
         <source>Activate all enabled Patches</source>
-        <translation>Tillämpa alla aktiva korrigeringar</translation>
+        <translation>Aktivera alla tillåtna korrigeringar</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="89"/>
@@ -20,12 +20,12 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="177"/>
         <source>Activating all enabled Patches took %L1 seconds.</source>
-        <translation>Tillämpning av alla aktiva korrigeringar tog %L1 sekunder.</translation>
+        <translation>Aktivering av alla tillåtna korrigeringar tog %L1 sekunder.</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="179"/>
         <source>Successfully activated all enabled Patches.</source>
-        <translation>Tillämpade alla aktiva korrigeringar.</translation>
+        <translation>Aktiverade alla tillåtna korrigeringar.</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="180"/>
@@ -520,12 +520,12 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="69"/>
         <source>Activate Patches when booting</source>
-        <translation>Aktivera korrigeringar vid systemstart</translation>
+        <translation>Tillämpa korrigeringar vid systemstart</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="70"/>
         <source>Automatically activate all enabled Patches when SailfishOS starts.</source>
-        <translation>Aktivera automatiskt alla aktiva korrigeringar när SailfishOS startas,</translation>
+        <translation>Tillämpa automatiskt alla aktiva korrigeringar när SailfishOS startas,</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="77"/>
