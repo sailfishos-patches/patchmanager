@@ -23,7 +23,7 @@ PATCH_NAME="unified_diff.patch"
 PATCH_PATH="$PATCH_DIR/$PATCH_NAME"
 PATCH_EDITED_NAME="unified_diff_${SYS_BITNESS}bit.patch"
 
-# list of candidate paths to attempt 32/64bit library path correction
+# list of candidate paths to attempt 32-/64-bit library path correction
 MANGLE_CANDIDATES=""
 if [ -z "$DISABLE_MANGLING" ] && [ -r "/etc/patchmanager/manglelist.conf" ] ; then
     source /etc/patchmanager/manglelist.conf
