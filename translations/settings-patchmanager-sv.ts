@@ -5,12 +5,12 @@
         <location filename="../src/bin/dialog/dialog.qml" line="63"/>
         <location filename="../src/bin/dialog/dialog.qml" line="80"/>
         <source>Activate all enabled Patches</source>
-        <translation>Tillämpa alla aktiva korrigeringar</translation>
+        <translation>Aktivera alla tillåtna korrigeringar</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="89"/>
         <source>Patchmanager will start to activate all enabled Patches in 10 seconds.</source>
-        <translation>Patchmanager tillämpar alla aktiva korrigeringar om 10 sekunder.</translation>
+        <translation>Patchmanager aktiverar alla tillåtna korrigeringar om 10 sekunder.</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="102"/>
@@ -20,17 +20,17 @@
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="177"/>
         <source>Activating all enabled Patches took %L1 seconds.</source>
-        <translation>Tillämpning av alla aktiva korrigeringar tog %L1 sekunder.</translation>
+        <translation>Aktivering av alla tillåtna korrigeringar tog %L1 sekunder.</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="179"/>
         <source>Successfully activated all enabled Patches.</source>
-        <translation>Tillämpade alla aktiva korrigeringar.</translation>
+        <translation>Aktiverade alla tillåtna korrigeringar.</translation>
     </message>
     <message>
         <location filename="../src/bin/dialog/dialog.qml" line="180"/>
         <source>Failed to activate all enabled Patches!</source>
-        <translation>Kunde inte tillämpade alla aktiva korrigeringar!</translation>
+        <translation>Kunde inte aktivera alla tillåtna korrigeringar!</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="54"/>
@@ -54,7 +54,7 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="87"/>
         <source>Patchmanager allows to automatically modify system files via Patches. It provides a daemon which performs the activation of Patches, plus a GUI to configure these operations and to install or remove Patches.</source>
-        <translation>Patchmanager möjliggör automatiska systemändringar via korrigeringsfiler. Den tillhandahåller en systemtjänst som utför aktivering av korrigeringarna, samt ett grafiskt gränssnitt för att konfigurera dessa åtgärder och installera eller avinstallera korrigeringsfiler.</translation>
+        <translation>Patchmanager möjliggör automatisk ändring av systemfiler, via korrigeringar (patchar). Den tillhandahåller en systemtjänst som utför aktivering av korrigeringarna, samt ett grafiskt gränssnitt för att konfigurera dessa åtgärder och installera eller avinstallera korrigeringar.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="101"/>
@@ -145,7 +145,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="112"/>
         <source>This Patch is not available anymore. You will not be able to reinstall it.</source>
-        <translation>Denna korrigeringsfil finns inte längre tillgänglig. Du kommer inte att kunna installera om den.</translation>
+        <translation>Denna korrigering finns inte längre tillgänglig. Du kommer inte att kunna installera om den.</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="121"/>
@@ -181,7 +181,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="170"/>
         <source>This Patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for details.</source>
-        <translation>Denna korrigering använder det äldre formatet för filen patch.json. Om du är dess utvecklare bör du överväga att uppdatera till det nya formatet. Om du använder webbkatalogen skall du inte inkludera en patch.json alls i uppladdningen. &lt;br /&gt;Se utvecklaravsnittet i &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; för mer information.</translation>
+        <translation>Denna korrigering använder det äldre formatet för filen patch.json. Om du är dess utvecklare bör du överväga att uppdatera till det nya formatet. Om du använder webbkatalogen skall du inte inkludera en patch.json i uppladdningen. &lt;br /&gt;Se utvecklaravsnittet i &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; för mer information.</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="176"/>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="152"/>
         <source>Deactivate all Patches</source>
-        <translation>Avaktivera alla korrigeringsfiler</translation>
+        <translation>Avaktivera alla korrigeringar</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="158"/>
@@ -242,7 +242,7 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="183"/>
         <source>Installed Patches</source>
-        <translation>Installerade korrigeringsfiler</translation>
+        <translation>Installerade korrigeringar</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="362"/>
@@ -520,12 +520,12 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="69"/>
         <source>Activate Patches when booting</source>
-        <translation>Aktivera korrigeringar vid systemstart</translation>
+        <translation>Tillämpa korrigeringar vid systemstart</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="70"/>
         <source>Automatically activate all enabled Patches when SailfishOS starts.</source>
-        <translation>Aktivera automatiskt alla aktiva korrigeringar när SailfishOS startas,</translation>
+        <translation>Tillämpa automatiskt alla aktiva korrigeringar när SailfishOS startas,</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="77"/>
