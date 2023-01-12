@@ -30,7 +30,7 @@ jobs:
     #    key: cache
 
     - name: Build aarch64
-      # mb2 does require bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
+      # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
       run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
             mkdir -p build ;
             cd build ;
@@ -39,7 +39,7 @@ jobs:
             sudo cp -r RPMS/*.rpm /share/output"
 
     - name: Build armv7hl
-      # mb2 does require bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
+      # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
       run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
             mkdir -p build ;
             cd build ;
@@ -48,13 +48,13 @@ jobs:
             sudo cp -r RPMS/*.rpm /share/output"
 
     - name: Build i486
-      # mb2 does require bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
+      # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
       run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
-             mkdir -p build ;
-             cd build ;
-             cp -r /share/* . ;
-             mb2 -t SailfishOS-$RELEASE-i486 build --enable-debug ;
-             sudo cp -r RPMS/*.rpm /share/output"
+            mkdir -p build ;
+            cd build ;
+            cp -r /share/* . ;
+            mb2 -t SailfishOS-$RELEASE-i486 build --enable-debug ;
+            sudo cp -r RPMS/*.rpm /share/output"
 
     - name: Upload build result
       uses: actions/upload-artifact@v3
