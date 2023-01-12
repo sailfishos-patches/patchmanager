@@ -34,12 +34,13 @@ jobs:
     #    key: cache
 
     - name: Build armv7hl
+      # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
       run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
-             mkdir -p build ;
-             cd build ;
-             cp -r /share/* . ;
-             mb2 -t SailfishOS-$RELEASE-armv7hl build --enable-debug ;
-             sudo cp -r RPMS/*.rpm /share/output"
+            mkdir -p build ;
+            cd build ;
+            cp -r /share/* . ;
+            mb2 -t SailfishOS-$RELEASE-armv7hl build --enable-debug ;
+            sudo cp -r RPMS/*.rpm /share/output"
  
     - name: Upload build result
       uses: actions/upload-artifact@v3
@@ -51,11 +52,11 @@ jobs:
       if: contains(github.ref, 'release')
       run: |
         set -x
-        assets=()
+        assets=""
         for asset in output/*.rpm; do
-          assets+=("-a" "$asset")
+          assets="$assets -a $asset"
         done
         tag_name="${GITHUB_REF##*/}"
-        hub release create "${assets[@]}" -m "$tag_name" "$tag_name"
+        hub release create"$assets" -m "$tag_name" "$tag_name"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
