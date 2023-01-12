@@ -20,7 +20,9 @@ jobs:
     - name: Prepare
       run: mkdir output
 
-    #- name: Cache SDK images
+    # Caching Docker images is not ready yet, see 
+    # https://github.com/storeman-developers/harbour-storeman-installer/blob/devel/cache-docker-images_github-ci.md
+    #- name: Cache Docker images of the Sailfish-SDK
     #  id: cache-sdk
     #  uses: actions/cache@v3
     #  with:
