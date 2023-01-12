@@ -53,11 +53,11 @@ void help()
     std::cout << "patchmanager" << std::endl;
     std::cout << std::endl;
     std::cout << "Usage:" << std::endl;
-    std::cout << "  patchmanager                : Run as daemon" << std::endl;
+    std::cout << "  patchmanager                : Run Patchmanager as daemon" << std::endl;
     std::cout << "  patchmanager -a <Patch>     : Enable and activate a Patch" << std::endl;
     std::cout << "  patchmanager -u <Patch>     : Deactivate and disable (unapply) a Patch" << std::endl;
     std::cout << "  patchmanager --unapply-all  : Deactivate and disable (unapply) all Patches" << std::endl;
-    std::cout << "  patchmanager --daemon       : Daemonize" << std::endl;
+    std::cout << "  patchmanager --daemon       : Daemonize Patchmanager" << std::endl;
 }
 
 int main(int argc, char **argv)
