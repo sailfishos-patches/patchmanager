@@ -141,13 +141,13 @@ case "$1" in
 ;;
 [2-9])  # Update
   echo "Updating %{name}: %%pre section"
-  # Unapply all patches if Patchmanager 2.x is installed
+  # Disable and deactivate ("unapply") all Patches if Patchmanager 2.x is installed
   if [ -d /var/lib/patchmanager/ausmt/patches/ ]
   then
-    /usr/sbin/patchmanager --unapply-all || true
+    /usr/sbin/patchmanager --unapply-all
     if [ -n "$(ls -A /var/lib/patchmanager/ausmt/patches/)" ]
     then
-      echo "Unapply all patches before updating %{name}!"
+      echo "Do disable ("unapply") all Patches: %{name} must not be updated unless all Patches are inactive!"
       exit 1  # An exit N with N ≠ 0 in a %%pre scriptlet might not constitute an
               # appropriate way to terminate an update (here: from PM2 to PM3), see e.g.,
               # https://docs.fedoraproject.org/en-US/packaging-guidelines/Scriptlets/#_syntax
