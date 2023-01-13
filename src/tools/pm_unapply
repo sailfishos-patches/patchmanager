@@ -93,7 +93,7 @@ remove_text_patch() {
 clean_backup_patch() {
   log
   log "----------------------------------"
-  log "Deleting Patch backup directory"
+  log "Deleting patch file backup"
   log "----------------------------------"
   log
 
