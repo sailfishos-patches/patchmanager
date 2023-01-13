@@ -180,6 +180,8 @@ create_backup_patch() {
   log
 
   mkdir -p "$PM_PATCH_BACKUP_DIR" > /dev/null 2>&1
+  # Backup the original patch file, NOT $PATCH_PATH, which might be altered by the 32-/64-bit mangling in line 143.
+  # If the mangling was performed successfully, it already wrote its patched $PATCH_EDITED_NAME to $PM_PATCH_BACKUP_DIR in line 134.
   cp -f "$PATCH_DIR/$PATCH_NAME" "$PM_PATCH_BACKUP_DIR" > /dev/null 2>&1
   log "Created backup: $PM_PATCH_BACKUP_DIR"
   log
