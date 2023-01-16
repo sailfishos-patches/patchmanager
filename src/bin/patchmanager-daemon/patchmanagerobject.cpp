@@ -1374,7 +1374,7 @@ void PatchManagerObject::lipstickChanged(const QString &state)
     qDebug() << Q_FUNC_INFO << state;
 
     if (!getLoaded() && !m_failed && !getSettings(QStringLiteral("applyOnBoot"), false).toBool()) {
-        qDebug() << Q_FUNC_INFO << "Automatically activate all enabled Patches when SailfishOS boots.";
+        qDebug() << Q_FUNC_INFO << "Automatically activate all enabled Patches when SailfishOS starts.";
         QTimer::singleShot(20000, this, [this](){
             QDBusMessage showPatcher = QDBusMessage::createMethodCall(QStringLiteral("org.SfietKonstantin.patchmanager"),
                                                                       QStringLiteral("/"),
