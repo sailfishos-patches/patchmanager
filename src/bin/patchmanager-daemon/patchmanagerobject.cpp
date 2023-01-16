@@ -116,7 +116,7 @@ static const QString PM_UNAPPLY = QStringLiteral("/usr/libexec/pm_unapply");
 static const QString BIN_UNZIP = QStringLiteral("/usr/bin/unzip");
 static const QString BIN_TAR = QStringLiteral("/bin/tar");
 static const QString BIN_PKCON = QStringLiteral("/usr/bin/pkcon");
-static const QString BIN_SYSTEMCTL_U = QStringLiteral("/bin/systemctl-user");
+static const QString BIN_SYSTEMCTL_U = QStringLiteral("/usr/bin/systemctl-user");
 static const QString BIN_RPM = QStringLiteral("/bin/rpm");
 
 static const QString BROWSER_CODE = QStringLiteral("browser");
@@ -824,7 +824,6 @@ void PatchManagerObject::restartService(const QString &serviceName)
         qWarning() << Q_FUNC_INFO << "Error sending message";
         qDebug() << Q_FUNC_INFO << "Invoking systemctl:" <<
                     QProcess::execute(BIN_SYSTEMCTL_U, { QStringLiteral("--no-block"), QStringLiteral("restart"), serviceName });
-                    QProcess::execute(QStringLiteral("/bin/systemctl-user"), { QStringLiteral("--no-block"), QStringLiteral("restart"), serviceName });
     }
 }
 
