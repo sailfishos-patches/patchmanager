@@ -114,7 +114,7 @@ Page {
                     left: parent.left
                 }
                 label: qsTranslate("", "Version Check") + ":"
-                description: qsTranslate("", "Allows to enable Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.")
+                description: qsTranslate("", "Allow to enable Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.")
                 onCurrentIndexChanged: PatchManager.sfosVersionCheck = currentIndex
                 currentIndex: (PatchManager.sfosVersionCheck) ? PatchManager.sfosVersionCheck : VersionCheck.Strict
                 menu: ContextMenu {
