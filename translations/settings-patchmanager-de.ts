@@ -433,7 +433,7 @@
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="407"/>
         <source>[click to re-install]</source>
-        <translation>[klicke zum neu installieren]</translation>
+        <translation>[zum neu Installieren tippen]</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="408"/>
