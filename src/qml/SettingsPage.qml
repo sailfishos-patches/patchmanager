@@ -90,7 +90,7 @@ Page {
             }
 
             TextSwitch {
-                text: qsTranslate("", "Activate Patches when booting")
+                text: qsTranslate("", "Activate enabled Patches when booting")
                 description: qsTranslate("", "Automatically activate all enabled Patches when SailfishOS starts.")
                 checked: PatchManager.applyOnBoot
                 onClicked: PatchManager.applyOnBoot = !PatchManager.applyOnBoot
@@ -98,8 +98,8 @@ Page {
             }
 
             TextSwitch {
-                text: qsTranslate("", "Show 'Deactivate all Patches' pulley menu entry")
-                description: qsTranslate("", "Enable an additional pulley menu entry for Patchmanager's main page to deactivate all Patches.")
+                text: qsTranslate("", "Show 'Disable and deactivate all Patches' pulley menu entry")
+                description: qsTranslate("", "Enable an additional pulley menu entry for Patchmanager's main page to disable and deactivate all Patches.")
                 checked: uisettings.showUnapplyAll
                 onClicked: uisettings.showUnapplyAll = !uisettings.showUnapplyAll
                 automaticCheck: false
@@ -114,7 +114,7 @@ Page {
                     left: parent.left
                 }
                 label: qsTranslate("", "Version Check") + ":"
-                description: qsTranslate("", "Enable activating Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.")
+                description: qsTranslate("", "Allows to enable Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.")
                 onCurrentIndexChanged: PatchManager.sfosVersionCheck = currentIndex
                 currentIndex: (PatchManager.sfosVersionCheck) ? PatchManager.sfosVersionCheck : VersionCheck.Strict
                 menu: ContextMenu {

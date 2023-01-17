@@ -82,7 +82,7 @@ remove_text_patch() {
   if [ -f "$PATCH_FILE" ]; then
     log
     log "----------------------------------"
-    log "Unapplying text patch"
+    log "Reverting (unapplying) applied patch file"
     log "----------------------------------"
     log
 
@@ -93,7 +93,7 @@ remove_text_patch() {
 clean_backup_patch() {
   log
   log "----------------------------------"
-  log "Cleaning backup patch"
+  log "Deleting backup of patch file"
   log "----------------------------------"
   log
 
@@ -117,7 +117,7 @@ log "----------------------------------"
 log
 
 if [ -z "$PARAMETER" ]; then
-  log "ERROR: A parameter must be provided for unapplying!"
+  log "ERROR: A parameter must be provided for the pm_unapply script!"
   failure
 fi
 

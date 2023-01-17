@@ -78,13 +78,13 @@ test_if_applied() {
   fi
 }
 
-# see issue #71: https://github.com/sailfishos-patches/patchmanager/issues/71
+# For details see issue #71: https://github.com/sailfishos-patches/patchmanager/issues/71
 mangle_libpath() {
   if [ -f "$PATCH_PATH" ]; then
     log
     log "----------------------------------"
-    [ $SYS_BITNESS -eq 32 ] && log "Checking paths for 32->64bit conversion"
-    [ $SYS_BITNESS -eq 64 ] && log "Checking paths for 64->32bit conversion"
+    [ $SYS_BITNESS -eq 32 ] && log "Checking paths for 32-bit --> 64-bit conversion"
+    [ $SYS_BITNESS -eq 64 ] && log "Checking paths for 64-bit --> 32-bit conversion"
     log "----------------------------------"
     log
 
@@ -149,7 +149,7 @@ verify_text_patch() {
   if [ -f "$PATCH_PATH" ]; then
     log
     log "----------------------------------"
-    log "Dry running patch"
+    log "Dry running patch file"
     log "----------------------------------"
     log
 
@@ -164,7 +164,7 @@ install_text_patch() {
   if [ -f "$PATCH_PATH" ]; then
     log
     log "----------------------------------"
-    log "Applying text patch"
+    log "Applying patch file"
     log "----------------------------------"
     log
 
@@ -175,7 +175,7 @@ install_text_patch() {
 create_backup_patch() {
   log
   log "----------------------------------"
-  log "Creating backup patch"
+  log "Creating backup of patch file"
   log "----------------------------------"
   log
 
@@ -204,7 +204,7 @@ log "----------------------------------"
 log
 
 if [ -z "$PARAMETER" ]; then
-  log "ERROR: A parameter must be provided for applying!"
+  log "ERROR: A parameter must be provided for the pm_apply script!"
   failure
 fi
 

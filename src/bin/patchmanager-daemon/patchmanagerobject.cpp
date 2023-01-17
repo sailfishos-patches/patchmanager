@@ -243,7 +243,7 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
         break;
     case NotifyActionSuccessUnapply:
         summary = qApp->translate("", "Patch deactivated");
-        body = qApp->translate("", "Patch %1 deactivated.").arg(patch);
+        body = qApp->translate("", "Patch %1 is now inactive.").arg(patch);
         if (getToggleServices()) {
             body.append( ", " );
             body.append( qApp->translate("", "some service(s) should be restarted.") );
@@ -333,7 +333,7 @@ void PatchManagerObject::lateInitialize()
 
     QFile file (AUSMT_INSTALLED_LIST_FILE);
     if (file.exists()) {
-        qWarning() << Q_FUNC_INFO << "Found extant AUSMT package list, importing list as Patches marked active.";
+        qWarning() << Q_FUNC_INFO << "Found extant AUSMT package list, importing list as enabled Patches.";
         if (file.open(QFile::ReadOnly)) {
             while (!file.atEnd()) {
                 const QString line = QString::fromLatin1(file.readLine());
@@ -937,13 +937,19 @@ void PatchManagerObject::process()
 {
     const QStringList args = QCoreApplication::arguments();
 
-    if (args.count() == 2 && args[1] == QStringLiteral("--daemon")) {
-        initialize();
-    } else if (args[1] == QStringLiteral("--reset-system")) {
-         resetSystem();
-         QCoreApplication::exit(2);
-         return;
-    } else if (args.count() > 1) {
+    if (args.count() == 1) {
+        return;  // Prints help text.
+    } else if (args.count() == 2) {
+        if (args[1] == QStringLiteral("--help")) {
+            return;  // Also prints help text.
+        } else if (args[1] == QStringLiteral("--daemon")) {
+            initialize();
+        } else if (args[1] == QStringLiteral("--reset-system")) {
+            resetSystem();
+            QCoreApplication::exit(2);
+            return;
+        }
+    } else if (args.count() > 1) {  // Must be "> 1", not "> 2" for "--unapply-all"
         QDBusConnection connection = QDBusConnection::systemBus();
         qDebug() << Q_FUNC_INFO << "Has arguments, sending D-Bus message and quit.";
 
@@ -1373,7 +1379,7 @@ void PatchManagerObject::lipstickChanged(const QString &state)
     qDebug() << Q_FUNC_INFO << state;
 
     if (!getLoaded() && !m_failed && !getSettings(QStringLiteral("applyOnBoot"), false).toBool()) {
-        qDebug() << Q_FUNC_INFO << "Automatically activating all Patches marked active after SailfishOS booted.";
+        qDebug() << Q_FUNC_INFO << "Automatically activate all enabled Patches when SailfishOS starts.";
         QTimer::singleShot(20000, this, [this](){
             QDBusMessage showPatcher = QDBusMessage::createMethodCall(QStringLiteral("org.SfietKonstantin.patchmanager"),
                                                                       QStringLiteral("/"),
@@ -1450,10 +1456,10 @@ void PatchManagerObject::onLipstickChanged(const QString &, const QVariantMap &c
     const QString activeState = changedProperties.value(QStringLiteral("ActiveState"), QStringLiteral("unknown")).toString();
     qDebug() << Q_FUNC_INFO << activeState;
     if (activeState == QStringLiteral("failed")) {
-        qInfo() << Q_FUNC_INFO << "Detected lipstick crash, hence deactivating all Patches.";
+        qInfo() << Q_FUNC_INFO << "Detected lipstick crash, hence deactivating and disabling all Patches.";
         unapplyAllPatches();
     } else if (activeState == QStringLiteral("active") && !getLoaded() && !m_failed && !getSettings(QStringLiteral("applyOnBoot"), false).toBool()) {
-        qInfo() << Q_FUNC_INFO << "Automatically activating all Patches marked active.";
+        qInfo() << Q_FUNC_INFO << "Automatically activating all enabled Patches.";
         QTimer::singleShot(5000, this, [this](){
             QDBusMessage showPatcher = QDBusMessage::createMethodCall(QStringLiteral("org.SfietKonstantin.patchmanager"),
                                                                       QStringLiteral("/"),
@@ -1470,7 +1476,7 @@ void PatchManagerObject::onOsUpdateProgress(int progress)
         return;
     }
 
-    qInfo() << Q_FUNC_INFO << "Detected SailfishOS update in progress, hence deactivating all Patches.";
+    qInfo() << Q_FUNC_INFO << "Detected SailfishOS update in progress, hence deactivating and disabling all Patches.";
     unapplyAllPatches();
 }
 

@@ -1,8 +1,13 @@
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
+ * Copyright (c) 2021, Patchmanager for SailfishOS contributors:
+ *                  - olf "Olf0" <https://github.com/Olf0>
+ *                  - Peter G. "nephros" <sailfish@nephros.org>
+ *                  - Vlad G. "b100dian" <https://github.com/b100dian>
  *
- * You may use this file under the terms of the BSD license as follows:
+ * You may use this file under the terms of the 3-clause BSD license,
+ * as follows:
  *
  * "Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -48,11 +53,11 @@ void help()
     std::cout << "patchmanager" << std::endl;
     std::cout << std::endl;
     std::cout << "Usage:" << std::endl;
-    std::cout << "  patchmanager                : run as daemon" << std::endl;
-    std::cout << "  patchmanager -a <patch>     : apply a patch" << std::endl;
-    std::cout << "  patchmanager -u <patch>     : unapply a patch" << std::endl;
-    std::cout << "  patchmanager --unapply-all  : unapply all patches" << std::endl;
-    std::cout << "  patchmanager --daemon       : daemonize" << std::endl;
+    std::cout << "  patchmanager [--help]       : Print this help text" << std::endl;
+    std::cout << "  patchmanager -a <Patch>     : Enable and activate a Patch" << std::endl;
+    std::cout << "  patchmanager -u <Patch>     : Deactivate and disable (unapply) a Patch" << std::endl;
+    std::cout << "  patchmanager --unapply-all  : Deactivate and disable (unapply) all Patches" << std::endl;
+    std::cout << "  patchmanager --daemon       : Start Patchmanager as daemon" << std::endl;
 }
 
 int main(int argc, char **argv)
