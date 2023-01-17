@@ -13,7 +13,7 @@
 # CATALOG_URL SERVER_URL "/" API_PATH
 %global catalog_server https://coderus.openrepos.net
 %global catalog_api_uri pm2/api
-%define catalog_defines -DSERVER_URL=%{catalog_server} -DAPI_PATH=%{catalog_api_uri}
+%global catalog_defines -DSERVER_URL=%{catalog_server} -DAPI_PATH=%{catalog_api_uri}
 
 Name:       patchmanager
 
