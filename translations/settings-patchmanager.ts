@@ -90,7 +90,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="251"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="260"/>
         <source>Donate</source>
         <translation type="unfinished"></translation>
     </message>
@@ -212,7 +212,7 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="162"/>
-        <source>Deactivate all Patches</source>
+        <source>Disable and deactivate all Patches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -248,7 +248,7 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="382"/>
-        <location filename="../src/qml/WebPatchPage.qml" line="339"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="348"/>
         <source>This Patch is incompatible with the installed SailfishOS version.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -274,7 +274,7 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="515"/>
-        <location filename="../src/qml/WebPatchPage.qml" line="90"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="99"/>
         <source>Patch details</source>
         <translation type="unfinished"></translation>
     </message>
@@ -295,7 +295,7 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="538"/>
-        <location filename="../src/qml/WebCatalogPage.qml" line="253"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="249"/>
         <source>No Patches available</source>
         <translation type="unfinished"></translation>
     </message>
@@ -331,7 +331,7 @@
     </message>
     <message>
         <location filename="../src/qml/ScreenshotsPage.qml" line="71"/>
-        <location filename="../src/qml/WebPatchPage.qml" line="277"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="286"/>
         <source>Screenshots</source>
         <translation type="unfinished"></translation>
     </message>
@@ -376,7 +376,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="240"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="236"/>
         <source>Update available: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -391,59 +391,64 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="193"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="86"/>
+        <source>Open Project Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebPatchPage.qml" line="202"/>
         <source>Author: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="190"/>
-        <location filename="../src/qml/WebPatchPage.qml" line="209"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="218"/>
         <source>Links</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="230"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="239"/>
         <source>Open discussion link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="208"/>
-        <location filename="../src/qml/WebPatchPage.qml" line="272"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="281"/>
         <source>Sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="323"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="332"/>
         <source>Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="341"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="350"/>
         <source>Install Patch %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="343"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="352"/>
         <source>Re-Install Patch %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="398"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="407"/>
         <source>[click to re-install]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="399"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="408"/>
         <source>[installed]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="401"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="410"/>
         <source>[click to install]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="417"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="426"/>
         <source>Compatible: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -470,7 +475,7 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="246"/>
-        <source>Patch %1 deactivated.</source>
+        <source>Patch %1 is now inactive.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -505,67 +510,87 @@
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="173"/>
-        <location filename="../src/qml/SettingsPage.qml" line="68"/>
+        <location filename="../src/qml/SettingsPage.qml" line="79"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="71"/>
+        <location filename="../src/qml/SettingsPage.qml" line="82"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="74"/>
+        <location filename="../src/qml/SettingsPage.qml" line="85"/>
         <source>Show notification on success</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="75"/>
+        <location filename="../src/qml/SettingsPage.qml" line="86"/>
         <source>If this is off, notifications will only be shown when something went wrong.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="84"/>
-        <source>Activate Patches when booting</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qml/SettingsPage.qml" line="81"/>
-        <source>Advanced</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qml/SettingsPage.qml" line="85"/>
-        <source>Automatically activate all enabled Patches when SailfishOS starts.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qml/SettingsPage.qml" line="92"/>
-        <source>Show &apos;Deactivate all Patches&apos; pulley menu entry</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qml/SettingsPage.qml" line="93"/>
-        <source>Enable an additional pulley menu entry for Patchmanager&apos;s main page to deactivate all Patches.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qml/SettingsPage.qml" line="100"/>
-        <source>Allow incompatible Patches</source>
+        <source>Activate enabled Patches when booting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="101"/>
-        <source>Enable activating Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.</source>
+        <source>Show &apos;Disable and deactivate all Patches&apos; pulley menu entry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="109"/>
+        <location filename="../src/qml/SettingsPage.qml" line="102"/>
+        <source>Enable an additional pulley menu entry for Patchmanager&apos;s main page to disable and deactivate all Patches.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="116"/>
+        <source>Version Check</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="117"/>
+        <source>Allows to enable Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="122"/>
+        <source>Strict</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="123"/>
+        <source>No check</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="129"/>
+        <source>Mode for Patch developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="130"/>
+        <source>Enable various functions to be used by Patch developers. Among other things, it shows debug log files for applying the patch file when a Patch is activated on its details page.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="108"/>
+        <source>Advanced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="94"/>
+        <source>Automatically activate all enabled Patches when SailfishOS starts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="149"/>
         <source>Convert Patches between 32-bit and 64-bit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="110"/>
+        <location filename="../src/qml/SettingsPage.qml" line="150"/>
         <source>Automatically convert lib or lib64 for select paths shown below.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -639,7 +664,7 @@
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="68"/>
-        <location filename="../src/qml/patchmanager.cpp" line="257"/>
+        <location filename="../src/qml/patchmanager.cpp" line="283"/>
         <source>other</source>
         <translation>Other</translation>
     </message>
