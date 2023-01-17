@@ -938,13 +938,19 @@ void PatchManagerObject::process()
 {
     const QStringList args = QCoreApplication::arguments();
 
-    if (args.count() == 2 && args[1] == QStringLiteral("--daemon")) {
-        initialize();
-    } else if (args[1] == QStringLiteral("--reset-system")) {
-         resetSystem();
-         QCoreApplication::exit(2);
-         return;
-    } else if (args.count() > 1) {
+    if (args.count() == 1) {
+        return;  // Prints help text.
+    } else if (args.count() == 2) {
+        if (args[1] == QStringLiteral("--help")) {
+            return;  // Also prints help text.
+        } else if (args[1] == QStringLiteral("--daemon")) {
+            initialize();
+        } else if (args[1] == QStringLiteral("--reset-system")) {
+            resetSystem();
+            QCoreApplication::exit(2);
+            return;
+        }
+    } else if (args.count() > 1) {  // Must be "> 1", not "> 2" for "--unapply-all"
         QDBusConnection connection = QDBusConnection::systemBus();
         qDebug() << Q_FUNC_INFO << "Has arguments, sending D-Bus message and quit.";
 
