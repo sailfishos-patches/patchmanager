@@ -404,10 +404,10 @@ Page {
                                 color: Theme.highlightColor
                                 text: fileDelegate.isInstalled
                                     ? ( fileDelegate.isReinstallable
-                                        ? qsTranslate("", "[click to re-install]")
+                                        ? qsTranslate("", "[tap to re-install]")
                                         : qsTranslate("", "[installed]")
                                       )
-                                    : qsTranslate("", "[click to install]")
+                                    : qsTranslate("", "[tap to install]")
                             }
 
                             Label {
