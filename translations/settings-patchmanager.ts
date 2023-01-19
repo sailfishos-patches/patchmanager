@@ -434,7 +434,7 @@
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="407"/>
-        <source>[click to re-install]</source>
+        <source>[tap to re-install]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -444,7 +444,7 @@
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="410"/>
-        <source>[click to install]</source>
+        <source>[tap to install]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
