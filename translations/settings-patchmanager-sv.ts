@@ -432,8 +432,8 @@
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="407"/>
-        <source>[click to re-install]</source>
-        <translation>[Klicka för att installera om]</translation>
+        <source>[tap to re-install]</source>
+        <translation>[Tryck för att installera om]</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="408"/>
@@ -442,8 +442,8 @@
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="410"/>
-        <source>[click to install]</source>
-        <translation>[Klicka för att installera]</translation>
+        <source>[tap to install]</source>
+        <translation>[Tryck för att installera]</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="426"/>
