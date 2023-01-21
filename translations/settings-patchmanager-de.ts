@@ -432,8 +432,8 @@
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="407"/>
-        <source>[click to re-install]</source>
-        <translation>[zum neu Installieren tippen]</translation>
+        <source>[tap to re-install]</source>
+        <translation>[Antippen zur Neu-Installation]</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="408"/>
@@ -442,8 +442,8 @@
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="410"/>
-        <source>[click to install]</source>
-        <translation>[zum Installieren tippen]</translation>
+        <source>[tap to install]</source>
+        <translation>[Antippen zum Installieren]</translation>
     </message>
     <message>
         <location filename="../src/qml/WebPatchPage.qml" line="426"/>
@@ -548,11 +548,6 @@
         <translation>Versionsprüfung</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="117"/>
-        <source>Allows to enable Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.</source>
-        <translation>Ermögliche, Patches zu aktivieren, die nicht als kompatibel mit der installierten SailfishOS Version gekennzeichnet sind. Beachte, dass Patches die tatsächlich inkompatibel sind, nicht funktionieren werden.</translation>
-    </message>
-    <message>
         <location filename="../src/qml/SettingsPage.qml" line="122"/>
         <source>Strict</source>
         <translation>Streng</translation>
@@ -581,6 +576,11 @@
         <location filename="../src/qml/SettingsPage.qml" line="94"/>
         <source>Automatically activate all enabled Patches when SailfishOS starts.</source>
         <translation>Automatisch alle ausgewählten Patches beim Start von SailfishOS aktivieren.</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="117"/>
+        <source>Allow to enable Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.</source>
+        <translation>Ermögliche, Patches zu aktivieren, die nicht als kompatibel mit der installierten SailfishOS Version gekennzeichnet sind. Beachte, dass Patches die tatsächlich inkompatibel sind, nicht funktionieren werden.</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="149"/>
