@@ -109,15 +109,17 @@ jobs:
         name: RPM-build-results
         path: output/
 
-    - name: Create release
-      if: contains(github.ref, 'release')
-      run: |
-        set -x
-        assets=""
-        for asset in output/*/*/*.rpm; do
-          assets="$assets -a $asset"
-        done
-        tag_name="${GITHUB_REF##*/}"
-        hub release create"$assets" -m "$tag_name" "$tag_name"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+# Due to building two releases for each architecture, they will clobber each other,
+# when uploaded to the single directory of a GITHUB_REF
+#    - name: Create release
+#      if: contains(github.ref, 'release')
+#      run: |
+#        set -x
+#        assets=""
+#        for asset in output/*/*/*.rpm; do
+#          assets="$assets -a $asset"
+#        done
+#        tag_name="${GITHUB_REF##*/}"
+#        hub release create"$assets" -m "$tag_name" "$tag_name"
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
