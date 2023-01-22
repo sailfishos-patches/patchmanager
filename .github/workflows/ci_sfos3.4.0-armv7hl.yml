@@ -28,7 +28,7 @@ jobs:
     #    key: cache
 
     - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
-      env: |
+      env:
         ARCH: armv7hl
         RELEASE: 3.4.0.24
       # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
