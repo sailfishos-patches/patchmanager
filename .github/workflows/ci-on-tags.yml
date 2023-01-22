@@ -31,10 +31,10 @@ jobs:
     #    path: $GITHUB_WORKSPACE/…
     #    key: cache
 
-    - env:
+    - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
+      env:
         ARCH: aarch64
         RELEASE: ${{ env.LATEST }}
-      name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
       # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
       run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
             mkdir -p build ;
@@ -43,10 +43,10 @@ jobs:
             mb2 -t SailfishOS-$RELEASE-$ARCH build --enable-debug ;
             sudo cp -r RPMS/*.rpm /share/output/$RELEASE/$ARCH/"
 
-    - env:
+    - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
+      env:
         ARCH: armv7hl
         RELEASE: ${{ env.LATEST }}
-      name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
       # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
       run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
             mkdir -p build ;
@@ -55,10 +55,10 @@ jobs:
             mb2 -t SailfishOS-$RELEASE-$ARCH build --enable-debug ;
             sudo cp -r RPMS/*.rpm /share/output/$RELEASE/$ARCH/"
 
-    - env:
+    - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
+      env:
         ARCH: i486
         RELEASE: ${{ env.LATEST }}
-      name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
       # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
       run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
             mkdir -p build ;
@@ -67,10 +67,10 @@ jobs:
             mb2 -t SailfishOS-$RELEASE-$ARCH build --enable-debug ;
             sudo cp -r RPMS/*.rpm /share/output/$RELEASE/$ARCH/"
 
-    - env:
+    - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
+      env:
         ARCH: aarch64
         RELEASE: 4.0.1.45
-      name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
       # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
       run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
             mkdir -p build ;
@@ -79,10 +79,10 @@ jobs:
             mb2 -t SailfishOS-$RELEASE-$ARCH build --enable-debug ;
             sudo cp -r RPMS/*.rpm /share/output/$RELEASE/$ARCH/"
 
-    - env:
+    - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
+      env:
         ARCH: armv7hl
         RELEASE: 3.4.0.24
-      name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
       # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
       run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
             mkdir -p build ;
@@ -91,10 +91,10 @@ jobs:
             mb2 -t SailfishOS-$RELEASE-$ARCH build --enable-debug ;
             sudo cp -r RPMS/*.rpm /share/output/$RELEASE/$ARCH/"
 
-    - env:
+    - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
+      env:
         ARCH: i486
         RELEASE: 3.4.0.24
-      name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
       # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
       run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
             mkdir -p build ;
