@@ -1,16 +1,10 @@
-name: CI on SFOS 3.4.0 (armv7hl)
+name: CI on Pull Request to master and patchmanager3 branches
 
 on:
-  push:
-    tags:
-      - '*'
   pull_request:
     branches:
       - master
       - patchmanager3
-
-env:
-  RELEASE: 3.4.0.24
 
 jobs:
   build:
@@ -22,7 +16,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Prepare
-      run: mkdir output
+      run: mkdir -p output/3.4.0.24/armv7hl
 
     # Caching Docker images is not ready yet, see 
     # https://github.com/storeman-developers/harbour-storeman-installer/blob/devel/cache-docker-images_github-ci.md
@@ -33,19 +27,22 @@ jobs:
     #    path: $GITHUB_WORKSPACE/…
     #    key: cache
 
-    - name: Build armv7hl
+    - env: |
+        ARCH: armv7hl
+        RELEASE: 3.4.0.24
+      name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
       # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
       run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
             mkdir -p build ;
             cd build ;
-            cp -r /share/* . ;
-            mb2 -t SailfishOS-$RELEASE-armv7hl build --enable-debug ;
-            sudo cp -r RPMS/*.rpm /share/output"
- 
+            cp -r /share/* ./ ;
+            mb2 -t SailfishOS-$RELEASE-$ARCH build --enable-debug ;
+            sudo cp -r RPMS/*.rpm /share/output/$RELEASE/$ARCH/"
+
     - name: Upload build result
       uses: actions/upload-artifact@v3
       with:
-        name: output-rpms
+        name: RPM-build-results
         path: output/
 
     - name: Create release
@@ -53,7 +50,7 @@ jobs:
       run: |
         set -x
         assets=""
-        for asset in output/*.rpm; do
+        for asset in output/*/*/*.rpm; do
           assets="$assets -a $asset"
         done
         tag_name="${GITHUB_REF##*/}"
