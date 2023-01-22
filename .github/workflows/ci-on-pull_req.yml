@@ -45,15 +45,17 @@ jobs:
         name: RPM-build-results
         path: output/
 
-    - name: Create release
-      if: contains(github.ref, 'release')
-      run: |
-        set -x
-        assets=""
-        for asset in output/*/*/*.rpm; do
-          assets="$assets -a $asset"
-        done
-        tag_name="${GITHUB_REF##*/}"
-        hub release create"$assets" -m "$tag_name" "$tag_name"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+# "Create release" does not fit here, because this workflow is triggered by Pull Requests,
+# not newly set Git tags.
+#    - name: Create release
+#      if: contains(github.ref, 'release')
+#      run: |
+#        set -x
+#        assets=""
+#        for asset in output/*/*/*.rpm; do
+#          assets="$assets -a $asset"
+#        done
+#        tag_name="${GITHUB_REF##*/}"
+#        hub release create"$assets" -m "$tag_name" "$tag_name"
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
