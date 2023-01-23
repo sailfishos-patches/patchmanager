@@ -73,7 +73,10 @@ For an RPM Patch example, see https://github.com/CODeRUS/sailfishos-disable-glas
 
 Additional, in depth information for developing, testing, debugging and translating Patches is available in [the Wiki](https://github.com/sailfishos-patches/patchmanager/wiki).  Exemplary Patches to depict the aforementioned formats are provided [in the `doc` directory](https://github.com/sailfishos-patches/patchmanager/tree/master/doc).
 
+Sepcifically the tool [sailfish-patch by ichthyosaurus](https://github.com/ichthyosaurus/sailfish-patch#readme) might be helpful to support implementing, debugging and testing Patches.
+
 ## Information for Patchmanager developers
 
 Some in depth information for developing, testing, debugging and translating Patchmanager is available in [the Wiki](https://github.com/sailfishos-patches/patchmanager/wiki).
 
+The [Patchmanager Testcases](https://github.com/sailfishos-patches/patchmanager/tree/master/tests) (for details see its [README](https://github.com/sailfishos-patches/patchmanager/blob/master/tests/README_patching.md), RPMs are available at [OpenRepos](https://openrepos.net/content/patchmanager/patchmanager-testcases) and SailfishOS:Chum) might be helpful to support implementing, debugging and testing Patchmanager.
