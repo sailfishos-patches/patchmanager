@@ -1,0 +1,61 @@
+name: CI on Pull Request to master and patchmanager3 branches
+
+on:
+  pull_request:
+    branches:
+      - master
+      - patchmanager3
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    env:
+      SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Prepare
+      run: mkdir -p output/3.4.0.24/armv7hl
+
+    # Caching Docker images is not ready yet, see 
+    # https://github.com/storeman-developers/harbour-storeman-installer/blob/devel/cache-docker-images_github-ci.md
+    #- name: Cache Docker images of the Sailfish-SDK
+    #  id: cache-sdk
+    #  uses: actions/cache@v3
+    #  with:
+    #    path: $GITHUB_WORKSPACE/…
+    #    key: cache
+
+    - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
+      env:
+        ARCH: armv7hl
+        RELEASE: 3.4.0.24
+      # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
+      run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
+            mkdir -p build ;
+            cd build ;
+            cp -r /share/* ./ ;
+            mb2 -t SailfishOS-$RELEASE-$ARCH build --enable-debug ;
+            sudo cp -r RPMS/*.rpm /share/output/$RELEASE/$ARCH/"
+
+    - name: Upload build results
+      uses: actions/upload-artifact@v3
+      with:
+        name: RPM-build-results
+        path: output/
+
+# "Create release" does not fit here, because this workflow is triggered by Pull Requests,
+# not newly set Git tags.
+#    - name: Create release
+#      if: contains(github.ref, 'release')
+#      run: |
+#        set -x
+#        assets=""
+#        for asset in output/*/*/*.rpm; do
+#          assets="$assets -a $asset"
+#        done
+#        tag_name="${GITHUB_REF##*/}"
+#        hub release create"$assets" -m "$tag_name" "$tag_name"
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
