@@ -58,7 +58,7 @@ Side note: If a JSON file is provided in the upload at the Web Catalog, it does 
 
 For more information about the requirements for uploading Patches to the Web Catalog, see https://coderus.openrepos.net/pm2/usage/
 
-### Patch distribution at OpenRepos.net and other repositories
+### Patch distribution at OpenRepos.net and other RPM repositories
 
 Patches can be too complex for Patchmanager's Web Catalog.  In this case the developer may package the Patch as an RPM and upload it at https://openrepos.net or another user-accessible package repository.
 OpenRepos provides a [category "Patches"](https://openrepos.net/category/patches) and a [tag "Patch"](https://openrepos.net/tags/patch) for this, which both should be used.
@@ -75,4 +75,5 @@ Additional, in depth information for developing, testing, debugging and translat
 
 ## Information for Patchmanager developers
 
-Some  in depth information for developing, testing, debugging and translating Patchmanager is available in [the Wiki](https://github.com/sailfishos-patches/patchmanager/wiki).
+Some in depth information for developing, testing, debugging and translating Patchmanager is available in [the Wiki](https://github.com/sailfishos-patches/patchmanager/wiki).
+
