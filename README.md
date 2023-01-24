@@ -13,7 +13,7 @@ The modern alternative to using OpenRepos is the SailfishOS:Chum community repos
 Modern Patches for Patchmanager are provided via [the Web Catalog](https://coderus.openrepos.net/pm2/projects/), while older Patches were provided as [RPMs at OpenRepos](https://openrepos.net/category/patches) and some of them are still maintained.
 Mind that many Patches were first released at OpenRepos but later migrated to the Web Catalog: For these you will find outdated RPMs, hence always search in the Web Catalog first.
 
-If you want to translate ("localise") Patchmanager to a language you know well or enhance an existing translation, please use [Patchmanager's Transifex page](https://www.transifex.com/coderus/patchmanager3/).
+If you want to translate ("localise") Patchmanager to a language you know well or enhance an existing translation, please read Patchmanager's corresponding Wiki page [Translations ("i18n", "l10n")](https://github.com/sailfishos-patches/patchmanager/wiki/Translations-(%22i18n%22,-%22l10n%22)).
 
 ## Information for Patch developers
 
@@ -71,9 +71,12 @@ For an RPM Patch example, see https://github.com/CODeRUS/sailfishos-disable-glas
 
 ### Developing, testing, debugging and translating Patches
 
-Additional, in depth information for developing, testing, debugging and translating Patches is available in [the Wiki](https://github.com/sailfishos-patches/patchmanager/wiki).  Exemplary Patches to depict the aforementioned formats are provided [in the `doc` directory](https://github.com/sailfishos-patches/patchmanager/tree/master/doc).
+Additional, in depth information for developing, testing, debugging and translating Patches is available in [the Wiki](https://github.com/sailfishos-patches/patchmanager/wiki).  Exemplary Patches to depict the aforementioned formats are provided in [the `doc` directory](https://github.com/sailfishos-patches/patchmanager/tree/master/doc), plus aforementioned [RPM-Patch "Disable glass avatar"](https://github.com/CODeRUS/sailfishos-disable-glass-avatar).
+
+Specifically the tool [sailfish-patch by ichthyosaurus](https://github.com/ichthyosaurus/sailfish-patch#readme) might be helpful to support implementing, debugging and testing Patches.
 
 ## Information for Patchmanager developers
 
 Some in depth information for developing, testing, debugging and translating Patchmanager is available in [the Wiki](https://github.com/sailfishos-patches/patchmanager/wiki).
 
+The [Patchmanager Testcases](https://github.com/sailfishos-patches/patchmanager/tree/master/tests) might be helpful to support implementing, debugging and testing Patchmanager.  For details see the [README](https://github.com/sailfishos-patches/patchmanager/blob/master/tests/README.md), RPMs are available at [OpenRepos](https://openrepos.net/content/patchmanager/patchmanager-testcases) and SailfishOS:Chum. 
