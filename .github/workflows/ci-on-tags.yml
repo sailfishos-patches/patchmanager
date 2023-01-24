@@ -17,10 +17,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Prepare
-      run: |
-        mkdir -p output/{4.0.1.45,$LATEST}/aarch64
-        mkdir -p output/{3.4.0.24,$LATEST}/{armv7hl,i486}
+    #- name: Prepare
+    #  run: 
 
     # Caching Docker images is not ready yet, see 
     # https://github.com/storeman-developers/harbour-storeman-installer/blob/devel/cache-docker-images_github-ci.md
@@ -36,7 +34,9 @@ jobs:
         ARCH: aarch64
         RELEASE: ${{ env.LATEST }}
       # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
-      run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
+      run: |
+        mkdir -p output/$RELEASE/$ARCH
+        docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
             mkdir -p build ;
             cd build ;
             cp -r /share/* ./ ;
@@ -48,7 +48,9 @@ jobs:
         ARCH: armv7hl
         RELEASE: ${{ env.LATEST }}
       # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
-      run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
+      run: |
+        mkdir -p output/$RELEASE/$ARCH
+        docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
             mkdir -p build ;
             cd build ;
             cp -r /share/* ./ ;
@@ -60,7 +62,9 @@ jobs:
         ARCH: i486
         RELEASE: ${{ env.LATEST }}
       # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
-      run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
+      run: |
+        mkdir -p output/$RELEASE/$ARCH
+        docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
             mkdir -p build ;
             cd build ;
             cp -r /share/* ./ ;
@@ -72,7 +76,9 @@ jobs:
         ARCH: aarch64
         RELEASE: 4.0.1.45
       # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
-      run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
+      run: |
+        mkdir -p output/$RELEASE/$ARCH
+        docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
             mkdir -p build ;
             cd build ;
             cp -r /share/* ./ ;
@@ -84,7 +90,9 @@ jobs:
         ARCH: armv7hl
         RELEASE: 3.4.0.24
       # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
-      run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
+      run: |
+        mkdir -p output/$RELEASE/$ARCH
+        docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
             mkdir -p build ;
             cd build ;
             cp -r /share/* ./ ;
@@ -96,7 +104,9 @@ jobs:
         ARCH: i486
         RELEASE: 3.4.0.24
       # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
-      run: docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
+      run: |
+        mkdir -p output/$RELEASE/$ARCH
+        docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
             mkdir -p build ;
             cd build ;
             cp -r /share/* ./ ;
