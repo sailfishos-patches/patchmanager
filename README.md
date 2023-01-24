@@ -79,4 +79,4 @@ Specifically the tool [sailfish-patch by ichthyosaurus](https://github.com/ichth
 
 Some in depth information for developing, testing, debugging and translating Patchmanager is available in [the Wiki](https://github.com/sailfishos-patches/patchmanager/wiki).
 
-The [Patchmanager Testcases](https://github.com/sailfishos-patches/patchmanager/tree/master/tests) might be helpful to support implementing, debugging and testing Patchmanager.  For details see the [README](https://github.com/sailfishos-patches/patchmanager/blob/master/tests/README_patching.md), RPMs are available at [OpenRepos](https://openrepos.net/content/patchmanager/patchmanager-testcases) and SailfishOS:Chum. 
+The [Patchmanager Testcases](https://github.com/sailfishos-patches/patchmanager/tree/master/tests) might be helpful to support implementing, debugging and testing Patchmanager.  For details see the [README](https://github.com/sailfishos-patches/patchmanager/blob/master/tests/README.md), RPMs are available at [OpenRepos](https://openrepos.net/content/patchmanager/patchmanager-testcases) and SailfishOS:Chum. 
