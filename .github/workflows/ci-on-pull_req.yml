@@ -33,13 +33,14 @@ jobs:
         RELEASE: 3.4.0.24
       # mb2 wants bash: https://github.com/sailfishos/sdk-setup/blob/master/sdk-setup/src/mb2#L1
       run: |
+        set -x
         mkdir -p output/$RELEASE/$ARCH
-        docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -c "
-            mkdir -p build ;
-            cd build ;
-            cp -r /share/* ./ ;
-            mb2 -t SailfishOS-$RELEASE-$ARCH build --enable-debug ;
-            sudo cp -r RPMS/*.rpm /share/output/$RELEASE/$ARCH/"
+        docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/bash -xc '
+           mkdir -p build
+           cd build
+           cp -r /share/. .
+           mb2 -t SailfishOS-$1-$2 build -d
+           sudo cp -r RPMS/*.rpm /share/output/$1/$2/' bash_mb2 $RELEASE $ARCH
 
     - name: Upload build results
       uses: actions/upload-artifact@v3
