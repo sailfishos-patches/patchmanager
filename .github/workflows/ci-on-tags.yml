@@ -36,7 +36,7 @@ jobs:
       run: |
         set -x
         mkdir -p output/$RELEASE/$ARCH
-        docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
+        docker run --rm -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
            mkdir -p build
            cd build
            cp -r /share/. .
@@ -50,7 +50,7 @@ jobs:
       run: |
         set -x
         mkdir -p output/$RELEASE/$ARCH
-        docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
+        docker run --rm -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
            mkdir -p build
            cd build
            cp -r /share/. .
@@ -64,7 +64,7 @@ jobs:
       run: |
         set -x
         mkdir -p output/$RELEASE/$ARCH
-        docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
+        docker run --rm -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
            mkdir -p build
            cd build
            cp -r /share/. .
@@ -78,7 +78,7 @@ jobs:
       run: |
         set -x
         mkdir -p output/$RELEASE/$ARCH
-        docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
+        docker run --rm -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
            mkdir -p build
            cd build
            cp -r /share/. .
@@ -92,7 +92,7 @@ jobs:
       run: |
         set -x
         mkdir -p output/$RELEASE/$ARCH
-        docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
+        docker run --rm -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
            mkdir -p build
            cd build
            cp -r /share/. .
@@ -106,7 +106,7 @@ jobs:
       run: |
         set -x
         mkdir -p output/$RELEASE/$ARCH
-        docker run --rm --privileged -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
+        docker run --rm -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
            mkdir -p build
            cd build
            cp -r /share/. .
