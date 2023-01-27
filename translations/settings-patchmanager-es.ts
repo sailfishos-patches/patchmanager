@@ -34,7 +34,7 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="54"/>
-        <location filename="../src/qml/PatchManagerPage.qml" line="147"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="168"/>
         <source>About Patchmanager</source>
         <translation>Acerca de Patchmanager</translation>
     </message>
@@ -88,22 +88,22 @@
         <translation>Si por algún motivo no puedes donar a Openrepos, también agradecemos la donación a la Fundación Europea por el Software Libre (FSFE).</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="251"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="260"/>
         <source>Donate</source>
         <translation>Donar</translation>
     </message>
     <message>
-        <location filename="../src/qml/DevelopersPage.qml" line="162"/>
+        <location filename="../src/qml/DevelopersPage.qml" line="152"/>
         <source>Developers</source>
         <translation>Desarrolladores</translation>
     </message>
     <message>
-        <location filename="../src/qml/DevelopersPage.qml" line="201"/>
+        <location filename="../src/qml/DevelopersPage.qml" line="191"/>
         <source>%1&apos;s webpage</source>
         <translation>Página Web de %1</translation>
     </message>
     <message>
-        <location filename="../src/qml/DevelopersPage.qml" line="206"/>
+        <location filename="../src/qml/DevelopersPage.qml" line="196"/>
         <source>%1&apos;s %2 account</source>
         <translation>Cuenta de %1 en %2</translation>
     </message>
@@ -209,91 +209,91 @@
         <translation>No hay registros aún</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="152"/>
-        <source>Deactivate all Patches</source>
-        <translation>Desactivar todos los parches</translation>
+        <location filename="../src/qml/PatchManagerPage.qml" line="162"/>
+        <source>Disable and deactivate all Patches</source>
+        <translation>Deshabilitar y desactivar todos los parches</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="158"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="178"/>
         <source>Start Patchmanager&apos;s daemon</source>
         <translation>Iniciar proceso Patchmanager</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="164"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="184"/>
         <source>Updates available</source>
         <translation>Actualizaciones disponibles</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="164"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="184"/>
         <location filename="../src/qml/WebCatalogPage.qml" line="106"/>
         <source>Web Catalog</source>
         <translation>Catálogo Web</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="170"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="190"/>
         <source>Restart preloaded services</source>
         <translation>Reiniciar servicios de precarga</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="176"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="196"/>
         <source>Resolve failure</source>
         <translation>Solucionar fallo</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="183"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="203"/>
         <source>Installed Patches</source>
         <translation>Parches instalados</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="362"/>
-        <location filename="../src/qml/WebPatchPage.qml" line="338"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="382"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="348"/>
         <source>This Patch is incompatible with the installed SailfishOS version.</source>
         <translation>Este parche no es compatible con la versión de SailfishOS instalada.</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="370"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="390"/>
         <source>Removing Patch %1</source>
         <translation>Eliminando parche %1</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="475"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="495"/>
         <source>Compatible with:</source>
         <translation>Compatible con:</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="510"/>
         <source>May conflict with another Patch, see %1</source>
         <translation>Puede haber conflictos con otro parche, consulta %1</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="491"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="511"/>
         <source>May conflict with %2 other Patches, see %1</source>
         <translation>Puede haber conflictos con otros %2 parches, consulta %1</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="495"/>
-        <location filename="../src/qml/WebPatchPage.qml" line="90"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="515"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="99"/>
         <source>Patch details</source>
         <translation>Detalles del parche</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="499"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="519"/>
         <source>Deactivate</source>
         <translation>Desactivar</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="499"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="519"/>
         <source>Activate</source>
         <translation>Activar</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="504"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="524"/>
         <source>Remove</source>
         <translation>Eliminar</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="518"/>
-        <location filename="../src/qml/WebCatalogPage.qml" line="253"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="538"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="249"/>
         <source>No Patches available</source>
         <translation>No hay parches disponibles</translation>
     </message>
@@ -329,7 +329,7 @@
     </message>
     <message>
         <location filename="../src/qml/ScreenshotsPage.qml" line="71"/>
-        <location filename="../src/qml/WebPatchPage.qml" line="277"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="286"/>
         <source>Screenshots</source>
         <translation>Capturas</translation>
     </message>
@@ -374,7 +374,7 @@
         <translation>Toca para escribir consulta</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="240"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="236"/>
         <source>Update available: %1</source>
         <translation>Actualización disponible: %1</translation>
     </message>
@@ -389,49 +389,64 @@
         <translation>Obteniendo datos del parche</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="193"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="86"/>
+        <source>Open Project Page</source>
+        <translation>Abrir página del proyecto</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebPatchPage.qml" line="202"/>
         <source>Author: %1</source>
         <translation>Autor: %1</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="190"/>
-        <location filename="../src/qml/WebPatchPage.qml" line="209"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="218"/>
         <source>Links</source>
         <translation>Enlaces</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="230"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="239"/>
         <source>Open discussion link</source>
         <translation>Abrir enlace de discusión</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="208"/>
-        <location filename="../src/qml/WebPatchPage.qml" line="272"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="281"/>
         <source>Sources</source>
         <translation>Fuente</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="323"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="332"/>
         <source>Files</source>
         <translation>Archivos</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="340"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="350"/>
         <source>Install Patch %1</source>
         <translation>Instalar parche %1</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="393"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="352"/>
+        <source>Re-Install Patch %1</source>
+        <translation>Reinstalar el parche %1</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebPatchPage.qml" line="407"/>
+        <source>[tap to re-install]</source>
+        <translation>[pulsa para reinstalar]</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebPatchPage.qml" line="408"/>
         <source>[installed]</source>
         <translation>[instalado]</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="393"/>
-        <source>[click to install]</source>
-        <translation>[haz clic para instalar]</translation>
+        <location filename="../src/qml/WebPatchPage.qml" line="410"/>
+        <source>[tap to install]</source>
+        <translation>[pulsa para instalar]</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="409"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="426"/>
         <source>Compatible: %1</source>
         <translation>Compatible: %1</translation>
     </message>
@@ -458,8 +473,8 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="246"/>
-        <source>Patch %1 deactivated.</source>
-        <translation>Parche %1 desactivado.</translation>
+        <source>Patch %1 is now inactive.</source>
+        <translation>El parche %1 está ahora inactivo.</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="256"/>
@@ -492,58 +507,88 @@
         <translation>Hay una actualización del parche %1.</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="142"/>
-        <location filename="../src/qml/SettingsPage.qml" line="53"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="173"/>
+        <location filename="../src/qml/SettingsPage.qml" line="79"/>
         <source>Settings</source>
         <translation>Ajustes</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="56"/>
+        <location filename="../src/qml/SettingsPage.qml" line="82"/>
         <source>General</source>
         <translation>General</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="59"/>
+        <location filename="../src/qml/SettingsPage.qml" line="85"/>
         <source>Show notification on success</source>
         <translation>Mostrar notificación de éxito</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="60"/>
+        <location filename="../src/qml/SettingsPage.qml" line="86"/>
         <source>If this is off, notifications will only be shown when something went wrong.</source>
         <translation>Si está desactivado las notificaciones sólo se mostrarán cuando algo haya salido mal.</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="66"/>
+        <location filename="../src/qml/SettingsPage.qml" line="93"/>
+        <source>Activate enabled Patches when booting</source>
+        <translation>Activar parches habilitados al arrancar</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="101"/>
+        <source>Show &apos;Disable and deactivate all Patches&apos; pulley menu entry</source>
+        <translation>Mostrar la opción &apos;Deshabilitar y desactivar todos los parches&apos;  en el menú deslizante</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="102"/>
+        <source>Enable an additional pulley menu entry for Patchmanager&apos;s main page to disable and deactivate all Patches.</source>
+        <translation>Añade una opción en el menú deslizante de la página principal de Patchmanager para deshabilitar y desactivar todos los parches.</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="116"/>
+        <source>Version Check</source>
+        <translation>Comprobar versión</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="122"/>
+        <source>Strict</source>
+        <translation>Estricto</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="123"/>
+        <source>No check</source>
+        <translation>No</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="129"/>
+        <source>Mode for Patch developers</source>
+        <translation>Modo para desarrolladores de parches</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="130"/>
+        <source>Enable various functions to be used by Patch developers. Among other things, it shows debug log files for applying the patch file when a Patch is activated on its details page.</source>
+        <translation>Habilita varias funciones que son útiles para los desarrolladores de parches. Entre otras cosas, muestra los archivos de registro de depuración de un parche en los detalles de su página cuando éste se activa.</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="108"/>
         <source>Advanced</source>
         <translation>Avanzado</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="69"/>
-        <source>Activate Patches when booting</source>
-        <translation>Activar parches al arrancar</translation>
-    </message>
-    <message>
-        <location filename="../src/qml/SettingsPage.qml" line="70"/>
+        <location filename="../src/qml/SettingsPage.qml" line="94"/>
         <source>Automatically activate all enabled Patches when SailfishOS starts.</source>
         <translation>Activa automáticamente todos los parches habilitados al iniciar SailfishOS.</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="77"/>
-        <source>Allow incompatible Patches</source>
-        <translation>Permitir parches incompatibles</translation>
+        <location filename="../src/qml/SettingsPage.qml" line="117"/>
+        <source>Allow to enable Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.</source>
+        <translation>Permite habilitar parches, los cuales no figuran como compatibles con la versión de SailfishOS instalada. Te en cuenta que esos parches, que en realidad son incompatibles, no funcionarán.</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="78"/>
-        <source>Enable activating Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.</source>
-        <translation>Habilita la activación de parches que no son compatibles con la versión instalada de SailfishOS. Ten en cuenta que los parches que en realidad son incompatibles, no funcionarán.</translation>
-    </message>
-    <message>
-        <location filename="../src/qml/SettingsPage.qml" line="86"/>
+        <location filename="../src/qml/SettingsPage.qml" line="149"/>
         <source>Convert Patches between 32-bit and 64-bit</source>
         <translation>Convertir parches entre 32-bit y 64-bit</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="87"/>
+        <location filename="../src/qml/SettingsPage.qml" line="150"/>
         <source>Automatically convert lib or lib64 for select paths shown below.</source>
         <translation>Convierte automáticamente a lib o lib64 para seleccionar las rutas que se muestran a continuación.</translation>
     </message>
@@ -617,7 +662,7 @@
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="68"/>
-        <location filename="../src/qml/patchmanager.cpp" line="257"/>
+        <location filename="../src/qml/patchmanager.cpp" line="283"/>
         <source>other</source>
         <translation>Otros</translation>
     </message>
