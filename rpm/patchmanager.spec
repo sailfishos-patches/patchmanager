@@ -293,3 +293,4 @@ exit 0
 %changelog
 * Thu Sep  9 1999 SailfishOS Patches <sailfishos-patches@users.noreply.github.com> - 99.99.99
 - See %{url}/releases
+
