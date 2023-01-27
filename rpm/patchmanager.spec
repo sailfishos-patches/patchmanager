@@ -291,5 +291,5 @@ exit 0
 %{_datadir}/themes/%{theme}/meegotouch/z2.0/icons/*.png
 
 %changelog
-* Thu Sep  9 1999 SailfishOS Patches <sailfishos-patches@users.noreply.github.com> - 9.9.9
-- %{url}/releases
+* Thu Sep  9 1999 SailfishOS Patches <sailfishos-patches@users.noreply.github.com> - 99.99.99
+- See %{url}/releases
