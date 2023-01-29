@@ -1,3 +1,7 @@
+
+# Reference: An exceptionally comprehensive example rpmlintrc file
+# https://github.com/coreos/tectonic-rpms/blob/master/rpmlint-config
+# 
 # On behalf of Jolla's tar_git / SailfishOS-OBS:
 # - It re-writes the DistURL, rendering it inconsistent
 addFilter('invalid-url DistURL')
@@ -5,6 +9,7 @@ addFilter('invalid-url DistURL')
 addFilter('invalid-license')
 # - It extracts strange changelog entries out of Git, if a %%changelog section is used
 addFilter('incoherent-version-in-changelog')
+#
 # On behalf of the SailfishOS:Chum specification:
 # - which re-uses the spec file tag "Url:"
 addFilter('tag-in-description Url:')
@@ -13,6 +18,7 @@ addFilter('tag-in-description Icon:')
 # - which makes one easily do
 addFilter('description-line-too-long')
 setBadness('description-line-too-long', 0)
+#
 # On our own behalf:
 # - This is how it ought to be
 addFilter('^patchmanager.* percent-in-%p[a-z][a-z]')
