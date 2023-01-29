@@ -1,7 +1,47 @@
-addFilter("^patchmanager.*: E: use-tmp-in-%postun")
-addFilter("^patchmanager.*: W: dangerous-command-in-%postun")
+# References: An exceptionally comprehensive example rpmlintrc file
+# https://github.com/coreos/tectonic-rpms/blob/master/rpmlint-config
+# but adheres to the old syntax, not the new TOML one: https://toml.io/en/
+# See also https://fedoraproject.org/wiki/Common_Rpmlint_issues and
+# https://en.opensuse.org/openSUSE:Packaging_checks#Building_Packages_in_spite_of_errors
 
-# we know.
-addFilter("^patchmanager.*: W: no-soname /usr/lib/libpreloadpatchmanager\.so")
-addFilter("^patchmanager.*: E: shlib-with-non-pic-code /usr/lib/libpreloadpatchmanager\.so")
-addFilter("^patchmanager.*: W: non-standard-dir-in-usr libexec")
+# On behalf of Jolla's tar_git / SailfishOS-OBS:
+# - It re-writes the DistURL, rendering it inconsistent
+addFilter('invalid-url DistURL')
+# - It has a limited list of FLOSS-licenses, most SDPX-IDs are missing
+addFilter('invalid-license')
+# - It extracts strange changelog entries out of Git, if a %%changelog section is used
+addFilter('incoherent-version-in-changelog')
+# - It sometimes re-writes the %version-%release strings of package names, 
+#   when referencing (only) a branch (i.e., not a git tag), for example,
+#   0.5.2-1 to 0.5.2+rebuild1+main.20230129011931.1.g584263a-1.8.1.jolla
+addFilter('filename-too-long-for-joliet')
+
+# On behalf of the SailfishOS:Chum specification:
+# - which re-uses the spec file tag "Url:"
+addFilter('tag-in-description Url:')
+# - which also re-uses the spec file tag "Icon:"
+addFilter('tag-in-description Icon:')
+# - which makes one easily do
+addFilter('description-line-too-long')
+setBadness('description-line-too-long', 0)
+
+# On our own behalf:
+# - This is how it ought to be
+addFilter('^patchmanager.* percent-in-%p[a-z][a-z]')
+addFilter('^patchmanager.* use-tmp-in-%postun')
+addFilter('^patchmanager.* dangerous-command-in-%postun rm')
+# - We know, do you want to contribute? :-)
+addFilter('^patchmanager.* no-soname /usr/lib/libpreloadpatchmanager\.so')
+addFilter('^patchmanager.* shlib-with-non-pic-code /usr/lib/libpreloadpatchmanager\.so')
+addFilter('^patchmanager.* non-standard-dir-in-usr libexec')
+# - This might be worth to investigate
+#addFilter('^patchmanager.* dbus-parsing-exception raised an exception')
+setBadness('dbus-parsing-exception', 0)
+# - The testcases are special
+addFilter('^patchmanager.* libdir-macro-in-noarch-package testcases')
+setBadness('libdir-macro-in-noarch-package', 0)
+addFilter('^patchmanager-testcases.* noarch-with-lib64')
+addFilter('^patchmanager-testcases.* explicit-lib-dependency libsailfishapp-launcher')
+setBadness('explicit-lib-dependency', 0)
+addFilter('^patchmanager-testcases.* desktopfile-without-binary')
+
