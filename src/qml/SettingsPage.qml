@@ -107,7 +107,7 @@ Page {
                 label: qsTranslate("", "Version Check") + ":"
                 description: qsTranslate("", "Allow to enable Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.")
                 currentIndex: PatchManager.sfosVersionCheck
-                onCurrentIndexChanged: { PatchManager.sfosVersionCheck = currentIndex}
+                onCurrentIndexChanged: PatchManager.sfosVersionCheck = currentIndex
                 menu: ContextMenu {
                         // FIXME: Use the PatchManager::VersionCheck enum, however, how to map enum to text?
                         MenuItem { text: qsTranslate("", "Strict") }
