@@ -48,13 +48,14 @@
 #include <QTimer>
 #include <QDebug>
 
+#ifndef BUILD_VERSION
+#define BUILD_VERSION "9.99.99"
+#endif
+
+
 void help()
 {
-    std::cout << "patchmanager";
-#ifdef BUILD_VERSION
-    std::cout << " v" << BUILD_VERSION;
-#endif
-    std::cout << std::endl;
+    std::cout << "patchmanager" << " v" << BUILD_VERSION << std::endl;
     std::cout << "Usage:" << std::endl;
     std::cout << "  patchmanager [--help]       : Print this help text" << std::endl;
     std::cout << "  patchmanager -a <Patch>     : Enable and activate a Patch" << std::endl;
@@ -78,13 +79,7 @@ int main(int argc, char **argv)
         return 0;
     }
 
-#ifdef BUILD_VERSION
-    const QString version = QStringLiteral(BUILD_VERSION);
-    app.setApplicationVersion(version);
-#else
-    qDebug() << Q_FUNC_INFO << "Patchmanager version unknown!";
-    app.setApplicationVersion(QStringLiteral("3.9.9"));
-#endif
+    app.setApplicationVersion(BUILD_VERSION);
 
     PatchManagerObject patchManager;
     app.installEventFilter(&patchManager);
