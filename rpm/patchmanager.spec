@@ -18,7 +18,7 @@
 Name:       patchmanager
 
 Summary:    Allows to manage Patches for SailfishOS
-Version:    3.2.6
+Version:    3.2.7
 Release:    1
 Group:      Qt/Qt
 License:    BSD-3-Clause
@@ -76,7 +76,7 @@ Categories:
 Custom:
   Repo: %{url}
 Url:
-  Homepage: https://build.sailfishos.org/package/show/sailfishos:chum/%{name}
+  Homepage: https://openrepos.net/content/%{name}/%{name}-testcases
   Help: %{url}/discussions/232
   Bugtracker: %{url}/issues
 %endif
@@ -109,7 +109,7 @@ Custom:
   Repo: %{url}
 Icon: %{url}/raw/master/src/share/patchmanager-big.png
 Url:
-  Homepage: https://openrepos.net/content/patchmanager/%{name}
+  Homepage: https://openrepos.net/content/%{name}/%{name}
   Help: %{url}/blob/master/README.md
   Bugtracker: https://forum.sailfishos.org/t/bugs-in-patchmanager-3-1-0/8552
   Donation: https://openrepos.net/donate
@@ -289,4 +289,8 @@ exit 0
 %{_datadir}/themes/%{theme}/meegotouch/z1.5-large/icons/*.png
 %{_datadir}/themes/%{theme}/meegotouch/z1.75/icons/*.png
 %{_datadir}/themes/%{theme}/meegotouch/z2.0/icons/*.png
+
+%changelog
+* Thu Sep  9 1999 SailfishOS Patches <sailfishos-patches@users.noreply.github.com> - 99.99.99
+- See %{url}/releases
 
