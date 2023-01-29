@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
- * Copyright (c) 2021, Patchmanager for SailfishOS contributors:
+ * Copyright (c) 2021-2023 Patchmanager for SailfishOS contributors:
  *                  - olf "Olf0" <https://github.com/Olf0>
  *                  - Peter G. "nephros" <sailfish@nephros.org>
  *                  - Vlad G. "b100dian" <https://github.com/b100dian>
@@ -50,7 +50,10 @@
 
 void help()
 {
-    std::cout << "patchmanager" << std::endl;
+    std::cout << "patchmanager";
+#ifdef BUILD_VERSION
+    std::cout << " v" << BUILD_VERSION;
+#endif
     std::cout << std::endl;
     std::cout << "Usage:" << std::endl;
     std::cout << "  patchmanager [--help]       : Print this help text" << std::endl;
