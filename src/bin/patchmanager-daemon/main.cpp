@@ -49,13 +49,13 @@
 #include <QDebug>
 
 #ifndef BUILD_VERSION
-#define BUILD_VERSION "9.99.99"
+#define BUILD_VERSION "99.99.99"
 #endif
 
 
 void help()
 {
-    std::cout << "patchmanager" << " v" << BUILD_VERSION << std::endl;
+    std::cout << "Patchmanager " << BUILD_VERSION << std::endl;
     std::cout << "Usage:" << std::endl;
     std::cout << "  patchmanager [--help]       : Print this help text" << std::endl;
     std::cout << "  patchmanager -a <Patch>     : Enable and activate a Patch" << std::endl;
