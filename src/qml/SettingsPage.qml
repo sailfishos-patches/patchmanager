@@ -1,7 +1,8 @@
+
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
- * Copyright (c) 2021, 2022, Patchmanager for SailfishOS contributors:
+ * Copyright (c) 2021-2023 Patchmanager for SailfishOS contributors:
  *                  - olf "Olf0" <https://github.com/Olf0>
  *                  - Peter G. "nephros" <sailfish@nephros.org>
  *                  - Vlad G. "b100dian" <https://github.com/b100dian>
@@ -55,16 +56,6 @@ Page {
         property bool showUnapplyAll: false
     }
 
-    Component.onCompleted: migrateDevModeSettings()
-    function migrateDevModeSettings() {
-        if (PatchManager.developerMode === true) {
-            console.info("Migrating settings from deprecated developerMode setting.")
-            PatchManager.patchDevelMode = true
-            PatchManager.sfosVersionCheck = VersionCheck.NoCheck
-            PatchManager.developerMode = false
-        }
-    }
-
     SilicaFlickable {
         id: flick
         anchors.fill: parent
@@ -115,8 +106,8 @@ Page {
                 }
                 label: qsTranslate("", "Version Check") + ":"
                 description: qsTranslate("", "Allow to enable Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.")
+                currentIndex: PatchManager.sfosVersionCheck
                 onCurrentIndexChanged: PatchManager.sfosVersionCheck = currentIndex
-                currentIndex: (PatchManager.sfosVersionCheck) ? PatchManager.sfosVersionCheck : VersionCheck.Strict
                 menu: ContextMenu {
                         // FIXME: Use the PatchManager::VersionCheck enum, however, how to map enum to text?
                         MenuItem { text: qsTranslate("", "Strict") }
