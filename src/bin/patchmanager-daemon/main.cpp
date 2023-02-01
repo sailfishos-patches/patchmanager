@@ -79,7 +79,7 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    app.setApplicationVersion(BUILD_VERSION);
+    app.setApplicationVersion(QStringLiteral(BUILD_VERSION));
 
     PatchManagerObject patchManager;
     app.installEventFilter(&patchManager);
