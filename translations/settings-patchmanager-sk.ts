@@ -34,7 +34,7 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="54"/>
-        <location filename="../src/qml/PatchManagerPage.qml" line="147"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="168"/>
         <source>About Patchmanager</source>
         <translation>O Patchmanagera</translation>
     </message>
@@ -88,22 +88,22 @@
         <translation>Ak z nejakého dôvodu nemôžete prispieť na Openrepos, budeme si vážiť aj dar pre Free Software Foundation Europe (FSFE).</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="251"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="260"/>
         <source>Donate</source>
         <translation>Prispieť</translation>
     </message>
     <message>
-        <location filename="../src/qml/DevelopersPage.qml" line="162"/>
+        <location filename="../src/qml/DevelopersPage.qml" line="152"/>
         <source>Developers</source>
         <translation>Vývojári</translation>
     </message>
     <message>
-        <location filename="../src/qml/DevelopersPage.qml" line="201"/>
+        <location filename="../src/qml/DevelopersPage.qml" line="191"/>
         <source>%1&apos;s webpage</source>
         <translation>%1 webstránka</translation>
     </message>
     <message>
-        <location filename="../src/qml/DevelopersPage.qml" line="206"/>
+        <location filename="../src/qml/DevelopersPage.qml" line="196"/>
         <source>%1&apos;s %2 account</source>
         <translation>%1 %2 účet</translation>
     </message>
@@ -209,91 +209,91 @@
         <translation>Zatiaľ neexistuje žiaden protokol spracovania</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="152"/>
-        <source>Deactivate all Patches</source>
-        <translation>Inaktivácia všetkých opráv</translation>
+        <location filename="../src/qml/PatchManagerPage.qml" line="162"/>
+        <source>Disable and deactivate all Patches</source>
+        <translation>Zakázať a vypnúť všetky opravy</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="158"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="178"/>
         <source>Start Patchmanager&apos;s daemon</source>
         <translation>Spustiť službu Patchmanagera</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="164"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="184"/>
         <source>Updates available</source>
         <translation>Dostupné aktualizácie</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="164"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="184"/>
         <location filename="../src/qml/WebCatalogPage.qml" line="106"/>
         <source>Web Catalog</source>
         <translation>Webový katalóg</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="170"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="190"/>
         <source>Restart preloaded services</source>
         <translation>Reštartovať predinštalované služby</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="176"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="196"/>
         <source>Resolve failure</source>
         <translation>Vyriešiť zlyhanie</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="183"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="203"/>
         <source>Installed Patches</source>
         <translation>Inštalované opravy</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="362"/>
-        <location filename="../src/qml/WebPatchPage.qml" line="338"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="382"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="348"/>
         <source>This Patch is incompatible with the installed SailfishOS version.</source>
         <translation>Táto oprava nie je kompatibilná s inštalovanou verziou SailfishOS.</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="370"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="390"/>
         <source>Removing Patch %1</source>
         <translation>Odstraňovanie opravy %1</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="475"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="495"/>
         <source>Compatible with:</source>
         <translation>Kompatibilné s:</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="490"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="510"/>
         <source>May conflict with another Patch, see %1</source>
         <translation>Možný konflikt s inou opravou, pozri %1</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="491"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="511"/>
         <source>May conflict with %2 other Patches, see %1</source>
         <translation>Možný konflikt s %2 iných opráv, pozri %1</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="495"/>
-        <location filename="../src/qml/WebPatchPage.qml" line="90"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="515"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="99"/>
         <source>Patch details</source>
         <translation>Podrobnosti opravy</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="499"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="519"/>
         <source>Deactivate</source>
         <translation>Inaktivovať</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="499"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="519"/>
         <source>Activate</source>
         <translation>Aktivovať</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="504"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="524"/>
         <source>Remove</source>
         <translation>Odstrániť</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="518"/>
-        <location filename="../src/qml/WebCatalogPage.qml" line="253"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="538"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="249"/>
         <source>No Patches available</source>
         <translation>Žiadne opravy nie sú dostupné</translation>
     </message>
@@ -329,7 +329,7 @@
     </message>
     <message>
         <location filename="../src/qml/ScreenshotsPage.qml" line="71"/>
-        <location filename="../src/qml/WebPatchPage.qml" line="277"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="286"/>
         <source>Screenshots</source>
         <translation>Snímky obrazovky</translation>
     </message>
@@ -374,7 +374,7 @@
         <translation>Ťuknúť a vložiť vyhľadávaciu podmienku</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebCatalogPage.qml" line="240"/>
+        <location filename="../src/qml/WebCatalogPage.qml" line="236"/>
         <source>Update available: %1</source>
         <translation>Dostupná aktualizácia: %1</translation>
     </message>
@@ -389,49 +389,64 @@
         <translation>Načítanie údajov opravy</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="193"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="86"/>
+        <source>Open Project Page</source>
+        <translation>Otvoriť stránku projektu</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebPatchPage.qml" line="202"/>
         <source>Author: %1</source>
         <translation>Autor: %1</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="190"/>
-        <location filename="../src/qml/WebPatchPage.qml" line="209"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="218"/>
         <source>Links</source>
         <translation>Odkazy</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="230"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="239"/>
         <source>Open discussion link</source>
         <translation>Otvoriť odkaz diskusie</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="208"/>
-        <location filename="../src/qml/WebPatchPage.qml" line="272"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="281"/>
         <source>Sources</source>
         <translation>Zdroje</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="323"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="332"/>
         <source>Files</source>
         <translation>Súbory</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="340"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="350"/>
         <source>Install Patch %1</source>
         <translation>Inštalovať opravu %1</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="393"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="352"/>
+        <source>Re-Install Patch %1</source>
+        <translation>Preinštalovať opravu %1</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebPatchPage.qml" line="407"/>
+        <source>[tap to re-install]</source>
+        <translation>[ťuknutím preinštalovať]</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/WebPatchPage.qml" line="408"/>
         <source>[installed]</source>
         <translation>[inštalované]</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="393"/>
-        <source>[click to install]</source>
-        <translation>[ťuknúť a inštalovať]</translation>
+        <location filename="../src/qml/WebPatchPage.qml" line="410"/>
+        <source>[tap to install]</source>
+        <translation>[ťuknutím inštalovať]</translation>
     </message>
     <message>
-        <location filename="../src/qml/WebPatchPage.qml" line="409"/>
+        <location filename="../src/qml/WebPatchPage.qml" line="426"/>
         <source>Compatible: %1</source>
         <translation>Kompatibilné: %1</translation>
     </message>
@@ -458,8 +473,8 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="246"/>
-        <source>Patch %1 deactivated.</source>
-        <translation>Oprava %1 bola inaktivovaná.</translation>
+        <source>Patch %1 is now inactive.</source>
+        <translation>Oprava %1 je neaktívna.</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="256"/>
@@ -492,58 +507,88 @@
         <translation>Je dostupná aktualizácia opravy %1.</translation>
     </message>
     <message>
-        <location filename="../src/qml/PatchManagerPage.qml" line="142"/>
-        <location filename="../src/qml/SettingsPage.qml" line="53"/>
+        <location filename="../src/qml/PatchManagerPage.qml" line="173"/>
+        <location filename="../src/qml/SettingsPage.qml" line="79"/>
         <source>Settings</source>
         <translation>Nastavenia</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="56"/>
+        <location filename="../src/qml/SettingsPage.qml" line="82"/>
         <source>General</source>
         <translation>Všeobecné</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="59"/>
+        <location filename="../src/qml/SettingsPage.qml" line="85"/>
         <source>Show notification on success</source>
         <translation>Zobraziť upozornenie pri úspešnosti</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="60"/>
+        <location filename="../src/qml/SettingsPage.qml" line="86"/>
         <source>If this is off, notifications will only be shown when something went wrong.</source>
         <translation>Ak je toto vypnuté, budú zobrazované iba upozornenia neúspešnosti.</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="66"/>
+        <location filename="../src/qml/SettingsPage.qml" line="93"/>
+        <source>Activate enabled Patches when booting</source>
+        <translation>Aktivovať povolené opravy pri zavádzaní</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="101"/>
+        <source>Show &apos;Disable and deactivate all Patches&apos; pulley menu entry</source>
+        <translation>Zobraziť položku sťahovacej ponuky &quot;Zakázať a vypnúť všetky opravy&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="102"/>
+        <source>Enable an additional pulley menu entry for Patchmanager&apos;s main page to disable and deactivate all Patches.</source>
+        <translation>Povoliť dodatočnú položku sťahovacieho menu na hlavnej stránke Petchmanagera pre zákaz a deaktiváciu opráv.</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="116"/>
+        <source>Version Check</source>
+        <translation>Skontrolovať verziu</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="122"/>
+        <source>Strict</source>
+        <translation>Prísne</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="123"/>
+        <source>No check</source>
+        <translation>Nekontrolovať</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="129"/>
+        <source>Mode for Patch developers</source>
+        <translation>Režim pre vývojárov opráv</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="130"/>
+        <source>Enable various functions to be used by Patch developers. Among other things, it shows debug log files for applying the patch file when a Patch is activated on its details page.</source>
+        <translation>Povoliť rozličné funkcie pre vývojárov opráv. Okrem iného zobrazuje protokolové súbory ladenia na použitie súboru opravy, keď je oprava aktivovaná na stránke s podrobnosťami.</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/SettingsPage.qml" line="108"/>
         <source>Advanced</source>
         <translation>Pokročilé</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="69"/>
-        <source>Activate Patches when booting</source>
-        <translation>Aktivovať opravy pri spustení</translation>
-    </message>
-    <message>
-        <location filename="../src/qml/SettingsPage.qml" line="70"/>
+        <location filename="../src/qml/SettingsPage.qml" line="94"/>
         <source>Automatically activate all enabled Patches when SailfishOS starts.</source>
         <translation>Automaticky aktivovať všetky povolené opravy pri štarte SailfishOS.</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="77"/>
-        <source>Allow incompatible Patches</source>
-        <translation>Povoliť inkompatibilné opravy</translation>
+        <location filename="../src/qml/SettingsPage.qml" line="117"/>
+        <source>Allow to enable Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.</source>
+        <translation>Umožňuje povoliť opravy, kroté nie sú označené ako kompatibilné s inštalovanou verziou SalfishOS. Upozorňujeme, že opravy, ktoré sú nekompatibilné, nemusia fungovať.</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="78"/>
-        <source>Enable activating Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.</source>
-        <translation>Povoliť aktiváciu opráv, ktoré nie sú označené ako kompatibilné s inštalovanou verziou SailfishOS. Upozornenie, opravy, ktoré sú aktuálne inkompatibilné, nebudú fungovať.</translation>
-    </message>
-    <message>
-        <location filename="../src/qml/SettingsPage.qml" line="86"/>
+        <location filename="../src/qml/SettingsPage.qml" line="149"/>
         <source>Convert Patches between 32-bit and 64-bit</source>
         <translation>Konvertovať opravy medzi 32-bitovými a 64-bitovými</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="87"/>
+        <location filename="../src/qml/SettingsPage.qml" line="150"/>
         <source>Automatically convert lib or lib64 for select paths shown below.</source>
         <translation>Automaticky konvertovať lib alebo lib64 pre vybrané cesty zobrazené nižšie.</translation>
     </message>
@@ -617,7 +662,7 @@
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="68"/>
-        <location filename="../src/qml/patchmanager.cpp" line="257"/>
+        <location filename="../src/qml/patchmanager.cpp" line="283"/>
         <source>other</source>
         <translation>Ostatné</translation>
     </message>
