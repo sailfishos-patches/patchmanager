@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
- * Copyright (c) 2021, Patchmanager for SailfishOS contributors:
+ * Copyright (c) 2021-2023 Patchmanager for SailfishOS contributors:
  *                  - olf "Olf0" <https://github.com/Olf0>
  *                  - Peter G. "nephros" <sailfish@nephros.org>
  *                  - Vlad G. "b100dian" <https://github.com/b100dian>
@@ -48,10 +48,14 @@
 #include <QTimer>
 #include <QDebug>
 
+#ifndef BUILD_VERSION
+#define BUILD_VERSION "99.99.99"
+#endif
+
+
 void help()
 {
-    std::cout << "patchmanager" << std::endl;
-    std::cout << std::endl;
+    std::cout << "Patchmanager " << BUILD_VERSION << std::endl;
     std::cout << "Usage:" << std::endl;
     std::cout << "  patchmanager [--help]       : Print this help text" << std::endl;
     std::cout << "  patchmanager -a <Patch>     : Enable and activate a Patch" << std::endl;
@@ -75,13 +79,7 @@ int main(int argc, char **argv)
         return 0;
     }
 
-#ifdef BUILD_VERSION
-    const QString version = QStringLiteral(BUILD_VERSION);
-    app.setApplicationVersion(version);
-#else
-    qDebug() << Q_FUNC_INFO << "Patchmanager version unknown!";
-    app.setApplicationVersion(QStringLiteral("3.9.9"));
-#endif
+    app.setApplicationVersion(QStringLiteral(BUILD_VERSION));
 
     PatchManagerObject patchManager;
     app.installEventFilter(&patchManager);
