@@ -157,7 +157,7 @@ Page {
             }
 
             Label {
-                visible: PatchManager.developerMode && legacyPatch
+                visible: PatchManager.patchDevelMode && legacyPatch
                 color: Theme.primaryColor
                 anchors.left: parent.left
                 anchors.right: parent.right
@@ -256,7 +256,7 @@ Page {
 
             SectionHeader {
                 text: qsTranslate("", "Patch log")
-                visible: PatchManager.developerMode
+                visible: PatchManager.patchDevelMode
             }
 
             Label {
@@ -282,7 +282,7 @@ Page {
                 //selectionMode: TextInput.SelectWords
                 font.family: "Courier"
                 font.pixelSize: Theme.fontSizeTiny
-                visible: PatchManager.developerMode
+                visible: PatchManager.patchDevelMode
                 onPressAndHold: {
                     Clipboard.text = modelData.log;
                     popup.publish();
