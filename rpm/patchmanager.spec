@@ -283,12 +283,7 @@ exit 0
 %{_datadir}/jolla-settings/entries/%{name}.json
 %{_datadir}/%{name}/icons/icon-m-patchmanager.png
 
-%{_datadir}/themes/%{theme}/meegotouch/z1.0/icons/*.png
-%{_datadir}/themes/%{theme}/meegotouch/z1.25/icons/*.png
-%{_datadir}/themes/%{theme}/meegotouch/z1.5/icons/*.png
-%{_datadir}/themes/%{theme}/meegotouch/z1.5-large/icons/*.png
-%{_datadir}/themes/%{theme}/meegotouch/z1.75/icons/*.png
-%{_datadir}/themes/%{theme}/meegotouch/z2.0/icons/*.png
+%{_datadir}/themes/%{theme}/meegotouch/*/icons/*.png
 
 %changelog
 * Thu Sep  9 1999 SailfishOS Patches <sailfishos-patches@users.noreply.github.com> - 99.99.99
