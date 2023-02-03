@@ -249,19 +249,27 @@ Page {
             id: background
             menu: contextMenu
             contentHeight: content.height
+            enabled: !view.busy
+
+            /* properties */
             property bool applying: appliedSwitch.busy
             property int dragThreshold: width / 3
             property var pressPosition
             property int dragIndex: index
+
+            readonly property bool isBelowBottom: drag.target ? (content.y + content.height - view.contentY) > view.height : false
+            readonly property bool isAboveTop: drag.target ? content.y < view.contentY : false
+
+            /* signals / handlers */
+
+            Component.onCompleted: {
+                console.debug("Constructing delegate for:", patchObject.details.patch)
+            }
+
             onDragIndexChanged: {
                 if (drag.target) {
                     view.model.move(index, dragIndex)
                 }
-            }
-            enabled: !view.busy
-
-            Component.onCompleted: {
-                console.debug("Constructing delegate for:", patchObject.details.patch)
             }
 
             onPressed: {
@@ -271,9 +279,6 @@ Page {
             onMenuOpenChanged: {
                 content.x = 0
             }
-
-            readonly property bool isBelowBottom: drag.target ? (content.y + content.height - view.contentY) > view.height : false
-            readonly property bool isAboveTop: drag.target ? content.y < view.contentY : false
 
             onPositionChanged: {
                 if (menuOpen) {
@@ -307,37 +312,24 @@ Page {
                 }
             }
 
-            Timer {
-                id: sctollTopTimer
-                repeat: true
-                interval: 1
-                onTriggered: {
-                    if (view.contentY > view.topmostY) {
-                        view.contentY -= 5
-                        content.y -= 5
-                    } else {
-                        view.contentY = view.topmostY
-//                        content.y = 0
+            onReleased: reset()
+            onCanceled: reset()
+
+            onClicked: {
+                var patchName = patchObject.details.patch
+                var qmlFile = "/usr/share/patchmanager/patches/%1/main.qml".arg(patchName)
+                if (PatchManager.fileExists(qmlFile)) {
+                    var translator = PatchManager.installTranslator(patchName)
+                    var page = pageStack.push(qmlFile)
+                    if (translator) {
+                        page.Component.destruction.connect(function() { PatchManager.removeTranslator(patchName) })
                     }
+                } else {
+                    openPatchInfo()
                 }
             }
 
-            Timer {
-                id: sctollBottomTimer
-                repeat: true
-                interval: 1
-                onTriggered: {
-                    // c.y: 1195.81005859375 c.h: 100 cY: 220 cH: 1638 vH: 1280 hH: 138
-                    if (view.contentY < view.bottommostY) {
-                        view.contentY += 5
-                        content.y += 5
-                    } else {
-                        view.contentY = view.bottommostY
-//                        content.y = view.contentHeight - view.height
-                    }
-                }
-            }
-
+            /* functions */
             function reset() {
                 if (!drag.target) {
                     content.x = 0
@@ -357,29 +349,9 @@ Page {
                 backAnimation.start()
             }
 
-            onReleased: reset()
-            onCanceled: reset()
-
-            Image {
-                anchors.fill: parent
-                fillMode: Image.Tile
-                source: "image://theme/icon-status-invalid"
-                opacity: background.drag.target ? 0.33 : Math.abs(content.x) / dragThreshold / 3
-                smooth: false
-            }
-
-            Connections {
-                target: patchObject.details
-                onPatchedChanged: {
-                    console.debug("onPatchedChanged:", patchObject.details.patch, patchObject.details.patched)
-                }
-            }
-
-            Connections {
-                target: patchObject
-                onBusyChanged: {
-                    console.debug("onBusyChanged:", patchObject.details.patch, patchObject.busy)
-                }
+            function openPatchInfo() {
+                pageStack.push(Qt.resolvedUrl("UnifiedPatchPage.qml"),
+                              {modelData: patchObject.details, delegate: background})
             }
 
             function doPatch() {
@@ -415,23 +387,62 @@ Page {
                 }
             }
 
-            onClicked: {
-                var patchName = patchObject.details.patch
-                var qmlFile = "/usr/share/patchmanager/patches/%1/main.qml".arg(patchName)
-                if (PatchManager.fileExists(qmlFile)) {
-                    var translator = PatchManager.installTranslator(patchName)
-                    var page = pageStack.push(qmlFile)
-                    if (translator) {
-                        page.Component.destruction.connect(function() { PatchManager.removeTranslator(patchName) })
-                    }
-                } else {
-                    openPatchInfo()
+
+            /* helper components */
+
+            Connections {
+                target: patchObject.details
+                onPatchedChanged: {
+                    console.debug("onPatchedChanged:", patchObject.details.patch, patchObject.details.patched)
                 }
             }
 
-            function openPatchInfo() {
-                pageStack.push(Qt.resolvedUrl("UnifiedPatchPage.qml"),
-                              {modelData: patchObject.details, delegate: background})
+            Connections {
+                target: patchObject
+                onBusyChanged: {
+                    console.debug("onBusyChanged:", patchObject.details.patch, patchObject.busy)
+                }
+            }
+
+            Timer {
+                id: sctollTopTimer
+                repeat: true
+                interval: 1
+                onTriggered: {
+                    if (view.contentY > view.topmostY) {
+                        view.contentY -= 5
+                        content.y -= 5
+                    } else {
+                        view.contentY = view.topmostY
+//                        content.y = 0
+                    }
+                }
+            }
+
+            Timer {
+                id: sctollBottomTimer
+                repeat: true
+                interval: 1
+                onTriggered: {
+                    // c.y: 1195.81005859375 c.h: 100 cY: 220 cH: 1638 vH: 1280 hH: 138
+                    if (view.contentY < view.bottommostY) {
+                        view.contentY += 5
+                        content.y += 5
+                    } else {
+                        view.contentY = view.bottommostY
+//                        content.y = view.contentHeight - view.height
+                    }
+                }
+            }
+
+
+            /* UI/visible components */
+            Image {
+                anchors.fill: parent
+                fillMode: Image.Tile
+                source: "image://theme/icon-status-invalid"
+                opacity: background.drag.target ? 0.33 : Math.abs(content.x) / dragThreshold / 3
+                smooth: false
             }
 
             Rectangle {
@@ -540,6 +551,7 @@ Page {
                 id: errorMessageComponent
                 ItemErrorComponent {}
             }
+
         }
 
         ViewPlaceholder {
