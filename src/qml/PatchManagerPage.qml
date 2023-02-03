@@ -260,10 +260,18 @@ Page {
             readonly property bool isBelowBottom: drag.target ? (content.y + content.height - view.contentY) > view.height : false
             readonly property bool isAboveTop: drag.target ? content.y < view.contentY : false
 
+            property string patchSettingsFile
+            property bool hasPatchSettingsPage: false
+
             /* signals / handlers */
 
             Component.onCompleted: {
                 console.debug("Constructing delegate for:", patchObject.details.patch)
+                const qmlFile = "/usr/share/patchmanager/patches/%1/main.qml".arg(patchObject.details.patch)
+                if (PatchManager.fileExists(qmlFile)) {
+                    patchSettingsFile = qmlFile
+                    hasPatchSettingsPage = true
+                }
             }
 
             onDragIndexChanged: {
@@ -317,10 +325,9 @@ Page {
 
             onClicked: {
                 var patchName = patchObject.details.patch
-                var qmlFile = "/usr/share/patchmanager/patches/%1/main.qml".arg(patchName)
-                if (PatchManager.fileExists(qmlFile)) {
+                if (hasPatchSettingsPage) {
                     var translator = PatchManager.installTranslator(patchName)
-                    var page = pageStack.push(qmlFile)
+                    var page = pageStack.push(patchSettingsFile)
                     if (translator) {
                         page.Component.destruction.connect(function() { PatchManager.removeTranslator(patchName) })
                     }
@@ -484,16 +491,34 @@ Page {
                     busy: patchObject.busy
                 }
 
-                Label {
+                Column {
                     id: nameLabel
                     anchors.left: appliedSwitch.right
                     anchors.right: patchIcon.status == Image.Ready ? patchIcon.left : parent.right
                     anchors.margins: Theme.paddingMedium
                     anchors.verticalCenter: parent.verticalCenter
-                    text: name
-                    color: patchObject.details.isCompatible ? background.down ? Theme.highlightColor : Theme.primaryColor
-                                                            : background.down ? Qt.tint(Theme.highlightColor, "red") : Qt.tint(Theme.primaryColor, "red")
-                    truncationMode: TruncationMode.Fade
+                    Label {
+                        text: name
+                        color: patchObject.details.isCompatible ? background.down ? Theme.highlightColor : Theme.primaryColor
+                                                                : background.down ? Qt.tint(Theme.highlightColor, "red") : Qt.tint(Theme.primaryColor, "red")
+                        truncationMode: TruncationMode.Fade
+                    }
+                    Row {
+                        visible: hasPatchSettingsPage
+                        spacing: Theme.paddingSmall/2
+                        Icon {
+                            source: "image://theme/icon-s-developer"
+                            height: parent.height
+                            fillMode: Image.PreserveAspectFit
+                        }
+                        Label {
+                            text: patchObject.details.patched
+                                ? qsTranslate("", "Tap to configure")
+                                : qsTranslate("", "Tap to show configuration")
+                            color: Theme.secondaryColor
+                            font.pixelSize: Theme.fontSizeTiny
+                        }
+                    }
                 }
 
                 Image {
