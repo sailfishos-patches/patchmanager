@@ -426,7 +426,7 @@ Page {
                             text: Theme.highlightText(qsTranslate("", "Compatible: %1").arg(modelData.compatible.join(", ")),PatchManager.osVersion, Theme.primaryColor)
                             textFormat: Text.StyledText
                             font.pixelSize: Theme.fontSizeExtraSmall
-                            color: fileDelegate.isCompatible ? Theme.highlightColor : Qt.tint(Theme.highlightColor, "red")
+                            color: fileDelegate.isCompatible ? Theme.highlightColor : Theme.errorColor
                             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                         }
 

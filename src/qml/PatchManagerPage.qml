@@ -500,7 +500,7 @@ Page {
                     Label {
                         text: name
                         color: patchObject.details.isCompatible ? background.down ? Theme.highlightColor : Theme.primaryColor
-                                                                : background.down ? Qt.tint(Theme.highlightColor, "red") : Qt.tint(Theme.primaryColor, "red")
+                                                                : background.down ? Theme.highlightBackgroundFromColor(Theme.errorColor, Theme.colorScheme) : Theme.errorColor
                         truncationMode: TruncationMode.Fade
                     }
                     Row {
