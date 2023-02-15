@@ -73,7 +73,7 @@ Note that utilising these test cases requires a thorough understanding how
 Patchmanager internally works and hence is most likely only useful for
 developers.
 
-%if "%{?vendor}" == "chum"
+%if 0%{?_chum}
 PackageName: Test cases for Patchmanager
 Type: addon
 Categories:
