@@ -5,6 +5,11 @@
 %{!?qtc_make:%define qtc_make make}
 %{!?qmake5_install:%define qmake5_install make install INSTALL_ROOT=%{buildroot}}
 
+# Define (S)RPM compression sensibly, taking compatibility into account, see
+# https://github.com/sailfishos-patches/patchmanager/pull/417#issuecomment-1429068156
+%define _source_payload w6.gzdio
+%define _binary_payload w2T.xzdio
+
 # Override these defines in both (!):
 # - src/bin/patchmanager-daemon/patchmanagerobject.h
 # - src/qml/webcatalog.h
