@@ -103,7 +103,7 @@ it merely alters their content when they are loaded into RAM to be executed.
 Note that Patchmanager does not install an application icon on the launcher,
 but creates a new entry in SailfishOS' Settings app.
 
-%if "%{?vendor}" == "chum"
+%if 0%{?_chum}
 PackageName: Patchmanager for SailfishOS
 Type: desktop-application
 Categories:
@@ -293,4 +293,3 @@ exit 0
 %changelog
 * Thu Sep  9 1999 SailfishOS Patches <sailfishos-patches@users.noreply.github.com> - 99.99.99
 - See %{url}/releases
-
