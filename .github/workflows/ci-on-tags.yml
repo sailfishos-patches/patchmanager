@@ -6,7 +6,7 @@ on:
       - '*'
 
 env:
-  LATEST: 4.4.0.68
+  LATEST: 4.5.0.16
 
 jobs:
   build:
