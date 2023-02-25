@@ -340,16 +340,18 @@ Page {
                     width: parent.width
                     contentHeight: filesContent.height
                     property bool isInstalled: !!container.versions && container.versions[modelData.project] == modelData.version
-                    property bool isCompatible: modelData.compatible.indexOf(PatchManager.osVersion) >= 0
-                    property bool isReinstallable: isInstalled && isCompatible
+                    property bool isCompatible: (modelData.compatible.indexOf(PatchManager.osVersion) >= 0)
+                    property bool forceCompatible: PatchManager.sfosVersionCheck !== VersionCheck.Strict
+                    property bool isInstallable: isCompatible || forceCompatible
+                    property bool isReinstallable: isInstalled && isInstallable
 
                     onClicked: {
-                        if ((PatchManager.sfosVersionCheck !== VersionCheck.Strict) && !isCompatible) {
-                            errorMessageComponent.createObject(fileDelegate, {text: qsTranslate("", "This Patch is incompatible with the installed SailfishOS version.")})
-                        } else if (!fileDelegate.isInstalled) {
-                            remorseAction(qsTranslate("", "Install Patch %1").arg(patchData.display_name), installPatch)
-                        } else if (fileDelegate.isReinstallable) {
+                        if (isReinstallable) {
                             remorseAction(qsTranslate("", "Re-Install Patch %1").arg(patchData.display_name), installPatch)
+                        } else if (!isInstallable) {
+                            errorMessageComponent.createObject(fileDelegate, {text: qsTranslate("", "This Patch is incompatible with the installed SailfishOS version.")})
+                        } else {
+                            remorseAction(qsTranslate("", "Install Patch %1").arg(patchData.display_name), installPatch)
                         }
                     }
 
