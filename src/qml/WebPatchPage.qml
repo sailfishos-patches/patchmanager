@@ -345,7 +345,7 @@ Page {
                     property bool isReinstallable: isInstalled && (isCompatible || forceCompatible)
 
                     onClicked: {
-                        if (fileDelegate.isReinstallable) {
+                        if (isReinstallable) {
                             remorseAction(qsTranslate("", "Re-Install Patch %1").arg(patchData.display_name), installPatch)
                         } else if (!isCompatible && !forceCompatible) {
                             errorMessageComponent.createObject(fileDelegate, {text: qsTranslate("", "This Patch is incompatible with the installed SailfishOS version.")})
