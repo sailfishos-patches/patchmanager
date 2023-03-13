@@ -499,8 +499,8 @@ Page {
                     anchors.verticalCenter: parent.verticalCenter
                     Label {
                         text: name
-                        color: patchObject.details.isCompatible ? background.down ? Theme.highlightColor : Theme.primaryColor
-                                                                : background.down ? Theme.highlightBackgroundFromColor(Theme.errorColor, Theme.colorScheme) : Theme.errorColor
+                        color: patchObject.details.isCompatible ? background.down ? Theme.highlightColor : ( patchObject.details.patched ? Theme.primaryColor : Theme.secondaryColor )
+                                                                : background.down ? Theme.highlightBackgroundFromColor(Theme.errorColor, Theme.colorScheme) : ( patchObject.details.patched ? Theme.errorColor : Theme.secondaryHighlightFromColor(Theme.errorColor, Theme.colorScheme) )
                         truncationMode: TruncationMode.Fade
                     }
                     Row {
