@@ -31,7 +31,7 @@ URL:        https://github.com/sailfishos-patches/%{name}
 Source0:    %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 # Note that the rpmlintrc file MUST be named exactly so according to
 # https://en.opensuse.org/openSUSE:Packaging_checks#Building_Packages_in_spite_of_errors
-Source99:   %{name}-rpmlintrc
+Source99:   %{name}.rpmlintrc
 Requires:   unzip
 Requires:   patch
 Requires:   grep
@@ -74,13 +74,13 @@ Patchmanager internally works and hence is most likely only useful for
 developers.
 
 %if 0%{?_chum}
-PackageName: Test cases for Patchmanager
+Title: Test cases for Patchmanager
 Type: addon
 Categories:
  - Development
 Custom:
   Repo: %{url}
-Url:
+Links:
   Homepage: https://openrepos.net/content/%{name}/%{name}-testcases
   Help: %{url}/discussions/232
   Bugtracker: %{url}/issues
@@ -104,7 +104,7 @@ Note that Patchmanager does not install an application icon on the launcher,
 but creates a new entry in SailfishOS' Settings app.
 
 %if 0%{?_chum}
-PackageName: Patchmanager for SailfishOS
+Title: Patchmanager for SailfishOS
 Type: desktop-application
 Categories:
  - System
@@ -112,8 +112,8 @@ Categories:
  - Utility
 Custom:
   Repo: %{url}
-Icon: %{url}/raw/master/src/share/patchmanager-big.png
-Url:
+PackageIcon: %{url}/raw/master/src/share/patchmanager-big.png
+Links:
   Homepage: https://openrepos.net/content/%{name}/%{name}
   Help: %{url}/blob/master/README.md
   Bugtracker: https://forum.sailfishos.org/t/bugs-in-patchmanager-3-1-0/8552
