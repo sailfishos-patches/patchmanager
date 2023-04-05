@@ -31,7 +31,7 @@ URL:        https://github.com/sailfishos-patches/%{name}
 Source0:    %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 # Note that the rpmlintrc file MUST be named exactly so according to
 # https://en.opensuse.org/openSUSE:Packaging_checks#Building_Packages_in_spite_of_errors
-Source99:   %{name}-rpmlintrc
+Source99:   %{name}.rpmlintrc
 Requires:   unzip
 Requires:   patch
 Requires:   grep
