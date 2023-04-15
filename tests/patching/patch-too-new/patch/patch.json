@@ -1,0 +1,11 @@
+{
+  "description": "Patchmanager Test Case: The version specified in the meta data is very science fiction.\n PM should not allow to activate or install it.",
+  "name": "pm-test-patch-too-new",
+  "display_name": "PM Test Case 4-2: Too New",
+  "category": "other",
+  "author": "patchmanager",
+  "version": "1.0.0",
+  "compatible": [
+    "9.9.9.0"
+  ]
+}
