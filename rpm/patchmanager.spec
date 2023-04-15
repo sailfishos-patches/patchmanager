@@ -28,6 +28,7 @@ Release:    1
 Group:      Qt/Qt
 License:    BSD-3-Clause
 URL:        https://github.com/sailfishos-patches/%{name}
+Vendor:     chum
 Source0:    %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 # Note that the rpmlintrc file MUST be named exactly so according to
 # https://en.opensuse.org/openSUSE:Packaging_checks#Building_Packages_in_spite_of_errors
