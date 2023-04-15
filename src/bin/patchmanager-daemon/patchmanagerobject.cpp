@@ -1652,9 +1652,9 @@ void PatchManagerObject::doRefreshPatchList()
                 QString path = toPatch;
 
                 for (int i = 0; i < toManglePaths.size(); i++) {
-                    // we deal with either absolute, or "git-style" beginnings:
-                    QString p1path = path.mid(path.indexOf('/', 1));
-                    if (path.startsWith(toManglePaths[i]) || p1path.startsWith(toManglePaths[i]) ) {
+                    // we need to deal with either absolute, or "git-style" beginnings, see #426:
+                    QString checkpath = path.mid(path.indexOf('/', 0));
+                    if (checkpath.startsWith(toManglePaths[i])) {
                         qDebug() << Q_FUNC_INFO << "Mangle: Editing path: " << path;
                         path.replace(toManglePaths[i], mangledPaths[i]);
                         qDebug() << Q_FUNC_INFO << "Mangle: Edited path: " << path;
