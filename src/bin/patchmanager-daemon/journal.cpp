@@ -1,4 +1,4 @@
-﻿#include "journal.h"
+#include "journal.h"
 
 #include <QVariantMap>
 #include <QDebug>
