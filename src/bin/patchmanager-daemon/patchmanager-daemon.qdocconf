@@ -1,0 +1,9 @@
+project = daemon
+description = Patchmanager Daemon
+
+headers += patchmanagerobject.h
+
+sources += main.cpp\
+           journal.cpp\
+           inotifywatcher.cpp\
+           patchmanagerobject.cpp

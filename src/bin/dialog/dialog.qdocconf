@@ -1,0 +1,7 @@
+project = dialog
+description = Patchmanager Startup Dialog
+
+headerdirs += .
+
+sources += main.cpp dialog.qml
+
