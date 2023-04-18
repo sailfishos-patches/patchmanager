@@ -1,1 +1,3 @@
-doc/generated
+doc/generated/dialog/
+doc/generated/preload/
+doc/generated/qmlplugin/
