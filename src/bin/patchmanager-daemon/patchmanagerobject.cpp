@@ -87,65 +87,65 @@ if (!calledFromDBus()) {\
 }
 
 // locations
-static const QString PATCHES_DIR = QStringLiteral("/usr/share/patchmanager/patches");
-static const QString PATCHES_WORK_DIR_PREFIX = QStringLiteral("/tmp/patchmanager3");
-static const QString PATCHES_WORK_DIR = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR_PREFIX, "work");
+static const QString PATCHES_DIR            = QStringLiteral("/usr/share/patchmanager/patches");
+static const QString PATCHES_WORK_DIR_PREFIX= QStringLiteral("/tmp/patchmanager3");
+static const QString PATCHES_WORK_DIR       = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR_PREFIX, "work");
 static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR_PREFIX, "patches");
-static const QString PATCH_METADATA_FILE = QStringLiteral("patch.json");
-static const QString MANGLE_CONFIG_FILE = QStringLiteral("/etc/patchmanager/manglelist.conf");
+static const QString PATCH_METADATA_FILE    = QStringLiteral("patch.json");
+static const QString MANGLE_CONFIG_FILE     = QStringLiteral("/etc/patchmanager/manglelist.conf");
 
-static const QString AUSMT_BACKUP_DIR = QStringLiteral("/var/lib/patchmanager/ausmt/patches");
+static const QString AUSMT_BACKUP_DIR          = QStringLiteral("/var/lib/patchmanager/ausmt/patches");
 static const QString AUSMT_INSTALLED_LIST_FILE = QStringLiteral("/var/lib/patchmanager/ausmt/packages");
 
 static const QString s_newConfigLocation = QStringLiteral("/etc/patchmanager2.conf");
 static const QString s_oldConfigLocation = QStringLiteral("/home/nemo/.config/patchmanager2.conf");
 
-static const QString s_patchmanagerSocket = QStringLiteral("/tmp/patchmanager-socket");
+static const QString s_patchmanagerSocket    = QStringLiteral("/tmp/patchmanager-socket");
 static const QString s_patchmanagerCacheRoot = QStringLiteral("/tmp/patchmanager");
 
 static const QString s_sessionBusConnection = QStringLiteral("pm3connection");
 
 // helpers
-static const QString PM_APPLY = QStringLiteral("/usr/libexec/pm_apply");
+static const QString PM_APPLY   = QStringLiteral("/usr/libexec/pm_apply");
 static const QString PM_UNAPPLY = QStringLiteral("/usr/libexec/pm_unapply");
 
 // external binaries
-static const QString BIN_UNZIP = QStringLiteral("/usr/bin/unzip");
-static const QString BIN_TAR = QStringLiteral("/bin/tar");
-static const QString BIN_PKCON = QStringLiteral("/usr/bin/pkcon");
-static const QString BIN_SYSTEMCTL_U = QStringLiteral("/usr/bin/systemctl-user");
-static const QString BIN_RPM = QStringLiteral("/bin/rpm");
+static const QString BIN_UNZIP        = QStringLiteral("/usr/bin/unzip");
+static const QString BIN_TAR          = QStringLiteral("/bin/tar");
+static const QString BIN_PKCON        = QStringLiteral("/usr/bin/pkcon");
+static const QString BIN_SYSTEMCTL_U  = QStringLiteral("/usr/bin/systemctl-user");
+static const QString BIN_RPM          = QStringLiteral("/bin/rpm");
 
 // map key constants: states
-static const QString NAME_KEY = QStringLiteral("name");
-static const QString DESCRIPTION_KEY = QStringLiteral("description");
-static const QString CATEGORY_KEY = QStringLiteral("category");
-static const QString INFOS_KEY = QStringLiteral("infos");
-static const QString PATCH_KEY = QStringLiteral("patch");
-static const QString RPM_KEY = QStringLiteral("rpm");
-static const QString AVAILABLE_KEY = QStringLiteral("available");
-static const QString SECTION_KEY = QStringLiteral("section");
-static const QString PATCHED_KEY = QStringLiteral("patched");
-static const QString VERSION_KEY = QStringLiteral("version");
-static const QString COMPATIBLE_KEY = QStringLiteral("compatible");
+static const QString NAME_KEY         = QStringLiteral("name");
+static const QString DESCRIPTION_KEY  = QStringLiteral("description");
+static const QString CATEGORY_KEY     = QStringLiteral("category");
+static const QString INFOS_KEY        = QStringLiteral("infos");
+static const QString PATCH_KEY        = QStringLiteral("patch");
+static const QString RPM_KEY          = QStringLiteral("rpm");
+static const QString AVAILABLE_KEY    = QStringLiteral("available");
+static const QString SECTION_KEY      = QStringLiteral("section");
+static const QString PATCHED_KEY      = QStringLiteral("patched");
+static const QString VERSION_KEY      = QStringLiteral("version");
+static const QString COMPATIBLE_KEY   = QStringLiteral("compatible");
 static const QString ISCOMPATIBLE_KEY = QStringLiteral("isCompatible");
-static const QString CONFLICTS_KEY = QStringLiteral("conflicts");
+static const QString CONFLICTS_KEY    = QStringLiteral("conflicts");
 
 // map key constants: patch categories
-static const QString BROWSER_CODE = QStringLiteral("browser");
-static const QString CAMERA_CODE = QStringLiteral("camera");
-static const QString CALENDAR_CODE = QStringLiteral("calendar");
-static const QString CLOCK_CODE = QStringLiteral("clock");
-static const QString CONTACTS_CODE = QStringLiteral("contacts");
-static const QString EMAIL_CODE = QStringLiteral("email");
-static const QString GALLERY_CODE = QStringLiteral("gallery");
-static const QString HOMESCREEN_CODE = QStringLiteral("homescreen");
-static const QString MEDIA_CODE = QStringLiteral("media");
-static const QString MESSAGES_CODE = QStringLiteral("messages");
-static const QString PHONE_CODE = QStringLiteral("phone");
-static const QString SILICA_CODE = QStringLiteral("silica");
-static const QString SETTINGS_CODE = QStringLiteral("settings");
-static const QString KEYBOARD_CODE = QStringLiteral("keyboard");
+static const QString BROWSER_CODE     = QStringLiteral("browser");
+static const QString CAMERA_CODE      = QStringLiteral("camera");
+static const QString CALENDAR_CODE    = QStringLiteral("calendar");
+static const QString CLOCK_CODE       = QStringLiteral("clock");
+static const QString CONTACTS_CODE    = QStringLiteral("contacts");
+static const QString EMAIL_CODE       = QStringLiteral("email");
+static const QString GALLERY_CODE     = QStringLiteral("gallery");
+static const QString HOMESCREEN_CODE  = QStringLiteral("homescreen");
+static const QString MEDIA_CODE       = QStringLiteral("media");
+static const QString MESSAGES_CODE    = QStringLiteral("messages");
+static const QString PHONE_CODE       = QStringLiteral("phone");
+static const QString SILICA_CODE      = QStringLiteral("silica");
+static const QString SETTINGS_CODE    = QStringLiteral("settings");
+static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
 
 QString getLang()
 {
