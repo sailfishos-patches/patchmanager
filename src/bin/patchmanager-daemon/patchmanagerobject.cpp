@@ -90,7 +90,7 @@ static const QString PATCHES_DIR = QStringLiteral("/usr/share/patchmanager/patch
 static const QString PATCHES_WORK_DIR_PREFIX = QStringLiteral("/tmp/patchmanager3");
 static const QString PATCHES_WORK_DIR = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR_PREFIX, "work");
 static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR_PREFIX, "patches");
-static const QString PATCH_FILE = QStringLiteral("patch.json");
+static const QString PATCH_METADATA_FILE = QStringLiteral("patch.json");
 static const QString MANGLE_CONFIG_FILE = QStringLiteral("/etc/patchmanager/manglelist.conf");
 static const QString NAME_KEY = QStringLiteral("name");
 static const QString DESCRIPTION_KEY = QStringLiteral("description");
@@ -178,7 +178,7 @@ bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, Q
         return false;
     }
 
-    QFile file(patchDir.absoluteFilePath(PATCH_FILE));
+    QFile file(patchDir.absoluteFilePath(PATCH_METADATA_FILE));
     if (!file.open(QIODevice::ReadOnly)) {
         return false;
     }
@@ -2018,7 +2018,7 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
         }
 
         const QString patchPath = QStringLiteral("%1/%2").arg(PATCHES_DIR, patch);
-        const QString jsonPath = QStringLiteral("%1/%2").arg(patchPath, PATCH_FILE);
+        const QString jsonPath = QStringLiteral("%1/%2").arg(patchPath, PATCH_METADATA_FILE);
 
         QDir patchDir(patchPath);
         if (patchDir.exists()) {
