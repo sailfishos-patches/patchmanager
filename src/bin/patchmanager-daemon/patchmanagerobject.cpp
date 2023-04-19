@@ -550,8 +550,9 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
         return;
     }
 
+    qDebug() << Q_FUNC_INFO << "Patch changes the following files:\n\t" << m_patchFiles.value(patchName).join("\n\t");
     for (const QString &fileName : m_patchFiles.value(patchName)) {
-        qDebug() << Q_FUNC_INFO << "Processing patch file" << fileName;
+        qDebug() << Q_FUNC_INFO << "Processing file" << fileName;
         QFileInfo fi(fileName);
 
         QDir fakeDir(QStringLiteral("%1%2").arg(s_patchmanagerCacheRoot, fi.absoluteDir().absolutePath()));
@@ -867,7 +868,7 @@ void PatchManagerObject::resetSystem()
 
     QStringList packages;
     for (const QString &file : patchedFiles) {
-        qDebug() << Q_FUNC_INFO << "Processing patched file" << file;
+        qDebug() << Q_FUNC_INFO << "Processing file" << file;
 
         QProcess rpmProc;
         rpmProc.start(BIN_RPM, { QStringLiteral("-qf"), QStringLiteral("--qf"), QStringLiteral("%{NAME}"), file });
@@ -1640,8 +1641,10 @@ void PatchManagerObject::doRefreshPatchList()
     for (const QString &patchFolder : patchesDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
         QFile patchFile(QStringLiteral("%1/%2/unified_diff.patch").arg(PATCHES_DIR, patchFolder));
         if (!patchFile.exists() || !patchFile.open(QFile::ReadOnly)) {
+            qWarning() << Q_FUNC_INFO << "Could not read diff file for: " << patchFolder;
             continue;
         }
+        qDebug() << Q_FUNC_INFO << "Collecting info for: " << patchFolder;
         while (!patchFile.atEnd()) {
             const QByteArray line = patchFile.readLine();
             if (line.startsWith(QByteArrayLiteral("+++ "))) {
@@ -1649,9 +1652,12 @@ void PatchManagerObject::doRefreshPatchList()
                 QString path = toPatch;
 
                 for (int i = 0; i < toManglePaths.size(); i++) {
-                    if (path.startsWith(toManglePaths[i])) {
-                        qDebug() << Q_FUNC_INFO << "Editing path: " << path;
+                    // we need to deal with either absolute, or "git-style" beginnings, see #426:
+                    QString checkpath = path.mid(path.indexOf('/', 0));
+                    if (checkpath.startsWith(toManglePaths[i])) {
+                        qDebug() << Q_FUNC_INFO << "Mangle: Editing path: " << path;
                         path.replace(toManglePaths[i], mangledPaths[i]);
+                        qDebug() << Q_FUNC_INFO << "Mangle: Edited path: " << path;
                     }
                 }
 
@@ -1666,6 +1672,7 @@ void PatchManagerObject::doRefreshPatchList()
                     }
                 }
                 if (!filesConflicts[path].contains(patchFolder)) {
+                    qDebug() << Q_FUNC_INFO << "Possible conflict in: " << path;
                     filesConflicts[path].append(patchFolder);
                 }
 
