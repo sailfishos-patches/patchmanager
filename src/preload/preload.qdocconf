@@ -1,4 +1,4 @@
-project = preload
+project = preload-lib
 description = Patchmanager Preload Library
 
 headerdirs += .

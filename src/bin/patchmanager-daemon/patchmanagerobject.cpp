@@ -148,27 +148,6 @@ static const QString SETTINGS_CODE    = QStringLiteral("settings");
 static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
 
 /*!
-  \page overview overview
-
-  \title Patchmanager Daemon Overview
-
-  So the current mode of operation of Patchmanager is something like this:
-
-  A Patch is "activated"
-  For each file the patch manipulates, a copy of the original file is put into a cache dir in /tmp, and the changes are applied there instead of on the original file.
-  A patched application is launched.
-  Through library preloading, the libpreloadpatchmanager.so library is injected into the launching binary.
-  The library:
-  intercepts calls to open(), analyzes which files the call was meant to open
-  asks the patchmanager daemon (via socket) whether a patched version exists
-  if yes, redirects the open call to that file instead of the original
-  otherwise opens the original file
-
-  to be continued...
-
-*/
-
-/*!
   \class PatchManagerObject
 
   \brief A D-Bus activated background service which manages patch un/installation, listing, de/actvation, and communication with the preload library.

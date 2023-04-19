@@ -1,4 +1,4 @@
-project = dialog
+project = patchmanager-dialog
 description = Patchmanager Startup Dialog
 
 headerdirs += .

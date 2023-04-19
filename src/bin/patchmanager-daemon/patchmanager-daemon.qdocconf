@@ -1,4 +1,4 @@
-project = daemon
+project = patchmanager-daemon
 description = Patchmanager Daemon
 
 headers += patchmanagerobject.h
