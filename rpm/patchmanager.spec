@@ -25,6 +25,8 @@ Name:       patchmanager
 Summary:    Allows to manage Patches for SailfishOS
 Version:    3.2.7
 Release:    1
+# The Group field should comprise one of the groups listed here:
+# https://github.com/mer-tools/spectacle/blob/master/data/GROUPS
 Group:      Qt/Qt
 License:    BSD-3-Clause
 URL:        https://github.com/sailfishos-patches/%{name}
