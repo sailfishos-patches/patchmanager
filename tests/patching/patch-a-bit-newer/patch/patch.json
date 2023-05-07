@@ -1,0 +1,14 @@
+{
+  "description": "Patchmanager Test Case: The version specified in the meta data is likely newer than this SFOS version (X.Y.0.99).\n PM should not allow to activate or install it.",
+  "name": "pm-test-patch-a-bit-newer",
+  "display_name": "PM Test Case 4-3: a bit newer",
+  "category": "other",
+  "author": "patchmanager",
+  "version": "1.0.0",
+  "compatible": [
+    "4.5.0.99",
+    "4.6.0.99",
+    "5.0.0.99",
+    "5.9.0.99"
+  ]
+}

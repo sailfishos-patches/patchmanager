@@ -1,0 +1,11 @@
+{
+  "description": "Patchmanager Test Case: The version specified in the meta data is too old.\n PM should not allow to activate or install it.",
+  "name": "pm-test-patch-too-old",
+  "display_name": "PM Test Case 4-1: Too Old",
+  "category": "other",
+  "author": "patchmanager",
+  "version": "1.0.0",
+  "compatible": [
+    "0.0.1.10"
+  ]
+}
