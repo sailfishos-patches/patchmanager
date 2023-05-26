@@ -63,13 +63,11 @@ case "$1" in
     operation="-a"
     shift
     surplus "$*"
+    if [ -r $PM_CONF ] && [ -s $PM_CONF ] && [ -f $PM_CONF ]; then
+      patchlist="$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2- | tr ',[:blank:]' ' ' | tr -s ' ')"
     else
-      if [ -r $PM_CONF ] && [ -s $PM_CONF ] && [ -f $PM_CONF ]; then
-        patchlist="$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2- | tr ',[:blank:]' ' ' | tr -s ' ')"
-      else
-        printf 'File "%s" does not exist, is empty, not readable or not a regular file!\n' $PM_CONF >&2
-        exit 2
-      fi
+      printf 'File "%s" does not exist, is empty, not readable or not a regular file!\n' $PM_CONF >&2
+      exit 2
     fi
   ;;
   -d|-u|--deactivate)
