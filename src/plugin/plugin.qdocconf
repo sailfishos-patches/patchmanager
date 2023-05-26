@@ -1,5 +1,5 @@
-project = qmlplugin
-description = Patchmanager QML Plugin
+project = settings
+description = Patchmanager Settings Plugin
 
 headerdirs += .
 

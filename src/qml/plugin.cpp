@@ -54,6 +54,13 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
     return PatchManagerTranslator::GetInstance(engine);
 }
 
+/*! \qmltype PatchManagerPlugin
+    \instantiates QQmlExtensionPlugin
+    \inmodule org.SfietKonstantin.patchmanager
+    \brief QML Plugin boilerplate
+
+    registers all the QML Types
+*/
 class PatchManagerPlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT

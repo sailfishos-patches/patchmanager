@@ -40,6 +40,13 @@ import Sailfish.Silica 1.0
 import Nemo.Configuration 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
+/*! \qmltype PatchManagerPage
+    \inqmlmodule org.SfietKonstantin.patchmanager
+    \brief The main Patchmanager GUI Application
+
+    Page shown through the Jolla Settings Plugin from the Settings Application
+*/
+
 Page {
     id: container
 
@@ -57,6 +64,8 @@ Page {
     }
 
     Component.onCompleted: migrateDevModeSettings()
+    /*! \qmlmethod migrateDevModeSettings()
+     */
     function migrateDevModeSettings() {
         if (PatchManager.developerMode === true) {
             console.info("Migrating settings from deprecated developerMode setting.")
@@ -98,6 +107,10 @@ Page {
         }
     }
 
+    /*! \qmlmethod function showUpdates(manual)
+        if \a manual is true, do nothing.
+        if \a manual is false, flash the Pulley Menu if updates are available
+     */
     function showUpdates(manual) {
         if (pageStack.busy) {
             return
@@ -109,6 +122,11 @@ Page {
         pulleyAnimation.start()
     }
 
+    /*! \qmlproperty real PatchManagerPage::pullDownDistance
+        \warning undocumented 
+        \dontdocument
+        \internal
+    */
     property real pullDownDistance: Theme.itemSizeLarge
 
     SequentialAnimation {

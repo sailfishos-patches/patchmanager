@@ -1,0 +1,25 @@
+project = qmlplugin
+description = Patchmanager QML Plugin
+
+sources += plugin.cpp\
+	patchmanager.cpp\
+	patchmanagermodel.cpp\
+	webdownloader.cpp\
+	webpatchesmodel.cpp\
+	PatchObject.cpp\
+	AboutPage.qml\
+	PatchManagerPage.qml\
+	AboutPage.qml\
+	DevelopersPage.qml\
+	LipstickWarningDialog.qml\
+	RestartServicesDialog.qml
+
+headers += patchmanager.h\
+	patchmanagermodel.h\
+	webcatalog.h\
+	webdownloader.h\
+	webpatchesmodel.h\
+	PatchObject.hpp
+
+sourcedirs += .
+includedirs += .

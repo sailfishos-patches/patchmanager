@@ -2,4 +2,5 @@ src/bin/dialog/dialog.qdocconf
 src/bin/patchmanager-daemon/patchmanager-daemon.qdocconf
 src/plugin/plugin.qdocconf
 src/preload/preload.qdocconf
+src/qml/plugin.qdocconf
 src/src.qdocconf

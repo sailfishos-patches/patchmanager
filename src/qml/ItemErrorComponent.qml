@@ -33,6 +33,11 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+/*! \qmltype ItemErrorComponent
+    \inqmlmodule org.SfietKonstantin.patchmanager
+    \brief General information about Patchmanager
+*/
+
 Rectangle {
     id: errorMessage
     anchors.fill: parent
