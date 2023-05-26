@@ -24,6 +24,7 @@ function usage() {
   printf "\t-d | --deactivate\t\tDeactivate / unapply Patches from list or file (via -f).\n"
   printf "\t-D | --deactivate-all\t\tDeactivate / unapply all Patches.\n"
   printf "\t-S | --save-as-good\t\tSave list of enabled Patches as 'known good'\n"
+  printf "\t-G | --load-known-good\t\tEnable 'known good' Patches\n"
   printf "\t-f | --file <filepath>\t\tUse <filepath> for the list of Patches.\n"
   printf "\t-e | --export\t\t\tExport list of Patches marked as active either to STDout or (via -f) to a file.\n"
   printf "\t-? | --help\t\t\tPrint this help.\n"
@@ -96,6 +97,11 @@ case "$1" in
   ;;
   -S|--save-as-good)
     operation="--save-as-good"
+    shift
+    surplus "$*"
+  ;;
+  -G|)
+    operation="--load-known-good"
     shift
     surplus "$*"
   ;;

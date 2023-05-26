@@ -1135,6 +1135,8 @@ void PatchManagerObject::process()
             method = QStringLiteral("unapplyAllPatches");
         } else if (args[1] == QStringLiteral("--save-as-good")) {
             method = QStringLiteral("setKnownGood");
+        } else if (args[1] == QStringLiteral("--load-known-good")) {
+            method = QStringLiteral("revertToLastGood");
         } else {
             return;
         }

@@ -62,6 +62,7 @@ void help()
     std::cout << "  patchmanager -u <Patch>     : Deactivate and disable (unapply) a Patch" << std::endl;
     std::cout << "  patchmanager --unapply-all  : Deactivate and disable (unapply) all Patches" << std::endl;
     std::cout << "  patchmanager --save-as-good : Save list of enabled Patches as 'known good'" << std::endl;
+    std::cout << "  patchmanager --load-known-good : Enable 'known good' Patches" << std::endl;
     std::cout << "  patchmanager --daemon       : Start Patchmanager as daemon" << std::endl;
 }
 
