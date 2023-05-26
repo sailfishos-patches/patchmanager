@@ -101,26 +101,28 @@ case "$1" in
   ;;
   -e|--export)
     shift
-    if [ "$1" = "-f" ] || [ "$1" = "--file" ]; then
-      shift
-      filepath="$1"
-      shift
-      surplus "$*"
-      if [ ! -w $(dirname "$filepath") ]; then
-        printf 'Cannot write to given directory: %s\n' "$filepath" >&2
-        exit 2
-      elif [ -e "$filepath" ]; then
-        printf 'File %s exists, will not overwrite.\n' "$filepath" >&2
-        exit 2
-      else
-        grep '^applied=' $PM_CONF | cut -s -d "=" -f 2- > "$filepath"
-        exit 0
+    if [ $# -ge 1 ]; then
+      if [ "$1" = "-f" ] || [ "$1" = "--file" ]; then
+        shift
+        filepath="$1"
+        shift
+        surplus "$*"
+        if [ ! -w $(dirname "$filepath") ]; then
+          printf 'Cannot write to given directory: %s\n' "$filepath" >&2
+          exit 2
+        elif [ -e "$filepath" ]; then
+          printf 'File %s exists, will not overwrite.\n' "$filepath" >&2
+          exit 2
+        else
+          grep '^applied=' $PM_CONF | cut -s -d "=" -f 2- > "$filepath"
+          exit 0
+        fi
       fi
-  else
-    surplus "$*"
-    printf '%s\n' "$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2-)"
-    exit 0
-  fi
+    else
+      surplus "$*"
+      printf '%s\n' "$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2-)"
+      exit 0
+    fi
   ;;
   -h|--help)
     usage
