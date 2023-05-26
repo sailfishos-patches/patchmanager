@@ -42,7 +42,6 @@ import org.SfietKonstantin.patchmanager 2.0
 /*! \qmltype AboutPage
     \inqmlmodule org.SfietKonstantin.patchmanager
     \brief General information about Patchmanager
-
 */
 Page {
     SilicaFlickable {

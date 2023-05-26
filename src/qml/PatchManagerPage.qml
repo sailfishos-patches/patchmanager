@@ -123,8 +123,6 @@ Page {
     }
 
     /*! \qmlproperty real PatchManagerPage::pullDownDistance
-        \warning undocumented 
-        \dontdocument
         \internal
     */
     property real pullDownDistance: Theme.itemSizeLarge

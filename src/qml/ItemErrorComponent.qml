@@ -35,14 +35,20 @@ import Sailfish.Silica 1.0
 
 /*! \qmltype ItemErrorComponent
     \inqmlmodule org.SfietKonstantin.patchmanager
-    \brief General information about Patchmanager
+    \brief Shows an error message
 */
 
 Rectangle {
     id: errorMessage
     anchors.fill: parent
     color: Theme.rgba(Theme.highlightBackgroundColor, Theme.highlightBackgroundOpacity)
+    /*! \qmlproperty string text
+        The title text of the message.
+    */
     property alias text: titleLabel.text
+    /*! \qmlproperty int timeout
+        How long the message is shown
+    */
     property alias timeout: destroyTimer.interval
     Component.onCompleted: {
         if (parent.contentItem) {

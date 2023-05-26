@@ -177,7 +177,7 @@ PatchManager::PatchManager(QObject *parent)
 }
 
 /*! \fn PatchManager *PatchManager::GetInstance(QObject *parent)
-    QML Initializer. Creates an instance of \e PatchManager parented to \a parent
+    Creates an instance of \e PatchManager parented to \a parent
 
     Returns the object
 */
@@ -385,8 +385,6 @@ void PatchManager::requestListPatches(const QString &patch, bool installed)
 
 /*! \fn QDBusPendingCallWatcher* PatchManager::applyPatch(const QString &patch)
     Request daemon to apply (activate) the Patch named \a patch
-
-    \sa {} {PatchManagerInterface::applyPatch(const QString &patch)}
 */
 QDBusPendingCallWatcher* PatchManager::applyPatch(const QString &patch)
 {
@@ -397,8 +395,6 @@ QDBusPendingCallWatcher* PatchManager::applyPatch(const QString &patch)
 
 /*! \fn QDBusPendingCallWatcher* PatchManager::unapplyPatch(const QString &patch)
     Request daemon to unapply (deactivate) the Patch named \a patch
-
-    \sa {} {PatchManagerInterface::unapplyPatch(const QString &patch)}
 */
 QDBusPendingCallWatcher* PatchManager::unapplyPatch(const QString &patch)
 {
@@ -435,7 +431,6 @@ QDBusPendingCallWatcher *PatchManager::uninstallPatch(const QString &patch)
 
     \warning method not investigated, need documentation
 
-    \sa {PatchManagerInterface::resetState(patch)}
 */
 QDBusPendingCallWatcher *PatchManager::resetState(const QString &patch)
 {
@@ -457,7 +452,6 @@ QDBusPendingCallWatcher *PatchManager::downloadCatalog(const QVariantMap &params
 
 /*! \fn QDBusPendingCallWatcher *PatchManager::downloadPatchInfo(const QString &name)
     Request daemon to download patch info for patch \a name
-    \sa PatchManagerInterface::downloadPatchInfo(name)
 */
 QDBusPendingCallWatcher *PatchManager::downloadPatchInfo(const QString &name)
 {
@@ -469,7 +463,7 @@ QDBusPendingCallWatcher *PatchManager::downloadPatchInfo(const QString &name)
 /*! \fn QDBusPendingCallWatcher *PatchManager::listVersions()
     Request daemon to list patch versions.
 
-    \sa {PatchManagerObject::listVersions()}
+    \sa PatchManagerObject::listVersions()
 */
 QDBusPendingCallWatcher *PatchManager::listVersions()
 {
@@ -480,8 +474,6 @@ QDBusPendingCallWatcher *PatchManager::listVersions()
 
 /*! \fn QDBusPendingCallWatcher *PatchManager::unapplyAllPatches()
     Request daemon to unapply (deactivate) all active patches.
-
-    \sa {PatchManagerInterface::unapplyAllPatches()}
 */
 QDBusPendingCallWatcher *PatchManager::unapplyAllPatches()
 {
@@ -578,8 +570,6 @@ void PatchManager::watchCall(QDBusPendingCallWatcher *call, QJSValue callback, Q
     Install the translation service for \a patch
 
     Returns \c true if successful, \c false otherwise.
-
-    \sa PatchManager::removeTranslator(const QString &patch)
 */
 bool PatchManager::installTranslator(const QString &patch)
 {
@@ -591,7 +581,6 @@ bool PatchManager::installTranslator(const QString &patch)
 
     Returns \c true if successful, \c false otherwise.
 
-    \sa PatchManager::installTranslator(const QString &patch)
 */
 bool PatchManager::removeTranslator(const QString &patch)
 {
@@ -600,11 +589,8 @@ bool PatchManager::removeTranslator(const QString &patch)
 
 /*! \fn int PatchManager::checkVote(const QString &patch) const
 
-
     Returns the vote count of \a patch from settings.
 
-    \sa PatchManager::doVote(const QString &patch, int action),
-        PatchManager::getSettingsSync(const QString &name, const QVariant &def)
 */
 int PatchManager::checkVote(const QString &patch) const
 {
@@ -617,8 +603,6 @@ int PatchManager::checkVote(const QString &patch) const
 
     Send a vote got \a patch, and record it (\a action) in settings.
 
-    \sa PatchManager::checkVote(),
-        {PatchManagerInterface::votePatch(const QString &patch, int action)}
 */
 void PatchManager::doVote(const QString &patch, int action)
 {
@@ -686,7 +670,6 @@ QString PatchManager::valueIfExists(const QString &filename) const
 }
 
 /*! \fn void PatchManager::checkForUpdates()
-    \sa {PatchManagerInterface::checkForUpdates()}
 */
 void PatchManager::checkForUpdates()
 {
@@ -721,10 +704,6 @@ bool PatchManager::putSettingsSync(const QString &name, const QVariant &value)
 
     Calls \a callback in success, \a errorCallback on failure.
 
-    \sa PatchManager::putSettingsSync(const QString &name, const QVariant &value),
-        PatchManager::watchCall(QDBusPendingCallWatcher *call, QJSValue callback, QJSValue errorCallback),
-        {PatchManagerObject::putSettings(const QString &name, const QDBusVariant &value)}
-
 */
 void PatchManager::putSettingsAsync(const QString &name, const QVariant &value, QJSValue callback, QJSValue errorCallback)
 {
@@ -735,8 +714,6 @@ void PatchManager::putSettingsAsync(const QString &name, const QVariant &value, 
 
     Returns the setting \a name over DBus.
     Defaults to \a def
-
-    \sa PatchManager::getSettingsAsync(const QString &name, const QVariant &def, QJSValue callback, QJSValue errorCallback)
 
 */
 QVariant PatchManager::getSettingsSync(const QString &name, const QVariant &def) const
@@ -756,10 +733,7 @@ QVariant PatchManager::getSettingsSync(const QString &name, const QVariant &def)
 
     Calls \a callback in success, \a errorCallback on failure.
 
-    \sa PatchManager::getSettingsSync(const QString &name, const QVariant &def),
-        PatchManager::watchCall(QDBusPendingCallWatcher *call, QJSValue callback, QJSValue errorCallback)
-        PatchManager::watchCall(QDBusPendingCallWatcher *call, QJSValue callback, QJSValue errorCallback)
-        {PatchManagerObject::putSettings(const QString &name, const QDBusVariant &value)}
+    \sa PatchManagerObject::putSettings(const QString &name, const QDBusVariant &value)
 
 */
 void PatchManager::getSettingsAsync(const QString &name, const QVariant &def, QJSValue callback, QJSValue errorCallback)
@@ -863,7 +837,6 @@ void PatchManager::onLoadedChanged(bool loaded)
 }
 
 /*! \fn void PatchManager::resolveFailure()
-    \sa PatchManagerInterface::resolveFailure()
 */
 void PatchManager::resolveFailure()
 {
@@ -1011,8 +984,7 @@ QVariant PatchManager::unwind(const QVariant &val, int depth)
     return res;
 }
 
-/*! \qmltype PatchManagerTranslator
-    \instantiates QObject
+/*! \class PatchManagerTranslator
     \inmodule org.SfietKonstantin.patchmanager
     \brief Translation helper
 */
@@ -1022,6 +994,11 @@ PatchManagerTranslator::PatchManagerTranslator(QObject *parent)
 
 }
 
+/*! \fn PatchManagerTranslator *PatchManagerTranslator::GetInstance(QObject *parent)
+    QML Initializer. Creates an instance of \e PatchManagerTranslator parented to \a parent
+
+    Returns the object
+*/
 PatchManagerTranslator *PatchManagerTranslator::GetInstance(QObject *parent)
 {
     static PatchManagerTranslator* tsSingleton = nullptr;
@@ -1031,6 +1008,11 @@ PatchManagerTranslator *PatchManagerTranslator::GetInstance(QObject *parent)
     return tsSingleton;
 }
 
+/*! \fn bool PatchManagerTranslator::installTranslator(const QString &patch)
+    Install the translation service for \a patch
+
+    Returns \c true if successful, \c false otherwise.
+*/
 bool PatchManagerTranslator::installTranslator(const QString &patch)
 {
     qDebug() << Q_FUNC_INFO << patch << QLocale::system();
@@ -1079,7 +1061,7 @@ void PatchManager::easterReceived(const QString & easterText);
 
     Returns \e true if \a filename exists, \e false otherwise.
 
-    \sa {https://doc.qt.io/qt-5/qfile.html#exists-1}
+    \sa https://doc.qt.io/qt-5/qfile.html#exists-1
 
 */
 bool PatchManager::fileExists(const QString &filename)
@@ -1087,6 +1069,11 @@ bool PatchManager::fileExists(const QString &filename)
     return QFile::exists(filename);
 }
 
+/*! \fn bool PatchManagerTranslator::removeTranslator(const QString &patch)
+    Remove the translation service for \a patch
+
+    Returns \c true if successful, \c false otherwise.
+*/
 bool PatchManagerTranslator::removeTranslator(const QString &patch)
 {
     qDebug() << Q_FUNC_INFO << patch;

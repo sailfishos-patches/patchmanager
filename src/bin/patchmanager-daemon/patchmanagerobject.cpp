@@ -1177,7 +1177,8 @@ bool PatchManagerObject::isPatchApplied(const QString &patch)
 
 /*!  \fn bool PatchManagerObject::unapplyAllPatches()
 
-    call the corresponding method over D-Bus to unapply all active patches
+    call the corresponding method over D-Bus to
+    unapply all active patches
 
     Returns \c true if successful
 
@@ -1187,7 +1188,7 @@ bool PatchManagerObject::isPatchApplied(const QString &patch)
     call the corresponding method over D-Bus to
     apply \a patch
 
-    Returns a \c QVariantMap with the call results.
+    Returns an empty(!) \c QVariantMap
 
 */
 QVariantMap PatchManagerObject::applyPatch(const QString &patch)
