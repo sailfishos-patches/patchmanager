@@ -5,18 +5,29 @@
 
   So the current mode of operation of Patchmanager is something like this:
 
-  A Patch is "activated"
-  For each file the patch manipulates, a copy of the original file is put into a cache dir in /tmp, and the changes are applied there instead of on the original file.
-  A patched application is launched.
-  Through library preloading, the libpreloadpatchmanager.so library is injected into the launching binary.
-  The library:
-  intercepts calls to open(), analyzes which files the call was meant to open
-  asks the patchmanager daemon (via socket) whether a patched version exists
-  if yes, redirects the open call to that file instead of the original
-  otherwise opens the original file
+  \section1 Operation
 
-  to be continued...
+  \section2 A Patch is "activated"
+
+  For each file the patch manipulates, a copy of the original file is put into
+  a cache dir in \c /tmp, and the changes are applied there instead of on the
+  original file.
+
+  \section2 A patched application is launched.
+
+  Through library preloading, the \c libpreloadpatchmanager.so library is
+  injected into the launching binary.
+
+  \section2 The Preload Library:
+
+  intercepts calls to \c open()  or (\c open64()), analyzes which files
+  the call was meant to open asks the patchmanager daemon (via socket) whether
+  it knows of a patched version.
+  If yes, the daemon will return a path to its cachedir, and the library
+  redirects the call to that file instead of the original. Otherwise, the
+  \c{open()} is executed on the original file.
+
+  \e{to be continued...}
 
 */
-
 
