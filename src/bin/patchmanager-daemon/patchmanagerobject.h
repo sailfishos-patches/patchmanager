@@ -216,6 +216,9 @@ private:
     QSet<QString> getAppliedPatches() const;
     void setAppliedPatches(const QSet<QString> &patches);
 
+    QSet<QString> getLastGoodPatches() const;
+    void setLastGoodPatches(const QSet<QString> &patches);
+
     void getVersion();
 
     void lateInitialize();

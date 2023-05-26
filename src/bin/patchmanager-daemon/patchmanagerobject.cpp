@@ -359,6 +359,17 @@ void PatchManagerObject::setAppliedPatches(const QSet<QString> &patches)
     putSettings(QStringLiteral("applied"), QStringList(patches.toList()));
 }
 
+
+QSet<QString> PatchManagerObject::getLastGoodPatches() const
+{
+    return getSettings(QStringLiteral("lastknowngood"), QStringList()).toStringList().toSet();
+}
+
+void PatchManagerObject::setLastGoodPatches(const QSet<QString> &patches)
+{
+    putSettings(QStringLiteral("lastknowngood"), QStringList(patches.toList()));
+}
+
 QStringList PatchManagerObject::getMangleCandidates()
 {
     if (m_mangleCandidates.empty()) {
@@ -590,6 +601,10 @@ void PatchManagerObject::doPrepareCacheRoot()
 
     if (m_adaptor) {
         emit m_adaptor->autoApplyingFinished(success);
+    }
+
+    if (success) {
+        setLastGoodPatches(m_appliedPatches);
     }
 
     if (!success) {
