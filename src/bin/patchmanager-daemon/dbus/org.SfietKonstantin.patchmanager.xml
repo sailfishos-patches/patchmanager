@@ -110,6 +110,9 @@
         <method name="revertToLastGood">
             <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
         </method>
+        <method name="setKnownGood">
+            <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+        </method>
         <method name="resolveFailure">
             <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
         </method>

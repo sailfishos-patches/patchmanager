@@ -824,6 +824,13 @@ void PatchManager::revertToLastGood()
     m_interface->revertToLastGood();
 }
 
+void PatchManager::setKnownGood()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    m_interface->setKnownGood();
+}
+
 /*! Calls the \e resolveFailure method on D-Bus */
 void PatchManager::resolveFailure()
 {

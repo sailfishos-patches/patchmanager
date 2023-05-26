@@ -219,6 +219,7 @@ private:
 
     QSet<QString> getLastGoodPatches() const;
     void setLastGoodPatches(const QSet<QString> &patches);
+    void setKnownGood();
 
     void getVersion();
 

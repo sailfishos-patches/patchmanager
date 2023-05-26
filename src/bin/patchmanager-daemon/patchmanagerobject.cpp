@@ -370,6 +370,11 @@ void PatchManagerObject::setLastGoodPatches(const QSet<QString> &patches)
     putSettings(QStringLiteral("lastknowngood"), QStringList(patches.toList()));
 }
 
+void PatchManagerObject::setKnownGood()
+{
+    setLastGoodPatches(getAppliedPatches());
+}
+
 QStringList PatchManagerObject::getMangleCandidates()
 {
     if (m_mangleCandidates.empty()) {
