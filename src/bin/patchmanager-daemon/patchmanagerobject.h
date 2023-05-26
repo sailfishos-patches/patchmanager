@@ -129,6 +129,7 @@ public slots:
     bool getFailure() const;
     bool getLoaded() const;
     void resolveFailure();
+    void revertToLastGood();
     void loadRequest(bool apply);
 
     void lipstickChanged(const QString &state);

@@ -182,6 +182,7 @@ public slots:
     void onFailureChanged(bool failed);
     void onLoadedChanged(bool loaded);
 
+    void revertToLastGood();
     void resolveFailure();
 
 signals:

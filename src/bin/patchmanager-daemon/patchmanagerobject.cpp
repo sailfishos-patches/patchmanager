@@ -1586,6 +1586,12 @@ bool PatchManagerObject::getLoaded() const
     return m_serverThread->isRunning();
 }
 
+void PatchManagerObject::revertToLastGood()
+{
+    m_appliedPatches = getLastGoodPatches();
+    setAppliedPatches(m_appliedPatches);
+}
+
 /*!
     Reset internal failure state and re-initialize.
 

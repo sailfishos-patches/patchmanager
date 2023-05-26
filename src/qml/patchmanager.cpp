@@ -817,6 +817,13 @@ void PatchManager::onLoadedChanged(bool loaded)
     emit loadedChanged(m_loaded);
 }
 
+void PatchManager::revertToLastGood()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    m_interface->revertToLastGood();
+}
+
 /*! Calls the \e resolveFailure method on D-Bus */
 void PatchManager::resolveFailure()
 {
