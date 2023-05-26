@@ -1,0 +1,30 @@
+/*!
+    \title Patchmanager Settings QML Plugin
+    \page index.html
+
+    \section1 Overview
+
+    This plugin provides C++/QML classes for Patchmanager
+
+    \section2 QML types:
+
+    \generatelist{qmltypesbymodule org.SfietKonstantin.patchmanager}
+
+    \section2 C++ classes:
+
+    \generatelist annotatedclasses
+*/
+
+/*!
+    \qmlmodule org.SfietKonstantin.patchmanager 2.0
+    \title org.SfietKonstantin.patchmanager QML Types
+
+    This module includes the following types:
+
+*/
+
+/*!
+    \module PatchManager
+    \title Patchmanager C++ Classes
+
+*/

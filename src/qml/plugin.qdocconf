@@ -4,7 +4,7 @@ description = Patchmanager QML Plugin
 sourcedirs += .
 includedirs += .
 
-sources.fileextensions = "*.cpp *.qml"
+sources.fileextensions = "*.cpp *.qml *.qdoc"
 
 headers += patchmanager.h\
     patchmanagermodel.h\
