@@ -116,9 +116,11 @@ case "$1" in
         grep '^applied=' $PM_CONF | cut -s -d "=" -f 2- > "$filepath"
         exit 0
       fi
+  else
     surplus "$*"
     printf '%s\n' "$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2-)"
     exit 0
+  fi
   ;;
   -h|--help)
     usage
