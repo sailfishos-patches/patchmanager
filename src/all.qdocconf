@@ -1,0 +1,14 @@
+project = patchmanager
+description = Patchmanager
+
+## Headers
+headerdirs += ./bin/patchmanager-daemon ./qml
+headers.fileextensions = "*.h *.hpp"
+
+## Sources
+sources += index.qdoc
+sourcedirs += bin\
+    plugin\
+    preload\
+    qml
+sources.fileextensions = "*.cpp *.qdoc *.qml"

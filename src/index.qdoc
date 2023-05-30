@@ -1,7 +1,28 @@
 /*!
-  \title Patchmanager Overview
 
   \page index.html
+
+  \indexpage Index
+  \title Patchmanager Documentation
+  \startpage Patchmanager Overview
+
+  \section2 Manual List
+  \list
+  \li \l {Patchmanager Overview}
+  \li \l {Patchmanager Daemon}
+  \li \l {Patchmanager Settings QML Plugin}
+  \endlist
+
+  \section2 Classes
+  \generatelist annotatedclasses
+  \section2 QML Types
+  \generatelist qmltypesbymodule org.SfietKonstantin.patchmanager
+*/
+
+/*!
+  \title Patchmanager Overview
+
+  \page overview.html
 
   So the current mode of operation of Patchmanager is something like this:
 

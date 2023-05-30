@@ -54,7 +54,7 @@ import org.nemomobile.dbus 2.0
 
   Patches failing to apply will be logged, and reported.
 
-  After ending any of the above operations, a "Quit" button is activated which
+  After ending any of the above operations, a \uicontrol "Quit" button is activated which
   will close the application.
 
 */

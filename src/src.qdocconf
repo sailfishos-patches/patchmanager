@@ -1,4 +1,0 @@
-project = patchmanager
-description = Patchmanager
-
-sources += overview.qdoc
