@@ -63,13 +63,11 @@ case "$1" in
     operation="-a"
     shift
     surplus "$*"
+    if [ -r $PM_CONF ] && [ -s $PM_CONF ] && [ -f $PM_CONF ]; then
+      patchlist="$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2- | tr ',[:blank:]' ' ' | tr -s ' ')"
     else
-      if [ -r $PM_CONF ] && [ -s $PM_CONF ] && [ -f $PM_CONF ]; then
-        patchlist="$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2- | tr ',[:blank:]' ' ' | tr -s ' ')"
-      else
-        printf 'File "%s" does not exist, is empty, not readable or not a regular file!\n' $PM_CONF >&2
-        exit 2
-      fi
+      printf 'File "%s" does not exist, is empty, not readable or not a regular file!\n' $PM_CONF >&2
+      exit 2
     fi
   ;;
   -d|-u|--deactivate)
@@ -103,24 +101,31 @@ case "$1" in
   ;;
   -e|--export)
     shift
-    if [ "$1" = "-f" ] || [ "$1" = "--file" ]; then
-      shift
-      filepath="$1"
-      shift
-      surplus "$*"
-      if [ ! -w $(dirname "$filepath") ]; then
-        printf 'Cannot write to given directory: %s\n' "$filepath" >&2
-        exit 2
-      elif [ -e "$filepath" ]; then
-        printf 'File %s exists, will not overwrite.\n' "$filepath" >&2
-        exit 2
+    if [ $# -ge 1 ]; then
+      if [ "$1" = "-f" ] || [ "$1" = "--file" ]; then
+        shift
+        filepath="$1"
+        shift
+        surplus "$*"
+        if [ ! -w $(dirname "$filepath") ]; then
+          printf 'Cannot write to given directory: %s\n' "$filepath" >&2
+          exit 2
+        elif [ -e "$filepath" ]; then
+          printf 'File %s exists, will not overwrite.\n' "$filepath" >&2
+          exit 2
+        else
+          grep '^applied=' $PM_CONF | cut -s -d "=" -f 2- > "$filepath"
+          exit 0
+        fi
       else
-        grep '^applied=' $PM_CONF | cut -s -d "=" -f 2- > "$filepath"
-        exit 0
+        printf 'Unknown parameter: %s.\nIf you meant to export to a file, use "--export --file %s"\n' "$1" "$1" >&2
+        exit 1
       fi
-    surplus "$*"
-    printf '%s\n' "$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2-)"
-    exit 0
+    else
+      surplus "$*"
+      printf '%s\n' "$(grep '^applied=' $PM_CONF | cut -s -d "=" -f 2-)"
+      exit 0
+    fi
   ;;
   -h|--help)
     usage
