@@ -38,6 +38,9 @@
 
 #include <algorithm>
 
+/*! \class WebPatchesModel
+    \inmodule org.SfietKonstantin.patchmanager
+*/
 WebPatchesModel::WebPatchesModel(QObject * parent)
     : QAbstractListModel(parent)
 {
@@ -63,6 +66,19 @@ WebPatchesModel::~WebPatchesModel()
 {
 }
 
+/*! \property WebPatchesModel::sorted
+  Whether the model is sorted
+*/
+/*! \qmlproperty bool WebPatchesModel::sorted
+  Whether the model is sorted
+*/
+
+/*! \property WebPatchesModel::queryParams
+  Query parameters
+*/
+/*! \qmlproperty var WebPatchesModel::queryParams
+  Quety parameters
+*/
 QVariantMap WebPatchesModel::queryParams() const
 {
     return _queryParams;
@@ -89,6 +105,8 @@ void WebPatchesModel::setSorted(const bool & sorted) {
     }
 }
 
+/*! \fn void WebPatchesModel::classBegin()
+*/
 void WebPatchesModel::classBegin()
 {
 
@@ -104,6 +122,8 @@ bool compareStrings(const QString &a, const QString &b)
     return a.compare(b, Qt::CaseInsensitive) < 0;
 }
 
+/*! \fn void WebPatchesModel::componentComplete()
+*/
 void WebPatchesModel::componentComplete()
 {
     if (_modelData.size() > 0) {
@@ -158,12 +178,20 @@ void WebPatchesModel::componentComplete()
     });
 }
 
+/*! \fn int WebPatchesModel::rowCount(const QModelIndex & parent) const
+    \a parent is unused
+    Returns the row count
+*/
 int WebPatchesModel::rowCount(const QModelIndex & parent) const
 {
     Q_UNUSED(parent);
     return _modelData.count();
 }
 
+/*! \fn QVariant WebPatchesModel::data(const QModelIndex & index, int role) const
+ \a index
+ \a role
+*/
 QVariant WebPatchesModel::data(const QModelIndex & index, int role) const
 {
     int row = index.row();

@@ -65,6 +65,7 @@ Page {
 
     Component.onCompleted: migrateDevModeSettings()
     /*! \qmlmethod migrateDevModeSettings()
+        Manages migration from legacy \e developerMode setting to the new \e patchDevelMode and \e sfosVersionCheck settings, then sets \e developerMode to \e false.
      */
     function migrateDevModeSettings() {
         if (PatchManager.developerMode === true) {

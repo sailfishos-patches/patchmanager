@@ -41,8 +41,7 @@ import org.SfietKonstantin.patchmanager 2.0
 
 /*! \qmltype RestartServicesDialog
     \inqmlmodule org.SfietKonstantin.patchmanager
-    \brief Documentation missing
-    \warning Documentation missing!
+    \brief Service restart confirmation dialog
 
     This Dialog is shown to the user to config restarting of "Services", i.e.
     anything that has been affected by activated patches.

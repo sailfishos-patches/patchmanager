@@ -72,7 +72,6 @@ static const char *noop_strings[] = {
 /*! \class PatchManager
     \inmodule org.SfietKonstantin.patchmanager
 */
-
 PatchManager::PatchManager(QObject *parent)
     : QObject(parent)
     , m_nam(new QNetworkAccessManager(this))
@@ -233,14 +232,21 @@ void PatchManager::setSfosVersionCheck(int sfosVersionCheck)
     }
 }
 
-/*! \fn bool PatchManager::applyOnBoot() const
-    Returns the \e applyOnBoot settings value
+/*! \property PatchManager::applyOnBoot
+    Whether to apply patches on boot or not.
+*/
+/*! \qmlproperty bool PatchManager::applyOnBoot
+    \warning: investigate how this ends up in the html file...
 */
 bool PatchManager::applyOnBoot() const
 {
     return getSettingsSync(QStringLiteral("applyOnBoot"), false).toBool();
 }
 
+
+/*! \property PatchManager::mangleCandidates
+    List of mangle candidates from the config
+*/
 QStringList PatchManager::mangleCandidates() const
 {
     QDBusPendingReply<QStringList> reply = m_interface->getMangleCandidates();
@@ -263,6 +269,20 @@ void PatchManager::setApplyOnBoot(bool applyOnBoot)
     }
 }
 
+/*! \property PatchManager::appsNeedRestart
+    Whether services need to be restarted
+*/
+/*! \qmlproperty bool PatchManager::appsNeedRestart
+    \inheaderfile: patchmanager.h
+    Whether services need to be restarted
+*/
+/*! \property PatchManager::notifyOnSuccess
+    Whether to show a popup on successful actions
+*/
+/*! \qmlproperty bool PatchManager::notifyOnSuccess
+    \inheaderfile: patchmanager.h
+    Whether to show a popup on successful actions
+*/
 bool PatchManager::notifyOnSuccess() const
 {
     return getSettingsSync(QStringLiteral("notifyOnSuccess"), true).toBool();
@@ -275,6 +295,10 @@ void PatchManager::setNotifyOnSuccess(bool notifyOnSuccess)
     }
 }
 
+/*! \property PatchManager::bitnessMangle
+*/
+/*! \qmlproperty bool PatchManager::bitnessMangle
+*/
 bool PatchManager::bitnessMangle() const
 {
     return getSettingsSync(QStringLiteral("bitnessMangle"), false).toBool();
@@ -846,7 +870,7 @@ void PatchManager::resolveFailure()
 }
 
 /*! \fn QVariant PatchManager::unwind(const QVariant &val, int depth)
- *
+
     Helper to translate a DBus reply object \a val to a valid/usable QVariant
 
     Recurse up to \a depth (max. 32).
@@ -995,9 +1019,9 @@ PatchManagerTranslator::PatchManagerTranslator(QObject *parent)
 }
 
 /*! \fn PatchManagerTranslator *PatchManagerTranslator::GetInstance(QObject *parent)
-    QML Initializer. Creates an instance of \e PatchManagerTranslator parented to \a parent
+    Constructs a (singleton) instance of \e PatchManagerTranslator parented to \a parent
 
-    Returns the object
+    Returns the singleton
 */
 PatchManagerTranslator *PatchManagerTranslator::GetInstance(QObject *parent)
 {

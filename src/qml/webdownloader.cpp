@@ -33,12 +33,18 @@
 #include "webdownloader.h"
 #include "webcatalog.h"
 
+/*! \class WebDownloader
+    \inmodule org.SfietKonstantin.patchmanager
+*/
 WebDownloader::WebDownloader(QObject *parent) : QObject(parent)
 {
     _nam = new QNetworkAccessManager(this);
     _file = new QFile(this);
 }
 
+/*! \fn void WebDownloader::start()
+    starts the download, usind compile-time variable \e MEDIA_URL, as source and \e as destination file.
+ */
 void WebDownloader::start()
 {
     _file->setFileName(destination);
