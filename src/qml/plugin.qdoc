@@ -16,7 +16,7 @@
 */
 
 /*!
-    \qmlmodule org.SfietKonstantin.patchmanager 2.0
+    \qmlmodule org.SfietKonstantin.patchmanager
     \title org.SfietKonstantin.patchmanager QML Types
 
     This module includes the following types:
