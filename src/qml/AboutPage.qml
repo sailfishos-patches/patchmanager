@@ -39,10 +39,6 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
-/*! \qmltype AboutPage
-    \inqmlmodule org.SfietKonstantin.patchmanager
-    \brief General information about Patchmanager
-*/
 Page {
     SilicaFlickable {
         id: flick

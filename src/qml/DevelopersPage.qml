@@ -38,11 +38,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-/*! \qmltype DevelopersPage
-    \inqmlmodule org.SfietKonstantin.patchmanager
-    \brief Information about Patchmanager Developers
-*/
-
 Page {
     id: container
     ListModel {

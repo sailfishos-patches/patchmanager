@@ -66,6 +66,7 @@ Page {
     Component.onCompleted: migrateDevModeSettings()
     /*! \qmlmethod migrateDevModeSettings()
         Manages migration from legacy \e developerMode setting to the new \e patchDevelMode and \e sfosVersionCheck settings, then sets \e developerMode to \e false.
+        \internal
      */
     function migrateDevModeSettings() {
         if (PatchManager.developerMode === true) {
@@ -109,8 +110,9 @@ Page {
     }
 
     /*! \qmlmethod function showUpdates(manual)
-        if \a manual is true, do nothing.
-        if \a manual is false, flash the Pulley Menu if updates are available
+        If \a manual is \c true, do nothing.
+
+        If \a manual is \c false, flash the Pulley Menu if updates are available
      */
     function showUpdates(manual) {
         if (pageStack.busy) {
@@ -124,6 +126,7 @@ Page {
     }
 
     /*! \qmlproperty real PatchManagerPage::pullDownDistance
+        \deprecated
         \internal
     */
     property real pullDownDistance: Theme.itemSizeLarge

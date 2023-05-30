@@ -50,6 +50,9 @@
 /*! \qmlsignal PatchObject::toBeDestroyed(PatchObject object);
     This signal is emitted whe the object is about to be destroyed. (Duh.)
  */
+/*! \qmlsignal PatchObject::busyChanged();
+    \internal
+ */
 PatchObject::PatchObject(const QVariantMap &data, QObject *parent)
     : QObject(parent)
     , m_details(new QQmlPropertyMap(parent))

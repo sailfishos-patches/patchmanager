@@ -235,9 +235,6 @@ void PatchManager::setSfosVersionCheck(int sfosVersionCheck)
 /*! \property PatchManager::applyOnBoot
     Whether to apply patches on boot or not.
 */
-/*! \qmlproperty bool PatchManager::applyOnBoot
-    \warning: investigate how this ends up in the html file...
-*/
 bool PatchManager::applyOnBoot() const
 {
     return getSettingsSync(QStringLiteral("applyOnBoot"), false).toBool();
@@ -311,6 +308,10 @@ void PatchManager::setBitnessMangle(bool bitnessMangle)
     }
 }
 
+/*! \property PatchManager::installedModel
+*/
+/*! \qmlproperty PatchManagerModel PatchManager::installedModel
+*/
 PatchManagerModel *PatchManager::installedModel()
 {
     return m_installedModel;
@@ -372,6 +373,10 @@ bool PatchManager::failure() const
     return m_failed;
 }
 
+/*! \property PatchManager::loaded
+*/
+/*! \qmlproperty bool PatchManager::loaded
+*/
 bool PatchManager::loaded() const
 {
     return m_loaded;
@@ -1008,31 +1013,6 @@ QVariant PatchManager::unwind(const QVariant &val, int depth)
     return res;
 }
 
-/*! \qmltype PatchManagerTranslator
-    \instantiates PatchManagerTranslator
-    \brief allows patches to include localizations in their shipped QML files.
-
-    To use, add:
-
-    \tt{import org.SfietKonstantin.patchmanager 2.0}
-
-    In the root item add:
-
-    \tt{property bool pmTranslationLoaded: PatchManagerTranslator ? PatchManagerTranslator.installTranslator("my-patch-name") : false}}
-
-    In the first visible text item replace text with following:
-
-    \tt{pmTranslationLoaded ? qsTr("Translated text") : "Please update patchmanager!"}
-
-    If translation is not loaded try using qsTranslate() strings instead:
-
-    \tt{pmTranslationLoaded ? qsTranslate("pm", "Translated text") : "Please update patchmanager!"}
-
-
-*/
-/*! \qmlproperty bool PatchManagerTranslator::pmTranslationLoaded
-     \c true when the PatchManagerTranslator has been loaded/initialized successfully.
-*/
 /*! \class PatchManagerTranslator
     \inmodule org.SfietKonstantin.patchmanager
     \brief allows patches to include localizations in their shipped QML files.

@@ -34,12 +34,14 @@
 #include "webcatalog.h"
 
 /*! \qmltype WebDownloader
+    \instantiates WebDownloader
     \inqmlmodule org.SfietKonstantin.patchmanager
 */
 /*! \qmlsignal WebDownloader::downloadFinished(const QString & patch, const QString & fileName)
     \a patch was downloaded to \a fileName
 */
 /*! \qmlsignal WebDownloader::downloadError()
+    Emitted when a download failed.
 */
 /*! \class WebDownloader
     \inmodule org.SfietKonstantin.patchmanager

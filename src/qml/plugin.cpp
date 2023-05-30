@@ -61,7 +61,29 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
 /*! \qmltype PatchManagerTranslator
     \instantiates PatchManagerTranslator
     \inqmlmodule org.SfietKonstantin.patchmanager
+    \brief allows patches to include localizations in their shipped QML files.
+
+    To use, add:
+
+    \tt{import org.SfietKonstantin.patchmanager 2.0}
+
+    In the root item add:
+
+    \tt{property bool pmTranslationLoaded: PatchManagerTranslator ? PatchManagerTranslator.installTranslator("my-patch-name") : false}}
+
+    In the first visible text item replace text with following:
+
+    \tt{pmTranslationLoaded ? qsTr("Translated text") : "Please update patchmanager!"}
+
+    If translation is not loaded try using qsTranslate() strings instead:
+
+    \tt{pmTranslationLoaded ? qsTranslate("pm", "Translated text") : "Please update patchmanager!"}
+
 */
+/*! \qmlproperty bool PatchManagerTranslator::pmTranslationLoaded
+     \c true when the PatchManagerTranslator has been loaded/initialized successfully.
+*/
+
 /*! \qmltype WebPatchesModel
     \instantiates WebPatchesModel
     \inqmlmodule org.SfietKonstantin.patchmanager
