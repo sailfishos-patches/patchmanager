@@ -149,6 +149,7 @@ static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
 
 /*!
   \class PatchManagerObject
+  \inmodule PatchManager
 
   \brief A D-Bus activated background service which manages patch un/installation, listing, de/actvation, and communication with the preload library.
   \inmodule daemon

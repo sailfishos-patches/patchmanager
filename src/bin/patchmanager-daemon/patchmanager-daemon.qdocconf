@@ -6,4 +6,5 @@ headers += patchmanagerobject.h
 sources += main.cpp\
            journal.cpp\
            inotifywatcher.cpp\
-           patchmanagerobject.cpp
+           patchmanagerobject.cpp\
+           patchmanager-daemon.qdoc

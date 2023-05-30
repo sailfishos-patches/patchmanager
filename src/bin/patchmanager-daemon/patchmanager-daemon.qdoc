@@ -1,0 +1,18 @@
+/*!
+    \title Patchmanager Daemon
+    \page index.html
+
+    \section1 Overview
+
+    Classes for Patchmanager Daemon
+
+    \section2 C++ classes:
+
+    \generatelist annotatedclasses
+*/
+
+/*!
+    \module daemon
+    \title Patchmanager Daemon C++ Classes
+
+*/
