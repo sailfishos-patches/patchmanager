@@ -72,12 +72,18 @@ WebPatchesModel::~WebPatchesModel()
 /*! \qmlproperty bool WebPatchesModel::sorted
   Whether the model is sorted
 */
+/*! \qmlsignal WebPatchesModel::sortedChanged()
+  Emitted when \c sorted changed
+*/
 
 /*! \property WebPatchesModel::queryParams
   Query parameters
 */
 /*! \qmlproperty var WebPatchesModel::queryParams
-  Quety parameters
+  Query parameters
+*/
+/*! \qmlsignal WebPatchesModel::queryParamsChanged()
+  Emitted when query parameters change
 */
 QVariantMap WebPatchesModel::queryParams() const
 {

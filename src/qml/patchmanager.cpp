@@ -1008,9 +1008,34 @@ QVariant PatchManager::unwind(const QVariant &val, int depth)
     return res;
 }
 
+/*! \qmltype PatchManagerTranslator
+    \instantiates PatchManagerTranslator
+    \brief allows patches to include localizations in their shipped QML files.
+
+    To use, add:
+
+    \tt{import org.SfietKonstantin.patchmanager 2.0}
+
+    In the root item add:
+
+    \tt{property bool pmTranslationLoaded: PatchManagerTranslator ? PatchManagerTranslator.installTranslator("my-patch-name") : false}}
+
+    In the first visible text item replace text with following:
+
+    \tt{pmTranslationLoaded ? qsTr("Translated text") : "Please update patchmanager!"}
+
+    If translation is not loaded try using qsTranslate() strings instead:
+
+    \tt{pmTranslationLoaded ? qsTranslate("pm", "Translated text") : "Please update patchmanager!"}
+
+
+*/
+/*! \qmlproperty bool PatchManagerTranslator::pmTranslationLoaded
+     \c true when the PatchManagerTranslator has been loaded/initialized successfully.
+*/
 /*! \class PatchManagerTranslator
     \inmodule org.SfietKonstantin.patchmanager
-    \brief Translation helper
+    \brief allows patches to include localizations in their shipped QML files.
 */
 PatchManagerTranslator::PatchManagerTranslator(QObject *parent)
     : QObject(parent)

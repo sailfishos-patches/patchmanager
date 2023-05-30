@@ -37,11 +37,20 @@
 #include <QDBusPendingReply>
 #include <QDebug>
 
+/*! \qmltype PatchManagerModel
+    \instantiates PatchManagerModel
+    \inqmlmodule org.SfietKonstantin.patchmanager
+    \brief A ListModel containing the data bout Patches
+*/
 PatchManagerModel::PatchManagerModel(QObject *parent)
     : QAbstractListModel(parent)
 {
 }
 
+/*! \class PatchManagerModel
+    \inmodule PatchManager
+    \brief A ListModel containing the data bout Patches
+*/
 PatchManagerModel::PatchManagerModel(const QList<PatchObject *> &data, QObject *parent)
     : QAbstractListModel(parent)
     , m_modelData(data)
@@ -78,11 +87,20 @@ QHash<int, QByteArray> PatchManagerModel::roleNames() const
     return r;
 }
 
+/*! \qmlproperty var PatchManagerModel::patches
+    foo bar baz
+*/
+/*! \fn QList<PatchObject *> PatchManagerModel::patches() const
+    Returns the list of patches
+ */
 QList<PatchObject *> PatchManagerModel::patches() const
 {
     return m_modelData;
 }
 
+/*! \fn void PatchManagerModel::setPatches(const QList<PatchObject *> &patches)
+    clears the model data and sets \a patches as new model data. 
+*/
 void PatchManagerModel::setPatches(const QList<PatchObject *> &patches)
 {
     qDebug() << Q_FUNC_INFO << patches.length();
@@ -102,6 +120,14 @@ void PatchManagerModel::setPatches(const QList<PatchObject *> &patches)
     endResetModel();
 }
 
+/*! \fn void PatchManagerModel::populateData(const QVariantList &data, const QString &patch, bool installed)
+    Does nothing if both \a data and \a patch are empty.
+    If \a patch is empty, and we have \a data, extracts the patch name from \a data and adds the metadata to the model.
+    If we have \a patch and \a data, and \a installed is true, add the data to the model.
+    If we have \a patch and \a data, and \a installed is false, just create a \c PatchObject from \a data.
+
+    \warning that last part is not yet documented.
+*/
 void PatchManagerModel::populateData(const QVariantList &data, const QString &patch, bool installed)
 {
     qDebug() << Q_FUNC_INFO << data.length();
@@ -190,6 +216,9 @@ void PatchManagerModel::populateData(const QVariantList &data, const QString &pa
     saveLayout();
 }
 
+/*! \fn void PatchManagerModel::removePatch(const QString &patch)
+    \ removes the patch with the name \a patch from the model.
+ */
 void PatchManagerModel::removePatch(const QString &patch)
 {
     qDebug() << Q_FUNC_INFO << patch;
@@ -230,6 +259,9 @@ void PatchManagerModel::saveLayout()
     PatchManager::GetInstance()->putSettingsAsync(QStringLiteral("order"), patches);
 }
 
+/*! \fn QString PatchManagerModel::patchName(const QString &patch) const
+    returns the \e display_name of \a patch
+*/
 QString PatchManagerModel::patchName(const QString &patch) const
 {
     if (!m_patchMap.contains(patch)) {
@@ -239,6 +271,9 @@ QString PatchManagerModel::patchName(const QString &patch) const
     return m_patchMap[patch]->details()->value(QStringLiteral("display_name")).toString();
 }
 
+/*! \fn bool PatchManagerModel::isApplied(const QString &name) const
+    returns /c true if patch \a name is in the list of applied (activated) patches.
+*/
 bool PatchManagerModel::isApplied(const QString &name) const
 {
     // FIXME: there certainly is a more efficient way, e.g. std::find_if?
