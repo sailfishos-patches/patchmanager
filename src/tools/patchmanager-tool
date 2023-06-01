@@ -100,7 +100,7 @@ case "$1" in
     shift
     surplus "$*"
   ;;
-  -G|)
+  -G|--load-known-good)
     operation="--load-known-good"
     shift
     surplus "$*"
