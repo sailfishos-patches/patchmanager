@@ -73,7 +73,6 @@ case "$1" in
   -d|-u|--deactivate)
     operation="-u"
     shift
-    shift
     if [ "$1" = "-f" ] || [ "$1" = "--file" ]; then
       shift
       filepath="$1"
