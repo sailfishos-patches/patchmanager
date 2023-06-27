@@ -1,0 +1,9 @@
+#!/bin/sh
+#
+OUT=$PWD/doc/generated
+export QT_INSTALL_DOCS=/usr/share/doc/qt5
+
+rm -r $OUT
+qdoc --no-examples --outputdir $OUT --outputformat HTML --installdir $QMAKE_INSTALL_ROOT/doc doc/qdoc/master.qdocconf --single-exec --log-progress $@
+
+#find doc/generated -type f

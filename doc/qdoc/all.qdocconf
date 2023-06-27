@@ -14,7 +14,7 @@ include($QT_INSTALL_DOCS/global/fileextensions.qdocconf)
 include($QT_INSTALL_DOCS/global/qt-html-templates-offline.qdocconf)
 
 ## Headers
-headerdirs += ./bin/patchmanager-daemon ./qml
+headerdirs += ../../src/./bin/patchmanager-daemon ./qml
 headers.fileextensions = "*.h *.hpp"
 
 ## Sources
