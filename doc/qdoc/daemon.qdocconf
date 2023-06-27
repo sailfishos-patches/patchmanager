@@ -1,0 +1,35 @@
+project         = daemon
+description     = Patchmanager Daemon Reference Documentation
+versionsym      =
+version         = 2.0
+url             = https://github.com/sailfishos-patches/patchmanager
+
+# include some Qt defaults
+# -- macros for QDoc commands
+include($QT_INSTALL_DOCS/global/macros.qdocconf)
+# -- needed by C++ projects
+include($QT_INSTALL_DOCS/global/qt-cpp-defines.qdocconf)
+# -- compatibility macros
+include($QT_INSTALL_DOCS/global/compat.qdocconf)
+# -- configuration common among QDoc projects
+include($QT_INSTALL_DOCS/global/fileextensions.qdocconf)
+# -- offline HTML template for documentation shipped to Qt Creator
+include($QT_INSTALL_DOCS/global/qt-html-templates-offline.qdocconf)
+
+headerdirs += ../../src/bin/patchmanager-daemon
+headers.fileextensions = "*.h *.hpp"
+
+sourcedirs += ../../src/bin/patchmanager-daemon
+#sources.fileextensions = "*.cpp *.qdoc *.qml"
+
+# assign custom HTML footer to replace Qt's default copyright notice
+HTML.footer = "<div align='center'><hr/>" \
+              "<p><small>Patchmanager Documentation\n" \
+              "Copyright (c) 2023 Patchmanager for SailfishOS contributors.\n" \
+              "This document may be used under the terms of the " \
+              "<a href='https://spdx.org/licenses/GFDL-1.3-or-later.html'>" \
+              "GNU Free Documentation License version 1.3</a> " \
+              "as published by the Free Software Foundation.</small></p>" \
+              "<p/></div>"
+
+# navigation.homepage = "Patchmanager QML Plugin"

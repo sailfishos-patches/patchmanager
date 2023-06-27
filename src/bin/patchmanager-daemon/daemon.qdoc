@@ -1,0 +1,24 @@
+/*!
+  \page index.html
+
+  \title Patchmanager Documentation: Daemon
+
+    \section1 Overview
+
+    A D-Bus activated background service which manages patch un/installation,
+    listing, de/actvation, and communication with the preload library.
+
+    Patchmanager is usually launched by its DBus service.
+    The binary can also serve as a simple command-line client to a running
+    daemon. See the output of \c{patchmanager --help} for more information.
+
+    \section2 Documentation:
+    \generatelist {classesbymodule PatchManagerDaemon}
+*/
+/*
+
+    \section2 C++ classes:
+    \generatelist annotatedclasses
+
+*/
+
