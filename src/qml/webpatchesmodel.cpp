@@ -40,6 +40,7 @@
 
 /*! \class WebPatchesModel
     \inmodule org.SfietKonstantin.patchmanager
+    \brief The WebPatchesModel holds elements from the Web Catalog.
 */
 WebPatchesModel::WebPatchesModel(QObject * parent)
     : QAbstractListModel(parent)

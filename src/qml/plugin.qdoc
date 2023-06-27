@@ -4,7 +4,7 @@
 
     \section1 Overview
 
-    This plugin provides C++/QML classes for Patchmanager
+    This Sailfish OS Settings plugin provides C++/QML classes for Patchmanager
 
     \section2 QML types:
 
@@ -20,6 +20,8 @@
     \title org.SfietKonstantin.patchmanager QML Types
 
     This module includes the following types:
+
+    \generatelist{qmltypesbymodule org.SfietKonstantin.patchmanager}
 
 */
 

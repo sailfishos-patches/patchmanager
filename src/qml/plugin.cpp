@@ -57,11 +57,13 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
 /*! \qmltype PatchManager
     \instantiates PatchManager
     \inqmlmodule org.SfietKonstantin.patchmanager
+    \brief This Singleton ...
 */
 /*! \qmltype PatchManagerTranslator
     \instantiates PatchManagerTranslator
     \inqmlmodule org.SfietKonstantin.patchmanager
-    \brief allows patches to include localizations in their shipped QML files.
+
+    \brief This Singleton allows patches to include localizations in their shipped QML files.
 
     To use, add:
 
@@ -87,6 +89,8 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
 /*! \qmltype WebPatchesModel
     \instantiates WebPatchesModel
     \inqmlmodule org.SfietKonstantin.patchmanager
+
+    \brief The WebPatchesModel holds elements from the Web Catalog.
 */
 class PatchManagerPlugin : public QQmlExtensionPlugin
 {

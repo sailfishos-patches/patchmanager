@@ -44,7 +44,20 @@ import org.SfietKonstantin.patchmanager 2.0
     \inqmlmodule org.SfietKonstantin.patchmanager
     \brief The main Patchmanager GUI Application
 
-    Page shown through the Jolla Settings Plugin from the Settings Application
+    Page shown through the Jolla Settings Plugin from the Settings Application.
+
+    It is a both a front-end to the Daemon and a Patch management application.
+
+    It allows to:
+
+    \list
+    \li View the list of installed and activated Patches. 
+    \li Configure the Application and Daemon settings.
+    \li Activate or deactivate Patches
+    \li Install Patches from the Web Catalog
+    \li Uninstall installed Patches
+    \endlist
+
 */
 
 Page {
@@ -110,9 +123,10 @@ Page {
     }
 
     /*! \qmlmethod function showUpdates(manual)
-        If \a manual is \c true, do nothing.
 
-        If \a manual is \c false, flash the Pulley Menu if updates are available
+        Flashes the Pulley Menu if updates are available and \a manual is false.
+        Does nothing if \a manual is \c true.
+
      */
     function showUpdates(manual) {
         if (pageStack.busy) {

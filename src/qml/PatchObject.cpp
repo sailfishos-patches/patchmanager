@@ -92,16 +92,18 @@ QQmlPropertyMap *PatchObject::details()
 }
 
 /*! \qmlproperty bool PatchObject::busy
+
    Whether an internal operation is in progress.
 */
 /*! \property PatchObject::busy
  */
-bool PatchObject:: busy() const
+bool PatchObject::busy() const
 {
     return m_busy;
 }
 
 /*! \fn void PatchObject::setData(const QVariantMap &data)
+
     Fills the PatchObject's properties from \a data.
 
     \note If there is a "display_name" field in \a data, it is used. Otherwise, patch name is used.
