@@ -6,12 +6,19 @@
   \title Patchmanager Documentation
   \startpage Patchmanager Overview
 
-  \section2 Manual List
+  The Patchmanager project includes the following applications:
+
+  \section1 GUI Applications
   \list
-  \li \l {Patchmanager Overview}
-  \li \l {Patchmanager Daemon}
   \li \l {Patchmanager GUI Application}
   \li \l {Patchmanager Startup Dialog}
+  \endlist
+
+  \section1 Infrastructure Applications
+  \list
+  \list
+  \li \l {Patchmanager Daemon}
+  \li \l {Patchmanager Web Catalog}
   \endlist
 
   \section2 Classes
@@ -65,4 +72,15 @@
   \e{to be continued...}
 
 */
+/****** Web Catalog page *******/
+/*!
+  \title Patchmanager Web Catalog
 
+  \page wc.html
+
+  The Web Catalog is currently not maintained by the Patchmanager project, and
+  is documented here briefly for sake of completeness.
+
+  \e{to be continued...}
+
+*/
