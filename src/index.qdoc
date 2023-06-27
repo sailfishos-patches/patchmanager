@@ -14,7 +14,7 @@
 
   \section1 GUI Applications
   \list
-  \li \l {Patchmanager Settings Plugin}, a plugin for the Sailfish Settings to launch the application
+  \li \l {Patchmanager Documentation: Settings Plugin}{Patchmanager Settings Plugin}, a plugin for the Sailfish Settings to launch the application
   \li \l {Patchmanager Documentation: QML Plugin}{Patchmanager QML Plugin}, the main UI Application
   \li \l {Patchmanager Startup Dialog}, a UI shown at Lipstick startup.
   \endlist
