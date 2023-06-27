@@ -6,6 +6,9 @@
   \title Patchmanager Documentation
   \startpage Patchmanager Overview
 
+
+  For a brief overview how PM works, see: \l {Patchmanager Overview}
+
   The Patchmanager project includes the following applications:
 
   \section1 GUI Applications
