@@ -7,27 +7,28 @@
   \startpage Patchmanager Overview
 
 
-  For a brief overview how PM works, see: \l {Patchmanager Overview}
+  For User documentation, see \l {User Documentation}.
+
+  For Path Developer documentation, see \l {Developer Documentation}.
+
+  For a brief overview how PM operates internally, see: \l {Patchmanager Overview}
 
   The Patchmanager project includes the following applications:
 
   \section1 GUI Applications
   \list
-  \li \l {Patchmanager GUI Application}
-  \li \l {Patchmanager Startup Dialog}
+  \li \l {Patchmanager Settings Plugin}, a plugin for the Sailfish Settings.
+  \li \l {Patchmanager Startup Dialog}, a UI shown at Lipstick startup.
   \endlist
 
   \section1 Infrastructure Applications
   \list
   \list
   \li \l {Patchmanager Daemon}
+  \li \l {Patchmanager Preload Library}
   \li \l {Patchmanager Web Catalog}
   \endlist
 
-  \section2 Classes
-  \generatelist annotatedclasses
-  \section2 QML Types
-  \generatelist qmltypesbymodule org.SfietKonstantin.patchmanager
 */
 
 /****** Overview page *******/
