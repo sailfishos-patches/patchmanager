@@ -71,6 +71,8 @@ static const char *noop_strings[] = {
 
 /*! \class PatchManager
     \inmodule org.SfietKonstantin.patchmanager
+
+	\brief Patchmanager QML Plugin implementing PatchManagerInterface
 */
 PatchManager::PatchManager(QObject *parent)
     : QObject(parent)

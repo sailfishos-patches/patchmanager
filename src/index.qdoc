@@ -10,7 +10,8 @@
   \list
   \li \l {Patchmanager Overview}
   \li \l {Patchmanager Daemon}
-  \li \l {Patchmanager Settings QML Plugin}
+  \li \l {Patchmanager GUI Application}
+  \li \l {Patchmanager Startup Dialog}
   \endlist
 
   \section2 Classes

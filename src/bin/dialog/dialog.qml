@@ -38,6 +38,7 @@ import Sailfish.Silica 1.0
 import org.nemomobile.dbus 2.0
 
 /*! \qmltype PatchManagerDialog
+    \inmodule PatchManagerDialog
 
   \brief A popup dialog application
 
