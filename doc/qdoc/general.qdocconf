@@ -13,10 +13,6 @@ include($QT_INSTALL_DOCS/global/fileextensions.qdocconf)
 # -- offline HTML template for documentation shipped to Qt Creator
 include($QT_INSTALL_DOCS/global/qt-html-templates-offline.qdocconf)
 
-## Headers
-headerdirs += ../../src/bin/patchmanager-daemo
-headers.fileextensions = "*.h *.hpp"
-
 ## Sources
 sources += ../../src/index.qdoc
 
