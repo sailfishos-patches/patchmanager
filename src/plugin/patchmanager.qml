@@ -1,10 +1,10 @@
 import org.SfietKonstantin.patchmanager 2.0
 
-/*! \qmltype PatchManagerPage
-    \brief Jolla Settings Plugin page
+/*! \qmltype patchmanager
+    \brief Jolla Settings Page
     \inherits Page
 
-    This loads the main Patchmanager UI, implemented as a Plugin for Jolla Settings.
+    This loads the main Patchmanager UI from Jolla Settings.
 */
 
 PatchManagerPage {}

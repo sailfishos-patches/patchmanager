@@ -43,9 +43,9 @@
 #include <QJSEngine>
 
 /*! \qmltype PatchObject
-    \instantiates PatchManagerModel
+    \instantiates PatchObject
     \inqmlmodule org.SfietKonstantin.patchmanager
-    \brief An element to be used as content of an \e PatchManagerModel
+    \brief An element to be used as content of an \l {PatchManagerModel}
 */
 /*! \qmlsignal PatchObject::toBeDestroyed(PatchObject object);
     This signal is emitted whe the object is about to be destroyed. (Duh.)
@@ -82,7 +82,8 @@ PatchObject::~PatchObject()
 }
 
 /*! \qmlproperty var PatchObject::details
-    Patch metadata.
+
+    Holds the Patch metadata.
 */
 /*! \property PatchObject::details
  */

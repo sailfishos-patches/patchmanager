@@ -18,7 +18,9 @@
   After ending any of the above operations, a \uicontrol "Quit" button is activated which
   will close the application.
 
-    \section2 QML Types classes:
+  This dialog will only be shown if the option "Apply at Boot" is \c off.
+
+    \section2 QML Types:
     \generatelist{qmltypesbymodule PatchManagerDialog}
 */
 
