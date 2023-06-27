@@ -19,6 +19,7 @@
   \generatelist qmltypesbymodule org.SfietKonstantin.patchmanager
 */
 
+/****** Overview page *******/
 /*!
   \title Patchmanager Overview
 
@@ -26,9 +27,13 @@
 
   So the current mode of operation of Patchmanager is something like this:
 
-  \section1 Operation
+  \section1 Operation Flow
 
-  \section2 A Patch is "activated"
+  \section2 1. A Patch is "activated"
+
+  When a user activates a patch via the App, a signal is sent to the daemon.
+
+  The daemon will then:
 
   For each file the patch manipulates, a copy of the original file is put into
   a cache dir in \c /tmp, and the changes are applied there instead of on the
@@ -38,12 +43,12 @@
   in the filesystem, they will be created in the cache dir, and a symlink
   pointing to them is placed in the original filesystem.
 
-  \section2 A patched application is launched.
+  \section2 2. A patched application is launched.
 
   Through library preloading, the \c libpreloadpatchmanager.so library is
   injected into the launching binary.
 
-  \section2 The Preload Library:
+  \section2 3. The Preload Library:
 
   Intercepts calls to \c open()  or (\c open64()), analyzes which files
   the call was meant to open asks the patchmanager daemon (via socket) whether
@@ -52,6 +57,9 @@
   If yes, the daemon will return a path to its cachedir, and the library
   redirects the call to that file instead of the original. Otherwise, the
   \c{open()} is executed on the original file.
+
+  Certain paths are blacklisted for these operations to reduce the risk of
+  critical services, or PM itself, choking on these redirections.
 
   \e{to be continued...}
 
