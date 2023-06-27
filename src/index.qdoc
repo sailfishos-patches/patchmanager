@@ -34,6 +34,10 @@
   a cache dir in \c /tmp, and the changes are applied there instead of on the
   original file.
 
+  If there are paths or files involved in the patch which do not exist yet
+  in the filesystem, they will be created in the cache dir, and a symlink
+  pointing to them is placed in the original filesystem.
+
   \section2 A patched application is launched.
 
   Through library preloading, the \c libpreloadpatchmanager.so library is
@@ -41,9 +45,10 @@
 
   \section2 The Preload Library:
 
-  intercepts calls to \c open()  or (\c open64()), analyzes which files
+  Intercepts calls to \c open()  or (\c open64()), analyzes which files
   the call was meant to open asks the patchmanager daemon (via socket) whether
   it knows of a patched version.
+
   If yes, the daemon will return a path to its cachedir, and the library
   redirects the call to that file instead of the original. Otherwise, the
   \c{open()} is executed on the original file.
