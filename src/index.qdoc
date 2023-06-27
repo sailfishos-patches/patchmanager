@@ -2,10 +2,7 @@
 
   \page index.html
 
-  \indexpage Index
   \title Patchmanager Documentation
-  \startpage Patchmanager Overview
-
 
   For User documentation, see \l {https://github.com/sailfishos-patches/patchmanager#information-for-users}{User Documentation}.
 
@@ -18,14 +15,14 @@
   \section1 GUI Applications
   \list
   \li \l {Patchmanager Settings Plugin}, a plugin for the Sailfish Settings to launch the application
-  \li \l {Patchmanager QML Plugin}, the main UI Application
+  \li \l {Patchmanager Documentation: QML Plugin}{Patchmanager QML Plugin}, the main UI Application
   \li \l {Patchmanager Startup Dialog}, a UI shown at Lipstick startup.
   \endlist
 
   \section1 Infrastructure Applications
   \list
-  \li \l {Patchmanager Daemon}
-  \li \l {Patchmanager Preload Library}
+  \li \l {Patchmanager Documentation: Daemon}{Patchmanager Daemon}
+  \li \l {Patchmanager Documentation: Preload Library}{Preload Library}
   \li \l {Patchmanager Web Catalog}
   \endlist
 
@@ -36,6 +33,7 @@
   \title Patchmanager Overview
 
   \page overview.html
+  \indexpage Index
 
   So the current mode of operation of Patchmanager is something like this:
 

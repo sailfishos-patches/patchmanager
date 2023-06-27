@@ -16,10 +16,12 @@ include($QT_INSTALL_DOCS/global/fileextensions.qdocconf)
 # -- offline HTML template for documentation shipped to Qt Creator
 include($QT_INSTALL_DOCS/global/qt-html-templates-offline.qdocconf)
 
-headerdirs += .
-sourcedirs += .
+headerdirs = ../../src/qml
+#headers.fileextensions = "*.h *.hpp"
+
+sourcedirs = ../../src/qml
 #sources += qmlplugin.qdoc
-sources.fileextensions = "*.cpp *.qdoc *.qml"
+#sources.fileextensions = "*.cpp *.qdoc *.qml"
 
 # assign custom HTML footer to replace Qt's default copyright notice
 HTML.footer = "<div align='center'><hr/>" \

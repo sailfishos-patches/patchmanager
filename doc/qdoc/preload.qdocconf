@@ -1,5 +1,8 @@
-project = patchmanager
-description = Patchmanager
+project         = preload
+description     = Patchmanager Preload Library
+versionsym      =
+version         = 2.0
+url             = https://github.com/sailfishos-patches/patchmanager
 
 # include some Qt defaults
 # -- macros for QDoc commands
@@ -13,15 +16,7 @@ include($QT_INSTALL_DOCS/global/fileextensions.qdocconf)
 # -- offline HTML template for documentation shipped to Qt Creator
 include($QT_INSTALL_DOCS/global/qt-html-templates-offline.qdocconf)
 
-## Headers
-headerdirs += ../../src/./bin/patchmanager-daemon ./qml
-headers.fileextensions = "*.h *.hpp"
-
-## Sources
-sources += index.qdoc
-sourcedirs += bin\
-    preload
-sources.fileextensions = "*.cpp *.qdoc *.qml"
+sources = ../../src/preload/src/preloadpatchmanager.qdoc
 
 # assign custom HTML footer to replace Qt's default copyright notice
 HTML.footer = "<div align='center'><hr/>" \
@@ -33,4 +28,4 @@ HTML.footer = "<div align='center'><hr/>" \
               "as published by the Free Software Foundation.</small></p>" \
               "<p/></div>"
 
-
+# navigation.homepage = "Patchmanager Settings Plugin"

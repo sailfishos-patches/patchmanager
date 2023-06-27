@@ -54,6 +54,15 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
     return PatchManagerTranslator::GetInstance(engine);
 }
 
+// /*!
+//     \qmlmodule org.SfietKonstantin.patchmanager
+// 
+// */
+// 
+// /*!
+//     \module PatchManager
+// 
+// */
 /*! \qmltype PatchManager
     \instantiates PatchManager
     \inqmlmodule org.SfietKonstantin.patchmanager
