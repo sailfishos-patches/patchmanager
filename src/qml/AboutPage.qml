@@ -39,6 +39,12 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
+/*! \qmltype AboutPage
+    \inqmlmodule org.SfietKonstantin.patchmanager 2.0
+    \inherits Page
+    \brief Shows brief information about the app, with links to Credits, Attributions etc.
+*/
+
 Page {
     SilicaFlickable {
         id: flick

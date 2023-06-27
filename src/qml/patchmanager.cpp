@@ -384,6 +384,11 @@ bool PatchManager::loaded() const
     return m_loaded;
 }
 
+/*! \qmlmethod PatchManager::call(QDBusPendingCallWatcher *call)
+*/
+/*! \fn void PatchManager::call(QDBusPendingCallWatcher *call)
+    calls \a call via D-Bus
+*/
 void PatchManager::call(QDBusPendingCallWatcher *call)
 {
     connect(call,
@@ -568,6 +573,12 @@ bool PatchManager::isApplied(const QString &name) const
 //    return new QDBusPendingCallWatcher(m_interface->getSettings(name, def), this);
 //}
 
+/*! \qmlmethod PatchManager::watchCall(QDBusPendingCallWatcher *call, QJSValue callback, QJSValue errorCallback)
+    calls \a call via D-Bus, executing \a callback on success, \a errorCallback on error.
+*/
+/*! \fn void PatchManager::watchCall(QDBusPendingCallWatcher *call, QJSValue callback, QJSValue errorCallback)
+    calls \a call via D-Bus, executing \a callback on success, \a errorCallback on error.
+*/
 void PatchManager::watchCall(QDBusPendingCallWatcher *call, QJSValue callback, QJSValue errorCallback)
 {
     connect(call,

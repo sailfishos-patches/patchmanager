@@ -36,6 +36,7 @@
 /*! \qmltype WebDownloader
     \instantiates WebDownloader
     \inqmlmodule org.SfietKonstantin.patchmanager
+    \brief Downloads Patch archives from the Web Catalog
 */
 /*! \qmlsignal WebDownloader::downloadFinished(const QString & patch, const QString & fileName)
     \a patch was downloaded to \a fileName
@@ -45,6 +46,7 @@
 */
 /*! \class WebDownloader
     \inmodule org.SfietKonstantin.patchmanager
+    \brief Downloads Patch archives from the Web Catalog
 */
 WebDownloader::WebDownloader(QObject *parent) : QObject(parent)
 {
@@ -53,7 +55,7 @@ WebDownloader::WebDownloader(QObject *parent) : QObject(parent)
 }
 
 /*! \fn void WebDownloader::start()
-    starts the download, usind compile-time variable \e MEDIA_URL, as source and \e as destination file.
+    starts the download, using compile-time variable \e MEDIA_URL as source.
  */
 void WebDownloader::start()
 {

@@ -39,18 +39,53 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
+/*! \qmltype WebPatchPage
+    \inqmlmodule  org.SfietKonstantin.patchmanager
+    \inherits Page
+    \brief Shows details about a Patch from the Web Catalog
+*/
+
+
+    
+
 Page {
     id: container
     objectName: "WebPatchPage"
+    /*!    \qmlproperty var modelData
+           Holds the metadata from the model
+    */
     property var modelData
 
+    /*!    \qmlproperty var versions
+           A map of patch name, versions
+    */
     property var versions
 
+
+    /*! \qmlproperty int voteAction
+        voting action
+
+        \sa PatchManager::checkVote(const QString &patch)
+    */
     property int voteAction
 
+    /*! \qmlproperty bool isInstalled
+        \c true if a version of the patch is currently installed
+    */
     property bool isInstalled: !!container.versions && typeof(container.versions[modelData.name]) != "undefined"
 
+    /*! \qmlproperty var patchData
+        Holds the Patch metadata
+
+        \sa modelData
+    */
     property var patchData
+
+    /*! \qmlproperty bool fetching
+
+        Indicates whether data is downloaded. The WebPatchPage will show a placeholder if true.
+        \default \c true
+    */
     property bool fetching: true
 
     onStatusChanged: {

@@ -43,10 +43,12 @@ import org.SfietKonstantin.patchmanager 2.0
     \inqmlmodule org.SfietKonstantin.patchmanager
     \brief Service restart confirmation dialog
 
-    This Dialog is shown to the user to config restarting of "Services", i.e.
+    This Dialog is shown to the user to confirm restarting of "Services", i.e.
     anything that has been affected by activated patches.
 
     If accepted, these programs will be killed.
+
+    The services to kill are selected via the \category field of Patch metadata.
 
 */
 

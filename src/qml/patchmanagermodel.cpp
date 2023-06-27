@@ -40,7 +40,7 @@
 /*! \qmltype PatchManagerModel
     \instantiates PatchManagerModel
     \inqmlmodule org.SfietKonstantin.patchmanager
-    \brief A ListModel containing the data bout Patches
+    \brief A ListModel containing the metadata of Patches
 */
 PatchManagerModel::PatchManagerModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -49,7 +49,7 @@ PatchManagerModel::PatchManagerModel(QObject *parent)
 
 /*! \class PatchManagerModel
     \inmodule PatchManager
-    \brief A ListModel containing the data bout Patches
+    \brief A ListModel containing the metadata of Patches
 */
 PatchManagerModel::PatchManagerModel(const QList<PatchObject *> &data, QObject *parent)
     : QAbstractListModel(parent)
@@ -77,6 +77,9 @@ QVariant PatchManagerModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+/*! \fn QHash<int, QByteArray> PatchManagerModel::roleNames() const
+    Returns the role names
+*/
 QHash<int, QByteArray> PatchManagerModel::roleNames() const
 {
     static const QHash<int, QByteArray> r = {
@@ -87,9 +90,9 @@ QHash<int, QByteArray> PatchManagerModel::roleNames() const
     return r;
 }
 
-/*! \qmlproperty var PatchManagerModel::patches
-    foo bar baz
-*/
+// /*! \qmlproperty var PatchManagerModel::patches
+//     Contains the list of patches
+// */
 /*! \fn QList<PatchObject *> PatchManagerModel::patches() const
     Returns the list of patches
  */
@@ -239,6 +242,9 @@ void PatchManagerModel::removePatch(const QString &patch)
     saveLayout();
 }
 
+/*! \fn void PatchManagerModel::move(int from, int to)
+    Moves an entry from index \a from to index \a to
+ */
 void PatchManagerModel::move(int from, int to)
 {
     if (from == to) {
@@ -249,6 +255,9 @@ void PatchManagerModel::move(int from, int to)
     endMoveRows();
 }
 
+/*! \fn void PatchManagerModel::saveLayout()
+    saves the current order of patch names to Settings
+*/
 void PatchManagerModel::saveLayout()
 {
     QStringList patches;

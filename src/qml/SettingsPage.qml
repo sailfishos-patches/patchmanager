@@ -41,6 +41,10 @@ import Sailfish.Silica 1.0
 import Nemo.Configuration 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
+/*! \qmltype SettingsPage
+    \inqmlmodule org.SfietKonstantin.patchmanager
+    \brief Manages Settings, both global and user-specific ones
+*/
 Page {
 
     /*

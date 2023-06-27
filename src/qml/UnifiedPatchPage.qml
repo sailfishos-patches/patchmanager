@@ -40,11 +40,25 @@ import Sailfish.Silica 1.0
 import Nemo.Notifications 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
+/*! \qmltype UnifiedPatchPage
+    \inqmlmodule org.SfietKonstantin.patchmanager
+    \inherits Page
+    Shows details about the Patch given in \c modelData
+*/
 Page {
     id: container
+    /*!  \qmlproperty var modelData
+    */
     property var modelData
+    /*! \QML property var delegate
+     */
     property var delegate
+    /*! \qmlproperty bool legacyPatch
+        \c true if the Patch uses the legacy metadata format
+     */
     property bool legacyPatch: !modelData.isNewPatch
+    /*! \qmlsignal doPatch
+     */
     signal doPatch
 
     Notification {
