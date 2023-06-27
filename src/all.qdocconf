@@ -1,6 +1,19 @@
 project = patchmanager
 description = Patchmanager
 
+# include some Qt defaults
+# -- macros for QDoc commands
+include($QT_INSTALL_DOCS/global/macros.qdocconf)
+# -- needed by C++ projects
+include($QT_INSTALL_DOCS/global/qt-cpp-defines.qdocconf)
+# -- compatibility macros
+include($QT_INSTALL_DOCS/global/compat.qdocconf)
+# -- configuration common among QDoc projects
+include($QT_INSTALL_DOCS/global/fileextensions.qdocconf)
+# -- offline HTML template for documentation shipped to Qt Creator
+include($QT_INSTALL_DOCS/global/qt-html-templates-offline.qdocconf)
+
+
 ## Headers
 headerdirs += ./bin/patchmanager-daemon ./qml
 headers.fileextensions = "*.h *.hpp"
@@ -12,3 +25,5 @@ sourcedirs += bin\
     preload\
     qml
 sources.fileextensions = "*.cpp *.qdoc *.qml"
+
+
