@@ -149,12 +149,17 @@ static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
 
 /*!
   \class PatchManagerObject
-  \inmodule PatchManager
+  \inmodule PatchManagerDaemon
 
-  \brief A D-Bus activated background service which manages patch un/installation, listing, de/actvation, and communication with the preload library.
+  \brief The Patchmanager Daemon.
+
+  A D-Bus activated background service which manages patch un/installation,
+  listing, de/actvation, and communication with the preload library.
 
   PatchManager is usually launched by its DBus service.
-  The binary can also serve as a simple command-line client to a running daemon. See the output of \c{patchmanager --help} for more information.
+  The binary can also serve as a simple command-line client to a running
+  daemon. See the output of \c{patchmanager --help} for more information.
+
 */
 
 
