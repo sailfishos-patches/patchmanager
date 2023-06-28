@@ -6,7 +6,7 @@
 
     The QML Plugin makes up the main Patchmanager GUI Application.
 
-    Sailfish Settings loads PatchManagerPage from the QML Plugin.
+    Jolla Settings loads PatchManagerPage from the QML Plugin.
 
     It is a both a front-end to the Daemon and a Patch management application.
 

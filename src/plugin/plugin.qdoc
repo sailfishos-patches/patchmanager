@@ -6,8 +6,31 @@
 
     The Settings Plugin makes up the main Patchmanager GUI Application.
 
-    Sailfish Settings loads this page which in turn loads
+    Jolla Settings loads this page which in turn loads
     PatchManagerPage, a part of \l {Patchmanager Documentation: QML Plugin}{Patchmanager QML Plugin}.
+
+    \section2 Configuration
+
+    The Jolla Settings plugin configuration looks like this:
+
+    \qml
+    {
+        "translation_catalog": "settings-patchmanager",
+        "entries": [
+            {
+                "path": "system_settings/look_and_feel/patchmanager",
+                "type": "page",
+                "title": "Patchmanager",
+                "translation_id": "Patchmanager",
+                "icon": "image://theme/icon-m-patchmanager2",
+                "order": 2000,
+                "params": {
+                    "source": "/usr/share/jolla-settings/pages/patchmanager/patchmanager.qml"
+                }
+            }
+        ]
+    }
+    \endqml
 
     \section2 Types
 
