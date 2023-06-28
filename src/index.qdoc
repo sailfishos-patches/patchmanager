@@ -4,11 +4,16 @@
 
   \title Patchmanager Documentation
 
-  For User documentation, see \l {https://github.com/sailfishos-patches/patchmanager#information-for-users}{User Documentation}.
+  For User documentation, see \l {https://github.com/sailfishos-patches/patchmanager/README.md#information-for-users}{User Documentation}.
 
-  For Patch Developer documentation, see \l {https://github.com/sailfishos-patches/patchmanager#information-for-patch-developers}{Developer Documentation}.
+  For Patch Developer documentation, see \l {https://github.com/sailfishos-patches/patchmanager/README.md#information-for-patch-developers}{Developer Documentation}.
 
-  For a brief overview how PM operates internally, see: \l {Patchmanager Overview}, and \l {Patchmanager Services}
+  For information on how PM operates internally, see:
+
+  \list
+  \li \l {Patchmanager Overview}
+  \li \l {Patchmanager Services}
+  \endlist
 
   The Patchmanager project includes the following applications:
 

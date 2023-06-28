@@ -55,7 +55,7 @@ Page {
     /*!    \qmlproperty var modelData
            This property holds the metadata from the model
 
-           \sa [QML]{PatchManagerModel}, [QML]{PatchObject}
+           \sa PatchManagerModel, PatchObject
     */
     property var modelData
 
@@ -68,7 +68,7 @@ Page {
     /*! \qmlproperty int voteAction
         voting action
 
-        \sa [QML]{PatchManager::checkVote}
+        \sa PatchManager::checkVote
     */
     property int voteAction
 
