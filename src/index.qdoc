@@ -8,7 +8,7 @@
 
   For Patch Developer documentation, see \l {https://github.com/sailfishos-patches/patchmanager#information-for-patch-developers}{Developer Documentation}.
 
-  For a brief overview how PM operates internally, see: \l {Patchmanager Overview}
+  For a brief overview how PM operates internally, see: \l {Patchmanager Overview}, and \l {Patchmanager Services}
 
   The Patchmanager project includes the following applications:
 
@@ -32,7 +32,7 @@
 /*!
   \title Patchmanager Overview
 
-  \page overview.html
+  \page pmoverview.html
   \indexpage Index
 
   So the current mode of operation of Patchmanager is something like this:
@@ -61,7 +61,7 @@
   \section2 3. The Preload Library:
 
   Intercepts calls to \c open()  or (\c open64()), analyzes which files
-  the call was meant to open asks the patchmanager daemon (via socket) whether
+  the call was meant to open asks the Patchmanager daemon (via socket) whether
   it knows of a patched version.
 
   If yes, the daemon will return a path to its cachedir, and the library
@@ -78,11 +78,117 @@
 /*!
   \title Patchmanager Web Catalog
 
-  \page wc.html
+  \page pmwc.html
 
   The Web Catalog is currently not maintained by the Patchmanager project, and
   is documented here briefly for sake of completeness.
 
   \e{to be continued...}
+
+*/
+
+/****** Services Documentation page *******/
+/*!
+  \title Patchmanager Services
+
+  \page pmservices.html
+
+  \section1 Installation and Configuration
+
+  \section2 D-Bus System Service
+
+  The D-Bus services reserve the bus name \c org.SfietKonstantin.patchmanager
+
+  It is defined as follows:
+
+  \quotefile bin/patchmanager-daemon/dbus/org.SfietKonstantin.patchmanager.xml
+
+  Calls can be issued e.g. like this:
+
+  \code
+      dbus-send --print-reply --system --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager org.SfietKonstantin.patchmanager.checkforUpdates
+  \endcode
+
+  \section2 Systemd System Units
+
+      \table
+        \header
+          \li Name
+          \li Type
+          \li Component
+          \li Description
+        \row
+          \li \c UNITDIR/checkForUpdates-org.SfietKonstantin.patchmanager.service
+          \li service
+          \li -
+          \li calls the \c checkForUpdates() method via D-Bus
+        \row
+          \li \c UNITDIR/checkForUpdates-org.SfietKonstantin.patchmanager.timer
+          \li timer
+          \li -
+          \li runs the service above, every two hours
+        \row
+          \li \c UNITDIR/dbus-org.SfietKonstantin.patchmanager.service
+          \li dbus-activated service
+          \li \l {Patchmanager Documentation: Daemon}{Daemon}
+          \li starts/activates the D-Bus service
+        \row
+          \li \c /var/lib/environment/patchmanager/10-dbus.conf
+          \li environment file
+          \li \l {Patchmanager Documentation: Daemon}{Daemon}
+          \li Configures the environment the Systemd service is started in.
+        \row
+          \li \c /etc/dbus-1/system.d/org.SfietKonstantin.patchmanager.conf
+          \li policy file
+          \li \l {Patchmanager Documentation: Daemon}{Daemon}
+          \li Configures access policy for the D-Bus service
+      \endtable
+
+  \section2 Systemd User Units
+
+      \table
+        \header
+          \li Name
+          \li Type
+          \li Component
+          \li Description
+        \row
+          \li \c $USERUNITDIR/dbus-org.SfietKonstantin.patchmanager.service
+          \li dbus-activated service
+          \li  {Patchmanager Documentation: Startup Dialog}{Dialog}
+          \li starts the Startup Dialog if necessary
+        \row
+          \li \c $USERUNITDIR/lipstick-patchmanager.service
+          \li service
+          \li  {Patchmanager Documentation: Startup Dialog}{Dialog}
+          \li calls the \c lipstickChanged() method via D-Bus
+        \row
+          \li \c /var/lib/environment/patchmanager-dialog/*.conf
+          \li environment file
+          \li  {Patchmanager Documentation: Startup Dialog}{Dialog}
+          \li Configures the environment the dialog service is started in.
+      \endtable
+
+  \c lipstick-patchmanager.service watches the state of the Lipstick service.
+  If Lipstick crashes, Patchmanager Daemon assumes it was caused by a patch
+  and goes into \c failed state. In  this state, all enabled services are
+  disabled, and PM must be reactivated via the GUI.
+
+  \section1 Manual Invocation
+
+  Apart from using the appropriate tools manipulating tools like \c systemctl,
+  \c busctl, or \c dbus-send, the patchmanager binary can serve as a CLI as
+  well if called from command line.
+  See the output of \c{patchmanager --help} and PatchManagerObject::process()
+  for more information.
+
+  \section1 Logging and Debugging
+
+  Debug logging of the daemon can be configured using the environment file
+  located in \c /var/lib/environment/patchmanager/10-dbus.conf setting the \c
+  QT_LOGGING_RULES variable to e.g. \c{"*.debug=true"}
+
+  After changing this, the system service must be restarted so it can pick up
+  the new values.
 
 */
