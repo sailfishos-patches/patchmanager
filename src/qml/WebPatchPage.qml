@@ -40,7 +40,8 @@ import Sailfish.Silica 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
 /*! \qmltype WebPatchPage
-    \inqmlmodule  org.SfietKonstantin.patchmanager
+
+    \ingroup qml-plugin-components
     \inherits Page
     \brief Shows details about a Patch from the Web Catalog
 

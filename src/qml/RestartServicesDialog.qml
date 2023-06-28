@@ -40,7 +40,8 @@ import Sailfish.Silica 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
 /*! \qmltype RestartServicesDialog
-    \inqmlmodule org.SfietKonstantin.patchmanager
+
+    \ingroup qml-plugin-components
     \brief Service restart confirmation dialog
 
     This Dialog is shown to the user to confirm restarting of "Services", i.e.

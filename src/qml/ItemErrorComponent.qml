@@ -34,7 +34,8 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 /*! \qmltype ItemErrorComponent
-    \inqmlmodule org.SfietKonstantin.patchmanager
+
+    \ingroup qml-plugin-components
     \brief Shows an error message
 */
 

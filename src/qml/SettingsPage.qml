@@ -42,7 +42,8 @@ import Nemo.Configuration 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
 /*! \qmltype SettingsPage
-    \inqmlmodule org.SfietKonstantin.patchmanager
+
+    \ingroup qml-plugin-components
     \inherits Page
 
     \brief Manages Application Settings, both global and user-specific ones

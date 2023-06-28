@@ -41,7 +41,8 @@ import org.nemomobile.dbus 2.0
 import org.SfietKonstantin.patchmanager 2.0
 
 /*! \qmltype WebCatalogPage
-    \inqmlmodule org.SfietKonstantin.patchmanager
+
+    \ingroup qml-plugin-components
     \inherits Page
     \brief Shows the list of Patches available in the Web Catalog.
 

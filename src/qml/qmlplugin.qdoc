@@ -20,6 +20,10 @@
     \li Uninstall installed Patches
     \endlist
 
+    \section2 QML Components:
+
+    \l {qml-plugin-components}{QML Plugin Components}
+
     \section2 QML types:
 
     \generatelist{qmltypesbymodule org.SfietKonstantin.patchmanager}
@@ -30,3 +34,11 @@
 
 */
 
+/*!
+    \group qml-plugin-components
+    \title QML Components
+
+    \brief Pages and other components shipped with the QML Plugin
+
+    \generatelist{related}
+*/

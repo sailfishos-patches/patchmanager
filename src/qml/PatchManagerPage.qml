@@ -41,7 +41,8 @@ import Nemo.Configuration 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
 /*! \qmltype PatchManagerPage
-    \inqmlmodule org.SfietKonstantin.patchmanager
+
+    \ingroup qml-plugin-components
     \brief The main Patchmanager GUI Application
 
     Page shown through the Jolla Settings Plugin from the Settings Application.

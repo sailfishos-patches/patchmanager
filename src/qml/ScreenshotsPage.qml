@@ -35,7 +35,8 @@ import Sailfish.Silica 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
 /*! \qmltype ScreenshotsPage
-    \inqmlmodule org.SfietKonstantin.patchmanager
+
+    \ingroup qml-plugin-components
     \inherits Page
     \brief Shows Screenshots available for a Patch from Web Catalog in a full-screen view.
 

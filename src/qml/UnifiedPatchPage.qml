@@ -41,7 +41,8 @@ import Nemo.Notifications 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
 /*! \qmltype UnifiedPatchPage
-    \inqmlmodule org.SfietKonstantin.patchmanager
+
+    \ingroup qml-plugin-components
     \inherits Page
     \brief Shows details about the Patch given in \c modelData
 */
