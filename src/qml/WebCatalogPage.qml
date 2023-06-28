@@ -40,12 +40,34 @@ import Sailfish.Silica 1.0
 import org.nemomobile.dbus 2.0
 import org.SfietKonstantin.patchmanager 2.0
 
+/*! \qmltype WebCatalogPage
+    \inqmlmodule org.SfietKonstantin.patchmanager
+    \inherits Page
+    \brief Shows the list of Patches available in the Web Catalog.
+*/
+
 Page {
     id: container
+    /* \qmlproperty string author
+       Patch \c author field
+    */
     property string author
+    /* \qmlproperty var versions
+       Patch \c version field
+    */
     property var versions
+    /* \qmlproperty string search
+       The current search string
+    */
     property string search
+    /* \qmlproperty bool searchVisible
+       Shows the search field if \c true
+    */
     property bool searchVisible
+    /* \qmlproperty bool sortByDate
+       If \c true, the list is sorted by Patch \c updated_date.
+       \default true
+    */
     property bool sortByDate: true
 
     onStatusChanged: {

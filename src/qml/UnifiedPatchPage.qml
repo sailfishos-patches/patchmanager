@@ -43,14 +43,14 @@ import org.SfietKonstantin.patchmanager 2.0
 /*! \qmltype UnifiedPatchPage
     \inqmlmodule org.SfietKonstantin.patchmanager
     \inherits Page
-    Shows details about the Patch given in \c modelData
+    \brief Shows details about the Patch given in \c modelData
 */
 Page {
     id: container
     /*!  \qmlproperty var modelData
     */
     property var modelData
-    /*! \QML property var delegate
+    /*! \qmlproperty var delegate
      */
     property var delegate
     /*! \qmlproperty bool legacyPatch

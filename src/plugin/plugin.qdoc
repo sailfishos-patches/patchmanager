@@ -7,7 +7,10 @@
     The Settings Plugin makes up the main Patchmanager GUI Application.
 
     Sailfish Settings loads this page which in turn loads
-    {PatchManagerPage}, a part of {Patchmanager Documentation: QML Plugin}{Patchmanager QML Plugin}.
+    PatchManagerPage, a part of \l {Patchmanager Documentation: QML Plugin}{Patchmanager QML Plugin}.
 
+    \section2 Types
+
+    This plugin provides no types.
 */
 
