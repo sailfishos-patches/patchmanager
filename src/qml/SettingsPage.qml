@@ -52,7 +52,6 @@ import org.SfietKonstantin.patchmanager 2.0
      The configuration group \c uisettings is for settings which \i solely affect
      the PM GUI application and consequently also are per-user settings.
 
-     \sa uisettings
 */
 Page {
 

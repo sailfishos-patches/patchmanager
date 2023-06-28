@@ -13,7 +13,7 @@
 
     The Jolla Settings plugin configuration looks like this:
 
-    \qml
+    \code
     {
         "translation_catalog": "settings-patchmanager",
         "entries": [
@@ -30,7 +30,7 @@
             }
         ]
     }
-    \endqml
+    \endcode
 
     \section2 Types
 
