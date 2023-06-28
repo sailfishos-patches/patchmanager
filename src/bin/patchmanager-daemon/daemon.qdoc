@@ -9,10 +9,15 @@
     listing, de/actvation, and communication with the preload library.
 
     Patchmanager is usually launched by its DBus service.
-    The binary can also serve as a simple command-line client to a running
-    daemon. See the output of \c{patchmanager --help} for more information.
+
+    If the \c patchmanager binary is called from command line, it
+    can also serve as a simple CLI to a running daemon.
+    See the output of \c{patchmanager --help} and
+    PatchManagerObject::process() for more information.
 
     \section2 Documentation:
     \generatelist {classesbymodule PatchManagerDaemon}
+
+    
 */
 
