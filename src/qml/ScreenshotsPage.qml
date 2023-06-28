@@ -34,11 +34,33 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
+/*! \qmltype ScreenshotsPage
+    \inqmlmodule org.SfietKonstantin.patchmanager
+    \inherits Page
+    \brief Shows Screenshots available for a Patch from Web Catalog in a full-screen view.
+
+    \sa {https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-slideshowview.html}{SlideshowView}
+*/
+
 Page {
     id: page
+
+    /*! \qmlproperty model model
+        This property holds the model providing data for the slideshow.
+    */
     property alias model: view.model
+
+    /*! \qmlproperty int currentIndex
+        The \c index within the \c model
+        \sa model
+    */
     property alias currentIndex: view.currentIndex
 
+    /*! \qmlproperty bool showNavigationIndicator
+        If \c true, forward/back/close indicators are shown. They are hidden otherwise.
+
+        This is automatically managed through the \c interactive property of the slideshow view.
+    */
     showNavigationIndicator: !view.interactive
 
     SlideshowView {

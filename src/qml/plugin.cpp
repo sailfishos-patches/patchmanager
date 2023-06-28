@@ -66,7 +66,7 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
 /*! \qmltype PatchManager
     \instantiates PatchManager
     \inqmlmodule org.SfietKonstantin.patchmanager
-    \brief This Singleton ...
+    \brief Singleton providing access to the \l [C++]{PatchManager} methods and properties.
 */
 /*! \qmltype PatchManagerTranslator
     \instantiates PatchManagerTranslator

@@ -43,21 +43,23 @@ import org.SfietKonstantin.patchmanager 2.0
     \inqmlmodule  org.SfietKonstantin.patchmanager
     \inherits Page
     \brief Shows details about a Patch from the Web Catalog
+
+     \sa {https://github.com/sailfishos-patches/patchmanager/blob/master/README.md#the-json-metadata-file}{Patch JSON metadata file}, {Patchmanager Web Catalog}{Web Catalog}
 */
 
-
-    
 
 Page {
     id: container
     objectName: "WebPatchPage"
     /*!    \qmlproperty var modelData
-           Holds the metadata from the model
+           This property holds the metadata from the model
+
+           \sa [QML]{PatchManagerModel}, [QML]{PatchObject}
     */
     property var modelData
 
     /*!    \qmlproperty var versions
-           A map of patch name, versions
+           This property holds a map of patch \c{[name, [versions]]}
     */
     property var versions
 
@@ -65,7 +67,7 @@ Page {
     /*! \qmlproperty int voteAction
         voting action
 
-        \sa PatchManager::checkVote(const QString &patch)
+        \sa [QML]{PatchManager::checkVote}
     */
     property int voteAction
 
@@ -75,7 +77,7 @@ Page {
     property bool isInstalled: !!container.versions && typeof(container.versions[modelData.name]) != "undefined"
 
     /*! \qmlproperty var patchData
-        Holds the Patch metadata
+        This property holds the metadata downloaded from the Web Catalog
 
         \sa modelData
     */

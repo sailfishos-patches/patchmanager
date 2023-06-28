@@ -43,15 +43,25 @@ import org.SfietKonstantin.patchmanager 2.0
 
 /*! \qmltype SettingsPage
     \inqmlmodule org.SfietKonstantin.patchmanager
-    \brief Manages Settings, both global and user-specific ones
+    \inherits Page
+
+    \brief Manages Application Settings, both global and user-specific ones
+
+     The usual, system-wide configuration values are set via D-Bus plugin by the
+     Patchmanager daemon, which stores them in \c{/etc/patchmanager2.conf}
+     The configuration group \c uisettings is for settings which \i solely affect
+     the PM GUI application and consequently also are per-user settings.
+
+     \sa uisettings
 */
 Page {
 
-    /*
-     * The usual, system-wide configuration values are set via D-Bus plugin by the
-     * Patchmanager daemon, which stores them in /etc/patchmanager2.conf
-     * This configuration group "uisettings" is for settings which *solely* affect
-     * the PM GUI application and consequently also are per-user settings.
+    /*! \qmlproperty ConfigurationGroup uisettings
+
+       Manages user-specific properties.
+
+       The DConf path for these is \c /org/SfietKonstantin/patchmanager/uisettings
+
     */
     ConfigurationGroup {
         id: uisettings

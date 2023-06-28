@@ -44,29 +44,41 @@ import org.SfietKonstantin.patchmanager 2.0
     \inqmlmodule org.SfietKonstantin.patchmanager
     \inherits Page
     \brief Shows the list of Patches available in the Web Catalog.
+
+    It also provides a search interface, and can order the list by either
+    date, or category.
+
+    \sa {Patchmanager Web Catalog}{Web Catalog}
 */
 
 Page {
     id: container
     /* \qmlproperty string author
-       Patch \c author field
+       This property holds the name of the Patch developer
+
+       \sa {https://github.com/sailfishos-patches/patchmanager/blob/master/README.md#the-json-metadata-file}{Patch JSON metadata file}
     */
     property string author
     /* \qmlproperty var versions
-       Patch \c version field
+       This property holds the version of the Patch
+
+       \sa {https://github.com/sailfishos-patches/patchmanager/blob/master/README.md#the-json-metadata-file}{Patch JSON metadata file}
     */
     property var versions
     /* \qmlproperty string search
-       The current search string
+       This property holds the user-supplied search string
     */
     property string search
     /* \qmlproperty bool searchVisible
-       Shows the search field if \c true
+       If \c true shows the search field
     */
     property bool searchVisible
     /* \qmlproperty bool sortByDate
-       If \c true, the list is sorted by Patch \c updated_date.
+       If \c true, the list is sorted by Patch \c updated_date. Otherwise it is sorted by \c category.
+
        \default true
+
+       \sa {https://github.com/sailfishos-patches/patchmanager/blob/master/README.md#the-json-metadata-file}{Patch JSON metadata file}
     */
     property bool sortByDate: true
 

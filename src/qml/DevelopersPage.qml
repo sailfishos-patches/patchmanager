@@ -38,6 +38,12 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+/*! \qmltype DevelopersPage
+    \inqmlmodule org.SfietKonstantin.patchmanager
+    \inherits Page
+    \brief Shows detailed information about the present and past developers of the App.
+*/
+
 Page {
     id: container
     ListModel {

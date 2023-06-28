@@ -43,11 +43,13 @@ Rectangle {
     anchors.fill: parent
     color: Theme.rgba(Theme.highlightBackgroundColor, Theme.highlightBackgroundOpacity)
     /*! \qmlproperty string text
-        The title text of the message.
+        This property holds the text for the error message.
     */
     property alias text: titleLabel.text
     /*! \qmlproperty int timeout
-        How long the message is shown
+        This property specifies how long the message is shown (in milliseconds)
+
+        \sa [QtQml]{Timer}{Timer}, {https://doc.qt.io/qt-5/qml-qtqml-timer.html#interval-prop}{Timer::interval}
     */
     property alias timeout: destroyTimer.interval
     Component.onCompleted: {

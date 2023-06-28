@@ -40,7 +40,7 @@ import Sailfish.Silica 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
 /*! \qmltype AboutPage
-    \inqmlmodule org.SfietKonstantin.patchmanager 2.0
+    \inqmlmodule org.SfietKonstantin.patchmanager
     \inherits Page
     \brief Shows brief information about the app, with links to Credits, Attributions etc.
 */
