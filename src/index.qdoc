@@ -173,7 +173,7 @@
 
   It is defined as follows:
 
-  \quotefile ./bin/patchmanager-daemon/dbus/org.SfietKonstantin.patchmanager.xml
+  \quotefile dbus/org.SfietKonstantin.patchmanager.xml
 
   Calls can be issued e.g. like this:
 

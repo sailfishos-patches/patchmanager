@@ -17,6 +17,8 @@ include($QT_INSTALL_DOCS/global/fileextensions.qdocconf)
 include($QT_INSTALL_DOCS/global/qt-html-templates-offline.qdocconf)
 
 sources = ../../src/preload/src/preloadpatchmanager.qdoc
+# needed for quoting source code:
+exampledirs += ../../src/preload/src
 
 # assign custom HTML footer to replace Qt's default copyright notice
 HTML.footer = "<div align='center'><hr/>" \

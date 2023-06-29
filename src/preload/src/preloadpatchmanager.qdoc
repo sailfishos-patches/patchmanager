@@ -8,4 +8,11 @@
   \section1 Overview
 
   \e{to be written...}
+
+  \section3 Blacklists:
+
+  \quotefromfile preloadpatchmanager.c
+  \skipto static const char *blacklist_paths_startswith[]
+  \printuntil static int debug_output()
+
 */

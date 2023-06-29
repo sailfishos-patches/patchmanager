@@ -15,7 +15,8 @@ include($QT_INSTALL_DOCS/global/qt-html-templates-offline.qdocconf)
 
 ## Sources
 sources += ../../src/index.qdoc
-
+# for quoting
+exampledirs += ../../src/bin/patchmanager-daemon
 # assign custom HTML footer to replace Qt's default copyright notice
 HTML.footer = "<div align='center'><hr/>" \
               "<p><small>Patchmanager Documentation\n" \
