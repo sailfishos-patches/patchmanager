@@ -76,7 +76,7 @@ PatchObject::PatchObject(const QVariantMap &data, QObject *parent)
 }
 
 /*! \class PatchObject
-    \inmodule PatchManager
+    \inmodule org.SfietKonstantin.patchmanager
     \brief An element to be used as content of an \l {PatchManagerModel}
 */
 PatchObject::~PatchObject()

@@ -75,6 +75,7 @@ static const char *noop_strings[] = {
 
     \brief Patchmanager QML Plugin
 */
+
 PatchManager::PatchManager(QObject *parent)
     : QObject(parent)
     , m_nam(new QNetworkAccessManager(this))
@@ -376,8 +377,6 @@ bool PatchManager::loaded() const
     return m_loaded;
 }
 
-/*! \qmlmethod PatchManager::call(QDBusPendingCallWatcher *call)
-*/
 /*!  Calls \a call via D-Bus */
 void PatchManager::call(QDBusPendingCallWatcher *call)
 {
@@ -547,10 +546,7 @@ bool PatchManager::isApplied(const QString &name) const
 //    return new QDBusPendingCallWatcher(m_interface->getSettings(name, def), this);
 //}
 
-/*! \qmlmethod PatchManager::watchCall(QDBusPendingCallWatcher *call, QJSValue callback, QJSValue errorCallback)
-    calls \a call via D-Bus, executing \a callback on success, \a errorCallback on error.
-*/
-/*!  calls \a call via D-Bus, executing \a callback on success, \a errorCallback on error. */
+/*!  Calls \a call via D-Bus, executing \a callback on success, \a errorCallback on error. */
 void PatchManager::watchCall(QDBusPendingCallWatcher *call, QJSValue callback, QJSValue errorCallback)
 {
     connect(call,

@@ -48,7 +48,7 @@ PatchManagerModel::PatchManagerModel(QObject *parent)
 }
 
 /*! \class PatchManagerModel
-    \inmodule PatchManager
+    \inmodule org.SfietKonstantin.patchmanager
     \brief A ListModel containing the metadata of Patches.
 
     Currently it defines the following Roles:
