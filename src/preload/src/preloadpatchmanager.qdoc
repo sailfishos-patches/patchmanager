@@ -7,12 +7,94 @@
 
   \section1 Overview
 
-  \e{to be written...}
+  This library
 
+  \list
+  \li Intercepts calls to \l {https://www.man7.org/linux/man-pages/man2/open.2.html}{\c{open()} (or \c{open64()})},
+  \li analyzes which files the call was meant to open
+  \li  asks the Patchmanager Daemon (via socket) whether it knows of a patched version.
+  \endlist
+
+  If yes, the daemon will return a path to its cachedir, and the library
+  redirects the call to that file instead of the original. Otherwise, the
+  \c{open()} is executed on the original file.
+
+  Certain paths are blacklisted for these operations to reduce the risk of
+  critical services, or PM itself, choking on these redirections.
+
+  \e{to be continued...}
+
+  \section1 Implementation
+
+  \e{to be continued...}
   \section3 Blacklists:
 
+  The following two "blacklists" cause the lib to back off redirecting calls for paths matching one of the entries in the list:
+
   \quotefromfile preloadpatchmanager.c
+  Paths that start with one of these patterns are skipped
   \skipto static const char *blacklist_paths_startswith[]
-  \printuntil static int debug_output()
+  \printuntil };
+  Paths that match exactly one of these patterns are skipped
+  \skipto static const char *blacklist_paths_equal[]
+  \printuntil };
+
+  \section2 Building
+
+  The following \c{#defines} can be used to alter the library behaviour at compile-time
+
+  \table
+  \header
+    \li Define
+    \li Default
+    \li Description
+  \row
+    \li NO_INTERCEPT
+    \li undefined
+    \li Compiles out all of the actual redirection code, leaving the rest in place. Can be used in extreme debugging cases te track what is going on without affecting applications.
+  \row
+    \li ALLOW_ALL_USERS
+    \li defined
+    \li Only allow preloading for users with an UID >= \c UID_MIN, default 100000
+  \endtable
+
+  \section1 Running
+  \section2 Installation
+
+  Once the library is installed in one of the standard library paths, the following is added to the file \c /etc/ld.so.preload
+
+  \badcode
+  /usr/lib/libpreloadpatchmanager.so
+  \endcode
+  \badcode
+  /usr/lib64/libpreloadpatchmanager.so
+  \endcode
+
+  which causes it to be loaded into any binary process that is launched.
+
+  \section2 Environment
+
+  The library reacts on the following environment variables:
+
+  \table
+  \header
+    \li Variable
+    \li Default
+    \li Description
+  \row
+    \li NO_PM_PRELOAD
+    \li undefined
+    \li Makes the lib skip finding files to redirect to, effectively diabling it ofr practical purposes. Intended to be set for processes which should operate on unpatched original files.
+  \row
+    \li PM_PRELOAD_DEBUG
+    \li undefined
+    \li Enables debugging output; messages are prefixed with \c{[pm_name]}, \c{[open]}, or \c{[open64]} depending on operation.
+  \endtable
+
+  Set them to any value to make them take effect
+
+  \section2 Socket
+
+  The library will try to open a socket at \c{/tmp/patchmanager-socket} in order to communicate with the Patchmanager Daemon
 
 */
