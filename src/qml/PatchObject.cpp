@@ -52,10 +52,11 @@
  */
 /*! \qmlsignal PatchObject::toBeDestroyed(PatchObject object);
     This signal is emitted when \a object is about to be destroyed. (Duh.)
- */
+*/
 /*! \qmlsignal PatchObject::busyChanged();
     \internal
- */
+*/
+
 PatchObject::PatchObject(const QVariantMap &data, QObject *parent)
     : QObject(parent)
     , m_details(new QQmlPropertyMap(parent))
@@ -100,14 +101,15 @@ QQmlPropertyMap *PatchObject::details()
    \c true when an internal operation is in progress.
 */
 /*! \property PatchObject::busy
+   \c true when an internal operation is in progress.
  */
+/*! Returns \c true when an internal operation is in progress. */
 bool PatchObject::busy() const
 {
     return m_busy;
 }
 
-/*! \fn void PatchObject::setData(const QVariantMap &data)
-
+/*!
     Fills the PatchObject's properties from \a data.
 
     \note If there is a "display_name" field in \a data, it is used. Otherwise, patch name is used.
@@ -126,8 +128,7 @@ void PatchObject::setData(const QVariantMap &data)
     }
 }
 
-/*! void PatchObject::apply(QJSValue callback)
-
+/*!
     Calls PatchManager::applyPatch with the patch name. If \a callback is callable, calls it afterwards.
     Does nothing if the \c "patched" property is \c true.
 
@@ -170,8 +171,8 @@ void PatchObject::apply(QJSValue callback)
     });
 }
 
-/*! \fn void PatchObject::unapply(QJSValue callback)
-    Calls PatchManager::unapplyPatch with the patch name. If \a callback is callable, calls it afterwards.
+/*!
+    Calls PatchManager::unapplyPatch() with the patch name. If \a callback is callable, calls it afterwards.
     Does nothing if the \c "patched" property is \c false.
 
     \sa PatchManager::unapplyPatch
@@ -213,11 +214,7 @@ void PatchObject::unapply(QJSValue callback)
     });
 }
 
-/*! \fn void PatchObject::uninstall()
-    Calls PatchManager::uninstallPatch with the patch name.
-
-    \sa PatchManager::uninstallPatch
-*/
+/*! Calls PatchManager::uninstallPatch with the patch name. */
 void PatchObject::uninstall()
 {
     qDebug() << Q_FUNC_INFO;
@@ -239,11 +236,7 @@ void PatchObject::uninstall()
     });
 }
 
-/*! \fn void PatchObject::resetState()
-    Calls PatchManager::resetState.
-
-    \sa PatchManager::resetState
-*/
+/*!  Calls PatchManager::resetState. */
 void PatchObject::resetState()
 {
     qDebug() << Q_FUNC_INFO;

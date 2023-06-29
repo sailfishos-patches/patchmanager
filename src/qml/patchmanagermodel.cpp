@@ -108,17 +108,13 @@ QHash<int, QByteArray> PatchManagerModel::roleNames() const
 // /*! \qmlproperty var PatchManagerModel::patches
 //     Contains the list of patches
 // */
-/*! \fn QList<PatchObject *> PatchManagerModel::patches() const
-    Returns the list of patches
- */
+/*!  Returns the list of patches */
 QList<PatchObject *> PatchManagerModel::patches() const
 {
     return m_modelData;
 }
 
-/*! \fn void PatchManagerModel::setPatches(const QList<PatchObject *> &patches)
-    clears the model data and sets \a patches as new model data. 
-*/
+/*!  clears the model data and sets \a patches as new model data.  */
 void PatchManagerModel::setPatches(const QList<PatchObject *> &patches)
 {
     qDebug() << Q_FUNC_INFO << patches.length();
@@ -138,8 +134,7 @@ void PatchManagerModel::setPatches(const QList<PatchObject *> &patches)
     endResetModel();
 }
 
-/*! \fn void PatchManagerModel::populateData(const QVariantList &data, const QString &patch, bool installed)
-
+/*!
     Does nothing if both \a data and \a patch are empty.
 
     If \a patch is empty, and we have \a data, extracts the patch name from \a
@@ -243,9 +238,7 @@ void PatchManagerModel::populateData(const QVariantList &data, const QString &pa
     saveLayout();
 }
 
-/*! \fn void PatchManagerModel::removePatch(const QString &patch)
-    \ removes the patch with the name \a patch from the model.
- */
+/*!  removes the patch with the name \a patch from the model. */
 void PatchManagerModel::removePatch(const QString &patch)
 {
     qDebug() << Q_FUNC_INFO << patch;
@@ -266,9 +259,7 @@ void PatchManagerModel::removePatch(const QString &patch)
     saveLayout();
 }
 
-/*! \fn void PatchManagerModel::move(int from, int to)
-    Moves an entry from index \a from to index \a to
- */
+/*! Moves an entry from index \a from to index \a to */
 void PatchManagerModel::move(int from, int to)
 {
     if (from == to) {
@@ -279,9 +270,7 @@ void PatchManagerModel::move(int from, int to)
     endMoveRows();
 }
 
-/*! \fn void PatchManagerModel::saveLayout()
-    saves the current order of patch names to Settings
-*/
+/*! Saves the current order of patch names to Settings. */
 void PatchManagerModel::saveLayout()
 {
     QStringList patches;
@@ -292,9 +281,7 @@ void PatchManagerModel::saveLayout()
     PatchManager::GetInstance()->putSettingsAsync(QStringLiteral("order"), patches);
 }
 
-/*! \fn QString PatchManagerModel::patchName(const QString &patch) const
-    returns the \e display_name of \a patch
-*/
+/*! Returns the \e display_name of \a patch. */
 QString PatchManagerModel::patchName(const QString &patch) const
 {
     if (!m_patchMap.contains(patch)) {
@@ -304,9 +291,7 @@ QString PatchManagerModel::patchName(const QString &patch) const
     return m_patchMap[patch]->details()->value(QStringLiteral("display_name")).toString();
 }
 
-/*! \fn bool PatchManagerModel::isApplied(const QString &name) const
-    returns /c true if patch \a name is in the list of applied (activated) patches.
-*/
+/*!  Returns /c true if patch \a name is in the list of applied (activated) patches.  */
 bool PatchManagerModel::isApplied(const QString &name) const
 {
     // FIXME: there certainly is a more efficient way, e.g. std::find_if?

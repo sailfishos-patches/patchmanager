@@ -60,9 +60,7 @@ WebDownloader::WebDownloader(QObject *parent) : QObject(parent)
     _file = new QFile(this);
 }
 
-/*! \fn void WebDownloader::start()
-    starts the download, using compile-time variable \e MEDIA_URL as source.
- */
+/*!  starts the download, using compile-time variable \e MEDIA_URL as source.  */
 void WebDownloader::start()
 {
     _file->setFileName(destination);
@@ -103,9 +101,7 @@ WebDownloader::WebDownloader(QObject *parent) : QObject(parent)
     _file = new QFile(this);
 }
 
-/*! \fn void WebDownloader::start()
-    starts the download, usind compile-time variable \e MEDIA_URL, as source and \e as destination file.
- */
+/*!  Starts the download, usind compile-time variable \e MEDIA_URL, as source and \e as destination file.  */
 void WebDownloader::start()
 {
     _file->setFileName(destination);

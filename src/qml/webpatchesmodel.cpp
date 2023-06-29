@@ -152,8 +152,7 @@ void WebPatchesModel::setSorted(const bool & sorted) {
     }
 }
 
-/*! \fn void WebPatchesModel::classBegin()
-*/
+/*! \warning need to investigate what this is for...  */
 void WebPatchesModel::classBegin()
 {
 
@@ -169,7 +168,11 @@ bool compareStrings(const QString &a, const QString &b)
     return a.compare(b, Qt::CaseInsensitive) < 0;
 }
 
-/*! \fn void WebPatchesModel::componentComplete()
+/*!
+   Retrieves the list of patches from the Web Catalog, and populates the model
+   with its contents, sorting them if necessary.
+
+   \sa setSorted()
 */
 void WebPatchesModel::componentComplete()
 {
@@ -225,20 +228,14 @@ void WebPatchesModel::componentComplete()
     });
 }
 
-/*! \fn int WebPatchesModel::rowCount(const QModelIndex & parent) const
-    \a parent is unused
-    Returns the row count
-*/
+/*! Returns the row count. \note \a parent is unused */
 int WebPatchesModel::rowCount(const QModelIndex & parent) const
 {
     Q_UNUSED(parent);
     return _modelData.count();
 }
 
-/*! \fn QVariant WebPatchesModel::data(const QModelIndex & index, int role) const
- \a index
- \a role
-*/
+/*! Returns the data stored under the given \a role for the item referred to by the \a index. */
 QVariant WebPatchesModel::data(const QModelIndex & index, int role) const
 {
     int row = index.row();
@@ -246,3 +243,4 @@ QVariant WebPatchesModel::data(const QModelIndex & index, int role) const
         return QVariant();
     return _modelData[index.row()].toMap()[_roles[role]];
 }
+
