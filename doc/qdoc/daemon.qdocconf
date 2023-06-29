@@ -32,4 +32,5 @@ HTML.footer = "<div align='center'><hr/>" \
               "as published by the Free Software Foundation.</small></p>" \
               "<p/></div>"
 
-# navigation.homepage = "Patchmanager QML Plugin"
+navigation.homepage = ../patchmanager/index.html
+navigation.hometitle = "Patchmanager Documentation"
