@@ -48,20 +48,16 @@ Page {
 
     /*! \qmlproperty model model
         This property holds the model providing data for the slideshow.
+        \sa {https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-slideshowview.html#model}{SlideshowView}
     */
     property alias model: view.model
 
     /*! \qmlproperty int currentIndex
-        The \c index within the \c model
-        \sa model
+        The \c index of the currently shown Item
+        \sa {https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-slideshowview.html#model}{SlideshowView}
     */
     property alias currentIndex: view.currentIndex
 
-    /*! \qmlproperty bool showNavigationIndicator
-        If \c true, forward/back/close indicators are shown. They are hidden otherwise.
-
-        This is automatically managed through the \c interactive property of the slideshow view.
-    */
     showNavigationIndicator: !view.interactive
 
     SlideshowView {

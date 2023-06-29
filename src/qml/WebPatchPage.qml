@@ -66,7 +66,22 @@ Page {
 
 
     /*! \qmlproperty int voteAction
-        voting action
+        State of the like/dislike voting action
+
+        \table
+        \header
+          \li Meaning
+          \li Value
+        \row
+          \li Like
+          \li 2
+        \row
+          \li Dislike
+          \li 1
+        \row
+          \li Not Voted
+          \li 0
+        \endtable
 
         \sa PatchManager::checkVote
     */
@@ -86,8 +101,9 @@ Page {
 
     /*! \qmlproperty bool fetching
 
-        Indicates whether data is downloaded. The WebPatchPage will show a placeholder if true.
-        \default \c true
+        Indicates whether data is currently being downloaded. The WebPatchPage will show a ViewPlaceholder if true.
+
+        Default \c true
     */
     property bool fetching: true
 

@@ -44,21 +44,29 @@ import org.SfietKonstantin.patchmanager 2.0
 
     \ingroup qml-plugin-components
     \inherits Page
-    \brief Shows details about the Patch given in \c modelData
+    \brief Shows details about an installed Patch.
 */
 Page {
     id: container
     /*!  \qmlproperty var modelData
+         The model date whose contents are to be displayed.
     */
     property var modelData
+
     /*! \qmlproperty var delegate
+        The delegate Component to use to display modelData
      */
     property var delegate
+
     /*! \qmlproperty bool legacyPatch
         \c true if the Patch uses the legacy metadata format
+
+        Legacy Patches have less and different properties to display.
      */
     property bool legacyPatch: !modelData.isNewPatch
+
     /*! \qmlsignal doPatch
+        This signal is emitted when the user chooses to activate the Patch.
      */
     signal doPatch
 

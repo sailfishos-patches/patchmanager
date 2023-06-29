@@ -23,7 +23,7 @@
 
     \section2 QML Components:
 
-    \l {qml-plugin-components}{QML Plugin Components}
+    \generatelist{overviews}
 
     \section2 QML types:
 
