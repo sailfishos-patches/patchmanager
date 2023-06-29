@@ -165,11 +165,11 @@
 
   It is defined as follows:
 
-  \quotefile bin/patchmanager-daemon/dbus/org.SfietKonstantin.patchmanager.xml
+  \quotefile ./bin/patchmanager-daemon/dbus/org.SfietKonstantin.patchmanager.xml
 
   Calls can be issued e.g. like this:
 
-  \code
+  \badcode
       dbus-send --print-reply --system --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager org.SfietKonstantin.patchmanager.checkforUpdates
   \endcode
 

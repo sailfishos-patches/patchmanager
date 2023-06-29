@@ -94,7 +94,7 @@ QQmlPropertyMap *PatchObject::details()
 
 /*! \qmlproperty bool PatchObject::busy
 
-   Whether an internal operation is in progress.
+   \c true when an internal operation is in progress.
 */
 /*! \property PatchObject::busy
  */

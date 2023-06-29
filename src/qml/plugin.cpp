@@ -76,19 +76,27 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
 
     To use, add:
 
-    \tt{import org.SfietKonstantin.patchmanager 2.0}
+    \code
+    import org.SfietKonstantin.patchmanager 2.0
+    \endcode
 
     In the root item add:
 
-    \tt{property bool pmTranslationLoaded: PatchManagerTranslator ? PatchManagerTranslator.installTranslator("my-patch-name") : false}}
+    \code
+    property bool pmTranslationLoaded: PatchManagerTranslator ? PatchManagerTranslator.installTranslator("my-patch-name") : false}
+    \endcode
 
     In the first visible text item replace text with following:
 
-    \tt{pmTranslationLoaded ? qsTr("Translated text") : "Please update patchmanager!"}
+    \code
+    pmTranslationLoaded ? qsTr("Translated text") : "Please update patchmanager!"
+    \endcode
 
     If translation is not loaded try using qsTranslate() strings instead:
 
-    \tt{pmTranslationLoaded ? qsTranslate("pm", "Translated text") : "Please update patchmanager!"}
+    \code
+    pmTranslationLoaded ? qsTranslate("pm", "Translated text") : "Please update patchmanager!"
+    \endcode
 
 */
 /*! \qmlproperty bool PatchManagerTranslator::pmTranslationLoaded

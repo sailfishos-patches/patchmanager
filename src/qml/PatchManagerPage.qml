@@ -43,7 +43,7 @@ import org.SfietKonstantin.patchmanager 2.0
 /*! \qmltype PatchManagerPage
 
     \ingroup qml-plugin-components
-    \brief The main Patchmanager GUI Application
+    \brief The main Patchmanager GUI
 
     Page shown through the Jolla Settings Plugin from the Settings Application.
 
@@ -52,7 +52,7 @@ import org.SfietKonstantin.patchmanager 2.0
     It allows to:
 
     \list
-    \li View the list of installed and activated Patches. 
+    \li View the list of installed and activated Patches.
     \li Configure the Application and Daemon settings.
     \li Activate or deactivate Patches
     \li Install Patches from the Web Catalog

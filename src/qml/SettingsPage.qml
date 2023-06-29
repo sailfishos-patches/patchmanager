@@ -50,7 +50,7 @@ import org.SfietKonstantin.patchmanager 2.0
 
      The usual, system-wide configuration values are set via D-Bus plugin by the
      Patchmanager daemon, which stores them in \c{/etc/patchmanager2.conf}
-     The configuration group \c uisettings is for settings which \i solely affect
+     The configuration group \c uisettings is for settings which \e solely affect
      the PM GUI application and consequently also are per-user settings.
 
 */

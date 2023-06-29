@@ -13,7 +13,7 @@
 
     The Jolla Settings plugin configuration looks like this:
 
-    \code
+    \badcode
     {
         "translation_catalog": "settings-patchmanager",
         "entries": [

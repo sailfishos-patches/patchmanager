@@ -77,7 +77,7 @@ QVariant PatchManagerModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-/*! \fn QHash<int, QByteArray> PatchManagerModel::roleNames() const
+/*! \fn QHash<int, QByteArray> roleNames() const
     Returns the role names
 */
 QHash<int, QByteArray> PatchManagerModel::roleNames() const

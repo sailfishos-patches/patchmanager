@@ -50,7 +50,7 @@ Rectangle {
     /*! \qmlproperty int timeout
         This property specifies how long the message is shown (in milliseconds)
 
-        \sa [QtQml]{Timer}{Timer}, {https://doc.qt.io/qt-5/qml-qtqml-timer.html#interval-prop}{Timer::interval}
+        \sa {https://doc.qt.io/qt-5/qml-qtqml-timer.html#interval-prop}{Timer::interval}
     */
     property alias timeout: destroyTimer.interval
     Component.onCompleted: {

@@ -68,10 +68,12 @@ WebPatchesModel::~WebPatchesModel()
 }
 
 /*! \property WebPatchesModel::sorted
-  Whether the model is sorted
+  \c true when the model is sorted
 */
 /*! \qmlproperty bool WebPatchesModel::sorted
-  Whether the model is sorted
+  \c true when the model is sorted
+
+   The corresponding signal is sortedChanged
 */
 /*! \qmlsignal WebPatchesModel::sortedChanged()
   Emitted when \c sorted changed

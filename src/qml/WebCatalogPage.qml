@@ -54,27 +54,27 @@ import org.SfietKonstantin.patchmanager 2.0
 
 Page {
     id: container
-    /* \qmlproperty string author
+    /*! \qmlproperty string author
        This property holds the name of the Patch developer
 
        \sa {https://github.com/sailfishos-patches/patchmanager/blob/master/README.md#the-json-metadata-file}{Patch JSON metadata file}
     */
     property string author
-    /* \qmlproperty var versions
+    /*! \qmlproperty var versions
        This property holds the version of the Patch
 
        \sa {https://github.com/sailfishos-patches/patchmanager/blob/master/README.md#the-json-metadata-file}{Patch JSON metadata file}
     */
     property var versions
-    /* \qmlproperty string search
+    /*! \qmlproperty string search
        This property holds the user-supplied search string
     */
     property string search
-    /* \qmlproperty bool searchVisible
+    /*! \qmlproperty bool searchVisible
        If \c true shows the search field
     */
     property bool searchVisible
-    /* \qmlproperty bool sortByDate
+    /*! \qmlproperty bool sortByDate
        If \c true, the list is sorted by Patch \c updated_date. Otherwise it is sorted by \c category.
 
        \default true
