@@ -39,14 +39,20 @@
     \brief Downloads Patch archives from the Web Catalog
 */
 /*! \qmlsignal WebDownloader::downloadFinished(const QString & patch, const QString & fileName)
-    \a patch was downloaded to \a fileName
+    This signal is emitted when \a patch has finished downloading, resulting in \a fileName.
 */
 /*! \qmlsignal WebDownloader::downloadError()
-    Emitted when a download failed.
+    This signal is emitted when a download failed.
 */
 /*! \class WebDownloader
     \inmodule org.SfietKonstantin.patchmanager
     \brief Downloads Patch archives from the Web Catalog
+*/
+/*!  \fn void WebDownloader::downloadError()
+    This signal is emitted when a download failed.
+*/
+/*!  \fn void WebDownloader::downloadFinished(const QString &patch, const QString &fileName)
+    This signal is emitted when \a patch has finished downloading, resulting in \a fileName.
 */
 WebDownloader::WebDownloader(QObject *parent) : QObject(parent)
 {

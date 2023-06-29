@@ -47,8 +47,11 @@
     \inqmlmodule org.SfietKonstantin.patchmanager
     \brief An element to be used as content of an \l {PatchManagerModel}
 */
+/*! \fn void PatchObject::toBeDestroyed(PatchObject *object);
+    This signal is emitted when \a object is about to be destroyed. (Duh.)
+ */
 /*! \qmlsignal PatchObject::toBeDestroyed(PatchObject object);
-    This signal is emitted whe the object is about to be destroyed. (Duh.)
+    This signal is emitted when \a object is about to be destroyed. (Duh.)
  */
 /*! \qmlsignal PatchObject::busyChanged();
     \internal

@@ -70,9 +70,10 @@ static const char *noop_strings[] = {
 };
 
 /*! \class PatchManager
+    \inheaderfile patchmanager.h
     \inmodule org.SfietKonstantin.patchmanager
 
-	\brief Patchmanager QML Plugin implementing PatchManagerInterface
+    \brief Patchmanager QML Plugin implementing PatchManagerInterface.
 */
 PatchManager::PatchManager(QObject *parent)
     : QObject(parent)
@@ -268,10 +269,11 @@ void PatchManager::setApplyOnBoot(bool applyOnBoot)
     }
 }
 
-/*! \property PatchManager::appsNeedRestart
+/* \property PatchManager::appsNeedRestart
+    \inheaderfile: patchmanager.h
     Whether services need to be restarted
 */
-/*! \qmlproperty bool PatchManager::appsNeedRestart
+/* \qmlproperty bool PatchManager::appsNeedRestart
     \inheaderfile: patchmanager.h
     Whether services need to be restarted
 */

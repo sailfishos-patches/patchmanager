@@ -57,7 +57,6 @@
   If there are paths or files involved in the patch which do not exist yet
   in the filesystem, they will be created in the cache dir, and a symlink
   pointing to them is placed in the original filesystem.
-
   \section2 2. A patched application is launched.
 
   Through library preloading, the \c libpreloadpatchmanager.so library is
@@ -65,9 +64,11 @@
 
   \section2 3. The Preload Library:
 
-  Intercepts calls to \c open()  or (\c open64()), analyzes which files
-  the call was meant to open asks the Patchmanager daemon (via socket) whether
-  it knows of a patched version.
+  \list
+  \li Intercepts calls to \l {https://www.man7.org/linux/man-pages/man2/open.2.html}{\c{open()} (or \c{open64()})},
+  \li analyzes which files the call was meant to open
+  \li  asks the Patchmanager daemon (via socket) whether it knows of a patched version.
+  \endlist
 
   If yes, the daemon will return a path to its cachedir, and the library
   redirects the call to that file instead of the original. Otherwise, the
@@ -76,9 +77,16 @@
   Certain paths are blacklisted for these operations to reduce the risk of
   critical services, or PM itself, choking on these redirections.
 
+  \note After activating a Patch , the daemon may also inform the UI that some
+  apps or services need restart. The UI client is expected to issue the command
+  to restart these soon.
+  As long as the corresponding preocesses are not restarted, the effect of the
+  applied patch will not show, or may only show partially, depending on the "patch
+  history" of the respective process.
+
   \section1 Patch Installation
   There are three ways a Patch can end up on the system:
-  
+
   \list
   \li Web Catalog
   \li RPM package

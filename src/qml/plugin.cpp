@@ -54,20 +54,45 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
     return PatchManagerTranslator::GetInstance(engine);
 }
 
-// /*!
-//     \qmlmodule org.SfietKonstantin.patchmanager
-// 
-// */
-// 
-// /*!
-//     \module PatchManager
-// 
-// */
+/*****  PatchManager ******/
 /*! \qmltype PatchManager
     \instantiates PatchManager
     \inqmlmodule org.SfietKonstantin.patchmanager
+
     \brief Singleton providing access to the \l [C++]{PatchManager} methods and properties.
 */
+/*! \qmlproperty string PatchManager::appsToRestart
+    \warning \e{to be written...}
+*/
+/*! \qmlproperty bool PatchManager::developerMode
+    \warning \e{to be written...}
+*/
+/*! \qmlproperty bool PatchManager::failure
+    \warning \e{to be written...}
+*/
+/*! \qmlproperty string PatchManager::osVersion
+    \warning \e{to be written...}
+*/
+/*! \qmlproperty bool PatchManager::patchDevelMode
+    \warning \e{to be written...}
+*/
+/*! \qmlproperty string PatchManager::patchmanagerVersion
+    \warning \e{to be written...}
+*/
+/*! \qmlproperty string PatchManager::serverMediaUrl
+    \warning \e{to be written...}
+*/
+/*! \qmlproperty int PatchManager::sfosVersionCheck
+    \warning \e{to be written...}
+*/
+/*! \qmlproperty var PatchManager::updates
+    \warning \e{to be written...}
+*/
+/*! \qmlproperty var PatchManager::updatesNames
+    \warning \e{to be written...}
+*/
+
+/*****  PatchManagerTranslator ******/
 /*! \qmltype PatchManagerTranslator
     \instantiates PatchManagerTranslator
     \inqmlmodule org.SfietKonstantin.patchmanager
@@ -103,11 +128,12 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
      \c true when the PatchManagerTranslator has been loaded/initialized successfully.
 */
 
+/*****  WebPatchesModel ******/
 /*! \qmltype WebPatchesModel
     \instantiates WebPatchesModel
     \inqmlmodule org.SfietKonstantin.patchmanager
 
-    \brief The WebPatchesModel holds elements from the Web Catalog.
+    \brief Holds elements from the Web Catalog.
 */
 class PatchManagerPlugin : public QQmlExtensionPlugin
 {

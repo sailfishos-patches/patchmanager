@@ -36,7 +36,7 @@ import Sailfish.Silica 1.0
 /*! \qmltype ItemErrorComponent
 
     \ingroup qml-plugin-components
-    \brief Shows an error message
+    \brief Shows an error message.
 */
 
 Rectangle {

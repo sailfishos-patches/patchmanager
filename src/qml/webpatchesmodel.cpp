@@ -41,6 +41,44 @@
 /*! \class WebPatchesModel
     \inmodule org.SfietKonstantin.patchmanager
     \brief The WebPatchesModel holds elements from the Web Catalog.
+
+    Roles follow the Patch JSON format, hence the following are defined:
+
+    \table
+      \header
+        \li Qt Role
+        \li QML Role Name
+      \row
+        \li {Qt::UserRole}
+        \li description
+      \row
+        \li {Qt::UserRole}
+        \li last_updated
+      \row
+        \li {Qt::UserRole}
+        \li name
+      \row
+        \li {Qt::UserRole}
+        \li display_name
+      \row
+        \li {Qt::UserRole}
+        \li category
+      \row
+        \li {Qt::UserRole}
+        \li author
+      \row
+        \li {Qt::UserRole}
+        \li rating
+      \row
+        \li {Qt::UserRole}
+        \li total_activations
+    \endtable
+
+    \sa {https://doc.qt.io/qt-5/qabstractitemmodel.html}{Qt::QAbstractItemModel}
+*/
+/*! \fn virtual QHash<int, QByteArray> WebPatchesModel::roleNames() const
+    Returns the model's role names.
+
 */
 WebPatchesModel::WebPatchesModel(QObject * parent)
     : QAbstractListModel(parent)

@@ -40,7 +40,7 @@
 /*! \qmltype PatchManagerModel
     \instantiates PatchManagerModel
     \inqmlmodule org.SfietKonstantin.patchmanager
-    \brief A ListModel containing the metadata of Patches
+    \brief A ListModel containing the metadata of Patches.
 */
 PatchManagerModel::PatchManagerModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -49,7 +49,25 @@ PatchManagerModel::PatchManagerModel(QObject *parent)
 
 /*! \class PatchManagerModel
     \inmodule PatchManager
-    \brief A ListModel containing the metadata of Patches
+    \brief A ListModel containing the metadata of Patches.
+
+    Currently it defines the following Roles:
+    \table
+      \header
+        \li Qt Role
+        \li QML Role Name
+      \row
+        \li \l{https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum}{Qt::DisplayRole}
+        \li name
+      \row
+        \li \l{https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum}{Qt::DecorationRole}
+        \li section
+      \row
+        \li \l{https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum}{Qt::EditRole}
+        \li patchObject
+    \endtable
+
+    \sa {https://doc.qt.io/qt-5/qabstractitemmodel.html}{Qt::QAbstractItemModel}
 */
 PatchManagerModel::PatchManagerModel(const QList<PatchObject *> &data, QObject *parent)
     : QAbstractListModel(parent)
@@ -77,9 +95,6 @@ QVariant PatchManagerModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-/*! \fn QHash<int, QByteArray> roleNames() const
-    Returns the role names
-*/
 QHash<int, QByteArray> PatchManagerModel::roleNames() const
 {
     static const QHash<int, QByteArray> r = {
@@ -124,12 +139,21 @@ void PatchManagerModel::setPatches(const QList<PatchObject *> &patches)
 }
 
 /*! \fn void PatchManagerModel::populateData(const QVariantList &data, const QString &patch, bool installed)
+
     Does nothing if both \a data and \a patch are empty.
-    If \a patch is empty, and we have \a data, extracts the patch name from \a data and adds the metadata to the model.
-    If we have \a patch and \a data, and \a installed is true, add the data to the model.
-    If we have \a patch and \a data, and \a installed is false, just create a \c PatchObject from \a data.
+
+    If \a patch is empty, and we have \a data, extracts the patch name from \a
+    data and adds the metadata to the model.
+
+    If we have \a patch and \a data, and \a installed is \c true, add the data
+    to the model.
+
+    If we have \a patch and \a data, and \a installed is \c false, just create
+    a PatchObject from \a data.
 
     \warning that last part is not yet documented.
+
+    \sa saveLayout()
 */
 void PatchManagerModel::populateData(const QVariantList &data, const QString &patch, bool installed)
 {

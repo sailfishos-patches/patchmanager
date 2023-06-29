@@ -162,7 +162,6 @@ static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
 
 */
 
-
 /*!
     \enum PatchManagerObject::NotifyAction
     \relates PatchManagerObject::notify()
@@ -344,7 +343,9 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
 
 /*!  \fn QSet<QString> PatchManagerObject::getAppliedPatches() const
 
-    Calls \c getSettings() to return the list of applied patches.
+    Returns the list of applied patches via getSettings().
+
+    \sa getSettings(), getSettings()
 
 */
 QSet<QString> PatchManagerObject::getAppliedPatches() const
@@ -354,7 +355,8 @@ QSet<QString> PatchManagerObject::getAppliedPatches() const
 
 /*!  \fn void PatchManagerObject::setAppliedPatches(const QSet<QString> &patches)
 
-    Calls \c putSettings() to save the list of applied \a patches
+    Save the list of applied \a patches via \c putSettings().
+    \sa putSettings(), getSettings()
 
 */
 void PatchManagerObject::setAppliedPatches(const QSet<QString> &patches)
@@ -377,7 +379,7 @@ QStringList PatchManagerObject::getMangleCandidates()
 
     \fn void PatchManagerObject::getVersion()
 
-    Set internal version to value from \c /etc/os-release and proceed with \c lateInitialize()
+    Sets internal version to value from \c /etc/os-release and proceed with \c lateInitialize()
     \sa lateInitialize()
 */
 void PatchManagerObject::getVersion()
@@ -605,8 +607,9 @@ void PatchManagerObject::doPrepareCacheRoot()
 /*!
 
     \fn void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
+    \fn void PatchManagerObject::prepareCacheRoot()
 
-    Create the cache directory where patched files will be stored
+    Creates the cache directory where patched files will be stored
     and read from when passed to the preload library
 
 */
@@ -693,6 +696,7 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 
 /*!
   \fn void PatchManagerObject::doStartLocalServer()
+  \fn void PatchManagerObject::startLocalServer()
 
   Starts the internal Server thread if not already started.
   Emits \c loadedChanged if successful.
@@ -865,7 +869,7 @@ void PatchManagerObject::initialize()
 /*!
     \fn QString PatchManagerObject::getPatchName(const QString patch) const
 
-    Returns ia pretty name from the metadata of \a patch.
+    Returns a pretty name (the \c display_name field) from the metadata of \a patch.
 
 */
 QString PatchManagerObject::getPatchName(const QString patch) const
@@ -880,8 +884,11 @@ QString PatchManagerObject::getPatchName(const QString patch) const
 
 /*!
     \fn void PatchManagerObject::restartLipstick()
+    \fn void PatchManagerObject::doRestartLipstick()
 
     Invokes PatchManagerObject::doRestartLipstick() to restart Lipstick
+
+    \sa PatchManagerObject::restartService(const QString &serviceName)
 */
 void PatchManagerObject::restartLipstick()
 {

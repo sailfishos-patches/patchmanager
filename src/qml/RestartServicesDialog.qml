@@ -49,16 +49,8 @@ import org.SfietKonstantin.patchmanager 2.0
 
     If accepted, these programs will be killed.
 
-    The services to kill are selected via the \category field of Patch metadata.
+    The services to kill are selected via the \c category field of Patch metadata.
 
-*/
-
-/*! \property PatchManager::appsToRestart
-    \inheaderfile patchmanager.h
-    List of service names which need to be restarted because Patchmanager changed their files.
-*/
-/*! \qmlproperty var PatchManager::appsToRestart
-    List of service names which need to be restarted because Patchmanager changed their files.
 */
 
 Dialog {
