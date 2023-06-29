@@ -1,10 +1,23 @@
 #!/bin/sh
 #
+
+switched_dirs="false"
+if gitroot=$(git rev-parse --show-toplevel); then
+	echo found a git root, running from there...
+	pushd $gitroot
+	switched_dirs="true"
+else
+	echo this is not a git repo, assuming root is \$PWD
+fi
+
 OUT=$PWD/doc/generated
 export QT_INSTALL_DOCS=/usr/share/doc/qt5
 
-rm -r $OUT
+[ -d $OUT ] && rm -r $OUT
+
 #qdoc --no-examples --outputdir $OUT --outputformat HTML --installdir $QMAKE_INSTALL_ROOT/doc doc/qdoc/master.qdocconf --single-exec --log-progress $@
 qdoc --no-examples --outputdir $OUT --outputformat HTML --installdir $QMAKE_INSTALL_ROOT/doc doc/qdoc/master.qdocconf --single-exec  $@
 
 #find doc/generated -type f
+
+[ $switched_dirs = "true" ] && popd
