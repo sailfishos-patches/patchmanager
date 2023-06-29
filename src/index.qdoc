@@ -1,6 +1,6 @@
 /*!
 
-  \page index.html
+  \page index.html overview
 
   \title Patchmanager Documentation
 
@@ -37,7 +37,7 @@
 /*!
   \title Patchmanager Overview
 
-  \page pmoverview.html
+  \page pmoverview.html overview
   \indexpage Patchmanager Documentation
 
   So the current mode of operation of Patchmanager is something like this:
@@ -163,7 +163,7 @@
 /*!
   \title Patchmanager Services
 
-  \page pmservices.html
+  \page pmservices.html overview
 
   \section1 Installation and Configuration
 
@@ -253,6 +253,10 @@
   well if called from command line.
   See the output of \c{patchmanager --help} and PatchManagerObject::process()
   for more information.
+
+  There is also a shell script called \c patchmanager-tool, wrapping the capabilities of \c patchmanager to generate more useful functions.
+
+  \note At the time this was written, \c patchmanager-tool is not yet distributed with the default packages. You can find it in the source repository though, under \c src/tools/.
 
   \section1 Logging and Debugging
 
