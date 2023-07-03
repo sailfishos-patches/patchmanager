@@ -13,6 +13,7 @@
   \list
   \li \l {Patchmanager Overview}
   \li \l {Patchmanager Services}
+  \li \l {Patchmanager Configuration Files}
   \endlist
 
   The Patchmanager project includes the following applications:
@@ -267,4 +268,72 @@
   After changing this, the system service must be restarted so it can pick up
   the new values.
 
+*/
+  /****** Services Documentation page *******/
+/*!
+  \title Patchmanager Configuration Files
+
+  \page pmconfig.html overview
+
+  \section2 \c{/etc/patchmanager2.conf}
+
+  INI-style configuration file and state storage.
+
+  It currently consists of two sections: \c settings, and \c votes
+  \section3 \c settings
+
+  \table
+    \header
+    \li Key
+    \li Type
+    \li default
+    \li Description
+    \row
+    \li applied
+    \li list of strings, comma-separated
+    \li empty
+    \li stores the list of "activated" patches
+    \row
+    \li applyOnBoot
+    \li Boolean
+    \li \c false
+    \li Whether to activate Patches at boot, or show the {Patchmanager Documentation: Startup Dialog}{Startup Dialog}
+    \row
+    \li bitnessMangle
+    \li Boolean
+    \li \c false
+    \li Convert patch contents so they can apply on the local architecture (e.g. \c lib vs. \c lib64 path segments)
+    \row
+    \li developerMode
+    \li Boolean
+    \li \c false
+    \li \warning \b deprecated. Pre-Patchmanager v3.2.7, this was used to store the settings for "Developer Mode". This has now been split into \c patchDevelMode and \c sfosVersionCheck
+    \row
+    \li notifyOnSuccess
+    \li Boolean
+    \li \c true
+    \li Whether to show success messages in the UI
+    \row
+    \li order
+    \li list of strings, comma-separated
+    \li empty
+    \li The order of the list of patches, bith in the UI as well as the order they will be applied/activated.
+    \row
+    \li patchDevelMode
+    \li Boolesn
+    \li \c false
+    \li
+    \row
+    \li sfosVersionCheck
+    \li Integer (Enum)
+    \li 0 (strict)
+    \li Whether to relax the version checking in the PM GUI. The default will only allow Patches to be downloaded, or activated, whose compatibility field matches the currently running OS version exactly.
+  \endtable
+
+  \section3 \c [votes]
+
+  \e{to be written...}
+
+  \section2 \c{/var/lib/environment/patchmanager-dialog/*.conf}
+  \section2 \c{/var/lib/environment/patchmanager/10-dbus.conf}
 */
