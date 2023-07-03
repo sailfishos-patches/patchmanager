@@ -14,6 +14,15 @@ include($QT_INSTALL_DOCS/global/qt-html-templates-offline.qdocconf)
 codeprefix         = "\n"
 codesuffix         = "\n"
 
+# HTML.stylesheets  += ./pm.css
+HTML.style  =
+HTML.style  = \
+              "a:link { color: #8C001A; text-decoration: none; text-align: left; }\n" \
+              "a.qa-mark:target:before { content: "***"; color: #ff0000; }\n" \
+              "a:hover { color: #8C0060; text-align: left; }\n" \
+              "a:visited { color: #8C001A; text-align: left; }\n" \
+              "a:visited:hover { color: #8C0060; text-align: left; }\n"
+
 # assign custom HTML footer to replace Qt's default copyright notice
 HTML.footer = "<div align='center'><hr/>" \
               "<p><small>Patchmanager Documentation\n" \
