@@ -1,34 +1,10 @@
 project = patchmanager
 description = Patchmanager
 
-# include some Qt defaults
-# -- macros for QDoc commands
-include($QT_INSTALL_DOCS/global/macros.qdocconf)
-# -- needed by C++ projects
-include($QT_INSTALL_DOCS/global/qt-cpp-defines.qdocconf)
-# -- compatibility macros
-include($QT_INSTALL_DOCS/global/compat.qdocconf)
-# -- configuration common among QDoc projects
-include($QT_INSTALL_DOCS/global/fileextensions.qdocconf)
-# -- offline HTML template for documentation shipped to Qt Creator
-include($QT_INSTALL_DOCS/global/qt-html-templates-offline.qdocconf)
-# ^^^ this includes -simple styles, lets over-override them here
-include($QT_INSTALL_DOCS/global/html-header-offline.qdocconf)
-include($QT_INSTALL_DOCS/global/html-footer-online.qdocconf)
-# hack in our own css:
-HTML.stylesheets += pm.css
+include (common.qdocconf)
 
 ## Sources
 sources += ../../src/index.qdoc
 # for quoting
 exampledirs += ../../src/bin/patchmanager-daemon
-# assign custom HTML footer to replace Qt's default copyright notice
-HTML.footer = "<div align='center'><hr/>" \
-              "<p><small>Patchmanager Documentation\n" \
-              "Copyright (c) 2023 Patchmanager for SailfishOS contributors.\n" \
-              "This document may be used under the terms of the " \
-              "<a href='https://spdx.org/licenses/CC-BY-SA-4.0.html'>" \
-              "Creative Commons Attribution Share Alike 4.0 International</a> " \
-              "License.</small></p>" \
-              "<p/></div>"
 

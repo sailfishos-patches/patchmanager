@@ -4,30 +4,10 @@ versionsym      =
 version         = 2.0
 url             = https://github.com/sailfishos-patches/patchmanager
 
-# include some Qt defaults
-# -- macros for QDoc commands
-include($QT_INSTALL_DOCS/global/macros.qdocconf)
-# -- needed by C++ projects
-include($QT_INSTALL_DOCS/global/qt-cpp-defines.qdocconf)
-# -- compatibility macros
-include($QT_INSTALL_DOCS/global/compat.qdocconf)
-# -- configuration common among QDoc projects
-include($QT_INSTALL_DOCS/global/fileextensions.qdocconf)
-# -- offline HTML template for documentation shipped to Qt Creator
-include($QT_INSTALL_DOCS/global/qt-html-templates-offline.qdocconf)
+include(common.qdocconf)
 
 sources = ../../src/preload/src/preloadpatchmanager.qdoc
 # needed for quoting source code:
 exampledirs += ../../src/preload/src
 
-# assign custom HTML footer to replace Qt's default copyright notice
-HTML.footer = "<div align='center'><hr/>" \
-              "<p><small>Patchmanager Documentation\n" \
-              "Copyright (c) 2023 Patchmanager for SailfishOS contributors.\n" \
-              "This document may be used under the terms of the " \
-              "<a href='https://spdx.org/licenses/CC-BY-SA-4.0.html'>" \
-              "Creative Commons Attribution Share Alike 4.0 International</a> " \
-              "License.</small></p>" \
-              "<p/></div>"
 
-# navigation.homepage = "Patchmanager Settings Plugin"
