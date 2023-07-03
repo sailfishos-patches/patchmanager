@@ -166,7 +166,8 @@ static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
     \enum PatchManagerObject::NotifyAction
     \relates PatchManagerObject::notify()
 
-    The type of notification to emit through \c PatchManagerObject::notify()
+    This enum specifies the type of notification to emit through \c
+    PatchManagerObject::notify()
 
         \value NotifyActionSuccessApply
             applying was successful
