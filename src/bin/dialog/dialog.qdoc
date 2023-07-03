@@ -1,12 +1,13 @@
 /*!
   \title Patchmanager Documentation: Startup Dialog
-  \page index.html
+  \page index.html overview
   \indexpage Patchmanager Documentation
 
-  This app is launched when Lipstick first starts and provides an UI to
-  monitor or diable activation of Patches by the daemon.
+  This is a very simple Sailfish OS application that upon start checks the state of the Patchmanager Daemon to see whether it needs to launch a GUI.
 
-  At start is shows a \l {https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-remorseitem.html/}{RemorseItem}
+  \section1 User Interface: Dialog
+
+  At start it shows a \l {https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-remorseitem.html/}{RemorseItem}
   with a timeout of 10 seconds. If the user cancels this dialog, the PM deamon
   will not activate any patches (with the side-effect of marking all as
   disabled.)
@@ -22,8 +23,31 @@
 
   This dialog will only be shown if the option \uicontrol{"Apply on Boot"} is \c off.
 
-  \section2 QML Types:
-  \generatelist{qmltypesbymodule PatchManagerDialog}
 
+  \section1 Application Startup
+
+  Upon launch, the binary will check the following:
+
+  \list
+  \li whether \l {PatchManager::applyOnBoot}{applyOnBoot} is set in \c /etc/patchmanager2.conf.
+  \li the result of a call to the \l {PatchManagerObject::getLoaded}{getLoaded} D-Bus method on the Daemon.
+  \endlist
+
+  If the first is set to \c true, it will exit. (Because with this setting on, all patches will be activate at boot, without the need of a Startup Dialog.)
+
+  If the reply indicates that PM has not been initialized, it will launch the QML UI.  Otherwise it will exit.
+
+  \section2 D-Bus interface
+
+   The dialog implements a D-Bus method \c show i on the root path of the \c org.SfietKonstantin.patchmanager service to invoke the UI:
+
+     \badcode
+     <interface name="org.SfietKonstantin.patchmanager">
+       <method name="show">
+           <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+       </method>
+     </interface>
+     \endcode
+
+   \sa {Patchmanager Services}, {Patchmanager Configuration Files}
 */
-

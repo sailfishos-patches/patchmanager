@@ -37,35 +37,8 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import org.nemomobile.dbus 2.0
 
-/*! \qmltype PatchManagerDialog
-    \inqmlmodule PatchManagerDialog
-
-  \brief A popup dialog application
-
-  This app is launched when Lipstick first starts and provides an UI to
-  monitor or diable activation of Patches by the daemon.
-
-  At start is shows a \uicontrol \l {https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-remorseitem.html/}{RemorseItem}
-  with a timeout of 10 seconds. If the user cancels this dialog, the PM deamon
-  will not activate any patches (with the side-effect of marking all as
-  disabled.)
-
-  If the Remorse timer runs out, the PM daemon will activate all Patches marked
-  as enabled, and the Dialog shows a little progress bar while it's
-  doing that.
-
-  Patches failing to apply will be logged, and reported.
-
-  After ending any of the above operations, a \uicontrol "Quit" button is activated which
-  will close the application.
-
-*/
-
 ApplicationWindow {
     id: appWindow
-    /*!
-        This \internal property is a placeholder for methods to bind a \c RemorseItem
-    */
     property var remorseItem: null
 
     DBusAdaptor {
