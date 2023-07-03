@@ -141,8 +141,10 @@ Page {
     }
 
     /*! \qmlproperty real PatchManagerPage::pullDownDistance
-        \deprecated
         \internal
+        Amount of space the pulley "pops down" when it's showing a hint, e.g the result of showUpdates().
+
+        \warning This is probably broken in recent SFOS versions (?).
     */
     property real pullDownDistance: Theme.itemSizeLarge
 
