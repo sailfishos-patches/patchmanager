@@ -12,6 +12,8 @@ fi
 
 OUT=$PWD/doc/generated
 export QT_INSTALL_DOCS=/usr/share/doc/qt5
+# this is searched relative to the qdocconf file!!
+export SAILFISH_INSTALL_DOCS=sailfish-qdoc-template/config
 
 [ -d $OUT ] && rm -r $OUT
 
