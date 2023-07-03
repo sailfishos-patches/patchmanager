@@ -15,6 +15,9 @@ include($SAILFISH_INSTALL_DOCS/sailfish-html-templates.qdocconf)
 codeprefix         = "\n"
 codesuffix         = "\n"
 
+# override/add some things to the stylesheets:
+HTML.stylesheets  += ./pm.css
+
 # assign custom HTML footer to replace Qt's default copyright notice
 HTML.footer = "<div align='center'><hr/>" \
               "<p><small>Patchmanager Documentation\n" \
@@ -25,6 +28,6 @@ HTML.footer = "<div align='center'><hr/>" \
               "License.</small></p>" \
               "<p/></div>"
 
-navigation.homepage = ../patchmanager/index.html
+#navigation.homepage = ../patchmanager/index.html
 navigation.landingpage = Patchmanager Documentation
 
