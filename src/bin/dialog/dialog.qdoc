@@ -49,5 +49,7 @@
      </interface>
      \endcode
 
+   This is used by \l {PatchManagerObject::lipstickChanged} to open the dialog once it has initialized.
+
    \sa {Patchmanager Services}, {Patchmanager Configuration Files}
 */
