@@ -12,6 +12,11 @@ include($QT_INSTALL_DOCS/global/compat.qdocconf)
 include($QT_INSTALL_DOCS/global/fileextensions.qdocconf)
 # -- offline HTML template for documentation shipped to Qt Creator
 include($QT_INSTALL_DOCS/global/qt-html-templates-offline.qdocconf)
+# ^^^ this includes -simple styles, lets over-override them here
+include($QT_INSTALL_DOCS/global/html-header-offline.qdocconf)
+include($QT_INSTALL_DOCS/global/html-footer-online.qdocconf)
+# hack in our own css:
+HTML.stylesheets += pm.css
 
 ## Sources
 sources += ../../src/index.qdoc
