@@ -4,7 +4,7 @@
 switched_dirs="false"
 if gitroot=$(git rev-parse --show-toplevel); then
 	echo found a git root at $gitroot, running from there...
-	pushd $gitroot || cd $gitroot
+	pushd $gitroot 2>/dev/null || cd $gitroot
 	switched_dirs="true"
 else
 	echo this is not a git repo, assuming root is \$PWD
@@ -17,9 +17,10 @@ if [ -z "$QT_INSTALL_DOCS" ]; then
 	if [ -d /usr/share/doc/qt5/global/macros.qdocconf ]; then
 		QT_INSTALL_DOCS=/usr/share/doc/qt5
 	elif [ -d /usr/share/qt5/doc/global/macros.qdocconf ]; then
-		QT_INSTALL_DOCS=/usr/share/doc/qt5
+		QT_INSTALL_DOCS=/usr/share/qt5/doc
 	fi
 fi
+export QT_VER=5
 
 # this is searched relative to the qdocconf file!!
 export SAILFISH_INSTALL_DOCS=sailfish-qdoc-template/config
@@ -28,4 +29,4 @@ export SAILFISH_INSTALL_DOCS=sailfish-qdoc-template/config
 
 qdoc --no-examples --outputdir $OUT --outputformat HTML --installdir $QMAKE_INSTALL_ROOT/doc doc/qdoc/master.qdocconf --single-exec  $@
 
-[ $switched_dirs = "true" ] && popd || cd -
+[ $switched_dirs = "true" ] && popd 2>/dev/null || cd -
