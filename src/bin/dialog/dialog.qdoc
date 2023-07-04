@@ -1,6 +1,7 @@
 /*!
-    \title Patchmanager Documentation: Startup Dialog
-    \page index.html
+  \title Patchmanager Documentation: Startup Dialog
+  \page index.html
+  \indexpage Patchmanager Documentation
 
   This app is launched when Lipstick first starts and provides an UI to
   monitor or diable activation of Patches by the daemon.
