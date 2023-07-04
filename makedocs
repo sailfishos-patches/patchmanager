@@ -14,9 +14,9 @@ OUT=$PWD/doc/generated
 export QT_INSTALL_DOCS
 
 if [ -z "$QT_INSTALL_DOCS" ]; then
-	if [ -d /usr/share/doc/qt5/global/macros.qdocconf ]; then
+	if [ -f /usr/share/doc/qt5/global/macros.qdocconf ]; then
 		QT_INSTALL_DOCS=/usr/share/doc/qt5
-	elif [ -d /usr/share/qt5/doc/global/macros.qdocconf ]; then
+	elif [ -f /usr/share/qt5/doc/global/macros.qdocconf ]; then
 		QT_INSTALL_DOCS=/usr/share/qt5/doc
 	fi
 fi
