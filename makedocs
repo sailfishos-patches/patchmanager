@@ -2,7 +2,7 @@
 #
 
 switched_dirs="false"
-if gitroot=$(git rev-parse --show-toplevel); then
+if gitroot=$(git rev-parse --show-toplevel 2>/dev/null); then
 	echo found a git root at $gitroot, running from there...
 	pushd $gitroot 2>/dev/null || cd $gitroot
 	switched_dirs="true"
@@ -11,6 +11,8 @@ else
 fi
 
 OUT=$PWD/doc/generated
+
+export QT_VER=5
 export QT_INSTALL_DOCS
 
 if [ -z "$QT_INSTALL_DOCS" ]; then
@@ -20,7 +22,6 @@ if [ -z "$QT_INSTALL_DOCS" ]; then
 		QT_INSTALL_DOCS=/usr/share/qt5/doc
 	fi
 fi
-export QT_VER=5
 
 # this is searched relative to the qdocconf file!!
 export SAILFISH_INSTALL_DOCS=sailfish-qdoc-template/config
