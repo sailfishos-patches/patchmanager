@@ -8,6 +8,8 @@
 
   For Patch Developer documentation, see \l {https://github.com/sailfishos-patches/patchmanager/#information-for-patch-developers}{Developer Documentation}.
 
+  \section1 Internals
+
   For information on how PM operates internally, see:
 
   \list
@@ -16,16 +18,18 @@
   \li \l {Patchmanager Configuration Files}
   \endlist
 
+  \section1 Applications
+
   The Patchmanager project includes the following applications:
 
-  \section1 GUI Applications
+  \section2 GUI Applications
   \list
   \li \l {Patchmanager Documentation: Settings Plugin}{Patchmanager Settings Plugin}, a plugin for the Jolla Settings to launch the application
   \li \l {Patchmanager Documentation: QML Plugin}{Patchmanager QML Plugin}, the main UI Application
   \li \l {Patchmanager Documentation: Startup Dialog}{Patchmanager Startup Dialog}, a UI shown at Lipstick startup.
   \endlist
 
-  \section1 Infrastructure Applications
+  \section2 Infrastructure Applications
   \list
   \li \l {Patchmanager Documentation: Daemon}{Patchmanager Daemon}
   \li \l {Patchmanager Documentation: Preload Library}{Preload Library}
