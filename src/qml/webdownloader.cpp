@@ -92,47 +92,6 @@ void WebDownloader::closeFile()
 void WebDownloader::error(QNetworkReply::NetworkError)
 {
     if (_file && _file->isOpen()) {
-/*! \class WebDownloader
-    \inmodule org.SfietKonstantin.patchmanager
-*/
-WebDownloader::WebDownloader(QObject *parent) : QObject(parent)
-{
-    _nam = new QNetworkAccessManager(this);
-    _file = new QFile(this);
-}
-
-/*!  Starts the download, usind compile-time variable \e MEDIA_URL, as source and \e as destination file.  */
-void WebDownloader::start()
-{
-    _file->setFileName(destination);
-    _file->open(QFile::WriteOnly);
-
-    QUrl webUrl(QString(MEDIA_URL"/%1").arg(url));
-    QNetworkRequest request(webUrl);
-    _reply = _nam->get(request);
-    QObject::connect(_reply, &QNetworkReply::finished, this, &WebDownloader::closeFile);
-    QObject::connect(_reply, &QNetworkReply::readyRead, this, &WebDownloader::writeBytes);
-    QObject::connect(_reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(error(QNetworkReply::NetworkError)));
-}
-
-void WebDownloader::writeBytes()
-{
-    if (_file && _file->isOpen()) {
-        _file->write(_reply->read(_reply->bytesAvailable()));
-    }
-}
-
-void WebDownloader::closeFile()
-{
-    if (_file && _file->isOpen()) {
-        _file->close();
-    }
-    emit downloadFinished(patch, destination);
-}
-
-void WebDownloader::error(QNetworkReply::NetworkError)
-{
-    if (_file && _file->isOpen()) {
         _file->close();
     }
     if (_file->exists()) {
