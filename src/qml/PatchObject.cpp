@@ -90,6 +90,7 @@ PatchObject::~PatchObject()
     Holds the Patch metadata.
 */
 /*! \property PatchObject::details
+    \inheaderfile PatchObject.hpp
  */
 QQmlPropertyMap *PatchObject::details()
 {
@@ -101,6 +102,7 @@ QQmlPropertyMap *PatchObject::details()
    \c true when an internal operation is in progress.
 */
 /*! \property PatchObject::busy
+    \inheaderfile PatchObject.hpp
    \c true when an internal operation is in progress.
  */
 /*! Returns \c true when an internal operation is in progress. */
