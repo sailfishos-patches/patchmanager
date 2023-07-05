@@ -91,6 +91,8 @@ PatchObject::~PatchObject()
 */
 /*! \property PatchObject::details
     \inheaderfile PatchObject.hpp
+
+    \sa {https://doc.qt.io/qt-5/qqmlpropertymap.html}{QQmlPropertyMap}
  */
 QQmlPropertyMap *PatchObject::details()
 {

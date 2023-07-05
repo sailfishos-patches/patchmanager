@@ -176,7 +176,7 @@
   \section1 Installation and Configuration
 
   \section2 D-Bus System Service
-
+  \target dbus-sys
   The D-Bus services reserve the bus name \c org.SfietKonstantin.patchmanager
 
   It is defined as follows:
@@ -284,6 +284,8 @@
   \page pmconfig.html overview
 
   \section2 \c{/etc/patchmanager2.conf}
+
+  \target inifile
 
   INI-style configuration file and state storage.
 

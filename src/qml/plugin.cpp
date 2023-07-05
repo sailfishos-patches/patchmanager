@@ -62,34 +62,39 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
     \brief Singleton providing access to the \l [C++]{PatchManager} methods and properties.
 */
 /*! \qmlproperty string PatchManager::appsToRestart
-    \warning \e{to be written...}
+    List of applications and services that should be restarted after a patch has been activated.
+    \sa PatchManager::toggleServicesList
 */
 /*! \qmlproperty bool PatchManager::developerMode
-    \warning \e{to be written...}
+    \deprecated
+    \sa {Patchmanager Configuration Files}, inifile
 */
 /*! \qmlproperty bool PatchManager::failure
-    \warning \e{to be written...}
+    If \c true, PM is in Failure Mode.
 */
 /*! \qmlproperty string PatchManager::osVersion
-    \warning \e{to be written...}
+    This property holds the Operating System version. This is used for version checking.
 */
 /*! \qmlproperty bool PatchManager::patchDevelMode
-    \warning \e{to be written...}
+    \sa {Patchmanager Configuration Files}, inifile
 */
 /*! \qmlproperty string PatchManager::patchmanagerVersion
-    \warning \e{to be written...}
+    This property holds our own version
 */
 /*! \qmlproperty string PatchManager::serverMediaUrl
-    \warning \e{to be written...}
+    This poperty holds the URL to download screenshots from.
 */
 /*! \qmlproperty int PatchManager::sfosVersionCheck
-    \warning \e{to be written...}
+    This property keeps the setting of VersionCheck
+    \sa PatchManagerVersionCheck::CheckMode
 */
 /*! \qmlproperty var PatchManager::updates
-    \warning \e{to be written...}
+    Map of internal names and metadata of patches which can be updated.
+    \sa PatchManagerObject::getUpdates, dbus-sys
 */
 /*! \qmlproperty var PatchManager::updatesNames
-    \warning \e{to be written...}
+    List of display names of patches which can be updated.
+    \sa PatchManagerObject::getUpdates, dbus-sys
 */
 
 /*****  PatchManagerTranslator ******/
