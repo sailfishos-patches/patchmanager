@@ -1,6 +1,7 @@
 #!/bin/sh
 #
 
+
 switched_dirs="false"
 if gitroot=$(git rev-parse --show-toplevel 2>/dev/null); then
 	echo found a git root at $gitroot, running from there...
@@ -8,6 +9,21 @@ if gitroot=$(git rev-parse --show-toplevel 2>/dev/null); then
 	switched_dirs="true"
 else
 	echo this is not a git repo, assuming root is \$PWD
+fi
+
+# this is searched relative to the qdocconf file!!
+export SAILFISH_INSTALL_DOCS=sailfish-qdoc-template/config
+
+### verify "build" environment
+echo Verifying build environment...
+if [ ! $(qdoc --version >/dev/null 2>&1) ]; then
+  echo ERROR: qdoc does not seem to work! Please check your qt5 installation
+  exit 1
+fi
+if [ ! -e doc/qdoc/sailfish-qdoc-template ]; then
+  echo ERROR: sailfish-qdoc-template does not exist
+  echo You should "'git clone --depth 1 -b upgrade-4.5.0 https://github.com/sailfishos/sailfish-qdoc-template doc/qdoc/sailfish-qdoc-template'"
+  exit 1
 fi
 
 OUT=$PWD/doc/generated
@@ -23,11 +39,12 @@ if [ -z "$QT_INSTALL_DOCS" ]; then
 	fi
 fi
 
-# this is searched relative to the qdocconf file!!
-export SAILFISH_INSTALL_DOCS=sailfish-qdoc-template/config
-
+echo Generating Docs...
 [ -d $OUT ] && rm -r $OUT
-
 qdoc --no-examples --outputdir $OUT --outputformat HTML --installdir $QMAKE_INSTALL_ROOT/doc doc/qdoc/master.qdocconf --single-exec  $@
+echo Generated Docs at "$OUT"
 
 [ $switched_dirs = "true" ] && popd 2>/dev/null || cd -
+
+# always exit 0 for CI runs:
+exit 0
