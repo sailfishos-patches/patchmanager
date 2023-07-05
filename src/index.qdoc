@@ -123,7 +123,7 @@
   \section2 Web Catalog
 
   Installation via the Patchmanager Web Catalog is the most common and recomended way of installing a patch.
-  This is done through the Patchmanager UI, by selecting \uicontrol install on the {WebPatchPage}{Patch Page}.
+  This is done through the Patchmanager UI, by selecting \uicontrol install on the \l {WebPatchPage}{Patch Page}.
 
   PM will download metadata and a tarball from the Web Catalog, extract the
   tarball into the patch storage location, and generate the necessary JSON file
