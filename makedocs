@@ -16,7 +16,8 @@ export SAILFISH_INSTALL_DOCS=sailfish-qdoc-template/config
 
 ### verify "build" environment
 echo Verifying build environment...
-if [ ! $(qdoc --version >/dev/null 2>&1) ]; then
+qdoc --version
+if [ $? -ne 0 ]; then
   echo ERROR: qdoc does not seem to work! Please check your qt5 installation
   exit 1
 fi
