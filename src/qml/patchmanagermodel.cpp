@@ -48,6 +48,7 @@ PatchManagerModel::PatchManagerModel(QObject *parent)
 }
 
 /*! \class PatchManagerModel
+    \inheaderfile patchmanagermodel.h
     \inmodule org.SfietKonstantin.patchmanager
     \brief A ListModel containing the metadata of Patches.
 

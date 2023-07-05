@@ -961,6 +961,7 @@ QVariant PatchManager::unwind(const QVariant &val, int depth)
 }
 
 /*! \class PatchManagerTranslator
+    \inheaderfile patchmanager.h
     \inmodule org.SfietKonstantin.patchmanager
     \brief allows patches to include localizations in their shipped QML files.
 */

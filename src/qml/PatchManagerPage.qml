@@ -125,7 +125,7 @@ Page {
 
     /*! \qmlmethod function showUpdates(manual)
 
-        Flashes the Pulley Menu if updates are available and \a manual is false.
+        Flashes the Pulley Menu if updates are available and \a manual is  \c false.
         Does nothing if \a manual is \c true.
 
      */
