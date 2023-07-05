@@ -1,29 +1,24 @@
 name: Generate Documentation (on Qt5.6)
 
 on:
-  # Runs on pushes targeting the documentation branch
-  push:
-    branches: ["documentation"]
-
+  release:
+    types: [published]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# Allow only one build run, skipping runs queued between the run in-progress and latest queued.
 # cancel in-progress runs
 concurrency:
   group: "gendoc"
   cancel-in-progress: true
-
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: 3
-      #DOC_SOURCE_BRANCH: "master"
-      #DOC_TARGET_BRANCH: "gh-pages"
-      DOC_SOURCE_BRANCH: "documentation"
-      DOC_TARGET_BRANCH: "docs-generated"
+      DOC_SOURCE_BRANCH: "master"
+      DOC_TARGET_BRANCH: "gh-pages"
       DOC_TARGET_DIR: "doctarget"
     steps:
     - name: Checkout Source
