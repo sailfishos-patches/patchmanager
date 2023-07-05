@@ -1,6 +1,18 @@
 #!/bin/sh
 #
+# Copyright (c) 2023, Peter G. "nephros" <sailfish@nephros.org>
+# Licensed under the terms of the BSD 3-Clause License
+#
 
+# This will build Documentation.
+#
+# It is intended to be run from within the source tree.
+# It is also used in Github Actions.
+#
+# Note that there are large differnces in the qdoc command between Qt 5.6
+# (SFOS), and later Qt versions.
+# In order to enable building in newer Qt versions, changes in both the qdoc
+# config files as well as the code comments will be required.
 
 switched_dirs="false"
 if gitroot=$(git rev-parse --show-toplevel 2>/dev/null); then
