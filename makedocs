@@ -14,6 +14,7 @@
 # In order to enable building in newer Qt versions, changes in both the qdoc
 # config files as well as the code comments will be required.
 
+echo '####### $0 starting... #######'
 switched_dirs="false"
 if gitroot=$(git rev-parse --show-toplevel 2>/dev/null); then
 	echo found a git root at $gitroot, running from there...
@@ -59,5 +60,6 @@ echo Generated Docs at "$OUT"
 
 [ $switched_dirs = "true" ] && popd 2>/dev/null || cd -
 
+echo '####### $0 done. #######'
 # always exit 0 for CI runs:
 exit 0
