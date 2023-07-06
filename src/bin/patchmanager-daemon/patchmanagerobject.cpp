@@ -1329,7 +1329,7 @@ QString PatchManagerObject::checkEaster()
     return QString();
 }
 
-/*!  Calls the corresponding method over D-Bus to update the Web Catalog Metadata. \a params stores the connection properties. */
+/*!  Calls the corresponding method over D-Bus to update the \l {Patchmanager Web Catalog}{Web Catalog} Metadata. \a params stores the connection properties. */
 QVariantList PatchManagerObject::downloadCatalog(const QVariantMap &params)
 {
     DBUS_GUARD(QVariantList())
@@ -1358,7 +1358,7 @@ QVariantMap PatchManagerObject::downloadPatchInfo(const QString &name)
 }
 
 /*!
-    Calls the corresponding method over D-Bus to check whether the Web Catalog contains updated patch entries.
+    Calls the corresponding method over D-Bus to check whether the \l {Patchmanager Web Catalog}{Web Catalog} contains updated patch entries.
 
     \sa requestCheckForUpdates
 
@@ -1369,7 +1369,7 @@ void PatchManagerObject::checkForUpdates()
     QMetaObject::invokeMethod(this, NAME(requestCheckForUpdates), Qt::QueuedConnection);
 }
 
-/*!  Returns the list of updated objects from the Web Catalog.  */
+/*!  Returns the list of updated objects from the \l {Patchmanager Web Catalog}{Web Catalog}.  */
 QVariantMap PatchManagerObject::getUpdates() const
 {
     return m_updates;
@@ -2601,7 +2601,7 @@ void PatchManagerObject::requestDownloadCatalog(const QVariantMap &params, const
 }
 
 /*!
-    Retrieve patch metadata from the Web Catalog got patch \a name, reply with message \a message
+    Retrieve patch metadata from the \l {Patchmanager Web Catalog}{Web Catalog} got patch \a name, reply with message \a message
 
     \target requestDownloadPatchInfo
  */
@@ -2643,7 +2643,7 @@ void PatchManagerObject::requestDownloadPatchInfo(const QString &name, const QDB
 }
 
 /*! 
-    Connects to the Web Catalog to check for Patch updates.
+    Connects to the \l {Patchmanager Web Catalog}{Web Catalog} to check for Patch updates.
     Updates internal state with any results.
 
     Emits updatesAvailable() if yes.

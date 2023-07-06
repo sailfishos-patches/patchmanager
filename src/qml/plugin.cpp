@@ -138,7 +138,7 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
     \instantiates WebPatchesModel
     \inqmlmodule org.SfietKonstantin.patchmanager
 
-    \brief Holds elements from the Web Catalog.
+    \brief Holds elements from the \l {Patchmanager Web Catalog}{Web Catalog}.
 */
 class PatchManagerPlugin : public QQmlExtensionPlugin
 {

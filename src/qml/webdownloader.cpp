@@ -36,7 +36,7 @@
 /*! \qmltype WebDownloader
     \instantiates WebDownloader
     \inqmlmodule org.SfietKonstantin.patchmanager
-    \brief Downloads Patch archives from the Web Catalog
+    \brief Downloads Patch archives from the \l {Patchmanager Web Catalog}{Web Catalog}
 */
 /*! \qmlsignal WebDownloader::downloadFinished(const QString & patch, const QString & fileName)
     This signal is emitted when \a patch has finished downloading, resulting in \a fileName.
@@ -46,7 +46,7 @@
 */
 /*! \class WebDownloader
     \inmodule org.SfietKonstantin.patchmanager
-    \brief Downloads Patch archives from the Web Catalog
+    \brief Downloads Patch archives from the \l {Patchmanager Web Catalog}{Web Catalog}
 */
 /*!  \fn void WebDownloader::downloadError()
     This signal is emitted when a download failed.

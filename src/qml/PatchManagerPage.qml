@@ -55,7 +55,7 @@ import org.SfietKonstantin.patchmanager 2.0
     \li View the list of installed and activated Patches.
     \li Configure the Application and Daemon settings.
     \li Activate or deactivate Patches
-    \li Install Patches from the Web Catalog
+    \li Install Patches from the \l {Patchmanager Web Catalog}{Web Catalog}
     \li Uninstall installed Patches
     \endlist
 

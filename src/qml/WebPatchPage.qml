@@ -45,7 +45,7 @@ import org.SfietKonstantin.patchmanager 2.0
     \inherits Page
     \brief Shows details about a Patch from the Web Catalog
 
-     \sa {https://github.com/sailfishos-patches/patchmanager/blob/master/README.md#the-json-metadata-file}{Patch JSON metadata file}, {Patchmanager Web Catalog}{Web Catalog}
+    \sa {Patchmanager Web Catalog}{Web Catalog}, {https://github.com/sailfishos-patches/patchmanager/blob/master/README.md#the-json-metadata-file}{Patch JSON metadata file}
 */
 
 

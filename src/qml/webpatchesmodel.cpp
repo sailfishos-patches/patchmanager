@@ -40,7 +40,7 @@
 
 /*! \class WebPatchesModel
     \inmodule org.SfietKonstantin.patchmanager
-    \brief The WebPatchesModel holds elements from the Web Catalog.
+    \brief The WebPatchesModel holds elements from the \l {Patchmanager Web Catalog}{Web Catalog}.
 
     Roles follow the Patch JSON format, hence the following are defined:
 
@@ -169,7 +169,7 @@ bool compareStrings(const QString &a, const QString &b)
 }
 
 /*!
-   Retrieves the list of patches from the Web Catalog, and populates the model
+   Retrieves the list of patches from the \l {Patchmanager Web Catalog}{Web Catalog}, and populates the model
    with its contents, sorting them if necessary.
 
    \sa setSorted()

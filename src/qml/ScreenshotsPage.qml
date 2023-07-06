@@ -38,7 +38,7 @@ import org.SfietKonstantin.patchmanager 2.0
 
     \ingroup qml-plugin-components
     \inherits Page
-    \brief Shows Screenshots available for a Patch from Web Catalog in a full-screen view.
+    \brief Shows Screenshots available for a Patch from \l {Patchmanager Web Catalog}{Web Catalog} in a full-screen view.
 
     \sa {https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-slideshowview.html}{SlideshowView}
 */

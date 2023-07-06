@@ -455,7 +455,7 @@ QDBusPendingCallWatcher *PatchManager::resetState(const QString &patch)
 }
 
 /*!
-    Request daemon to retrieve the Web Catalog.
+    Request daemon to retrieve the \l {Patchmanager Web Catalog}{Web Catalog}.
     Can be configred by \a params
 */
 QDBusPendingCallWatcher *PatchManager::downloadCatalog(const QVariantMap &params)
