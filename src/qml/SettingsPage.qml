@@ -68,6 +68,7 @@ Page {
         path: "/org/SfietKonstantin/patchmanager/uisettings"
 
         property bool showUnapplyAll: false
+        property bool showUpdatesOnly: true
     }
 
     SilicaFlickable {
@@ -107,6 +108,14 @@ Page {
                 description: qsTranslate("", "Enable an additional pulley menu entry for Patchmanager's main page to disable and deactivate all Patches.")
                 checked: uisettings.showUnapplyAll
                 onClicked: uisettings.showUnapplyAll = !uisettings.showUnapplyAll
+                automaticCheck: false
+            }
+
+            TextSwitch {
+                text: qsTranslate("", "Show only updates in Web Catalog")
+                description: qsTranslate("", "When updates are available, hide all other Patches in Web Catalog.")
+                checked: uisettings.showUpdatesOnly
+                onClicked: uisettings.showUpdatesOnly = !uisettings.showUpdatesOnly
                 automaticCheck: false
             }
 

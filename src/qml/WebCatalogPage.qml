@@ -38,6 +38,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import org.nemomobile.dbus 2.0
+import Nemo.Configuration 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
 /*! \qmltype WebCatalogPage
@@ -118,6 +119,14 @@ Page {
 //            })
 //        }
 //    }
+
+    ConfigurationGroup {
+        id: uisettings
+        path: "/org/SfietKonstantin/patchmanager/uisettings"
+
+        property bool showUpdatesOnly: true
+    }
+
 
     SilicaListView {
         id: view
@@ -209,6 +218,11 @@ Page {
             id: background
             height: delegateContent.height
             property bool isInstalled: typeof(container.versions) != "undefined" && typeof(container.versions[model.name]) != "undefined"
+
+            // while we have updates, only show them.
+            visible: (PatchManager.updatesNames.length == 0)
+                          ? true
+                          : ((PatchManager.updatesNames.indexOf(model.name) >= 0) && uisettings.showUpdatesOnly)
 
             onClicked: {
                 pageStack.push(Qt.resolvedUrl("WebPatchPage.qml"),
