@@ -1,5 +1,0 @@
-project = preload
-description = Patchmanager Preload Library
-
-headerdirs += .
-sourcedirs += src/

@@ -1,0 +1,6 @@
+doc/qdoc/general.qdocconf
+doc/qdoc/qmlplugin.qdocconf
+doc/qdoc/daemon.qdocconf
+doc/qdoc/plugin.qdocconf
+doc/qdoc/preload.qdocconf
+doc/qdoc/dialog.qdocconf

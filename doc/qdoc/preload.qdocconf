@@ -1,0 +1,13 @@
+project         = preload
+description     = Patchmanager Preload Library
+versionsym      =
+version         = 2.0
+url             = https://github.com/sailfishos-patches/patchmanager
+
+include(common.qdocconf)
+
+sources = ../../src/preload/src/preloadpatchmanager.qdoc
+# needed for quoting source code:
+exampledirs += ../../src/preload/src
+
+

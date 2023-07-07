@@ -33,8 +33,8 @@ Usually, you can generate such patch file using the following command, with the 
 
 The metadata file contains information about a Patch.  It is a simple JSON file, that must be named `patch.json`.
 This file contains the title of the Patch, a short description of the Patch, a category, and additional information.  For the documentation of this JSON file format see:
- - for the [modern format](./doc/example_patch.json.md)
- - for the much simpler [legacy format](./doc/example_legacy_patch.json.md)
+ - for the [modern format](./doc/examples/patch.json.md)
+ - for the much simpler [legacy format](./doc/examples/legacy_patch.json.md)
 
 Either format is supported, but the modern one provides more useful features and is recommended.
 

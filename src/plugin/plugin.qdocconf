@@ -1,7 +1,0 @@
-project = qmlplugin
-description = Patchmanager QML Plugin
-
-headerdirs += .
-
-sources += patchmanager.qml
-

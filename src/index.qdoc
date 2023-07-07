@@ -1,0 +1,349 @@
+/*!
+
+  \page index.html overview
+
+  \title Patchmanager Documentation
+
+  For User documentation, see \l {https://github.com/sailfishos-patches/patchmanager/#information-for-users}{User Documentation}.
+
+  For Patch Developer documentation, see \l {https://github.com/sailfishos-patches/patchmanager/#information-for-patch-developers}{Developer Documentation}.
+
+  \section1 Internals
+
+  For information on how PM operates internally, see:
+
+  \list
+  \li \l {Patchmanager Overview}
+  \li \l {Patchmanager Services}
+  \li \l {Patchmanager Configuration Files}
+  \endlist
+
+  \section1 Applications
+
+  The Patchmanager project includes the following applications:
+
+  \section2 GUI Applications
+  \list
+  \li \l {Patchmanager Documentation: Settings Plugin}{Patchmanager Settings Plugin}, a plugin for the Jolla Settings to launch the application
+  \li \l {Patchmanager Documentation: QML Plugin}{Patchmanager QML Plugin}, the main UI Application
+  \li \l {Patchmanager Documentation: Startup Dialog}{Patchmanager Startup Dialog}, a UI shown at Lipstick startup.
+  \endlist
+
+  \section2 Infrastructure Applications
+  \list
+  \li \l {Patchmanager Documentation: Daemon}{Patchmanager Daemon}
+  \li \l {Patchmanager Documentation: Preload Library}{Preload Library}
+  \li \l {Patchmanager Web Catalog}{Web Catalog}
+  \endlist
+
+*/
+
+/****** Overview page *******/
+/*!
+  \title Patchmanager Overview
+
+  \page pmoverview.html overview
+  \indexpage Patchmanager Documentation
+  \nextpage {Patchmanager Services}
+
+  So the current mode of operation of Patchmanager is something like this:
+
+  \section1 Operation Flow
+
+  \section2 1. A Patch is "activated"
+
+  When a user activates a patch via the App, a signal is sent to the daemon.
+
+  The daemon will then:
+
+  For each file the patch manipulates, a copy of the original file is put into
+  a cache dir in \c /tmp, and the changes are applied there instead of on the
+  original file.
+
+  If there are paths or files involved in the patch which do not exist yet
+  in the filesystem, they will be created in the cache dir, and a symlink
+  pointing to them is placed in the original filesystem.
+  \section2 2. A patched application is launched.
+
+  Through library preloading, the \c libpreloadpatchmanager.so library is
+  injected into the launching binary.
+
+  \section2 3. The Preload Library:
+
+  \list
+  \li Intercepts calls to \l {https://www.man7.org/linux/man-pages/man2/open.2.html}{\c{open()} (or \c{open64()})},
+  \li analyzes which files the call was meant to open
+  \li  asks the Patchmanager daemon (via socket) whether it knows of a patched version.
+  \endlist
+
+  If yes, the daemon will return a path to its cachedir, and the library
+  redirects the call to that file instead of the original. Otherwise, the
+  \c{open()} is executed on the original file.
+
+  Certain paths are blacklisted for these operations to reduce the risk of
+  critical services, or PM itself, choking on these redirections.
+
+  \note After activating a Patch , the daemon may also inform the UI that some
+  apps or services need restart. The UI client is expected to issue the command
+  to restart these soon.
+  As long as the corresponding preocesses are not restarted, the effect of the
+  applied patch will not show, or may only show partially, depending on the "patch
+  history" of the respective process.
+
+  \section1 Patch Installation
+  There are three ways a Patch can end up on the system:
+
+  \list
+  \li Web Catalog
+  \li RPM package
+  \li TAR package
+  \li manual installation
+  \endlist
+
+  \section2 Patch folder structure
+
+  All Patches managed by PM are installed under \c /usr/share/patchmanager/patches/NAME,
+  where NAME is a directory having a unique name.
+
+  That directory must contain at least two files: a \c JSON file called
+  \c patch.json containing metadata, and a \c diff file called \c{unified_diff.patch}.
+
+  It may optionally also contain:
+    \list
+    \li Qt translation (.qm) files
+    \li icon files in PNG format
+    \li a QML file called \c main.qml (whose root element is a Sailfish Silica \c{Page}).
+    \li other QML-compatible files which are referenced/loaded from \c main.qml
+    \endlist
+
+  \note the directory NAME is usually and by convention the same as the patch
+  metadata field \c name, but that is not a requirement. NAME should be
+  reasonably unique though, to avoid name clashes with Patches from others.
+
+  \section2 Web Catalog
+
+  Installation via the Patchmanager Web Catalog is the most common and recomended way of installing a patch.
+  This is done through the Patchmanager UI, by selecting \uicontrol install on the \l {WebPatchPage}{Patch Page}.
+
+  PM will download metadata and a tarball from the Web Catalog, extract the
+  tarball into the patch storage location, and generate the necessary JSON file
+  from the metadata.
+
+  \section2 RPM package
+
+  Patches may be distributed as RPM files, which assure the placement of files
+  according to the structure explained above.  RPM also provides advanced
+  features like dependencies and scriptlets which may be necessary for correct
+  operation or installation of a Patch.
+
+  \section2 TAR package
+
+  Patch developers may sometimes distribute Patches in \c tar format. Usually
+  they also contain the necessary files, but the contents of the tarball may
+  differ, and recipients of them must assure the layout given above is set up
+  correctly.
+
+  \section2 manual installation
+
+  Patch developers or users may want to quickly place a Patch under PM's
+  supervision without going through the hassle of packaging and installing.
+  This can be done easily, as long as the formats given above are followed.
+
+  \e{to be continued...}
+
+*/
+/****** Web Catalog page *******/
+/*!
+  \title Patchmanager Web Catalog
+
+  \page pmwc.html
+
+  The Web Catalog is currently not maintained by the Patchmanager project, and
+  is documented here briefly for sake of completeness.
+
+  \e{to be continued...}
+
+*/
+
+/****** Services Documentation page *******/
+/*!
+  \title Patchmanager Services
+  \previouspage {Patchmanager Overview}
+  \nextpage {Patchmanager Configuration Files}
+
+  \page pmservices.html overview
+
+  \section1 Installation and Configuration
+
+  \section2 D-Bus System Service
+  \target dbus-sys
+  The D-Bus services reserve the bus name \c org.SfietKonstantin.patchmanager
+
+  It is defined as follows:
+
+  \quotefile dbus/org.SfietKonstantin.patchmanager.xml
+
+  Calls can be issued e.g. like this:
+
+  \badcode
+      dbus-send --print-reply --system --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager org.SfietKonstantin.patchmanager.checkforUpdates
+  \endcode
+
+  \section2 Systemd System Units
+
+      \table
+        \header
+          \li Name
+          \li Type
+          \li Component
+          \li Description
+        \row
+          \li \c UNITDIR/checkForUpdates-org.SfietKonstantin.patchmanager.service
+          \li service
+          \li -
+          \li calls the \c checkForUpdates() method via D-Bus
+        \row
+          \li \c UNITDIR/checkForUpdates-org.SfietKonstantin.patchmanager.timer
+          \li timer
+          \li -
+          \li runs the service above, every two hours
+        \row
+          \li \c UNITDIR/dbus-org.SfietKonstantin.patchmanager.service
+          \li dbus-activated service
+          \li \l {Patchmanager Documentation: Daemon}{Daemon}
+          \li starts/activates the D-Bus service
+        \row
+          \li \c /var/lib/environment/patchmanager/10-dbus.conf
+          \li environment file
+          \li \l {Patchmanager Documentation: Daemon}{Daemon}
+          \li Configures the environment the Systemd service is started in.
+        \row
+          \li \c /etc/dbus-1/system.d/org.SfietKonstantin.patchmanager.conf
+          \li policy file
+          \li \l {Patchmanager Documentation: Daemon}{Daemon}
+          \li Configures access policy for the D-Bus service
+      \endtable
+
+  \section2 Systemd User Units
+
+      \table
+        \header
+          \li Name
+          \li Type
+          \li Component
+          \li Description
+        \row
+          \li \c $USERUNITDIR/dbus-org.SfietKonstantin.patchmanager.service
+          \li dbus-activated service
+          \li  {Patchmanager Documentation: Startup Dialog}{Dialog}
+          \li starts the Startup Dialog if necessary
+        \row
+          \li \c $USERUNITDIR/lipstick-patchmanager.service
+          \li service
+          \li  {Patchmanager Documentation: Startup Dialog}{Dialog}
+          \li calls the \c lipstickChanged() method via D-Bus
+        \row
+          \li \c /var/lib/environment/patchmanager-dialog/*.conf
+          \li environment file
+          \li  {Patchmanager Documentation: Startup Dialog}{Dialog}
+          \li Configures the environment the dialog service is started in.
+      \endtable
+
+  \c lipstick-patchmanager.service watches the state of the Lipstick service.
+  If Lipstick crashes, Patchmanager Daemon assumes it was caused by a patch
+  and goes into \c failed state. In  this state, all enabled services are
+  disabled, and PM must be reactivated via the GUI.
+
+  \section1 Manual Invocation
+
+  Apart from using the appropriate tools manipulating tools like \c systemctl,
+  \c busctl, or \c dbus-send, the patchmanager binary can serve as a CLI as
+  well if called from command line.
+  See the output of \c{patchmanager --help} and PatchManagerObject::process()
+  for more information.
+
+  There is also a shell script called \c patchmanager-tool, wrapping the capabilities of \c patchmanager to generate more useful functions.
+
+  \note At the time this was written, \c patchmanager-tool is not yet distributed with the default packages. You can find it in the source repository though, under \c src/tools/.
+
+  \section1 Logging and Debugging
+
+  Debug logging of the daemon can be configured using the environment file
+  located in \c /var/lib/environment/patchmanager/10-dbus.conf setting the \c
+  QT_LOGGING_RULES variable to e.g. \c{"*.debug=true"}
+
+  After changing this, the system service must be restarted so it can pick up
+  the new values.
+
+*/
+  /****** Services Documentation page *******/
+/*!
+  \title Patchmanager Configuration Files
+  \previouspage {Patchmanager Services}
+
+  \page pmconfig.html overview
+
+  \section2 \c{/etc/patchmanager2.conf}
+
+  \target inifile
+
+  INI-style configuration file and state storage.
+
+  It currently consists of two sections: \c settings, and \c votes
+  \section3 \c settings
+
+  \table
+    \header
+    \li Key
+    \li Type
+    \li default
+    \li Description
+    \row
+    \li applied
+    \li list of strings, comma-separated
+    \li empty
+    \li stores the list of "activated" patches
+    \row
+    \li applyOnBoot
+    \li Boolean
+    \li \c false
+    \li Whether to activate Patches at boot, or show the {Patchmanager Documentation: Startup Dialog}{Startup Dialog}
+    \row
+    \li bitnessMangle
+    \li Boolean
+    \li \c false
+    \li Convert patch contents so they can apply on the local architecture (e.g. \c lib vs. \c lib64 path segments)
+    \row
+    \li developerMode
+    \li Boolean
+    \li \c false
+    \li \warning \b deprecated. Pre-Patchmanager v3.2.7, this was used to store the settings for "Developer Mode". This has now been split into \c patchDevelMode and \c sfosVersionCheck
+    \row
+    \li notifyOnSuccess
+    \li Boolean
+    \li \c true
+    \li Whether to show success messages in the UI
+    \row
+    \li order
+    \li list of strings, comma-separated
+    \li empty
+    \li The order of the list of patches, bith in the UI as well as the order they will be applied/activated.
+    \row
+    \li patchDevelMode
+    \li Boolesn
+    \li \c false
+    \li
+    \row
+    \li sfosVersionCheck
+    \li Integer (Enum)
+    \li 0 (strict)
+    \li Whether to relax the version checking in the PM GUI. The default will only allow Patches to be downloaded, or activated, whose compatibility field matches the currently running OS version exactly.
+  \endtable
+
+  \section3 \c [votes]
+
+  \e{to be written...}
+
+  \section2 \c{/var/lib/environment/patchmanager-dialog/*.conf}
+  \section2 \c{/var/lib/environment/patchmanager/10-dbus.conf}
+*/

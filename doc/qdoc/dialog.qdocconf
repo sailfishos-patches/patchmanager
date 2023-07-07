@@ -1,0 +1,10 @@
+project         = dialog
+description     = Patchmanager Startup Dialog Documentation
+versionsym      =
+version         = 2.0
+url             = https://github.com/sailfishos-patches/patchmanager
+
+include (common.qdocconf)
+
+sourcedirs = ../../src/bin/dialog
+
