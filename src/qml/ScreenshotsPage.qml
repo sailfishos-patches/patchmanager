@@ -34,9 +34,28 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
+/*! \qmltype ScreenshotsPage
+
+    \ingroup qml-plugin-components
+    \inherits Page
+    \brief Shows Screenshots available for a Patch from \l {Patchmanager Web Catalog}{Web Catalog} in a full-screen view.
+
+    \sa {https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-slideshowview.html}{SlideshowView}
+*/
+
 Page {
     id: page
+
+    /*! \qmlproperty model model
+        This property holds the model providing data for the slideshow.
+        \sa {https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-slideshowview.html#model}{SlideshowView}
+    */
     property alias model: view.model
+
+    /*! \qmlproperty int currentIndex
+        The \c index of the currently shown Item
+        \sa {https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-slideshowview.html#model}{SlideshowView}
+    */
     property alias currentIndex: view.currentIndex
 
     showNavigationIndicator: !view.interactive

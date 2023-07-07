@@ -1,0 +1,44 @@
+/*!
+    \page index.html
+    \title Patchmanager Documentation: QML Plugin
+    \indexpage Patchmanager Documentation
+
+    \section1 Overview
+
+    The QML Plugin makes up the main Patchmanager GUI Application.
+
+    Jolla Settings loads PatchManagerPage from the QML Plugin.
+
+    It is a both a front-end to the Daemon and a Patch management application.
+
+    It allows to:
+
+    \list
+    \li View the list of installed and activated Patches.
+    \li Configure the Application and Daemon settings.
+    \li Activate or deactivate Patches
+    \li Install Patches from the Web Catalog
+    \li Uninstall installed Patches
+    \endlist
+
+    \section2 QML Components:
+
+    \generatelist{overviews}
+
+    \section2 QML types:
+
+    \generatelist{qmltypesbymodule org.SfietKonstantin.patchmanager}
+
+    \section2 C++ classes:
+
+    \generatelist{classesbymodule org.SfietKonstantin.patchmanager}
+
+*/
+
+/*!
+    \group qml-plugin-components
+    \title QML Components
+
+    \brief Pages and other components shipped with the QML Plugin
+
+*/
