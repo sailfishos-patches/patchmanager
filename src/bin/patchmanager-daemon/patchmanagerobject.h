@@ -114,10 +114,10 @@ public slots:
     QVariantMap getUpdates() const;
 
     bool putSettings(const QString & name, const QDBusVariant & value);
-    QDBusVariant getSettings(const QString & name, const QDBusVariant & def);
-
     bool putSettings(const QString & name, const QVariant & value);
+
     QVariant getSettings(const QString & name, const QVariant & def) const;
+    QDBusVariant getSettings(const QString & name, const QDBusVariant & def);
 
     static QString maxVersion(const QString &version1, const QString &version2);
 
