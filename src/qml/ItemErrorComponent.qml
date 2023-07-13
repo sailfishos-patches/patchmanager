@@ -33,11 +33,25 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+/*! \qmltype ItemErrorComponent
+
+    \ingroup qml-plugin-components
+    \brief Shows an error message.
+*/
+
 Rectangle {
     id: errorMessage
     anchors.fill: parent
     color: Theme.rgba(Theme.highlightBackgroundColor, Theme.highlightBackgroundOpacity)
+    /*! \qmlproperty string text
+        This property holds the text for the error message.
+    */
     property alias text: titleLabel.text
+    /*! \qmlproperty int timeout
+        This property specifies how long the message is shown (in milliseconds)
+
+        \sa {https://doc.qt.io/qt-5/qml-qtqml-timer.html#interval-prop}{Timer::interval}
+    */
     property alias timeout: destroyTimer.interval
     Component.onCompleted: {
         if (parent.contentItem) {

@@ -40,6 +40,27 @@ import Sailfish.Silica 1.0
 import Nemo.Configuration 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
+/*! \qmltype PatchManagerPage
+
+    \ingroup qml-plugin-components
+    \brief The main Patchmanager GUI
+
+    Page shown through the Jolla Settings Plugin from the Settings Application.
+
+    It is a both a front-end to the Daemon and a Patch management application.
+
+    It allows to:
+
+    \list
+    \li View the list of installed and activated Patches.
+    \li Configure the Application and Daemon settings.
+    \li Activate or deactivate Patches
+    \li Install Patches from the \l {Patchmanager Web Catalog}{Web Catalog}
+    \li Uninstall installed Patches
+    \endlist
+
+*/
+
 Page {
     id: container
 
@@ -57,6 +78,10 @@ Page {
     }
 
     Component.onCompleted: migrateDevModeSettings()
+    /*! \qmlmethod migrateDevModeSettings()
+        Manages migration from legacy \e developerMode setting to the new \e patchDevelMode and \e sfosVersionCheck settings, then sets \e developerMode to \e false.
+        \internal
+     */
     function migrateDevModeSettings() {
         if (PatchManager.developerMode === true) {
             console.info("Migrating settings from deprecated developerMode setting.")
@@ -98,6 +123,12 @@ Page {
         }
     }
 
+    /*! \qmlmethod function showUpdates(manual)
+
+        Flashes the Pulley Menu if updates are available and \a manual is  \c false.
+        Does nothing if \a manual is \c true.
+
+     */
     function showUpdates(manual) {
         if (pageStack.busy) {
             return
@@ -109,6 +140,12 @@ Page {
         pulleyAnimation.start()
     }
 
+    /*! \qmlproperty real PatchManagerPage::pullDownDistance
+        \internal
+        Amount of space the pulley "pops down" when it's showing a hint, e.g the result of showUpdates().
+
+        \warning This is probably broken in recent SFOS versions (?).
+    */
     property real pullDownDistance: Theme.itemSizeLarge
 
     SequentialAnimation {

@@ -39,6 +39,19 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
+/*! \qmltype RestartServicesDialog
+
+    \ingroup qml-plugin-components
+    \brief Service restart confirmation dialog
+
+    This Dialog is shown to the user to confirm restarting of "Services", i.e.
+    anything that has been affected by activated patches.
+
+    If accepted, these programs will be killed.
+
+    The services to kill are selected via the \c category field of Patch metadata.
+
+*/
 
 Dialog {
     id: container

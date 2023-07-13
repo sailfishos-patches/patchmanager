@@ -1,0 +1,19 @@
+project         = qml-plugin
+description     = Patchmanager QML Plugin Reference Documentation
+versionsym      =
+version         = 2.0
+url             = https://github.com/sailfishos-patches/patchmanager
+
+include(common.qdocconf)
+
+depends += qtcore qtqml
+
+headerdirs = ../../src/qml
+#headers.fileextensions = "*.h *.hpp"
+
+sourcedirs = ../../src/qml
+sources += qmlplugin.qdoc
+#sources.fileextensions = "*.cpp *.qdoc *.qml"
+
+# get rid of warnings about undoicumented stuff in patchmanager.h
+Cpp.ignoretokens += Q_PROPERTY

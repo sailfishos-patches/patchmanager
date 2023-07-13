@@ -54,6 +54,92 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
     return PatchManagerTranslator::GetInstance(engine);
 }
 
+/*****  PatchManager ******/
+/*! \qmltype PatchManager
+    \instantiates PatchManager
+    \inqmlmodule org.SfietKonstantin.patchmanager
+
+    \brief Singleton providing access to the \l [C++]{PatchManager} methods and properties.
+*/
+/*! \qmlproperty string PatchManager::appsToRestart
+    List of applications and services that should be restarted after a patch has been activated.
+    \sa PatchManager::toggleServicesList
+*/
+/*! \qmlproperty bool PatchManager::developerMode
+    \deprecated
+    \sa {Patchmanager Configuration Files}, inifile
+*/
+/*! \qmlproperty bool PatchManager::failure
+    If \c true, PM is in Failure Mode.
+*/
+/*! \qmlproperty string PatchManager::osVersion
+    This property holds the Operating System version. This is used for version checking.
+*/
+/*! \qmlproperty bool PatchManager::patchDevelMode
+    \sa {Patchmanager Configuration Files}, inifile
+*/
+/*! \qmlproperty string PatchManager::patchmanagerVersion
+    This property holds our own version
+*/
+/*! \qmlproperty string PatchManager::serverMediaUrl
+    This poperty holds the URL to download screenshots from.
+*/
+/*! \qmlproperty int PatchManager::sfosVersionCheck
+    This property keeps the setting of VersionCheck
+    \sa PatchManagerVersionCheck::CheckMode
+*/
+/*! \qmlproperty var PatchManager::updates
+    Map of internal names and metadata of patches which can be updated.
+    \sa PatchManagerObject::getUpdates, dbus-sys
+*/
+/*! \qmlproperty var PatchManager::updatesNames
+    List of display names of patches which can be updated.
+    \sa PatchManagerObject::getUpdates, dbus-sys
+*/
+
+/*****  PatchManagerTranslator ******/
+/*! \qmltype PatchManagerTranslator
+    \instantiates PatchManagerTranslator
+    \inqmlmodule org.SfietKonstantin.patchmanager
+
+    \brief This Singleton allows patches to include localizations in their shipped QML files.
+
+    To use, add:
+
+    \code
+    import org.SfietKonstantin.patchmanager 2.0
+    \endcode
+
+    In the root item add:
+
+    \code
+    property bool pmTranslationLoaded: PatchManagerTranslator ? PatchManagerTranslator.installTranslator("my-patch-name") : false}
+    \endcode
+
+    In the first visible text item replace text with following:
+
+    \code
+    pmTranslationLoaded ? qsTr("Translated text") : "Please update patchmanager!"
+    \endcode
+
+    If translation is not loaded try using qsTranslate() strings instead:
+
+    \code
+    pmTranslationLoaded ? qsTranslate("pm", "Translated text") : "Please update patchmanager!"
+    \endcode
+
+*/
+/*! \qmlproperty bool PatchManagerTranslator::pmTranslationLoaded
+     \c true when the PatchManagerTranslator has been loaded/initialized successfully.
+*/
+
+/*****  WebPatchesModel ******/
+/*! \qmltype WebPatchesModel
+    \instantiates WebPatchesModel
+    \inqmlmodule org.SfietKonstantin.patchmanager
+
+    \brief Holds elements from the \l {Patchmanager Web Catalog}{Web Catalog}.
+*/
 class PatchManagerPlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT

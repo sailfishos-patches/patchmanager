@@ -17,3 +17,4 @@ patchmanager-dialog
 src/icons/z*
 src/icons/ss
 *.list
+doc/generated

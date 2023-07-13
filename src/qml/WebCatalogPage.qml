@@ -40,12 +40,54 @@ import Sailfish.Silica 1.0
 import org.nemomobile.dbus 2.0
 import org.SfietKonstantin.patchmanager 2.0
 
+/*! \qmltype WebCatalogPage
+
+    \ingroup qml-plugin-components
+    \inherits Page
+    \brief Shows the list of Patches available in the Web Catalog.
+
+    It also provides a search interface, and can order the list by either
+    date, or category.
+
+    Per default, displays all Patches. If author is set, displays only Patches
+    by one author/Patch Developer.
+
+    \sa {Patchmanager Web Catalog}{Web Catalog}, author
+*/
+
 Page {
     id: container
+    /*! \qmlproperty string author
+       This property holds the name of the Patch developer, if WebPatchPage is in "author-only" mode.
+
+       \sa {https://github.com/sailfishos-patches/patchmanager/blob/master/README.md#the-json-metadata-file}{Patch JSON metadata file}
+    */
     property string author
+
+    /*! \qmlproperty var versions
+       This property holds the versions of all the patches in the list.
+       It is used for update checking.
+       \warning exact function of this needs to be researched
+    */
     property var versions
+
+    /*! \qmlproperty string search
+       This property holds the user-supplied search string
+    */
     property string search
+
+    /*! \qmlproperty bool searchVisible
+       If \c true shows the search field
+    */
     property bool searchVisible
+
+    /*! \qmlproperty bool sortByDate
+       If \c true, the list is sorted by Patch \c updated_date. Otherwise it is sorted by \c category.
+
+       Default \c true
+
+       \sa {https://github.com/sailfishos-patches/patchmanager/blob/master/README.md#the-json-metadata-file}{Patch JSON metadata file}
+    */
     property bool sortByDate: true
 
     onStatusChanged: {

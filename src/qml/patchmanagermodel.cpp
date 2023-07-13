@@ -37,11 +37,39 @@
 #include <QDBusPendingReply>
 #include <QDebug>
 
+/*! \qmltype PatchManagerModel
+    \instantiates PatchManagerModel
+    \inqmlmodule org.SfietKonstantin.patchmanager
+    \brief A ListModel containing the metadata of Patches.
+*/
 PatchManagerModel::PatchManagerModel(QObject *parent)
     : QAbstractListModel(parent)
 {
 }
 
+/*! \class PatchManagerModel
+    \inheaderfile patchmanagermodel.h
+    \inmodule org.SfietKonstantin.patchmanager
+    \brief A ListModel containing the metadata of Patches.
+
+    Currently it defines the following Roles:
+    \table
+      \header
+        \li Qt Role
+        \li QML Role Name
+      \row
+        \li \l{https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum}{Qt::DisplayRole}
+        \li name
+      \row
+        \li \l{https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum}{Qt::DecorationRole}
+        \li section
+      \row
+        \li \l{https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum}{Qt::EditRole}
+        \li patchObject
+    \endtable
+
+    \sa {https://doc.qt.io/qt-5/qabstractitemmodel.html}{Qt::QAbstractItemModel}
+*/
 PatchManagerModel::PatchManagerModel(const QList<PatchObject *> &data, QObject *parent)
     : QAbstractListModel(parent)
     , m_modelData(data)
@@ -78,11 +106,16 @@ QHash<int, QByteArray> PatchManagerModel::roleNames() const
     return r;
 }
 
+// /*! \qmlproperty var PatchManagerModel::patches
+//     Contains the list of patches
+// */
+/*!  Returns the list of patches */
 QList<PatchObject *> PatchManagerModel::patches() const
 {
     return m_modelData;
 }
 
+/*!  clears the model data and sets \a patches as new model data.  */
 void PatchManagerModel::setPatches(const QList<PatchObject *> &patches)
 {
     qDebug() << Q_FUNC_INFO << patches.length();
@@ -102,6 +135,22 @@ void PatchManagerModel::setPatches(const QList<PatchObject *> &patches)
     endResetModel();
 }
 
+/*!
+    Does nothing if both \a data and \a patch are empty.
+
+    If \a patch is empty, and we have \a data, extracts the patch name from \a
+    data and adds the metadata to the model.
+
+    If we have \a patch and \a data, and \a installed is \c true, add the data
+    to the model.
+
+    If we have \a patch and \a data, and \a installed is \c false, just create
+    a PatchObject from \a data.
+
+    \warning that last part is not yet documented.
+
+    \sa saveLayout()
+*/
 void PatchManagerModel::populateData(const QVariantList &data, const QString &patch, bool installed)
 {
     qDebug() << Q_FUNC_INFO << data.length();
@@ -190,6 +239,7 @@ void PatchManagerModel::populateData(const QVariantList &data, const QString &pa
     saveLayout();
 }
 
+/*!  removes the patch with the name \a patch from the model. */
 void PatchManagerModel::removePatch(const QString &patch)
 {
     qDebug() << Q_FUNC_INFO << patch;
@@ -210,6 +260,7 @@ void PatchManagerModel::removePatch(const QString &patch)
     saveLayout();
 }
 
+/*! Moves an entry from index \a from to index \a to */
 void PatchManagerModel::move(int from, int to)
 {
     if (from == to) {
@@ -220,6 +271,7 @@ void PatchManagerModel::move(int from, int to)
     endMoveRows();
 }
 
+/*! Saves the current order of patch names to Settings. */
 void PatchManagerModel::saveLayout()
 {
     QStringList patches;
@@ -230,6 +282,7 @@ void PatchManagerModel::saveLayout()
     PatchManager::GetInstance()->putSettingsAsync(QStringLiteral("order"), patches);
 }
 
+/*! Returns the \e display_name of \a patch. */
 QString PatchManagerModel::patchName(const QString &patch) const
 {
     if (!m_patchMap.contains(patch)) {
@@ -239,6 +292,7 @@ QString PatchManagerModel::patchName(const QString &patch) const
     return m_patchMap[patch]->details()->value(QStringLiteral("display_name")).toString();
 }
 
+/*!  Returns /c true if patch \a name is in the list of applied (activated) patches.  */
 bool PatchManagerModel::isApplied(const QString &name) const
 {
     // FIXME: there certainly is a more efficient way, e.g. std::find_if?
