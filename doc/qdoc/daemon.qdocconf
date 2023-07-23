@@ -1,0 +1,13 @@
+project         = daemon
+description     = Patchmanager Daemon Reference Documentation
+versionsym      =
+version         = 2.0
+url             = https://github.com/sailfishos-patches/patchmanager
+
+include (common.qdocconf)
+
+headerdirs += ../../src/bin/patchmanager-daemon
+headers.fileextensions = "*.h *.hpp"
+
+sourcedirs += ../../src/bin/patchmanager-daemon
+#sources.fileextensions = "*.cpp *.qdoc *.qml"

@@ -4,6 +4,12 @@
 #include <QDebug>
 #include <stdio.h>
 
+/*! \class Journal
+    \inmodule PatchManagerDaemon
+*/
+/*! \fn Journal::matchFound()
+   Emitted when the fileters found a log entry that matched.
+*/
 Journal::Journal(QObject *parent)
     : QObject(parent)
 {
@@ -39,6 +45,7 @@ void Journal::wait()
     thread->start();
 }
 
+/*! Attaches itself to the Journal, filetering for \e Lipstick and \e jolla-settings executables. */
 void Journal::init()
 {
     qDebug() << Q_FUNC_INFO;
@@ -60,6 +67,16 @@ void Journal::init()
     wait();
 }
 
+/*! Read the message from the Journal, look got certain strings, and emit the matchFound signal if found.
+
+  Strings looked for are:
+
+  \list
+    \li   "Type X unavailable"
+    \li   "is not a type" AND "Error while loading page"
+  \endlist
+
+*/
 void Journal::process()
 {
     int next_ret = sd_journal_next(m_sdj);

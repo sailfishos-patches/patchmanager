@@ -38,6 +38,48 @@
 
 #include <algorithm>
 
+/*! \class WebPatchesModel
+    \inmodule org.SfietKonstantin.patchmanager
+    \brief The WebPatchesModel holds elements from the \l {Patchmanager Web Catalog}{Web Catalog}.
+
+    Roles follow the Patch JSON format, hence the following are defined:
+
+    \table
+      \header
+        \li Qt Role
+        \li QML Role Name
+      \row
+        \li {Qt::UserRole}
+        \li description
+      \row
+        \li {Qt::UserRole}
+        \li last_updated
+      \row
+        \li {Qt::UserRole}
+        \li name
+      \row
+        \li {Qt::UserRole}
+        \li display_name
+      \row
+        \li {Qt::UserRole}
+        \li category
+      \row
+        \li {Qt::UserRole}
+        \li author
+      \row
+        \li {Qt::UserRole}
+        \li rating
+      \row
+        \li {Qt::UserRole}
+        \li total_activations
+    \endtable
+
+    \sa {https://doc.qt.io/qt-5/qabstractitemmodel.html}{Qt::QAbstractItemModel}
+*/
+/*! \fn virtual QHash<int, QByteArray> WebPatchesModel::roleNames() const
+    Returns the model's role names.
+
+*/
 WebPatchesModel::WebPatchesModel(QObject * parent)
     : QAbstractListModel(parent)
 {
@@ -63,6 +105,27 @@ WebPatchesModel::~WebPatchesModel()
 {
 }
 
+/*! \property WebPatchesModel::sorted
+  \c true when the model is sorted
+*/
+/*! \qmlproperty bool WebPatchesModel::sorted
+  \c true when the model is sorted
+
+   The corresponding signal is sortedChanged
+*/
+/*! \qmlsignal WebPatchesModel::sortedChanged()
+  Emitted when \c sorted changed
+*/
+
+/*! \property WebPatchesModel::queryParams
+  Query parameters
+*/
+/*! \qmlproperty var WebPatchesModel::queryParams
+  Query parameters
+*/
+/*! \qmlsignal WebPatchesModel::queryParamsChanged()
+  Emitted when query parameters change
+*/
 QVariantMap WebPatchesModel::queryParams() const
 {
     return _queryParams;
@@ -89,6 +152,7 @@ void WebPatchesModel::setSorted(const bool & sorted) {
     }
 }
 
+/*! \warning need to investigate what this is for...  */
 void WebPatchesModel::classBegin()
 {
 
@@ -104,6 +168,12 @@ bool compareStrings(const QString &a, const QString &b)
     return a.compare(b, Qt::CaseInsensitive) < 0;
 }
 
+/*!
+   Retrieves the list of patches from the \l {Patchmanager Web Catalog}{Web Catalog}, and populates the model
+   with its contents, sorting them if necessary.
+
+   \sa setSorted()
+*/
 void WebPatchesModel::componentComplete()
 {
     if (_modelData.size() > 0) {
@@ -158,12 +228,14 @@ void WebPatchesModel::componentComplete()
     });
 }
 
+/*! Returns the row count. \note \a parent is unused */
 int WebPatchesModel::rowCount(const QModelIndex & parent) const
 {
     Q_UNUSED(parent);
     return _modelData.count();
 }
 
+/*! Returns the data stored under the given \a role for the item referred to by the \a index. */
 QVariant WebPatchesModel::data(const QModelIndex & index, int role) const
 {
     int row = index.row();
@@ -171,3 +243,4 @@ QVariant WebPatchesModel::data(const QModelIndex & index, int role) const
         return QVariant();
     return _modelData[index.row()].toMap()[_roles[role]];
 }
+

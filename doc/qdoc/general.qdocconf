@@ -1,0 +1,10 @@
+project = patchmanager
+description = Patchmanager
+
+include (common.qdocconf)
+
+## Sources
+sources += ../../src/index.qdoc
+# for quoting
+exampledirs += ../../src/bin/patchmanager-daemon
+

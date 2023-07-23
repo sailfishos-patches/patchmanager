@@ -1,0 +1,11 @@
+project         = settings-plugin
+description     = Patchmanager Settings Plugin Documentation
+versionsym      =
+version         = 2.0
+url             = https://github.com/sailfishos-patches/patchmanager
+
+include (common.qdocconf)
+
+sourcedirs = ../../src/plugin
+
+

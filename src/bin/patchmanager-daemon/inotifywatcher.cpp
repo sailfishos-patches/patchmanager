@@ -69,6 +69,20 @@ INotifyWatcher::INotifyWatcher(QObject *parent)
     connect(notifier, &QSocketNotifier::activated, this, &INotifyWatcher::readFromInotify);
 }
 
+/*! \class INotifyWatcher
+    \inmodule PatchManagerDaemon
+    \inherits QSocketNotifier
+    \brief watches a list of files or directories for changes
+*/
+/*! \fn void INotifyWatcher::directoryChanged(const QString &path, bool removed);
+    \fn void INotifyWatcher::fileChanged(const QString &path, bool removed);
+    This signal is emitted when a file or directory has changed.
+    Parameters are the \a path and whether it was \a removed.
+ */
+/*! \fn void INotifyWatcher::contentChanged(const QString &path, bool created);
+    This signal is emitted when directory content has changed
+    Parameters are the \a path and whether something was \a created.
+ */
 INotifyWatcher::~INotifyWatcher()
 {
     notifier->setEnabled(false);
@@ -78,6 +92,7 @@ INotifyWatcher::~INotifyWatcher()
     ::close(inotifyFd);
 }
 
+/*! Add \a paths to the list of paths to be watched. */
 QStringList INotifyWatcher::addPaths(const QStringList &paths)
 {
     QStringList p = paths;
@@ -127,6 +142,7 @@ QStringList INotifyWatcher::addPaths(const QStringList &paths)
     return p;
 }
 
+/*! Removes \a paths from the list of paths to be watched. */
 QStringList INotifyWatcher::removePaths(const QStringList &paths)
 {
     QStringList p = paths;

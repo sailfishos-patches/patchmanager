@@ -39,18 +39,72 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import org.SfietKonstantin.patchmanager 2.0
 
+/*! \qmltype WebPatchPage
+
+    \ingroup qml-plugin-components
+    \inherits Page
+    \brief Shows details about a Patch from the Web Catalog
+
+    \sa {Patchmanager Web Catalog}{Web Catalog}, {https://github.com/sailfishos-patches/patchmanager/blob/master/README.md#the-json-metadata-file}{Patch JSON metadata file}
+*/
+
+
 Page {
     id: container
     objectName: "WebPatchPage"
+    /*!    \qmlproperty var modelData
+           This property holds the metadata from the model
+
+           \sa PatchManagerModel, PatchObject
+    */
     property var modelData
 
+    /*!    \qmlproperty var versions
+           This property holds a map of patch \c{[name, [versions]]}
+    */
     property var versions
 
+
+    /*! \qmlproperty int voteAction
+        State of the like/dislike voting action
+
+        \table
+        \header
+          \li Meaning
+          \li Value
+        \row
+          \li Like
+          \li 2
+        \row
+          \li Dislike
+          \li 1
+        \row
+          \li Not Voted
+          \li 0
+        \endtable
+
+        \sa PatchManager::checkVote
+    */
     property int voteAction
 
+    /*! \qmlproperty bool isInstalled
+        \c true if a version of the patch is currently installed
+    */
     property bool isInstalled: !!container.versions && typeof(container.versions[modelData.name]) != "undefined"
 
+    /*! \qmlproperty var patchData
+        This property holds the metadata downloaded from the Web Catalog
+
+        \sa modelData
+    */
     property var patchData
+
+    /*! \qmlproperty bool fetching
+
+        Indicates whether data is currently being downloaded. The WebPatchPage will show a ViewPlaceholder if true.
+
+        Default \c true
+    */
     property bool fetching: true
 
     onStatusChanged: {
