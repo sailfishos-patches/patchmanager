@@ -1,0 +1,69 @@
+name: Generate Documentation (on Qt5.6)
+
+on:
+  release:
+    types: [published]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Allow only one build run, skipping runs queued between the run in-progress and latest queued.
+# cancel in-progress runs
+concurrency:
+  group: "gendoc"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SEGMENT_DOWNLOAD_TIMEOUT_MINS: 3
+      DOC_SOURCE_BRANCH: "master"
+      DOC_TARGET_BRANCH: "gh-pages"
+      DOC_TARGET_DIR: "doctarget"
+    steps:
+    - name: Checkout Source
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ env.DOC_SOURCE_BRANCH }}
+
+    - name: Build Docs
+      run: |
+        docker run --rm -v $PWD:/share icsinc/qt5.6.1-x64:latest /bin/bash -xc "
+            sudo apt-get -qq update;
+            sudo apt-get -qq install -y qdoc-qt5;
+            sudo apt-get -qq install -y qtbase5-dev;
+            sudo apt-get -qq install -y git-core;
+            qdoc --version;
+            mkdir -p build ;
+            cd build ;
+            cp -r /share/* . ;
+            mkdir -p doc/generated;
+            git clone --depth 1 -b upgrade-4.5.0 https://github.com/sailfishos/sailfish-qdoc-template doc/qdoc/sailfish-qdoc-template;
+            /bin/bash -c ./makedocs;
+            mkdir /share/out;
+            cp -rv doc/generated/* /share/out/;
+            "
+
+    - name: Checkout Target
+      uses: actions/checkout@v3
+      with:
+        # only check out the target path:
+        sparse-checkout: doc
+        ref: ${{ env.DOC_TARGET_BRANCH }}
+        path: ${{ env.DOC_TARGET_DIR }}
+
+    - name: Copy Docs
+      run: |
+        rm -rf $GITHUB_WORKSPACE/$DOC_TARGET_DIR/doc/generated/*
+        cp -rv out/* $GITHUB_WORKSPACE/$DOC_TARGET_DIR/doc/generated/
+
+    # Add and commit the results to the target branch
+    - name: Add and Commit
+      uses: EndBug/add-and-commit@v9
+      with:
+        cwd: ${{ env.DOC_TARGET_DIR }}
+        add: '-A doc/generated'
+        author_name: 'Github Action Runner'
+        author_email: 'noreply@github.com'
+        fetch: false
+        message: "[Actions] Generated Documentation for ${{ github.ref_name }}"
