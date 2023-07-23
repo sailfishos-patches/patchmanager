@@ -817,6 +817,7 @@ void PatchManager::onLoadedChanged(bool loaded)
     emit loadedChanged(m_loaded);
 }
 
+/*! Calls the \e revertToLastGood method on D-Bus */
 void PatchManager::revertToLastGood()
 {
     qDebug() << Q_FUNC_INFO;
@@ -824,6 +825,7 @@ void PatchManager::revertToLastGood()
     m_interface->revertToLastGood();
 }
 
+/*! Calls the \e setKnownGood method on D-Bus */
 void PatchManager::setKnownGood()
 {
     qDebug() << Q_FUNC_INFO;
