@@ -304,6 +304,11 @@
     \li empty
     \li stores the list of "activated" patches
     \row
+    \li lastknowngood
+    \li list of strings, comma-separated
+    \li empty
+    \li stores the list of patches, which represent a last-known-good configuration. This is automatically copied from \c applied after a run of autoapply succeeds.
+    \row
     \li applyOnBoot
     \li Boolean
     \li \c false
