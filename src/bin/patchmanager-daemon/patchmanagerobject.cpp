@@ -571,6 +571,24 @@ void PatchManagerObject::doRegisterDBus()
     m_dbusRegistered = true;
 }
 
+/*!
+    \fn void PatchManagerObject::prepareCacheRoot()
+
+    Despite its name does not actually prepare the cache root.
+    Instead, this is tha main "auto apply" function.
+
+    \list
+    \li first, apply all enabled patches which are listend in the \l{order}{inifile} settings key.
+    \li second, apply all enabled patches which remain (if any).
+    \li if applying any patch fails, the local \c success variable will be set to \c false, but the applying will continue.
+    \li at the end of the process, if \c success is \c true, calls setLastGoodPatches()
+    \li at the end of the process, if \c success is \c false, calls refreshPatchList()
+    \endlist
+()
+    Emits signals \c autoApplyingStarted(), \c autoApplyingPatch(), \c autoApplyingFailed(), autoApplyingFinished(), depending on state.
+
+    \sa PatchManagerObject::doPrepareCache(), {Patchmanager Configuration Files}, inifile, refreshPatchList(), setLastGoodPatches()
+*/
 void PatchManagerObject::doPrepareCacheRoot()
 {
     qDebug() << Q_FUNC_INFO;
@@ -631,10 +649,13 @@ void PatchManagerObject::doPrepareCacheRoot()
 
 /*!
     \fn void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply = true)
-    \fn void PatchManagerObject::prepareCacheRoot()
 
     Creates the cache directory where patched files will be stored
-    and read from when passed to the preload library
+    and read from when passed to the preload library.
+
+    \c It will create the cache for the Patch \a patchName, and optionally \a apply it.
+
+    \sa PatchManagerObject::prepareCacheRoot()
 */
 void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 {
