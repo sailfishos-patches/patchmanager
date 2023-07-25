@@ -41,7 +41,6 @@ jobs:
             sudo apt-get -qq install -y qdoc-qt5;
             sudo apt-get -qq install -y qtbase5-dev;
             sudo apt-get -qq install -y git-core;
-            qdoc --version;
             mkdir -p build ;
             cd build ;
             cp -r /share/* . ;
@@ -64,7 +63,7 @@ jobs:
       run: |
         mkdir -p $GITHUB_WORKSPACE/$DOC_TARGET_DIR/doc/generated/
         rm -rf $GITHUB_WORKSPACE/$DOC_TARGET_DIR/doc/generated/*
-        cp -rv out/* $GITHUB_WORKSPACE/$DOC_TARGET_DIR/doc/generated/
+        cp -r out/* $GITHUB_WORKSPACE/$DOC_TARGET_DIR/doc/generated/
 
     # Add and commit the results to the target branch
     - name: Add and Commit
