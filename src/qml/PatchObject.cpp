@@ -56,6 +56,33 @@
 /*! \qmlsignal PatchObject::busyChanged();
     \internal
 */
+/*! \qmlproperty string PatchObject::details::category
+    Corresponds to the field of the same name in the patch metadata. See \l{metadata}
+*/
+/*! \qmlproperty string PatchObject::details::display_name
+    Corresponds to the field of the same name in the patch metadata. See \l{metadata}
+*/
+/*! \qmlproperty string PatchObject::details::name
+    Corresponds to the field of the same name in the patch metadata. See \l{metadata}
+*/
+/*! \qmlproperty string PatchObject::details::patch
+    Corresponds to the field of the same name in the patch metadata. See \l{metadata}
+*/
+/*! \qmlproperty string PatchObject::details::section
+    Corresponds to the field of the same name in the patch metadata. See \l{metadata}
+*/
+/*! \qmlproperty bool PatchObject::details::isNewPatch
+    \c true if this patches metadata is in current format, \c false if it's legacy data. See \l{metadata}
+*/
+/*! \qmlproperty bool PatchObject::details::patched
+    \c true if this patch is currently applied, \c false otherwise.
+*/
+/*! \qmlproperty string PatchObject::details::ok
+    \c true if the last apply process succeeded, \c false otherwise.
+*/
+/*! \qmlproperty string PatchObject::details::log
+    Holds the output from the latest patching process.
+*/
 
 PatchObject::PatchObject(const QVariantMap &data, QObject *parent)
     : QObject(parent)
@@ -78,6 +105,8 @@ PatchObject::PatchObject(const QVariantMap &data, QObject *parent)
 /*! \class PatchObject
     \inmodule org.SfietKonstantin.patchmanager
     \brief An element to be used as content of an \l {PatchManagerModel}
+
+    Upon construction, the \c data parameter is mapped to PatchObject::detail
 */
 PatchObject::~PatchObject()
 {
@@ -85,14 +114,11 @@ PatchObject::~PatchObject()
     emit toBeDestroyed(this);
 }
 
-/*! \qmlproperty var PatchObject::details
-
-    Holds the Patch metadata.
-*/
 /*! \property PatchObject::details
-    \inheaderfile PatchObject.hpp
 
-    \sa {https://doc.qt.io/qt-5/qqmlpropertymap.html}{QQmlPropertyMap}
+    Maps the internal property names and values to QML properties.
+
+    See \l {https://doc.qt.io/qt-5/qqmlpropertymap.html}{QQmlPropertyMap}
  */
 QQmlPropertyMap *PatchObject::details()
 {
@@ -104,7 +130,7 @@ QQmlPropertyMap *PatchObject::details()
    \c true when an internal operation is in progress.
 */
 /*! \property PatchObject::busy
-    \inheaderfile PatchObject.hpp
+
    \c true when an internal operation is in progress.
  */
 /*! Returns \c true when an internal operation is in progress. */
@@ -116,7 +142,8 @@ bool PatchObject::busy() const
 /*!
     Fills the PatchObject's properties from \a data.
 
-    \note If there is a "display_name" field in \a data, it is used. Otherwise, patch name is used.
+    If there is a \c display_name field in \a data, and \a data is treated as regular patch metadata (\c isNewPatch is set to \c true).
+    Otherwise, the field \c name is used for display name, and the data is treated as legacy metadata.
 */
 void PatchObject::setData(const QVariantMap &data)
 {
@@ -133,10 +160,9 @@ void PatchObject::setData(const QVariantMap &data)
 }
 
 /*!
-    Calls PatchManager::applyPatch with the patch name. If \a callback is callable, calls it afterwards.
-    Does nothing if the \c "patched" property is \c true.
+    Calls PatchManager::applyPatch with the patch name. Calls \a callback afterwards (if callable).
 
-    \sa PatchManager::applyPatch
+    \note Does nothing if the \c patched property is \c true.
 */
 void PatchObject::apply(QJSValue callback)
 {
@@ -176,10 +202,9 @@ void PatchObject::apply(QJSValue callback)
 }
 
 /*!
-    Calls PatchManager::unapplyPatch() with the patch name. If \a callback is callable, calls it afterwards.
-    Does nothing if the \c "patched" property is \c false.
+    Calls PatchManager::unapplyPatch with the patch name. Calls \a callback afterwards (if callable).
 
-    \sa PatchManager::unapplyPatch
+    \note Does nothing if the \c patched property is \c false.
 */
 void PatchObject::unapply(QJSValue callback)
 {
@@ -240,7 +265,7 @@ void PatchObject::uninstall()
     });
 }
 
-/*!  Calls PatchManager::resetState. */
+/*!  Calls PatchManager::resetState with the patch name. */
 void PatchObject::resetState()
 {
     qDebug() << Q_FUNC_INFO;
