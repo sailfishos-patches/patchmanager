@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- webdownloader.cpp -->
+  <title>WebDownloader Class | Patchmanager Documentation 2.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content">
+  </div>
+  <div class="breadcrumb">
+    <ul>
+      <!--  Breadcrumbs go here -->
+<li>https://github.com/sailfishos-patches/patchmanager/wiki</li>
+<li><a href="../patchmanager/index.html">Patchmanager Documentation</a></li>
+<li>WebDownloader</li>
+    </ul>
+  </div>
+</div>
+<div class="content">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">WebDownloader Class</h1>
+<!-- $$$WebDownloader-brief -->
+<p>Downloads Patch archives from the <a href="../patchmanager/pmwc.html">Web Catalog</a> <a href="#details">More...</a></p>
+<!-- @@@WebDownloader -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;WebDownloader&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-webdownloader.html">WebDownloader</a></td></tr></table></div><ul>
+<li><a href="webdownloader-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="webdownloader.html#WebDownloader">WebDownloader</a></b>(QObject *<i>parent</i> = 0)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="webdownloader.html#start">start</a></b>()</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="webdownloader.html#downloadError">downloadError</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="webdownloader.html#downloadFinished">downloadFinished</a></b>(const QString &amp;<i>patch</i>, const QString &amp;<i>fileName</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$WebDownloader-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>Downloads Patch archives from the <a href="../patchmanager/pmwc.html">Web Catalog</a></p>
+</div>
+<!-- @@@WebDownloader -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$WebDownloader[overload1]$$$WebDownloaderQObject* -->
+<h3 class="fn" id="WebDownloader"><a name="WebDownloader"></a>WebDownloader::<span class="name">WebDownloader</span>(<span class="type">QObject</span> *<i>parent</i> = 0)</h3>
+<p>Default constructs an instance of WebDownloader.</p><!-- @@@WebDownloader -->
+<!-- $$$downloadError[overload1]$$$downloadError -->
+<h3 class="fn" id="downloadError"><a name="downloadError"></a><code>[signal] </code><span class="type">void</span> WebDownloader::<span class="name">downloadError</span>()</h3>
+<p>This signal is emitted when a download failed.</p>
+<!-- @@@downloadError -->
+<!-- $$$downloadFinished[overload1]$$$downloadFinishedconstQString&constQString& -->
+<h3 class="fn" id="downloadFinished"><a name="downloadFinished"></a><code>[signal] </code><span class="type">void</span> WebDownloader::<span class="name">downloadFinished</span>(const <span class="type">QString</span> &amp;<i>patch</i>, const <span class="type">QString</span> &amp;<i>fileName</i>)</h3>
+<p>This signal is emitted when <i>patch</i> has finished downloading, resulting in <i>fileName</i>.</p>
+<!-- @@@downloadFinished -->
+<!-- $$$start[overload1]$$$start -->
+<h3 class="fn" id="start"><a name="start"></a><span class="type">void</span> WebDownloader::<span class="name">start</span>()</h3>
+<p>starts the download, using compile-time variable <i>MEDIA_URL</i> as source.</p>
+<!-- @@@start -->
+</div>
+<div align='center'><hr/> <p><small>Patchmanager Documentation
+Copyright (c) 2023 Patchmanager for SailfishOS contributors.
+This document may be used under the terms of the  <a href='https://spdx.org/licenses/CC-BY-SA-4.0.html'> Creative Commons Attribution Share Alike 4.0 International</a>  License.</small></p> <p/></div></body>
+</html>

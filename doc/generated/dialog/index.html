@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- dialog.qdoc -->
+  <title>Patchmanager Documentation: Startup Dialog | Patchmanager Documentation 2.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content">
+  </div>
+  <div class="breadcrumb">
+    <ul>
+      <!--  Breadcrumbs go here -->
+<li>https://github.com/sailfishos-patches/patchmanager/wiki</li>
+<li><a href="../patchmanager/index.html">Patchmanager Documentation</a></li>
+<li>Patchmanager Documentation: Startup Dialog</li>
+    </ul>
+  </div>
+</div>
+<div class="content">
+<p class="naviNextPrevious headerNavi">
+</p><p/>
+<h1 class="title">Patchmanager Documentation: Startup Dialog</h1>
+<span class="subtitle"></span>
+<!-- $$$index.html-description -->
+<div class="descr"> <a name="details"></a>
+<p>This is a very simple Sailfish OS application that upon start checks the state of the Patchmanager Daemon to see whether it needs to launch a GUI.</p>
+<a name="user-interface-dialog"></a>
+<h2 id="user-interface-dialog">User Interface: Dialog</h2>
+<p>At start it shows a <a href="https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-remorseitem.html/">RemorseItem</a> with a timeout of 10 seconds. If the user cancels this dialog, the PM deamon will not activate any patches (with the side-effect of marking all as disabled.)</p>
+<p>If the Remorse timer runs out, the PM daemon will activate all Patches marked as enabled, and the Dialog shows a little progress bar while it's doing that.</p>
+<p>Patches failing to apply will be logged, and reported.</p>
+<p>After ending any of the above operations, a <b>&quot;Quit&quot;</b> button is activated which will close the application.</p>
+<p>This dialog will only be shown if the option <b>&quot;Apply on Boot&quot;</b> is <code>off</code>.</p>
+<a name="application-startup"></a>
+<h2 id="application-startup">Application Startup</h2>
+<p>Upon launch, the binary will check the following:</p>
+<ul>
+<li>whether <a href="../qml-plugin/patchmanager.html#applyOnBoot-prop">applyOnBoot</a> is set in <code>/etc/patchmanager2.conf</code>.</li>
+<li>the result of a call to the <a href="../daemon/patchmanagerobject.html#getLoaded">getLoaded</a> D-Bus method on the Daemon.</li>
+</ul>
+<p>If the first is set to <code>true</code>, it will exit. (Because with this setting on, all patches will be activate at boot, without the need of a Startup Dialog.)</p>
+<p>If the reply indicates that PM has not been initialized, it will launch the QML UI. Otherwise it will exit.</p>
+<a name="d-bus-interface"></a>
+<h3 >D-Bus interface</h3>
+<p>The dialog implements a D-Bus method <code>show</code> i on the root path of the <code>org.SfietKonstantin.patchmanager</code> service to invoke the UI:</p>
+<pre class="cpp">
+ &lt;interface name=&quot;org.SfietKonstantin.patchmanager&quot;&gt;
+   &lt;method name=&quot;show&quot;&gt;
+       &lt;annotation name=&quot;org.freedesktop.DBus.Method.NoReply&quot; value=&quot;true&quot;/&gt;
+   &lt;/method&gt;
+ &lt;/interface&gt;
+</pre>
+<p>This is used by <a href="../daemon/patchmanagerobject.html#lipstickChanged">PatchManagerObject::lipstickChanged</a> to open the dialog once it has initialized.</p>
+</div>
+<p><b>See also </b><a href="../patchmanager/pmservices.html">Patchmanager Services</a> and <a href="../patchmanager/pmconfig.html">Patchmanager Configuration Files</a>.</p>
+<!-- @@@index.html -->
+<p class="naviNextPrevious footerNavi">
+</p>
+<div align='center'><hr/> <p><small>Patchmanager Documentation
+Copyright (c) 2023 Patchmanager for SailfishOS contributors.
+This document may be used under the terms of the  <a href='https://spdx.org/licenses/CC-BY-SA-4.0.html'> Creative Commons Attribution Share Alike 4.0 International</a>  License.</small></p> <p/></div></body>
+</html>

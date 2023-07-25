@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- index.qdoc -->
+  <title>Patchmanager Configuration Files | Patchmanager Documentation</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content">
+  </div>
+  <div class="breadcrumb">
+    <ul>
+      <!--  Breadcrumbs go here -->
+<li>https://github.com/sailfishos-patches/patchmanager/wiki</li>
+<li><a href="index.html">Patchmanager Documentation</a></li>
+<li>Patchmanager Configuration Files</li>
+    </ul>
+  </div>
+</div>
+<div class="content">
+  <link rel="prev" href="pmservices.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="pmservices.html">Patchmanager Services</a>
+</p><p/>
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level2"><a href="#op-op-etc-op-op-patchmanager2-op-op-conf"><code>/etc/patchmanager2.conf</code></a></li>
+<li class="level3"><a href="#settings"><code>settings</code></a></li>
+<li class="level3"><a href="#op-op-votes-op-op"><code>[votes]</code></a></li>
+<li class="level2"><a href="#op-op-var-op-op-lib-op-op-environment-op-op-patchmanager-op-op-dialog-comment-conf-comment"><code>/var/lib/environment/patchmanager-dialog/*.conf</code></a></li>
+<li class="level2"><a href="#op-op-var-op-op-lib-op-op-environment-op-op-patchmanager-op-op-number-10-number-op-op-dbus-op-op-conf"><code>/var/lib/environment/patchmanager/10-dbus.conf</code></a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Patchmanager Configuration Files</h1>
+<span class="subtitle"></span>
+<!-- $$$pmconfig.html-description -->
+<div class="descr"> <a name="details"></a>
+<a name="op-op-etc-op-op-patchmanager2-op-op-conf"></a>
+<h3 ><code>/etc/patchmanager2.conf</code></h3>
+<a name="inifile"></a><p>INI-style configuration file and state storage.</p>
+<p>It currently consists of two sections: <code>settings</code>, and <code>votes</code></p>
+<a name="settings"></a>
+<h4 ><code>settings</code></h4>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Key</th><th >Type</th><th >default</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td >applied</td><td >list of strings, comma-separated</td><td >empty</td><td >stores the list of &quot;activated&quot; patches</td></tr>
+<tr valign="top" class="even"><td >applyOnBoot</td><td >Boolean</td><td ><code>false</code></td><td >Whether to activate Patches at boot, or show the {Patchmanager Documentation: Startup Dialog}{Startup Dialog}</td></tr>
+<tr valign="top" class="odd"><td >bitnessMangle</td><td >Boolean</td><td ><code>false</code></td><td >Convert patch contents so they can apply on the local architecture (e.g&#x2e; <code>lib</code> vs. <code>lib64</code> path segments)</td></tr>
+<tr valign="top" class="even"><td >developerMode</td><td >Boolean</td><td ><code>false</code></td><td ><b>Warning:</b> <b>deprecated</b>. Pre-Patchmanager v3.2&#x2e;7, this was used to store the settings for &quot;Developer Mode&quot;. This has now been split into <code>patchDevelMode</code> and <code>sfosVersionCheck</code></td></tr>
+<tr valign="top" class="odd"><td >notifyOnSuccess</td><td >Boolean</td><td ><code>true</code></td><td >Whether to show success messages in the UI</td></tr>
+<tr valign="top" class="even"><td >order</td><td >list of strings, comma-separated</td><td >empty</td><td >The order of the list of patches, bith in the UI as well as the order they will be applied/activated.</td></tr>
+<tr valign="top" class="odd"><td >patchDevelMode</td><td >Boolesn</td><td ><code>false</code></td><td ></td></tr>
+<tr valign="top" class="even"><td >sfosVersionCheck</td><td >Integer (Enum)</td><td >0 (strict)</td><td >Whether to relax the version checking in the PM GUI. The default will only allow Patches to be downloaded, or activated, whose compatibility field matches the currently running OS version exactly.</td></tr>
+</table></div>
+<a name="op-op-votes-op-op"></a>
+<h4 ><code>[votes]</code></h4>
+<p><i>to be written..&#x2e;</i></p>
+<a name="op-op-var-op-op-lib-op-op-environment-op-op-patchmanager-op-op-dialog-comment-conf-comment"></a>
+<h3 ><code>/var/lib/environment/patchmanager-dialog/*.conf</code></h3>
+<a name="op-op-var-op-op-lib-op-op-environment-op-op-patchmanager-op-op-number-10-number-op-op-dbus-op-op-conf"></a>
+<h3 ><code>/var/lib/environment/patchmanager/10-dbus.conf</code></h3>
+</div>
+<!-- @@@pmconfig.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="pmservices.html">Patchmanager Services</a>
+</p>
+<div align='center'><hr/> <p><small>Patchmanager Documentation
+Copyright (c) 2023 Patchmanager for SailfishOS contributors.
+This document may be used under the terms of the  <a href='https://spdx.org/licenses/CC-BY-SA-4.0.html'> Creative Commons Attribution Share Alike 4.0 International</a>  License.</small></p> <p/></div></body>
+</html>

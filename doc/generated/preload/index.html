@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- preloadpatchmanager.qdoc -->
+  <title>Patchmanager Documentation: Preload Library | Patchmanager Documentation 2.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content">
+  </div>
+  <div class="breadcrumb">
+    <ul>
+      <!--  Breadcrumbs go here -->
+<li>https://github.com/sailfishos-patches/patchmanager/wiki</li>
+<li><a href="../patchmanager/index.html">Patchmanager Documentation</a></li>
+<li>Patchmanager Documentation: Preload Library</li>
+    </ul>
+  </div>
+</div>
+<div class="content">
+<p class="naviNextPrevious headerNavi">
+</p><p/>
+<h1 class="title">Patchmanager Documentation: Preload Library</h1>
+<span class="subtitle"></span>
+<!-- $$$index.html-description -->
+<div class="descr"> <a name="details"></a>
+<a name="overview"></a>
+<h2 id="overview">Overview</h2>
+<p>This library</p>
+<ul>
+<li>Intercepts calls to <a href="https://www.man7.org/linux/man-pages/man2/open.2.html"><code>open()</code> (or <code>open64()</code>)</a>,</li>
+<li>analyzes which files the call was meant to open</li>
+<li>asks the Patchmanager Daemon (via socket) whether it knows of a patched version.</li>
+</ul>
+<p>If yes, the daemon will return a path to its cachedir, and the library redirects the call to that file instead of the original. Otherwise, the <code>open()</code> is executed on the original file.</p>
+<p>Certain paths are blacklisted for these operations to reduce the risk of critical services, or PM itself, choking on these redirections.</p>
+<p><i>to be continued..&#x2e;</i></p>
+<a name="implementation"></a>
+<h2 id="implementation">Implementation</h2>
+<p><i>to be continued..&#x2e;</i></p>
+<a name="blacklists"></a>
+<h4 >Blacklists:</h4>
+<p>The following two &quot;blacklists&quot; cause the lib to back off redirecting calls for paths matching one of the entries in the list:</p>
+<p>Paths that start with one of these patterns are skipped</p>
+<pre class="qml">
+ <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span>blacklist_paths_startswith<span class="operator">[</span><span class="operator">]</span> <span class="operator">=</span> {
+     <span class="string">&quot;/dev&quot;</span><span class="operator">,</span>
+     <span class="string">&quot;/sys&quot;</span><span class="operator">,</span>
+     <span class="string">&quot;/proc&quot;</span><span class="operator">,</span>
+     <span class="string">&quot;/run&quot;</span><span class="operator">,</span>
+     <span class="string">&quot;/tmp&quot;</span><span class="operator">,</span>
+ };
+</pre>
+<p>Paths that match exactly one of these patterns are skipped</p>
+<pre class="qml">
+ <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span>blacklist_paths_equal<span class="operator">[</span><span class="operator">]</span> <span class="operator">=</span> {
+     <span class="string">&quot;/&quot;</span><span class="operator">,</span>
+ };
+</pre>
+<a name="building"></a>
+<h3 >Building</h3>
+<p>The following <code>#defines</code> can be used to alter the library behaviour at compile-time</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Define</th><th >Default</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td >NO_INTERCEPT</td><td >undefined</td><td >Compiles out all of the actual redirection code, leaving the rest in place. Can be used in extreme debugging cases te track what is going on without affecting applications.</td></tr>
+<tr valign="top" class="even"><td >ALLOW_ALL_USERS</td><td >defined</td><td >Only allow preloading for users with an UID &gt;= <code>UID_MIN</code>, default 100000</td></tr>
+</table></div>
+<a name="running"></a>
+<h2 id="running">Running</h2>
+<a name="installation"></a>
+<h3 >Installation</h3>
+<p>Once the library is installed in one of the standard library paths, the following is added to the file <code>/etc/ld.so.preload</code></p>
+<pre class="cpp">
+ /usr/lib/libpreloadpatchmanager.so
+</pre>
+<pre class="cpp">
+ /usr/lib64/libpreloadpatchmanager.so
+</pre>
+<p>which causes it to be loaded into any binary process that is launched.</p>
+<a name="environment"></a>
+<h3 >Environment</h3>
+<p>The library reacts on the following environment variables:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Variable</th><th >Default</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td >NO_PM_PRELOAD</td><td >undefined</td><td >Makes the lib skip finding files to redirect to, effectively diabling it ofr practical purposes. Intended to be set for processes which should operate on unpatched original files.</td></tr>
+<tr valign="top" class="even"><td >PM_PRELOAD_DEBUG</td><td >undefined</td><td >Enables debugging output; messages are prefixed with <code>[pm_name]</code>, <code>[open]</code>, or <code>[open64]</code> depending on operation.</td></tr>
+</table></div>
+<p>Set them to any value to make them take effect</p>
+<a name="socket"></a>
+<h3 >Socket</h3>
+<p>The library will try to open a socket at <code>/tmp/patchmanager-socket</code> in order to communicate with the Patchmanager Daemon</p>
+</div>
+<!-- @@@index.html -->
+<p class="naviNextPrevious footerNavi">
+</p>
+<div align='center'><hr/> <p><small>Patchmanager Documentation
+Copyright (c) 2023 Patchmanager for SailfishOS contributors.
+This document may be used under the terms of the  <a href='https://spdx.org/licenses/CC-BY-SA-4.0.html'> Creative Commons Attribution Share Alike 4.0 International</a>  License.</small></p> <p/></div></body>
+</html>

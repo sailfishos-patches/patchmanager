@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- patchmanagermodel.cpp -->
+  <title>PatchManagerModel Class | Patchmanager Documentation 2.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content">
+  </div>
+  <div class="breadcrumb">
+    <ul>
+      <!--  Breadcrumbs go here -->
+<li>https://github.com/sailfishos-patches/patchmanager/wiki</li>
+<li><a href="../patchmanager/index.html">Patchmanager Documentation</a></li>
+<li>PatchManagerModel</li>
+    </ul>
+  </div>
+</div>
+<div class="content">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">PatchManagerModel Class</h1>
+<!-- $$$PatchManagerModel-brief -->
+<p>A ListModel containing the metadata of Patches. <a href="#details">More...</a></p>
+<!-- @@@PatchManagerModel -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;patchmanagermodel.h&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-patchmanagermodel.html">PatchManagerModel</a></td></tr></table></div><ul>
+<li><a href="patchmanagermodel-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="patchmanagermodel.html#PatchManagerModel">PatchManagerModel</a></b>(QObject *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="patchmanagermodel.html#PatchManagerModel-1">PatchManagerModel</a></b>(const QList&lt;PatchObject *&gt; &amp;<i>data</i>, QObject *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="patchmanagermodel.html#isApplied">isApplied</a></b>(const QString &amp;<i>name</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanagermodel.html#move">move</a></b>(int <i>from</i>, int <i>to</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="patchmanagermodel.html#patchName">patchName</a></b>(const QString &amp;<i>patch</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QList&lt;PatchObject *&gt; </td><td class="memItemRight bottomAlign"><b><a href="patchmanagermodel.html#patches">patches</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanagermodel.html#populateData">populateData</a></b>(const QVariantList &amp;<i>data</i>, const QString &amp;<i>patch</i>, bool <i>installed</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanagermodel.html#removePatch">removePatch</a></b>(const QString &amp;<i>patch</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanagermodel.html#saveLayout">saveLayout</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanagermodel.html#setPatches">setPatches</a></b>(const QList&lt;PatchObject *&gt; &amp;<i>patches</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$PatchManagerModel-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>A ListModel containing the metadata of Patches.</p>
+<p>Currently it defines the following Roles:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Qt Role</th><th >QML Role Name</th></tr></thead>
+<tr valign="top" class="odd"><td ><a href="https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum">Qt::DisplayRole</a></td><td >name</td></tr>
+<tr valign="top" class="even"><td ><a href="https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum">Qt::DecorationRole</a></td><td >section</td></tr>
+<tr valign="top" class="odd"><td ><a href="https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum">Qt::EditRole</a></td><td >patchObject</td></tr>
+</table></div>
+</div>
+<p><b>See also </b><a href="https://doc.qt.io/qt-5/qabstractitemmodel.html">Qt::QAbstractItemModel</a>.</p>
+<!-- @@@PatchManagerModel -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$PatchManagerModel[overload1]$$$PatchManagerModelQObject* -->
+<h3 class="fn" id="PatchManagerModel"><a name="PatchManagerModel"></a>PatchManagerModel::<span class="name">PatchManagerModel</span>(<span class="type">QObject</span> *<i>parent</i> = nullptr)</h3>
+<p>Default constructs an instance of PatchManagerModel.</p><!-- @@@PatchManagerModel -->
+<!-- $$$PatchManagerModel$$$PatchManagerModelconstQList<PatchObject*>&QObject* -->
+<h3 class="fn" id="PatchManagerModel-1"><a name="PatchManagerModel-1"></a>PatchManagerModel::<span class="name">PatchManagerModel</span>(const <span class="type">QList</span>&lt;<span class="type"><a href="qml-patchobject.html">PatchObject</a></span> *&gt; &amp;<i>data</i>, <span class="type">QObject</span> *<i>parent</i> = nullptr)</h3>
+<p>Default constructs an instance of PatchManagerModel.</p><!-- @@@PatchManagerModel -->
+<!-- $$$isApplied[overload1]$$$isAppliedconstQString& -->
+<h3 class="fn" id="isApplied"><a name="isApplied"></a><span class="type">bool</span> PatchManagerModel::<span class="name">isApplied</span>(const <span class="type">QString</span> &amp;<i>name</i>) const</h3>
+<p>Returns /c true if patch <i>name</i> is in the list of applied (activated) patches.</p>
+<!-- @@@isApplied -->
+<!-- $$$move[overload1]$$$moveintint -->
+<h3 class="fn" id="move"><a name="move"></a><span class="type">void</span> PatchManagerModel::<span class="name">move</span>(<span class="type">int</span> <i>from</i>, <span class="type">int</span> <i>to</i>)</h3>
+<p>Moves an entry from index <i>from</i> to index <i>to</i></p>
+<!-- @@@move -->
+<!-- $$$patchName[overload1]$$$patchNameconstQString& -->
+<h3 class="fn" id="patchName"><a name="patchName"></a><span class="type">QString</span> PatchManagerModel::<span class="name">patchName</span>(const <span class="type">QString</span> &amp;<i>patch</i>) const</h3>
+<p>Returns the <i>display_name</i> of <i>patch</i>.</p>
+<!-- @@@patchName -->
+<!-- $$$patches[overload1]$$$patches -->
+<h3 class="fn" id="patches"><a name="patches"></a><span class="type">QList</span>&lt;<span class="type"><a href="qml-patchobject.html">PatchObject</a></span> *&gt; PatchManagerModel::<span class="name">patches</span>() const</h3>
+<p>Returns the list of patches</p>
+<p><b>See also </b><a href="patchmanagermodel.html#setPatches">setPatches</a>().</p>
+<!-- @@@patches -->
+<!-- $$$populateData[overload1]$$$populateDataconstQVariantList&constQString&bool -->
+<h3 class="fn" id="populateData"><a name="populateData"></a><span class="type">void</span> PatchManagerModel::<span class="name">populateData</span>(const <span class="type">QVariantList</span> &amp;<i>data</i>, const <span class="type">QString</span> &amp;<i>patch</i>, <span class="type">bool</span> <i>installed</i>)</h3>
+<p>Does nothing if both <i>data</i> and <i>patch</i> are empty.</p>
+<p>If <i>patch</i> is empty, and we have <i>data</i>, extracts the patch name from <i>data</i> and adds the metadata to the model.</p>
+<p>If we have <i>patch</i> and <i>data</i>, and <i>installed</i> is <code>true</code>, add the data to the model.</p>
+<p>If we have <i>patch</i> and <i>data</i>, and <i>installed</i> is <code>false</code>, just create a <a href="qml-patchobject.html">PatchObject</a> from <i>data</i>.</p>
+<p><b>Warning:</b> that last part is not yet documented.</p>
+<p><b>See also </b><a href="patchmanagermodel.html#saveLayout">saveLayout</a>().</p>
+<!-- @@@populateData -->
+<!-- $$$removePatch[overload1]$$$removePatchconstQString& -->
+<h3 class="fn" id="removePatch"><a name="removePatch"></a><span class="type">void</span> PatchManagerModel::<span class="name">removePatch</span>(const <span class="type">QString</span> &amp;<i>patch</i>)</h3>
+<p>removes the patch with the name <i>patch</i> from the model.</p>
+<!-- @@@removePatch -->
+<!-- $$$saveLayout[overload1]$$$saveLayout -->
+<h3 class="fn" id="saveLayout"><a name="saveLayout"></a><span class="type">void</span> PatchManagerModel::<span class="name">saveLayout</span>()</h3>
+<p>Saves the current order of patch names to Settings.</p>
+<!-- @@@saveLayout -->
+<!-- $$$setPatches[overload1]$$$setPatchesconstQList<PatchObject*>& -->
+<h3 class="fn" id="setPatches"><a name="setPatches"></a><span class="type">void</span> PatchManagerModel::<span class="name">setPatches</span>(const <span class="type">QList</span>&lt;<span class="type"><a href="qml-patchobject.html">PatchObject</a></span> *&gt; &amp;<i>patches</i>)</h3>
+<p>clears the model data and sets <i>patches</i> as new model data.</p>
+<p><b>See also </b><a href="patchmanagermodel.html#patches">patches</a>().</p>
+<!-- @@@setPatches -->
+</div>
+<div align='center'><hr/> <p><small>Patchmanager Documentation
+Copyright (c) 2023 Patchmanager for SailfishOS contributors.
+This document may be used under the terms of the  <a href='https://spdx.org/licenses/CC-BY-SA-4.0.html'> Creative Commons Attribution Share Alike 4.0 International</a>  License.</small></p> <p/></div></body>
+</html>

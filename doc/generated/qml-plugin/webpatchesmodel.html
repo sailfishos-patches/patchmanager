@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- webpatchesmodel.cpp -->
+  <title>WebPatchesModel Class | Patchmanager Documentation 2.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content">
+  </div>
+  <div class="breadcrumb">
+    <ul>
+      <!--  Breadcrumbs go here -->
+<li>https://github.com/sailfishos-patches/patchmanager/wiki</li>
+<li><a href="../patchmanager/index.html">Patchmanager Documentation</a></li>
+<li>WebPatchesModel</li>
+    </ul>
+  </div>
+</div>
+<div class="content">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">WebPatchesModel Class</h1>
+<!-- $$$WebPatchesModel-brief -->
+<p>The <a href="webpatchesmodel.html">WebPatchesModel</a> holds elements from the <a href="../patchmanager/pmwc.html">Web Catalog</a>. <a href="#details">More...</a></p>
+<!-- @@@WebPatchesModel -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;WebPatchesModel&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-webpatchesmodel.html">WebPatchesModel</a></td></tr></table></div><ul>
+<li><a href="webpatchesmodel-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn"><b><a href="webpatchesmodel.html#queryParams-prop">queryParams</a></b> : QVariantMap</li>
+<li class="fn"><b><a href="webpatchesmodel.html#sorted-prop">sorted</a></b> : bool</li>
+</ul>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="webpatchesmodel.html#WebPatchesModel">WebPatchesModel</a></b>(QObject *<i>parent</i> = 0)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual </td><td class="memItemRight bottomAlign"><b><a href="webpatchesmodel.html#dtor.WebPatchesModel">~WebPatchesModel</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="webpatchesmodel.html#classBegin">classBegin</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="webpatchesmodel.html#componentComplete">componentComplete</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVariant </td><td class="memItemRight bottomAlign"><b><a href="webpatchesmodel.html#data">data</a></b>(const QModelIndex &amp;<i>index</i>, int <i>role</i> = Qt::DisplayRole) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVariantMap </td><td class="memItemRight bottomAlign"><b><a href="webpatchesmodel.html#queryParams-prop">queryParams</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QHash&lt;int, QByteArray&gt; </td><td class="memItemRight bottomAlign"><b><a href="webpatchesmodel.html#roleNames">roleNames</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="webpatchesmodel.html#rowCount">rowCount</a></b>(const QModelIndex &amp;<i>parent</i> = QModelIndex()) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="webpatchesmodel.html#queryParams-prop">setQueryParams</a></b>(const QVariantMap &amp;<i>queryParams</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="webpatchesmodel.html#sorted-prop">setSorted</a></b>(const bool &amp;<i>sorted</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="webpatchesmodel.html#sorted-prop">sorted</a></b>() const</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="webpatchesmodel.html#queryParams-prop">queryParamsChanged</a></b>(const QVariantMap &amp;<i>queryParams</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="webpatchesmodel.html#sorted-prop">sortedChanged</a></b>()</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$WebPatchesModel-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>The <a href="webpatchesmodel.html">WebPatchesModel</a> holds elements from the <a href="../patchmanager/pmwc.html">Web Catalog</a>.</p>
+<p>Roles follow the Patch JSON format, hence the following are defined:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Qt Role</th><th >QML Role Name</th></tr></thead>
+<tr valign="top" class="odd"><td ></td><td >description</td></tr>
+<tr valign="top" class="even"><td ></td><td >last_updated</td></tr>
+<tr valign="top" class="odd"><td ></td><td >name</td></tr>
+<tr valign="top" class="even"><td ></td><td >display_name</td></tr>
+<tr valign="top" class="odd"><td ></td><td >category</td></tr>
+<tr valign="top" class="even"><td ></td><td >author</td></tr>
+<tr valign="top" class="odd"><td ></td><td >rating</td></tr>
+<tr valign="top" class="even"><td ></td><td >total_activations</td></tr>
+</table></div>
+</div>
+<p><b>See also </b><a href="https://doc.qt.io/qt-5/qabstractitemmodel.html">Qt::QAbstractItemModel</a>.</p>
+<!-- @@@WebPatchesModel -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$queryParams-prop$$$queryParams$$$setQueryParamsconstQVariantMap&$$$queryParamsChangedconstQVariantMap& -->
+<h3 class="fn" id="queryParams-prop"><a name="queryParams-prop"></a><span class="name">queryParams</span> : <span class="type">QVariantMap</span></h3>
+<p>Query parameters</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVariantMap </td><td class="memItemRight bottomAlign"><span class="name"><b>queryParams</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setQueryParams</b></span>(const QVariantMap &amp;<i>queryParams</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>queryParamsChanged</b></span>(const QVariantMap &amp;<i>queryParams</i>)</td></tr>
+</table></div>
+<!-- @@@queryParams -->
+<!-- $$$sorted-prop$$$sorted$$$setSortedconstbool&$$$sortedChanged -->
+<h3 class="fn" id="sorted-prop"><a name="sorted-prop"></a><span class="name">sorted</span> : <span class="type">bool</span></h3>
+<p><code>true</code> when the model is sorted</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>sorted</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setSorted</b></span>(const bool &amp;<i>sorted</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>sortedChanged</b></span>()</td></tr>
+</table></div>
+<!-- @@@sorted -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$WebPatchesModel[overload1]$$$WebPatchesModelQObject* -->
+<h3 class="fn" id="WebPatchesModel"><a name="WebPatchesModel"></a>WebPatchesModel::<span class="name">WebPatchesModel</span>(<span class="type">QObject</span> *<i>parent</i> = 0)</h3>
+<p>Default constructs an instance of WebPatchesModel.</p><!-- @@@WebPatchesModel -->
+<!-- $$$~WebPatchesModel[overload1]$$$~WebPatchesModel -->
+<h3 class="fn" id="dtor.WebPatchesModel"><a name="dtor.WebPatchesModel"></a><code>[virtual] </code>WebPatchesModel::<span class="name">~WebPatchesModel</span>()</h3>
+<p>Destroys the instance of WebPatchesModel. The destructor is virtual.</p><!-- @@@~WebPatchesModel -->
+<!-- $$$classBegin[overload1]$$$classBegin -->
+<h3 class="fn" id="classBegin"><a name="classBegin"></a><span class="type">void</span> WebPatchesModel::<span class="name">classBegin</span>()</h3>
+<p><b>Warning:</b> need to investigate what this is for..&#x2e;</p>
+<!-- @@@classBegin -->
+<!-- $$$componentComplete[overload1]$$$componentComplete -->
+<h3 class="fn" id="componentComplete"><a name="componentComplete"></a><span class="type">void</span> WebPatchesModel::<span class="name">componentComplete</span>()</h3>
+<p>Retrieves the list of patches from the <a href="../patchmanager/pmwc.html">Web Catalog</a>, and populates the model with its contents, sorting them if necessary.</p>
+<p><b>See also </b><a href="webpatchesmodel.html#sorted-prop">setSorted</a>().</p>
+<!-- @@@componentComplete -->
+<!-- $$$data[overload1]$$$dataconstQModelIndex&int -->
+<h3 class="fn" id="data"><a name="data"></a><span class="type">QVariant</span> WebPatchesModel::<span class="name">data</span>(const <span class="type">QModelIndex</span> &amp;<i>index</i>, <span class="type">int</span> <i>role</i> = Qt::DisplayRole) const</h3>
+<p>Returns the data stored under the given <i>role</i> for the item referred to by the <i>index</i>.</p>
+<!-- @@@data -->
+<!-- $$$roleNames[overload1]$$$roleNames -->
+<h3 class="fn" id="roleNames"><a name="roleNames"></a><code>[virtual] </code><span class="type">QHash</span>&lt;<span class="type">int</span>, <span class="type">QByteArray</span>&gt; WebPatchesModel::<span class="name">roleNames</span>() const</h3>
+<p>Returns the model's role names.</p>
+<!-- @@@roleNames -->
+<!-- $$$rowCount[overload1]$$$rowCountconstQModelIndex& -->
+<h3 class="fn" id="rowCount"><a name="rowCount"></a><span class="type">int</span> WebPatchesModel::<span class="name">rowCount</span>(const <span class="type">QModelIndex</span> &amp;<i>parent</i> = QModelIndex()) const</h3>
+<p>Returns the row count.</p>
+<p><b>Note: </b><i>parent</i> is unused</p><!-- @@@rowCount -->
+</div>
+<div align='center'><hr/> <p><small>Patchmanager Documentation
+Copyright (c) 2023 Patchmanager for SailfishOS contributors.
+This document may be used under the terms of the  <a href='https://spdx.org/licenses/CC-BY-SA-4.0.html'> Creative Commons Attribution Share Alike 4.0 International</a>  License.</small></p> <p/></div></body>
+</html>

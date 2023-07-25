@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- index.qdoc -->
+  <title>Patchmanager Overview | Patchmanager Documentation</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content">
+  </div>
+  <div class="breadcrumb">
+    <ul>
+      <!--  Breadcrumbs go here -->
+<li>https://github.com/sailfishos-patches/patchmanager/wiki</li>
+<li><a href="index.html">Patchmanager Documentation</a></li>
+<li>Patchmanager Overview</li>
+    </ul>
+  </div>
+</div>
+<div class="content">
+  <link rel="next" href="pmservices.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="nextPage" href="pmservices.html">Patchmanager Services</a>
+</p><p/>
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#operation-flow">Operation Flow</a></li>
+<li class="level2"><a href="#1-a-patch-is-activated">1. A Patch is &quot;activated&quot;</a></li>
+<li class="level2"><a href="#2-a-patched-application-is-launched">2. A patched application is launched.</a></li>
+<li class="level2"><a href="#3-the-preload-library">3. The Preload Library:</a></li>
+<li class="level1"><a href="#patch-installation">Patch Installation</a></li>
+<li class="level2"><a href="#patch-folder-structure">Patch folder structure</a></li>
+<li class="level2"><a href="#web-catalog">Web Catalog</a></li>
+<li class="level2"><a href="#rpm-package">RPM package</a></li>
+<li class="level2"><a href="#tar-package">TAR package</a></li>
+<li class="level2"><a href="#manual-installation">manual installation</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Patchmanager Overview</h1>
+<span class="subtitle"></span>
+<!-- $$$pmoverview.html-description -->
+<div class="descr"> <a name="details"></a>
+<p>So the current mode of operation of Patchmanager is something like this:</p>
+<a name="operation-flow"></a>
+<h2 id="operation-flow">Operation Flow</h2>
+<a name="1-a-patch-is-activated"></a>
+<h3 >1. A Patch is &quot;activated&quot;</h3>
+<p>When a user activates a patch via the App, a signal is sent to the daemon.</p>
+<p>The daemon will then:</p>
+<p>For each file the patch manipulates, a copy of the original file is put into a cache dir in <code>/tmp</code>, and the changes are applied there instead of on the original file.</p>
+<p>If there are paths or files involved in the patch which do not exist yet in the filesystem, they will be created in the cache dir, and a symlink pointing to them is placed in the original filesystem.</p>
+<a name="2-a-patched-application-is-launched"></a>
+<h3 >2. A patched application is launched.</h3>
+<p>Through library preloading, the <code>libpreloadpatchmanager.so</code> library is injected into the launching binary.</p>
+<a name="3-the-preload-library"></a>
+<h3 >3. The Preload Library:</h3>
+<ul>
+<li>Intercepts calls to <a href="https://www.man7.org/linux/man-pages/man2/open.2.html"><code>open()</code> (or <code>open64()</code>)</a>,</li>
+<li>analyzes which files the call was meant to open</li>
+<li>asks the Patchmanager daemon (via socket) whether it knows of a patched version.</li>
+</ul>
+<p>If yes, the daemon will return a path to its cachedir, and the library redirects the call to that file instead of the original. Otherwise, the <code>open()</code> is executed on the original file.</p>
+<p>Certain paths are blacklisted for these operations to reduce the risk of critical services, or PM itself, choking on these redirections.</p>
+<p><b>Note: </b>After activating a Patch , the daemon may also inform the UI that some apps or services need restart. The UI client is expected to issue the command to restart these soon. As long as the corresponding preocesses are not restarted, the effect of the applied patch will not show, or may only show partially, depending on the &quot;patch history&quot; of the respective process.</p><a name="patch-installation"></a>
+<h2 id="patch-installation">Patch Installation</h2>
+<p>There are three ways a Patch can end up on the system:</p>
+<ul>
+<li>Web Catalog</li>
+<li>RPM package</li>
+<li>TAR package</li>
+<li>manual installation</li>
+</ul>
+<a name="patch-folder-structure"></a>
+<h3 >Patch folder structure</h3>
+<p>All Patches managed by PM are installed under <code>/usr/share/patchmanager/patches/NAME</code>, where NAME is a directory having a unique name.</p>
+<p>That directory must contain at least two files: a <code>JSON</code> file called <code>patch.json</code> containing metadata, and a <code>diff</code> file called <code>unified_diff.patch</code>.</p>
+<p>It may optionally also contain:</p>
+<ul>
+<li>Qt translation (.qm) files</li>
+<li>icon files in PNG format</li>
+<li>a QML file called <code>main.qml</code> (whose root element is a Sailfish Silica <code>Page</code>).</li>
+<li>other QML-compatible files which are referenced/loaded from <code>main.qml</code></li>
+</ul>
+<p><b>Note: </b>the directory NAME is usually and by convention the same as the patch metadata field <code>name</code>, but that is not a requirement. NAME should be reasonably unique though, to avoid name clashes with Patches from others.</p><a name="web-catalog"></a>
+<h3 >Web Catalog</h3>
+<p>Installation via the Patchmanager Web Catalog is the most common and recomended way of installing a patch. This is done through the Patchmanager UI, by selecting <b>install</b> on the <a href="../qml-plugin/qml-webpatchpage.html">Patch Page</a>.</p>
+<p>PM will download metadata and a tarball from the Web Catalog, extract the tarball into the patch storage location, and generate the necessary JSON file from the metadata.</p>
+<a name="rpm-package"></a>
+<h3 >RPM package</h3>
+<p>Patches may be distributed as RPM files, which assure the placement of files according to the structure explained above. RPM also provides advanced features like dependencies and scriptlets which may be necessary for correct operation or installation of a Patch.</p>
+<a name="tar-package"></a>
+<h3 >TAR package</h3>
+<p>Patch developers may sometimes distribute Patches in <code>tar</code> format. Usually they also contain the necessary files, but the contents of the tarball may differ, and recipients of them must assure the layout given above is set up correctly.</p>
+<a name="manual-installation"></a>
+<h3 >manual installation</h3>
+<p>Patch developers or users may want to quickly place a Patch under PM's supervision without going through the hassle of packaging and installing. This can be done easily, as long as the formats given above are followed.</p>
+<p><i>to be continued..&#x2e;</i></p>
+</div>
+<!-- @@@pmoverview.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="nextPage" href="pmservices.html">Patchmanager Services</a>
+</p>
+<div align='center'><hr/> <p><small>Patchmanager Documentation
+Copyright (c) 2023 Patchmanager for SailfishOS contributors.
+This document may be used under the terms of the  <a href='https://spdx.org/licenses/CC-BY-SA-4.0.html'> Creative Commons Attribution Share Alike 4.0 International</a>  License.</small></p> <p/></div></body>
+</html>

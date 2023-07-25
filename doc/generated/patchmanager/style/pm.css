@@ -1,0 +1,5 @@
+a:link { color: #8C001A; text-decoration: none; text-align: left; }
+a.qa-mark:target:before { content: "***"; color: #ff0000; }
+a:hover { color: #8C0060; text-align: left; }
+a:visited { color: #8C001A; text-align: left; }
+a:visited:hover { color: #8C0060; text-align: left; }

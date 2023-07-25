@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- patchmanager.cpp -->
+  <title>PatchManagerTranslator Class | Patchmanager Documentation 2.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content">
+  </div>
+  <div class="breadcrumb">
+    <ul>
+      <!--  Breadcrumbs go here -->
+<li>https://github.com/sailfishos-patches/patchmanager/wiki</li>
+<li><a href="../patchmanager/index.html">Patchmanager Documentation</a></li>
+<li>PatchManagerTranslator</li>
+    </ul>
+  </div>
+</div>
+<div class="content">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">PatchManagerTranslator Class</h1>
+<!-- $$$PatchManagerTranslator-brief -->
+<p>allows patches to include localizations in their shipped QML files. <a href="#details">More...</a></p>
+<!-- @@@PatchManagerTranslator -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;patchmanager.h&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-patchmanagertranslator.html">PatchManagerTranslator</a></td></tr></table></div><ul>
+<li><a href="patchmanagertranslator-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="patchmanagertranslator.html#PatchManagerTranslator">PatchManagerTranslator</a></b>(QObject *<i>parent</i> = nullptr)</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="patchmanagertranslator.html#installTranslator">installTranslator</a></b>(const QString &amp;<i>patch</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="patchmanagertranslator.html#removeTranslator">removeTranslator</a></b>(const QString &amp;<i>patch</i>)</td></tr>
+</table></div>
+<a name="static-public-members"></a>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> PatchManagerTranslator *</td><td class="memItemRight bottomAlign"><b><a href="patchmanagertranslator.html#GetInstance">GetInstance</a></b>(QObject *<i>parent</i> = nullptr)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$PatchManagerTranslator-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>allows patches to include localizations in their shipped QML files.</p>
+</div>
+<!-- @@@PatchManagerTranslator -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$PatchManagerTranslator[overload1]$$$PatchManagerTranslatorQObject* -->
+<h3 class="fn" id="PatchManagerTranslator"><a name="PatchManagerTranslator"></a>PatchManagerTranslator::<span class="name">PatchManagerTranslator</span>(<span class="type">QObject</span> *<i>parent</i> = nullptr)</h3>
+<p>Default constructs an instance of PatchManagerTranslator.</p><!-- @@@PatchManagerTranslator -->
+<!-- $$$GetInstance[overload1]$$$GetInstanceQObject* -->
+<h3 class="fn" id="GetInstance"><a name="GetInstance"></a><code>[static] </code><span class="type"><a href="patchmanagertranslator.html#PatchManagerTranslator">PatchManagerTranslator</a></span> *PatchManagerTranslator::<span class="name">GetInstance</span>(<span class="type">QObject</span> *<i>parent</i> = nullptr)</h3>
+<p>Returns a (singleton) instance of <i>PatchManagerTranslator</i>, if necessary contructing it using <i>parent</i>.</p>
+<!-- @@@GetInstance -->
+<!-- $$$installTranslator[overload1]$$$installTranslatorconstQString& -->
+<h3 class="fn" id="installTranslator"><a name="installTranslator"></a><code>[slot] </code><span class="type">bool</span> PatchManagerTranslator::<span class="name">installTranslator</span>(const <span class="type">QString</span> &amp;<i>patch</i>)</h3>
+<p>Install the translation service for <i>patch</i></p>
+<p>Returns <code>true</code> if successful, <code>false</code> otherwise.</p>
+<!-- @@@installTranslator -->
+<!-- $$$removeTranslator[overload1]$$$removeTranslatorconstQString& -->
+<h3 class="fn" id="removeTranslator"><a name="removeTranslator"></a><code>[slot] </code><span class="type">bool</span> PatchManagerTranslator::<span class="name">removeTranslator</span>(const <span class="type">QString</span> &amp;<i>patch</i>)</h3>
+<p>Remove the translation service for <i>patch</i> Returns <code>true</code> if successful, <code>false</code> otherwise.</p>
+<!-- @@@removeTranslator -->
+</div>
+<div align='center'><hr/> <p><small>Patchmanager Documentation
+Copyright (c) 2023 Patchmanager for SailfishOS contributors.
+This document may be used under the terms of the  <a href='https://spdx.org/licenses/CC-BY-SA-4.0.html'> Creative Commons Attribution Share Alike 4.0 International</a>  License.</small></p> <p/></div></body>
+</html>

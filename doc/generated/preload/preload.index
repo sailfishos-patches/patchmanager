@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE QDOCINDEX>
+<INDEX url="https://github.com/sailfishos-patches/patchmanager" title="Patchmanager Preload Library" version="2.0" project="preload" indexTitle="Patchmanager Documentation">
+    <namespace threadsafety="unspecified" name="" status="active" access="public" module="preload">
+        <page name="index.html" href="index.html" status="active" location="preloadpatchmanager.qdoc" filepath="/home/nemo/devel/git/patchmanager/repo/src/preload/src/preloadpatchmanager.qdoc" lineno="1" subtype="page" title="Patchmanager Documentation: Preload Library" fulltitle="Patchmanager Documentation: Preload Library" subtitle="" module="preload">
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="implementation" title="Implementation" level="1"/>
+            <contents name="blacklists" title="Blacklists:" level="3"/>
+            <contents name="building" title="Building" level="2"/>
+            <contents name="running" title="Running" level="1"/>
+            <contents name="installation" title="Installation" level="2"/>
+            <contents name="environment" title="Environment" level="2"/>
+            <contents name="socket" title="Socket" level="2"/>
+        </page>
+    </namespace>
+</INDEX>

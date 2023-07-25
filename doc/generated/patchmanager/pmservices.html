@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- index.qdoc -->
+  <title>Patchmanager Services | Patchmanager Documentation</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content">
+  </div>
+  <div class="breadcrumb">
+    <ul>
+      <!--  Breadcrumbs go here -->
+<li>https://github.com/sailfishos-patches/patchmanager/wiki</li>
+<li><a href="index.html">Patchmanager Documentation</a></li>
+<li>Patchmanager Services</li>
+    </ul>
+  </div>
+</div>
+<div class="content">
+  <link rel="prev" href="pmoverview.html" />
+  <link rel="next" href="pmconfig.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="pmoverview.html">Patchmanager Overview</a>
+<a class="nextPage" href="pmconfig.html">Patchmanager Configuration Files</a>
+</p><p/>
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#installation-and-configuration">Installation and Configuration</a></li>
+<li class="level2"><a href="#d-bus-system-service">D-Bus System Service</a></li>
+<li class="level2"><a href="#systemd-system-units">Systemd System Units</a></li>
+<li class="level2"><a href="#systemd-user-units">Systemd User Units</a></li>
+<li class="level1"><a href="#manual-invocation">Manual Invocation</a></li>
+<li class="level1"><a href="#logging-and-debugging">Logging and Debugging</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Patchmanager Services</h1>
+<span class="subtitle"></span>
+<!-- $$$pmservices.html-description -->
+<div class="descr"> <a name="details"></a>
+<a name="installation-and-configuration"></a>
+<h2 id="installation-and-configuration">Installation and Configuration</h2>
+<a name="d-bus-system-service"></a>
+<h3 >D-Bus System Service</h3>
+<a name="dbus-sys"></a><p>The D-Bus services reserve the bus name <code>org.SfietKonstantin.patchmanager</code></p>
+<p>It is defined as follows:</p>
+<pre class="cpp">
+ &lt;!DOCTYPE node PUBLIC &quot;-//freedesktop//DTD D-BUS Object Introspection 1.0//EN&quot; &quot;http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd&quot;&gt;
+ &lt;node&gt;
+     &lt;interface name=&quot;org.SfietKonstantin.patchmanager&quot;&gt;
+         &lt;method name=&quot;listPatches&quot;&gt;
+             &lt;annotation name=&quot;org.qtproject.QtDBus.QtTypeName.Out0&quot; value=&quot;QVariantList&quot;/&gt;
+             &lt;arg name=&quot;result&quot; type=&quot;a(v)&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;listVersions&quot;&gt;
+             &lt;annotation name=&quot;org.qtproject.QtDBus.QtTypeName.Out0&quot; value=&quot;QVariantMap&quot;/&gt;
+             &lt;arg name=&quot;result&quot; type=&quot;a{sv}&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;isPatchApplied&quot;&gt;
+             &lt;arg name=&quot;patch&quot; type=&quot;s&quot; direction=&quot;in&quot; /&gt;
+             &lt;arg name=&quot;applied&quot; type=&quot;b&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;applyPatch&quot;&gt;
+             &lt;arg name=&quot;patch&quot; type=&quot;s&quot; direction=&quot;in&quot; /&gt;
+             &lt;annotation name=&quot;org.qtproject.QtDBus.QtTypeName.Out0&quot; value=&quot;QVariantMap&quot;/&gt;
+             &lt;arg name=&quot;result&quot; type=&quot;a{sv}&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;unapplyPatch&quot;&gt;
+             &lt;arg name=&quot;patch&quot; type=&quot;s&quot; direction=&quot;in&quot; /&gt;
+             &lt;annotation name=&quot;org.qtproject.QtDBus.QtTypeName.Out0&quot; value=&quot;QVariantMap&quot;/&gt;
+             &lt;arg name=&quot;result&quot; type=&quot;a{sv}&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;installPatch&quot;&gt;
+             &lt;arg name=&quot;patch&quot; type=&quot;s&quot; direction=&quot;in&quot; /&gt;
+             &lt;arg name=&quot;version&quot; type=&quot;s&quot; direction=&quot;in&quot; /&gt;
+             &lt;arg name=&quot;url&quot; type=&quot;s&quot; direction=&quot;in&quot; /&gt;
+             &lt;arg name=&quot;ok&quot; type=&quot;b&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;uninstallPatch&quot;&gt;
+             &lt;arg name=&quot;patch&quot; type=&quot;s&quot; direction=&quot;in&quot; /&gt;
+             &lt;arg name=&quot;ok&quot; type=&quot;b&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;resetState&quot;&gt;
+             &lt;arg name=&quot;patch&quot; type=&quot;s&quot; direction=&quot;in&quot; /&gt;
+             &lt;arg name=&quot;ok&quot; type=&quot;b&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;unapplyAllPatches&quot;&gt;
+             &lt;arg name=&quot;ok&quot; type=&quot;b&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;votePatch&quot;&gt;
+             &lt;annotation name=&quot;org.freedesktop.DBus.Method.NoReply&quot; value=&quot;true&quot;/&gt;
+             &lt;arg name=&quot;patch&quot; type=&quot;s&quot; direction=&quot;in&quot; /&gt;
+             &lt;arg name=&quot;action&quot; type=&quot;i&quot; direction=&quot;in&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;checkVote&quot;&gt;
+             &lt;arg name=&quot;patch&quot; type=&quot;s&quot; direction=&quot;in&quot; /&gt;
+             &lt;arg name=&quot;vote&quot; type=&quot;i&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;putSettings&quot;&gt;
+             &lt;arg name=&quot;name&quot; type=&quot;s&quot; direction=&quot;in&quot; /&gt;
+             &lt;arg name=&quot;value&quot; type=&quot;v&quot; direction=&quot;in&quot; /&gt;
+             &lt;arg name=&quot;result&quot; type=&quot;b&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;getSettings&quot;&gt;
+             &lt;arg name=&quot;name&quot; type=&quot;s&quot; direction=&quot;in&quot; /&gt;
+             &lt;arg name=&quot;def&quot; type=&quot;v&quot; direction=&quot;in&quot; /&gt;
+             &lt;arg name=&quot;value&quot; type=&quot;v&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;getMangleCandidates&quot;&gt;
+             &lt;arg name=&quot;result&quot; type=&quot;as&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;checkEaster&quot;&gt;
+             &lt;arg name=&quot;easter&quot; type=&quot;s&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;getOsVersion&quot;&gt;
+             &lt;arg name=&quot;version&quot; type=&quot;s&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;getPatchmanagerVersion&quot;&gt;
+             &lt;arg name=&quot;version&quot; type=&quot;s&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;downloadCatalog&quot;&gt;
+             &lt;annotation name=&quot;org.qtproject.QtDBus.QtTypeName.In0&quot; value=&quot;QVariantMap&quot;/&gt;
+             &lt;arg name=&quot;params&quot; type=&quot;a{sv}&quot; direction=&quot;in&quot; /&gt;
+             &lt;annotation name=&quot;org.qtproject.QtDBus.QtTypeName.Out0&quot; value=&quot;QVariantList&quot;/&gt;
+             &lt;arg name=&quot;json&quot; type=&quot;a(v)&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;downloadPatchInfo&quot;&gt;
+             &lt;arg name=&quot;name&quot; type=&quot;s&quot; direction=&quot;in&quot; /&gt;
+             &lt;annotation name=&quot;org.qtproject.QtDBus.QtTypeName.Out0&quot; value=&quot;QVariantMap&quot;/&gt;
+             &lt;arg name=&quot;data&quot; type=&quot;a{sv}&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;getUpdates&quot;&gt;
+             &lt;annotation name=&quot;org.qtproject.QtDBus.QtTypeName.Out0&quot; value=&quot;QVariantMap&quot;/&gt;
+             &lt;arg name=&quot;updates&quot; type=&quot;a{sv}&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;restartServices&quot;&gt;
+             &lt;annotation name=&quot;org.freedesktop.DBus.Method.NoReply&quot; value=&quot;true&quot;/&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;patchToggleService&quot;&gt;
+             &lt;annotation name=&quot;org.freedesktop.DBus.Method.NoReply&quot; value=&quot;true&quot;/&gt;
+             &lt;arg name=&quot;patch&quot; type=&quot;s&quot; direction=&quot;in&quot; /&gt;
+             &lt;arg name=&quot;activate&quot; type=&quot;b&quot; direction=&quot;in&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;getToggleServicesList&quot;&gt;
+             &lt;annotation name=&quot;org.qtproject.QtDBus.QtTypeName.Out0&quot; value=&quot;QStringList&quot;/&gt;
+             &lt;arg name=&quot;services&quot; type=&quot;a{s}&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;getToggleServices&quot;&gt;
+             &lt;arg name=&quot;toggle&quot; type=&quot;b&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;getFailure&quot;&gt;
+             &lt;arg name=&quot;failure&quot; type=&quot;b&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;getLoaded&quot;&gt;
+             &lt;arg name=&quot;loaded&quot; type=&quot;b&quot; direction=&quot;out&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;resolveFailure&quot;&gt;
+             &lt;annotation name=&quot;org.freedesktop.DBus.Method.NoReply&quot; value=&quot;true&quot;/&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;loadRequest&quot;&gt;
+             &lt;annotation name=&quot;org.freedesktop.DBus.Method.NoReply&quot; value=&quot;true&quot;/&gt;
+             &lt;arg name=&quot;apply&quot; type=&quot;b&quot; direction=&quot;in&quot; /&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;checkForUpdates&quot;&gt;
+             &lt;annotation name=&quot;org.freedesktop.DBus.Method.NoReply&quot; value=&quot;true&quot;/&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;quit&quot;&gt;
+             &lt;annotation name=&quot;org.freedesktop.DBus.Method.NoReply&quot; value=&quot;true&quot;/&gt;
+         &lt;/method&gt;
+         &lt;method name=&quot;lipstickChanged&quot;&gt;
+             &lt;annotation name=&quot;org.freedesktop.DBus.Method.NoReply&quot; value=&quot;true&quot;/&gt;
+             &lt;arg name=&quot;state&quot; type=&quot;s&quot; direction=&quot;in&quot; /&gt;
+         &lt;/method&gt;
+         &lt;signal name=&quot;applyPatchFinished&quot;&gt;
+           &lt;arg name=&quot;patch&quot; type=&quot;s&quot;/&gt;
+         &lt;/signal&gt;
+         &lt;signal name=&quot;unapplyPatchFinished&quot;&gt;
+           &lt;arg name=&quot;patch&quot; type=&quot;s&quot;/&gt;
+         &lt;/signal&gt;
+         &lt;signal name=&quot;updatesAvailable&quot;&gt;
+             &lt;annotation name=&quot;org.qtproject.QtDBus.QtTypeName.Out0&quot; value=&quot;QVariantMap&quot;/&gt;
+             &lt;annotation name=&quot;org.qtproject.QtDBus.QtTypeName.In0&quot; value=&quot;QVariantMap&quot;/&gt;
+             &lt;arg name=&quot;updates&quot; type=&quot;a{sv}&quot;/&gt;
+         &lt;/signal&gt;
+         &lt;signal name=&quot;toggleServicesChanged&quot;&gt;
+             &lt;arg name=&quot;toggle&quot; type=&quot;b&quot;/&gt;
+         &lt;/signal&gt;
+         &lt;signal name=&quot;patchAltered&quot;&gt;
+             &lt;arg name=&quot;patch&quot; type=&quot;s&quot;/&gt;
+             &lt;arg name=&quot;installed&quot; type=&quot;b&quot;/&gt;
+         &lt;/signal&gt;
+         &lt;signal name=&quot;listPatchesChanged&quot; /&gt;
+         &lt;signal name=&quot;unapplyAllPatchesFinished&quot; /&gt;
+         &lt;signal name=&quot;failureChanged&quot;&gt;
+             &lt;arg name=&quot;failure&quot; type=&quot;b&quot;/&gt;
+         &lt;/signal&gt;
+         &lt;signal name=&quot;loadedChanged&quot;&gt;
+             &lt;arg name=&quot;loaded&quot; type=&quot;b&quot;/&gt;
+         &lt;/signal&gt;
+         &lt;signal name=&quot;autoApplyingStarted&quot;&gt;
+             &lt;arg name=&quot;count&quot; type=&quot;i&quot;/&gt;
+         &lt;/signal&gt;
+         &lt;signal name=&quot;autoApplyingPatch&quot;&gt;
+             &lt;arg name=&quot;name&quot; type=&quot;s&quot;/&gt;
+         &lt;/signal&gt;
+         &lt;signal name=&quot;autoApplyingFailed&quot;&gt;
+             &lt;arg name=&quot;name&quot; type=&quot;s&quot;/&gt;
+         &lt;/signal&gt;
+         &lt;signal name=&quot;autoApplyingFinished&quot;&gt;
+             &lt;arg name=&quot;success&quot; type=&quot;b&quot;/&gt;
+         &lt;/signal&gt;
+     &lt;/interface&gt;
+ &lt;/node&gt;
+</pre>
+<p>Calls can be issued e.g&#x2e; like this:</p>
+<pre class="cpp">
+ dbus-send --print-reply --system --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager org.SfietKonstantin.patchmanager.checkforUpdates
+</pre>
+<a name="systemd-system-units"></a>
+<h3 >Systemd System Units</h3>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Name</th><th >Type</th><th >Component</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td ><code>UNITDIR/checkForUpdates-org.SfietKonstantin.patchmanager.service</code></td><td >service</td><td >-</td><td >calls the <code>checkForUpdates()</code> method via D-Bus</td></tr>
+<tr valign="top" class="even"><td ><code>UNITDIR/checkForUpdates-org.SfietKonstantin.patchmanager.timer</code></td><td >timer</td><td >-</td><td >runs the service above, every two hours</td></tr>
+<tr valign="top" class="odd"><td ><code>UNITDIR/dbus-org.SfietKonstantin.patchmanager.service</code></td><td >dbus-activated service</td><td ><a href="index.html">Daemon</a></td><td >starts/activates the D-Bus service</td></tr>
+<tr valign="top" class="even"><td ><code>/var/lib/environment/patchmanager/10-dbus.conf</code></td><td >environment file</td><td ><a href="index.html">Daemon</a></td><td >Configures the environment the Systemd service is started in.</td></tr>
+<tr valign="top" class="odd"><td ><code>/etc/dbus-1/system.d/org.SfietKonstantin.patchmanager.conf</code></td><td >policy file</td><td ><a href="index.html">Daemon</a></td><td >Configures access policy for the D-Bus service</td></tr>
+</table></div>
+<a name="systemd-user-units"></a>
+<h3 >Systemd User Units</h3>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Name</th><th >Type</th><th >Component</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td ><code>$USERUNITDIR/dbus-org.SfietKonstantin.patchmanager.service</code></td><td >dbus-activated service</td><td  ></td><td >starts the Startup Dialog if necessary</td></tr>
+<tr valign="top" class="even"><td ><code>$USERUNITDIR/lipstick-patchmanager.service</code></td><td >service</td><td  ></td><td >calls the <code>lipstickChanged()</code> method via D-Bus</td></tr>
+<tr valign="top" class="odd"><td ><code>/var/lib/environment/patchmanager-dialog/*.conf</code></td><td >environment file</td><td  ></td><td >Configures the environment the dialog service is started in.</td></tr>
+</table></div>
+<p><code>lipstick-patchmanager.service</code> watches the state of the Lipstick service. If Lipstick crashes, Patchmanager Daemon assumes it was caused by a patch and goes into <code>failed</code> state. In this state, all enabled services are disabled, and PM must be reactivated via the GUI.</p>
+<a name="manual-invocation"></a>
+<h2 id="manual-invocation">Manual Invocation</h2>
+<p>Apart from using the appropriate tools manipulating tools like <code>systemctl</code>, <code>busctl</code>, or <code>dbus-send</code>, the patchmanager binary can serve as a CLI as well if called from command line. See the output of <code>patchmanager --help</code> and <a href="../daemon/patchmanagerobject.html#process">PatchManagerObject::process</a>() for more information.</p>
+<p>There is also a shell script called <code>patchmanager-tool</code>, wrapping the capabilities of <code>patchmanager</code> to generate more useful functions.</p>
+<p><b>Note: </b>At the time this was written, <code>patchmanager-tool</code> is not yet distributed with the default packages. You can find it in the source repository though, under <code>src/tools/</code>.</p><a name="logging-and-debugging"></a>
+<h2 id="logging-and-debugging">Logging and Debugging</h2>
+<p>Debug logging of the daemon can be configured using the environment file located in <code>/var/lib/environment/patchmanager/10-dbus.conf</code> setting the <code>QT_LOGGING_RULES</code> variable to e.g&#x2e; <code>&quot;*.debug=true&quot;</code></p>
+<p>After changing this, the system service must be restarted so it can pick up the new values.</p>
+</div>
+<!-- @@@pmservices.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="pmoverview.html">Patchmanager Overview</a>
+<a class="nextPage" href="pmconfig.html">Patchmanager Configuration Files</a>
+</p>
+<div align='center'><hr/> <p><small>Patchmanager Documentation
+Copyright (c) 2023 Patchmanager for SailfishOS contributors.
+This document may be used under the terms of the  <a href='https://spdx.org/licenses/CC-BY-SA-4.0.html'> Creative Commons Attribution Share Alike 4.0 International</a>  License.</small></p> <p/></div></body>
+</html>

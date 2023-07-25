@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- plugin.cpp -->
+  <title>PatchManager QML Type | Patchmanager Documentation 2.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content">
+  </div>
+  <div class="breadcrumb">
+    <ul>
+      <!--  Breadcrumbs go here -->
+<li>https://github.com/sailfishos-patches/patchmanager/wiki</li>
+<li><a href="../patchmanager/index.html">Patchmanager Documentation</a></li>
+    </ul>
+  </div>
+</div>
+<div class="content">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">PatchManager QML Type</h1>
+<span class="subtitle"></span>
+<!-- $$$PatchManager-brief -->
+<p>Singleton providing access to the <a href="qml-patchmanager.html">PatchManager</a> methods and properties. <a href="#details">More...</a></p>
+<!-- @@@PatchManager -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> import  .</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiates:</td><td class="memItemRight bottomAlign"> <a href="qml-patchmanager.html"><a href="patchmanager.html">PatchManager</a></td></tr></table></div><ul>
+<li><a href="qml-patchmanager-members.html">List of all members, including inherited members</a></li>
+<li><a href="qml-patchmanager-obsolete.html">Obsolete members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn"><b><b><a href="qml-patchmanager.html#appsToRestart-prop">appsToRestart</a></b></b> : string</li>
+<li class="fn"><b><b><a href="qml-patchmanager.html#failure-prop">failure</a></b></b> : bool</li>
+<li class="fn"><b><b><a href="qml-patchmanager.html#osVersion-prop">osVersion</a></b></b> : string</li>
+<li class="fn"><b><b><a href="qml-patchmanager.html#patchDevelMode-prop">patchDevelMode</a></b></b> : bool</li>
+<li class="fn"><b><b><a href="qml-patchmanager.html#patchmanagerVersion-prop">patchmanagerVersion</a></b></b> : string</li>
+<li class="fn"><b><b><a href="qml-patchmanager.html#serverMediaUrl-prop">serverMediaUrl</a></b></b> : string</li>
+<li class="fn"><b><b><a href="qml-patchmanager.html#sfosVersionCheck-prop">sfosVersionCheck</a></b></b> : int</li>
+<li class="fn"><b><b><a href="qml-patchmanager.html#updates-prop">updates</a></b></b> : var</li>
+<li class="fn"><b><b><a href="qml-patchmanager.html#updatesNames-prop">updatesNames</a></b></b> : var</li>
+</ul>
+<!-- $$$PatchManager-description -->
+<a name="details"></a>
+<h2 id="details">Detailed Description</h2>
+</p>
+<!-- @@@PatchManager -->
+<h2>Property Documentation</h2>
+<!-- $$$appsToRestart -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="appsToRestart-prop">
+<td class="tblQmlPropNode"><p>
+<a name="appsToRestart-prop"></a><span class="name">appsToRestart</span> : <span class="type">string</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>List of applications and services that should be restarted after a patch has been activated.</p>
+<p><b>See also </b><a href="patchmanager.html#appsToRestart-prop">PatchManager::toggleServicesList</a>.</p>
+</div></div><!-- @@@appsToRestart -->
+<br/>
+<!-- $$$failure -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="failure-prop">
+<td class="tblQmlPropNode"><p>
+<a name="failure-prop"></a><span class="name">failure</span> : <span class="type">bool</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>If <code>true</code>, PM is in Failure Mode.</p>
+</div></div><!-- @@@failure -->
+<br/>
+<!-- $$$osVersion -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="osVersion-prop">
+<td class="tblQmlPropNode"><p>
+<a name="osVersion-prop"></a><span class="name">osVersion</span> : <span class="type">string</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>This property holds the Operating System version. This is used for version checking.</p>
+</div></div><!-- @@@osVersion -->
+<br/>
+<!-- $$$patchDevelMode -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="patchDevelMode-prop">
+<td class="tblQmlPropNode"><p>
+<a name="patchDevelMode-prop"></a><span class="name">patchDevelMode</span> : <span class="type">bool</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p><b>See also </b><a href="../patchmanager/pmconfig.html">Patchmanager Configuration Files</a> and <a href="../patchmanager/pmconfig.html#inifile">inifile</a>.</p>
+</div></div><!-- @@@patchDevelMode -->
+<br/>
+<!-- $$$patchmanagerVersion -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="patchmanagerVersion-prop">
+<td class="tblQmlPropNode"><p>
+<a name="patchmanagerVersion-prop"></a><span class="name">patchmanagerVersion</span> : <span class="type">string</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>This property holds our own version</p>
+</div></div><!-- @@@patchmanagerVersion -->
+<br/>
+<!-- $$$serverMediaUrl -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="serverMediaUrl-prop">
+<td class="tblQmlPropNode"><p>
+<a name="serverMediaUrl-prop"></a><span class="name">serverMediaUrl</span> : <span class="type">string</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>This poperty holds the URL to download screenshots from.</p>
+</div></div><!-- @@@serverMediaUrl -->
+<br/>
+<!-- $$$sfosVersionCheck -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="sfosVersionCheck-prop">
+<td class="tblQmlPropNode"><p>
+<a name="sfosVersionCheck-prop"></a><span class="name">sfosVersionCheck</span> : <span class="type">int</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>This property keeps the setting of VersionCheck</p>
+<p><b>See also </b><a href="patchmanagerversioncheck.html#CheckMode-enum">PatchManagerVersionCheck::CheckMode</a>.</p>
+</div></div><!-- @@@sfosVersionCheck -->
+<br/>
+<!-- $$$updates -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="updates-prop">
+<td class="tblQmlPropNode"><p>
+<a name="updates-prop"></a><span class="name">updates</span> : <span class="type">var</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Map of internal names and metadata of patches which can be updated.</p>
+<p><b>See also </b><a href="../daemon/patchmanagerobject.html#getUpdates">PatchManagerObject::getUpdates</a> and <a href="../patchmanager/pmservices.html#dbus-sys">dbus-sys</a>.</p>
+</div></div><!-- @@@updates -->
+<br/>
+<!-- $$$updatesNames -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="updatesNames-prop">
+<td class="tblQmlPropNode"><p>
+<a name="updatesNames-prop"></a><span class="name">updatesNames</span> : <span class="type">var</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>List of display names of patches which can be updated.</p>
+<p><b>See also </b><a href="../daemon/patchmanagerobject.html#getUpdates">PatchManagerObject::getUpdates</a> and <a href="../patchmanager/pmservices.html#dbus-sys">dbus-sys</a>.</p>
+</div></div><!-- @@@updatesNames -->
+<br/>
+<div align='center'><hr/> <p><small>Patchmanager Documentation
+Copyright (c) 2023 Patchmanager for SailfishOS contributors.
+This document may be used under the terms of the  <a href='https://spdx.org/licenses/CC-BY-SA-4.0.html'> Creative Commons Attribution Share Alike 4.0 International</a>  License.</small></p> <p/></div></body>
+</html>

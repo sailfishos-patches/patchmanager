@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- patchmanager.cpp -->
+  <title>PatchManager Class | Patchmanager Documentation 2.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content">
+  </div>
+  <div class="breadcrumb">
+    <ul>
+      <!--  Breadcrumbs go here -->
+<li>https://github.com/sailfishos-patches/patchmanager/wiki</li>
+<li><a href="../patchmanager/index.html">Patchmanager Documentation</a></li>
+<li>PatchManager</li>
+    </ul>
+  </div>
+</div>
+<div class="content">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">PatchManager Class</h1>
+<!-- $$$PatchManager-brief -->
+<p>Patchmanager QML Plugin <a href="#details">More...</a></p>
+<!-- @@@PatchManager -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;patchmanager.h&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-patchmanager.html">PatchManager</a></td></tr></table></div><ul>
+<li><a href="patchmanager-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<div class="table"><table class="propsummary">
+<tr><td class="topAlign"><ul>
+<li class="fn"><b><a href="patchmanager.html#applyOnBoot-prop">applyOnBoot</a></b> : bool</li>
+<li class="fn"><b><a href="patchmanager.html#appsNeedRestart-prop">appsNeedRestart</a></b> : const bool</li>
+<li class="fn"><b><a href="patchmanager.html#appsToRestart-prop">appsToRestart</a></b> : const QStringList</li>
+<li class="fn"><b><a href="patchmanager.html#bitnessMangle-prop">bitnessMangle</a></b> : bool</li>
+<li class="fn"><b><a href="patchmanager.html#developerMode-prop">developerMode</a></b> : bool</li>
+<li class="fn"><b><a href="patchmanager.html#failure-prop">failure</a></b> : const bool</li>
+<li class="fn"><b><a href="patchmanager.html#installedModel-prop">installedModel</a></b> : PatchManagerModel * const</li>
+<li class="fn"><b><a href="patchmanager.html#loaded-prop">loaded</a></b> : const bool</li>
+<li class="fn"><b><a href="patchmanager.html#mangleCandidates-prop">mangleCandidates</a></b> : const QStringList</li>
+</ul></td><td class="topAlign"><ul>
+<li class="fn"><b><a href="patchmanager.html#notifyOnSuccess-prop">notifyOnSuccess</a></b> : bool</li>
+<li class="fn"><b><a href="patchmanager.html#osVersion-prop">osVersion</a></b> : const QString</li>
+<li class="fn"><b><a href="patchmanager.html#patchDevelMode-prop">patchDevelMode</a></b> : bool</li>
+<li class="fn"><b><a href="patchmanager.html#patchmanagerVersion-prop">patchmanagerVersion</a></b> : const QString</li>
+<li class="fn"><b><a href="patchmanager.html#serverMediaUrl-prop">serverMediaUrl</a></b> : const QString</li>
+<li class="fn"><b><a href="patchmanager.html#sfosVersionCheck-prop">sfosVersionCheck</a></b> : int</li>
+<li class="fn"><b><a href="patchmanager.html#updates-prop">updates</a></b> : const QVariantMap</li>
+<li class="fn"><b><a href="patchmanager.html#updatesNames-prop">updatesNames</a></b> : const QStringList</li>
+</ul>
+</td></tr>
+</table></div>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#PatchManager">PatchManager</a></b>(QObject *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#applyOnBoot-prop">applyOnBoot</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#bitnessMangle-prop">bitnessMangle</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#call">call</a></b>(QDBusPendingCallWatcher *<i>call</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#developerMode-prop">developerMode</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#failure-prop">failure</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVariantMap </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#updates-prop">getUpdates</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#updatesNames-prop">getUpdatesNames</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> PatchManagerModel *</td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#installedModel-prop">installedModel</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#loaded-prop">loaded</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#mangleCandidates-prop">mangleCandidates</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#notifyOnSuccess-prop">notifyOnSuccess</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#patchDevelMode-prop">patchDevelMode</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#patchmanagerVersion-prop">patchmanagerVersion</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#serverMediaUrl-prop">serverMediaUrl</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#setApplyOnBoot">setApplyOnBoot</a></b>(bool <i>applyOnBoot</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#bitnessMangle-prop">setBitnessMangle</a></b>(bool <i>bitnessMangle</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#developerMode-prop">setDeveloperMode</a></b>(bool <i>developerMode</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#notifyOnSuccess-prop">setNotifyOnSuccess</a></b>(bool <i>notifyOnSuccess</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#patchDevelMode-prop">setPatchDevelMode</a></b>(bool <i>patchDevelMode</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#sfosVersionCheck-prop">setSfosVersionCheck</a></b>(int <i>sfosVersionCheck</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#sfosVersionCheck-prop">sfosVersionCheck</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#appsNeedRestart-prop">toggleServices</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#appsToRestart-prop">toggleServicesList</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#trCategory">trCategory</a></b>(const QString &amp;<i>category</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#watchCall">watchCall</a></b>(QDBusPendingCallWatcher *<i>call</i>, QJSValue <i>callback</i> = QJSValue::UndefinedValue, QJSValue <i>errorCallback</i> = QJSValue::UndefinedValue)</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> QDBusPendingCallWatcher *</td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#applyPatch">applyPatch</a></b>(const QString &amp;<i>patch</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#checkForUpdates">checkForUpdates</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#checkVote">checkVote</a></b>(const QString &amp;<i>patch</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#doVote">doVote</a></b>(const QString &amp;<i>patch</i>, int <i>action</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDBusPendingCallWatcher *</td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#downloadCatalog">downloadCatalog</a></b>(const QVariantMap &amp;<i>params</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDBusPendingCallWatcher *</td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#downloadPatchInfo">downloadPatchInfo</a></b>(const QString &amp;<i>name</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#fileExists">fileExists</a></b>(const QString &amp;<i>filename</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#getSettingsAsync">getSettingsAsync</a></b>(const QString &amp;<i>name</i>, const QVariant &amp;<i>def</i> = QVariant(), QJSValue <i>callback</i> = QJSValue::UndefinedValue, QJSValue <i>errorCallback</i> = QJSValue::UndefinedValue)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVariant </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#getSettingsSync">getSettingsSync</a></b>(const QString &amp;<i>name</i>, const QVariant &amp;<i>def</i> = QVariant()) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#iconForPatch">iconForPatch</a></b>(const QString &amp;<i>patch</i>, bool <i>dark</i> = true) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDBusPendingCallWatcher *</td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#installPatch">installPatch</a></b>(const QString &amp;<i>patch</i>, const QString &amp;<i>version</i>, const QString &amp;<i>url</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#installTranslator">installTranslator</a></b>(const QString &amp;<i>patch</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#isApplied">isApplied</a></b>(const QString &amp;<i>name</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDBusPendingCallWatcher *</td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#listVersions">listVersions</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#loadRequest">loadRequest</a></b>(bool <i>apply</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#onFailureChanged">onFailureChanged</a></b>(bool <i>failed</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#onLoadedChanged">onLoadedChanged</a></b>(bool <i>loaded</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#onToggleServicesChanged">onToggleServicesChanged</a></b>(bool <i>toggle</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#onUpdatesAvailable">onUpdatesAvailable</a></b>(const QVariantMap &amp;<i>updates</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#patchName">patchName</a></b>(const QString &amp;<i>patch</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#putSettingsAsync">putSettingsAsync</a></b>(const QString &amp;<i>name</i>, const QVariant &amp;<i>value</i>, QJSValue <i>callback</i> = QJSValue::UndefinedValue, QJSValue <i>errorCallback</i> = QJSValue::UndefinedValue)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#putSettingsSync">putSettingsSync</a></b>(const QString &amp;<i>name</i>, const QVariant &amp;<i>value</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#removeTranslator">removeTranslator</a></b>(const QString &amp;<i>patch</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDBusPendingCallWatcher *</td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#resetState">resetState</a></b>(const QString &amp;<i>patch</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#resolveFailure">resolveFailure</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#restartServices">restartServices</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDBusPendingCallWatcher *</td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#unapplyAllPatches">unapplyAllPatches</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDBusPendingCallWatcher *</td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#unapplyPatch">unapplyPatch</a></b>(const QString &amp;<i>patch</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDBusPendingCallWatcher *</td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#uninstallPatch">uninstallPatch</a></b>(const QString &amp;<i>patch</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#valueIfExists">valueIfExists</a></b>(const QString &amp;<i>filename</i>) const</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#applyOnBoot-prop">applyOnBootChanged</a></b>(bool <i>applyOnBoot</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#bitnessMangle-prop">bitnessMangleChanged</a></b>(bool <i>bitnessMangle</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#developerMode-prop">developerModeChanged</a></b>(bool <i>developerMode</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#failure-prop">failureChanged</a></b>(bool <i>failed</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#loaded-prop">loadedChanged</a></b>(bool <i>loaded</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#mangleCandidates-prop">mangleCandidatesChanged</a></b>(const QStringList &amp;<i>mangleCandidates</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#notifyOnSuccess-prop">notifyOnSuccessChanged</a></b>(bool <i>notifyOnSuccess</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#patchDevelMode-prop">patchDevelModeChanged</a></b>(bool <i>patchDevelMode</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#patchmanagerVersion-prop">patchmanagerVersionChanged</a></b>(const QString &amp;<i>patchmanagerVersion</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#sfosVersionCheck-prop">sfosVersionCheckChanged</a></b>(bool <i>sfosVersionCheck</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#appsNeedRestart-prop">toggleServicesChanged</a></b>(bool <i>toggleServices</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#appsToRestart-prop">toggleServicesListChanged</a></b>(const QStringList &amp;<i>servicesToBeToggled</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#updatesChanged">updatesChanged</a></b>()</td></tr>
+</table></div>
+<a name="static-public-members"></a>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> PatchManager *</td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#GetInstance">GetInstance</a></b>(QObject *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVariant </td><td class="memItemRight bottomAlign"><b><a href="patchmanager.html#unwind">unwind</a></b>(const QVariant &amp;<i>val</i>, int <i>depth</i> = 0)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$PatchManager-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>Patchmanager QML Plugin</p>
+</div>
+<!-- @@@PatchManager -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$applyOnBoot-prop$$$applyOnBoot$$$setApplyOnBootbool$$$applyOnBootChangedbool -->
+<h3 class="fn" id="applyOnBoot-prop"><a name="applyOnBoot-prop"></a><span class="name">applyOnBoot</span> : <span class="type">bool</span></h3>
+<p>Whether to apply patches on boot or not.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>applyOnBoot</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="patchmanager.html#setApplyOnBoot">setApplyOnBoot</a></b></span>(bool <i>applyOnBoot</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>applyOnBootChanged</b></span>(bool <i>applyOnBoot</i>)</td></tr>
+</table></div>
+<!-- @@@applyOnBoot -->
+<!-- $$$appsNeedRestart-prop$$$toggleServices$$$toggleServicesChangedbool -->
+<h3 class="fn" id="appsNeedRestart-prop"><a name="appsNeedRestart-prop"></a><span class="name">appsNeedRestart</span> : const <span class="type">bool</span></h3>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>toggleServices</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>toggleServicesChanged</b></span>(bool <i>toggleServices</i>)</td></tr>
+</table></div>
+<!-- @@@appsNeedRestart -->
+<!-- $$$appsToRestart-prop$$$toggleServicesList$$$toggleServicesListChangedconstQStringList& -->
+<h3 class="fn" id="appsToRestart-prop"><a name="appsToRestart-prop"></a><span class="name">appsToRestart</span> : const <span class="type">QStringList</span></h3>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QStringList </td><td class="memItemRight bottomAlign"><span class="name"><b>toggleServicesList</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>toggleServicesListChanged</b></span>(const QStringList &amp;<i>servicesToBeToggled</i>)</td></tr>
+</table></div>
+<!-- @@@appsToRestart -->
+<!-- $$$bitnessMangle-prop$$$bitnessMangle$$$setBitnessManglebool$$$bitnessMangleChangedbool -->
+<h3 class="fn" id="bitnessMangle-prop"><a name="bitnessMangle-prop"></a><span class="name">bitnessMangle</span> : <span class="type">bool</span></h3>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>bitnessMangle</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setBitnessMangle</b></span>(bool <i>bitnessMangle</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>bitnessMangleChanged</b></span>(bool <i>bitnessMangle</i>)</td></tr>
+</table></div>
+<!-- @@@bitnessMangle -->
+<!-- $$$developerMode-prop$$$developerMode$$$setDeveloperModebool$$$developerModeChangedbool -->
+<h3 class="fn" id="developerMode-prop"><a name="developerMode-prop"></a><span class="name">developerMode</span> : <span class="type">bool</span></h3>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>developerMode</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setDeveloperMode</b></span>(bool <i>developerMode</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>developerModeChanged</b></span>(bool <i>developerMode</i>)</td></tr>
+</table></div>
+<!-- @@@developerMode -->
+<!-- $$$failure-prop$$$failure$$$failureChangedbool -->
+<h3 class="fn" id="failure-prop"><a name="failure-prop"></a><span class="name">failure</span> : const <span class="type">bool</span></h3>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>failure</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>failureChanged</b></span>(bool <i>failed</i>)</td></tr>
+</table></div>
+<!-- @@@failure -->
+<!-- $$$installedModel-prop$$$installedModel -->
+<h3 class="fn" id="installedModel-prop"><a name="installedModel-prop"></a><span class="name">installedModel</span> : <span class="type"><a href="qml-patchmanagermodel.html">PatchManagerModel</a></span> * const</h3>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> PatchManagerModel *</td><td class="memItemRight bottomAlign"><span class="name"><b>installedModel</b></span>()</td></tr>
+</table></div>
+<!-- @@@installedModel -->
+<!-- $$$loaded-prop$$$loaded$$$loadedChangedbool -->
+<h3 class="fn" id="loaded-prop"><a name="loaded-prop"></a><span class="name">loaded</span> : const <span class="type">bool</span></h3>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>loaded</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>loadedChanged</b></span>(bool <i>loaded</i>)</td></tr>
+</table></div>
+<!-- @@@loaded -->
+<!-- $$$mangleCandidates-prop$$$mangleCandidates$$$mangleCandidatesChangedconstQStringList& -->
+<h3 class="fn" id="mangleCandidates-prop"><a name="mangleCandidates-prop"></a><span class="name">mangleCandidates</span> : const <span class="type">QStringList</span></h3>
+<p>List of mangle candidates from the config</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QStringList </td><td class="memItemRight bottomAlign"><span class="name"><b>mangleCandidates</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>mangleCandidatesChanged</b></span>(const QStringList &amp;<i>mangleCandidates</i>)</td></tr>
+</table></div>
+<!-- @@@mangleCandidates -->
+<!-- $$$notifyOnSuccess-prop$$$notifyOnSuccess$$$setNotifyOnSuccessbool$$$notifyOnSuccessChangedbool -->
+<h3 class="fn" id="notifyOnSuccess-prop"><a name="notifyOnSuccess-prop"></a><span class="name">notifyOnSuccess</span> : <span class="type">bool</span></h3>
+<p>Whether to show a popup on successful actions</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>notifyOnSuccess</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setNotifyOnSuccess</b></span>(bool <i>notifyOnSuccess</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>notifyOnSuccessChanged</b></span>(bool <i>notifyOnSuccess</i>)</td></tr>
+</table></div>
+<!-- @@@notifyOnSuccess -->
+<!-- $$$osVersion-prop -->
+<h3 class="fn" id="osVersion-prop"><a name="osVersion-prop"></a><span class="name">osVersion</span> : const <span class="type">QString</span></h3>
+<!-- @@@osVersion -->
+<!-- $$$patchDevelMode-prop$$$patchDevelMode$$$setPatchDevelModebool$$$patchDevelModeChangedbool -->
+<h3 class="fn" id="patchDevelMode-prop"><a name="patchDevelMode-prop"></a><span class="name">patchDevelMode</span> : <span class="type">bool</span></h3>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>patchDevelMode</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setPatchDevelMode</b></span>(bool <i>patchDevelMode</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>patchDevelModeChanged</b></span>(bool <i>patchDevelMode</i>)</td></tr>
+</table></div>
+<!-- @@@patchDevelMode -->
+<!-- $$$patchmanagerVersion-prop$$$patchmanagerVersion$$$patchmanagerVersionChangedconstQString& -->
+<h3 class="fn" id="patchmanagerVersion-prop"><a name="patchmanagerVersion-prop"></a><span class="name">patchmanagerVersion</span> : const <span class="type">QString</span></h3>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QString </td><td class="memItemRight bottomAlign"><span class="name"><b>patchmanagerVersion</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>patchmanagerVersionChanged</b></span>(const QString &amp;<i>patchmanagerVersion</i>)</td></tr>
+</table></div>
+<!-- @@@patchmanagerVersion -->
+<!-- $$$serverMediaUrl-prop$$$serverMediaUrl -->
+<h3 class="fn" id="serverMediaUrl-prop"><a name="serverMediaUrl-prop"></a><span class="name">serverMediaUrl</span> : const <span class="type">QString</span></h3>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QString </td><td class="memItemRight bottomAlign"><span class="name"><b>serverMediaUrl</b></span>() const</td></tr>
+</table></div>
+<!-- @@@serverMediaUrl -->
+<!-- $$$sfosVersionCheck-prop$$$sfosVersionCheck$$$setSfosVersionCheckint$$$sfosVersionCheckChangedbool -->
+<h3 class="fn" id="sfosVersionCheck-prop"><a name="sfosVersionCheck-prop"></a><span class="name">sfosVersionCheck</span> : <span class="type">int</span></h3>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> int </td><td class="memItemRight bottomAlign"><span class="name"><b>sfosVersionCheck</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setSfosVersionCheck</b></span>(int <i>sfosVersionCheck</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>sfosVersionCheckChanged</b></span>(bool <i>sfosVersionCheck</i>)</td></tr>
+</table></div>
+<!-- @@@sfosVersionCheck -->
+<!-- $$$updates-prop$$$getUpdates$$$updatesChanged -->
+<h3 class="fn" id="updates-prop"><a name="updates-prop"></a><span class="name">updates</span> : const <span class="type">QVariantMap</span></h3>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVariantMap </td><td class="memItemRight bottomAlign"><span class="name"><b>getUpdates</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="patchmanager.html#updatesChanged">updatesChanged</a></b></span>()</td></tr>
+</table></div>
+<!-- @@@updates -->
+<!-- $$$updatesNames-prop$$$getUpdatesNames$$$updatesChanged -->
+<h3 class="fn" id="updatesNames-prop"><a name="updatesNames-prop"></a><span class="name">updatesNames</span> : const <span class="type">QStringList</span></h3>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QStringList </td><td class="memItemRight bottomAlign"><span class="name"><b>getUpdatesNames</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="patchmanager.html#updatesChanged">updatesChanged</a></b></span>()</td></tr>
+</table></div>
+<!-- @@@updatesNames -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$PatchManager[overload1]$$$PatchManagerQObject* -->
+<h3 class="fn" id="PatchManager"><a name="PatchManager"></a>PatchManager::<span class="name">PatchManager</span>(<span class="type">QObject</span> *<i>parent</i> = nullptr)</h3>
+<p>Default constructs an instance of PatchManager.</p><!-- @@@PatchManager -->
+<!-- $$$GetInstance[overload1]$$$GetInstanceQObject* -->
+<h3 class="fn" id="GetInstance"><a name="GetInstance"></a><code>[static] </code><span class="type"><a href="patchmanager.html#PatchManager">PatchManager</a></span> *PatchManager::<span class="name">GetInstance</span>(<span class="type">QObject</span> *<i>parent</i> = nullptr)</h3>
+<p>Returns a singleton instance of <i>PatchManager</i>, constructing it using <i>parent</i> if necessary.</p>
+<!-- @@@GetInstance -->
+<!-- $$$applyPatch[overload1]$$$applyPatchconstQString& -->
+<h3 class="fn" id="applyPatch"><a name="applyPatch"></a><code>[slot] </code><span class="type">QDBusPendingCallWatcher</span> *PatchManager::<span class="name">applyPatch</span>(const <span class="type">QString</span> &amp;<i>patch</i>)</h3>
+<p>Request daemon to apply (activate) the Patch named <i>patch</i></p>
+<!-- @@@applyPatch -->
+<!-- $$$call[overload1]$$$callQDBusPendingCallWatcher* -->
+<h3 class="fn" id="call"><a name="call"></a><span class="type">void</span> PatchManager::<span class="name">call</span>(<span class="type">QDBusPendingCallWatcher</span> *<i>call</i>)</h3>
+<p>Calls <i>call</i> via D-Bus</p>
+<!-- @@@call -->
+<!-- $$$checkForUpdates[overload1]$$$checkForUpdates -->
+<h3 class="fn" id="checkForUpdates"><a name="checkForUpdates"></a><code>[slot] </code><span class="type">void</span> PatchManager::<span class="name">checkForUpdates</span>()</h3>
+<p>Request daemon to check for updates.</p>
+<!-- @@@checkForUpdates -->
+<!-- $$$checkVote[overload1]$$$checkVoteconstQString& -->
+<h3 class="fn" id="checkVote"><a name="checkVote"></a><code>[slot] </code><span class="type">int</span> PatchManager::<span class="name">checkVote</span>(const <span class="type">QString</span> &amp;<i>patch</i>) const</h3>
+<p>Returns the vote count of <i>patch</i> from settings.</p>
+<!-- @@@checkVote -->
+<!-- $$$doVote[overload1]$$$doVoteconstQString&int -->
+<h3 class="fn" id="doVote"><a name="doVote"></a><code>[slot] </code><span class="type">void</span> PatchManager::<span class="name">doVote</span>(const <span class="type">QString</span> &amp;<i>patch</i>, <span class="type">int</span> <i>action</i>)</h3>
+<p>Send a vote got <i>patch</i>, and record it (<i>action</i>) in settings.</p>
+<!-- @@@doVote -->
+<!-- $$$downloadCatalog[overload1]$$$downloadCatalogconstQVariantMap& -->
+<h3 class="fn" id="downloadCatalog"><a name="downloadCatalog"></a><code>[slot] </code><span class="type">QDBusPendingCallWatcher</span> *PatchManager::<span class="name">downloadCatalog</span>(const <span class="type">QVariantMap</span> &amp;<i>params</i>)</h3>
+<p>Request daemon to retrieve the <a href="../patchmanager/pmwc.html">Web Catalog</a>. Can be configred by <i>params</i></p>
+<!-- @@@downloadCatalog -->
+<!-- $$$downloadPatchInfo[overload1]$$$downloadPatchInfoconstQString& -->
+<h3 class="fn" id="downloadPatchInfo"><a name="downloadPatchInfo"></a><code>[slot] </code><span class="type">QDBusPendingCallWatcher</span> *PatchManager::<span class="name">downloadPatchInfo</span>(const <span class="type">QString</span> &amp;<i>name</i>)</h3>
+<p>Request daemon to download patch info for patch <i>name</i></p>
+<!-- @@@downloadPatchInfo -->
+<!-- $$$fileExists[overload1]$$$fileExistsconstQString& -->
+<h3 class="fn" id="fileExists"><a name="fileExists"></a><code>[slot] </code><span class="type">bool</span> PatchManager::<span class="name">fileExists</span>(const <span class="type">QString</span> &amp;<i>filename</i>)</h3>
+<p>Returns <i>true</i> if <i>filename</i> exists, <i>false</i> otherwise.</p>
+<p><b>See also </b><a href="https://doc.qt.io/qt-5/qfile.html#exists-1">https://doc.qt.io/qt-5/qfile.html#exists-1</a>.</p>
+<!-- @@@fileExists -->
+<!-- $$$getSettingsAsync[overload1]$$$getSettingsAsyncconstQString&constQVariant&QJSValueQJSValue -->
+<h3 class="fn" id="getSettingsAsync"><a name="getSettingsAsync"></a><code>[slot] </code><span class="type">void</span> PatchManager::<span class="name">getSettingsAsync</span>(const <span class="type">QString</span> &amp;<i>name</i>, const <span class="type">QVariant</span> &amp;<i>def</i> = QVariant(), <span class="type">QJSValue</span> <i>callback</i> = QJSValue::UndefinedValue, <span class="type">QJSValue</span> <i>errorCallback</i> = QJSValue::UndefinedValue)</h3>
+<p>Retrieves the setting <i>name</i> over DBus. Defaults to <i>def</i></p>
+<p>Calls <i>callback</i> in success, <i>errorCallback</i> on failure.</p>
+<p><b>See also </b><a href="../daemon/patchmanagerobject.html#putSettings">PatchManagerObject::putSettings</a>(const QString &amp;name, const QDBusVariant &amp;value).</p>
+<!-- @@@getSettingsAsync -->
+<!-- $$$getSettingsSync[overload1]$$$getSettingsSyncconstQString&constQVariant& -->
+<h3 class="fn" id="getSettingsSync"><a name="getSettingsSync"></a><code>[slot] </code><span class="type">QVariant</span> PatchManager::<span class="name">getSettingsSync</span>(const <span class="type">QString</span> &amp;<i>name</i>, const <span class="type">QVariant</span> &amp;<i>def</i> = QVariant()) const</h3>
+<p>Returns the setting <i>name</i> over DBus. Defaults to <i>def</i></p>
+<!-- @@@getSettingsSync -->
+<!-- $$$iconForPatch[overload1]$$$iconForPatchconstQString&bool -->
+<h3 class="fn" id="iconForPatch"><a name="iconForPatch"></a><code>[slot] </code><span class="type">QString</span> PatchManager::<span class="name">iconForPatch</span>(const <span class="type">QString</span> &amp;<i>patch</i>, <span class="type">bool</span> <i>dark</i> = true) const</h3>
+<p>Returns the path or an icon file for patch <i>patch</i>, light or dark version depending on <i>dark</i></p>
+<!-- @@@iconForPatch -->
+<!-- $$$installPatch[overload1]$$$installPatchconstQString&constQString&constQString& -->
+<h3 class="fn" id="installPatch"><a name="installPatch"></a><code>[slot] </code><span class="type">QDBusPendingCallWatcher</span> *PatchManager::<span class="name">installPatch</span>(const <span class="type">QString</span> &amp;<i>patch</i>, const <span class="type">QString</span> &amp;<i>version</i>, const <span class="type">QString</span> &amp;<i>url</i>)</h3>
+<p>Request daemon to download and install the Patch named <i>patch</i>, version <i>version</i> from <i>url</i></p>
+<p><b>See also </b>PatchManagerInterface::installPatch(const QString &amp;patch, const QString &amp;version, const QString &amp;url).</p>
+<!-- @@@installPatch -->
+<!-- $$$installTranslator[overload1]$$$installTranslatorconstQString& -->
+<h3 class="fn" id="installTranslator"><a name="installTranslator"></a><code>[slot] </code><span class="type">bool</span> PatchManager::<span class="name">installTranslator</span>(const <span class="type">QString</span> &amp;<i>patch</i>)</h3>
+<p>Installs the translation service for <i>patch</i>. Returns <code>true</code> if successful, <code>false</code> otherwise.</p>
+<!-- @@@installTranslator -->
+<!-- $$$isApplied[overload1]$$$isAppliedconstQString& -->
+<h3 class="fn" id="isApplied"><a name="isApplied"></a><code>[slot] </code><span class="type">bool</span> PatchManager::<span class="name">isApplied</span>(const <span class="type">QString</span> &amp;<i>name</i>) const</h3>
+<p>Returns the applied state of the patch identified by <i>name</i>.</p>
+<p><b>See also </b>PatchManagerModel::isApplied(const Qstring &amp;patch).</p>
+<!-- @@@isApplied -->
+<!-- $$$listVersions[overload1]$$$listVersions -->
+<h3 class="fn" id="listVersions"><a name="listVersions"></a><code>[slot] </code><span class="type">QDBusPendingCallWatcher</span> *PatchManager::<span class="name">listVersions</span>()</h3>
+<p>Request daemon to list patch versions.</p>
+<p><b>See also </b><a href="../daemon/patchmanagerobject.html#listVersions">PatchManagerObject::listVersions</a>().</p>
+<!-- @@@listVersions -->
+<!-- $$$loadRequest[overload1]$$$loadRequestbool -->
+<h3 class="fn" id="loadRequest"><a name="loadRequest"></a><code>[slot] </code><span class="type">void</span> PatchManager::<span class="name">loadRequest</span>(<span class="type">bool</span> <i>apply</i>)</h3>
+<p>Request daemon to initialize itself, and apply patches if <i>apply</i> is <i>true</i>.</p>
+<p><b>See also </b><a href="../daemon/patchmanagerobject.html#loadRequest">PatchManagerObject::loadRequest</a>(bool apply).</p>
+<!-- @@@loadRequest -->
+<!-- $$$onFailureChanged[overload1]$$$onFailureChangedbool -->
+<h3 class="fn" id="onFailureChanged"><a name="onFailureChanged"></a><code>[slot] </code><span class="type">void</span> PatchManager::<span class="name">onFailureChanged</span>(<span class="type">bool</span> <i>failed</i>)</h3>
+<p>Handler for the DBus signal. Sets the internal property to <i>failed</i> if different.</p>
+<p>Emits <i>failureChanged(bool failed)</i></p>
+<!-- @@@onFailureChanged -->
+<!-- $$$onLoadedChanged[overload1]$$$onLoadedChangedbool -->
+<h3 class="fn" id="onLoadedChanged"><a name="onLoadedChanged"></a><code>[slot] </code><span class="type">void</span> PatchManager::<span class="name">onLoadedChanged</span>(<span class="type">bool</span> <i>loaded</i>)</h3>
+<p>Handler for the DBus signal. Sets the internal list to <i>loaded</i> if different.</p>
+<p>Emits <i>loadedChanged(bool loaded)</i></p>
+<!-- @@@onLoadedChanged -->
+<!-- $$$onToggleServicesChanged[overload1]$$$onToggleServicesChangedbool -->
+<h3 class="fn" id="onToggleServicesChanged"><a name="onToggleServicesChanged"></a><code>[slot] </code><span class="type">void</span> PatchManager::<span class="name">onToggleServicesChanged</span>(<span class="type">bool</span> <i>toggle</i>)</h3>
+<p>Handler for the DBus signal. Sets the internal list to <i>toggle</i> if different.</p>
+<p>Emits signal /e <a href="patchmanager.html#appsNeedRestart-prop">toggleServicesChanged</a>(bool toggle)</p>
+<!-- @@@onToggleServicesChanged -->
+<!-- $$$onUpdatesAvailable[overload1]$$$onUpdatesAvailableconstQVariantMap& -->
+<h3 class="fn" id="onUpdatesAvailable"><a name="onUpdatesAvailable"></a><code>[slot] </code><span class="type">void</span> PatchManager::<span class="name">onUpdatesAvailable</span>(const <span class="type">QVariantMap</span> &amp;<i>updates</i>)</h3>
+<p>Handler for the DBus signal. Sets the internal list to <i>updates</i> if different.</p>
+<p>Emits signal /e <a href="patchmanager.html#updatesChanged">updatesChanged</a>()</p>
+<!-- @@@onUpdatesAvailable -->
+<!-- $$$patchName[overload1]$$$patchNameconstQString& -->
+<h3 class="fn" id="patchName"><a name="patchName"></a><code>[slot] </code><span class="type">QString</span> PatchManager::<span class="name">patchName</span>(const <span class="type">QString</span> &amp;<i>patch</i>) const</h3>
+<p>Returns the name of the patch identified by <i>patch</i>.</p>
+<p><b>See also </b>PatchManagerModel::patchName(const Qstring &amp;patch).</p>
+<!-- @@@patchName -->
+<!-- $$$putSettingsAsync[overload1]$$$putSettingsAsyncconstQString&constQVariant&QJSValueQJSValue -->
+<h3 class="fn" id="putSettingsAsync"><a name="putSettingsAsync"></a><code>[slot] </code><span class="type">void</span> PatchManager::<span class="name">putSettingsAsync</span>(const <span class="type">QString</span> &amp;<i>name</i>, const <span class="type">QVariant</span> &amp;<i>value</i>, <span class="type">QJSValue</span> <i>callback</i> = QJSValue::UndefinedValue, <span class="type">QJSValue</span> <i>errorCallback</i> = QJSValue::UndefinedValue)</h3>
+<p>Saves the setting <i>name</i> to <i>value</i> over DBus.</p>
+<p>Calls <i>callback</i> in success, <i>errorCallback</i> on failure.</p>
+<!-- @@@putSettingsAsync -->
+<!-- $$$putSettingsSync[overload1]$$$putSettingsSyncconstQString&constQVariant& -->
+<h3 class="fn" id="putSettingsSync"><a name="putSettingsSync"></a><code>[slot] </code><span class="type">bool</span> PatchManager::<span class="name">putSettingsSync</span>(const <span class="type">QString</span> &amp;<i>name</i>, const <span class="type">QVariant</span> &amp;<i>value</i>)</h3>
+<p>Saves the setting <i>name</i> to <i>value</i> over DBus. Returns <code>true</code> when done, <code>false</code> otherwise.</p>
+<p><b>See also </b>PatchManagerObject::putSettings(const QString &amp;name, const QDBusVariant &amp;value).</p>
+<!-- @@@putSettingsSync -->
+<!-- $$$removeTranslator[overload1]$$$removeTranslatorconstQString& -->
+<h3 class="fn" id="removeTranslator"><a name="removeTranslator"></a><code>[slot] </code><span class="type">bool</span> PatchManager::<span class="name">removeTranslator</span>(const <span class="type">QString</span> &amp;<i>patch</i>)</h3>
+<p>Uninstalls the translation service for <i>patch</i>. Returns <code>true</code> if successful, <code>false</code> otherwise.</p>
+<!-- @@@removeTranslator -->
+<!-- $$$resetState[overload1]$$$resetStateconstQString& -->
+<h3 class="fn" id="resetState"><a name="resetState"></a><code>[slot] </code><span class="type">QDBusPendingCallWatcher</span> *PatchManager::<span class="name">resetState</span>(const <span class="type">QString</span> &amp;<i>patch</i>)</h3>
+<p>Request the daemon to do ..&#x2e; with <i>patch</i></p>
+<p><b>Warning:</b> method not investigated, need documentation</p>
+<!-- @@@resetState -->
+<!-- $$$resolveFailure[overload1]$$$resolveFailure -->
+<h3 class="fn" id="resolveFailure"><a name="resolveFailure"></a><code>[slot] </code><span class="type">void</span> PatchManager::<span class="name">resolveFailure</span>()</h3>
+<p>Calls the <i>resolveFailure</i> method on D-Bus</p>
+<!-- @@@resolveFailure -->
+<!-- $$$restartServices[overload1]$$$restartServices -->
+<h3 class="fn" id="restartServices"><a name="restartServices"></a><code>[slot] </code><span class="type">void</span> PatchManager::<span class="name">restartServices</span>()</h3>
+<p>Request daemon to restart/kill programs affected by changes.</p>
+<p><b>See also </b>PatchManagerInterface::restartServices().</p>
+<!-- @@@restartServices -->
+<!-- $$$setApplyOnBoot -->
+<h3 class="fn" id="setApplyOnBoot"><a name="setApplyOnBoot"></a><span class="type">void</span> PatchManager::<span class="name">setApplyOnBoot</span>(<span class="type">bool</span> <i>applyOnBoot</i>)</h3>
+<p>Saves the <i>applyOnBoot</i> settings value to <i>applyOnBoot</i></p>
+<p><b>Note:</b> Setter function for property <a href="patchmanager.html#applyOnBoot-prop">applyOnBoot</a>. </p><p><b>See also </b><a href="patchmanager.html#applyOnBoot-prop">applyOnBootChanged</a>(bool value).</p>
+<!-- @@@setApplyOnBoot -->
+<!-- $$$trCategory[overload1]$$$trCategoryconstQString& -->
+<h3 class="fn" id="trCategory"><a name="trCategory"></a><span class="type">QString</span> PatchManager::<span class="name">trCategory</span>(const <span class="type">QString</span> &amp;<i>category</i>) const</h3>
+<p>Helper for SectionHeader titles. Looks up translations for <i>category</i>. Returns the translated string.</p>
+<p><b>See also </b><a href="https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-sectionheader.html/">https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-sectionheader.html/</a>.</p>
+<!-- @@@trCategory -->
+<!-- $$$unapplyAllPatches[overload1]$$$unapplyAllPatches -->
+<h3 class="fn" id="unapplyAllPatches"><a name="unapplyAllPatches"></a><code>[slot] </code><span class="type">QDBusPendingCallWatcher</span> *PatchManager::<span class="name">unapplyAllPatches</span>()</h3>
+<p>Request daemon to unapply (deactivate) all active patches.</p>
+<!-- @@@unapplyAllPatches -->
+<!-- $$$unapplyPatch[overload1]$$$unapplyPatchconstQString& -->
+<h3 class="fn" id="unapplyPatch"><a name="unapplyPatch"></a><code>[slot] </code><span class="type">QDBusPendingCallWatcher</span> *PatchManager::<span class="name">unapplyPatch</span>(const <span class="type">QString</span> &amp;<i>patch</i>)</h3>
+<p>Request daemon to unapply (deactivate) the Patch named <i>patch</i></p>
+<!-- @@@unapplyPatch -->
+<!-- $$$uninstallPatch[overload1]$$$uninstallPatchconstQString& -->
+<h3 class="fn" id="uninstallPatch"><a name="uninstallPatch"></a><code>[slot] </code><span class="type">QDBusPendingCallWatcher</span> *PatchManager::<span class="name">uninstallPatch</span>(const <span class="type">QString</span> &amp;<i>patch</i>)</h3>
+<p>Request daemon to uninstall the Patch named <i>patch</i></p>
+<!-- @@@uninstallPatch -->
+<!-- $$$unwind[overload1]$$$unwindconstQVariant&int -->
+<h3 class="fn" id="unwind"><a name="unwind"></a><code>[static] </code><span class="type">QVariant</span> PatchManager::<span class="name">unwind</span>(const <span class="type">QVariant</span> &amp;<i>val</i>, <span class="type">int</span> <i>depth</i> = 0)</h3>
+<p>Helper to translate a DBus reply object <i>val</i> to a valid/usable QVariant</p>
+<p>Recurse up to <i>depth</i> (max. 32).</p>
+<p>Returns the result.</p>
+<!-- @@@unwind -->
+<!-- $$$valueIfExists[overload1]$$$valueIfExistsconstQString& -->
+<h3 class="fn" id="valueIfExists"><a name="valueIfExists"></a><code>[slot] </code><span class="type">QString</span> PatchManager::<span class="name">valueIfExists</span>(const <span class="type">QString</span> &amp;<i>filename</i>) const</h3>
+<p>Returns <i>filename</i> if it exists, an empty QString otherwise</p>
+<p><b>Warning:</b> This is probably dead code, it should be removed.</p>
+<!-- @@@valueIfExists -->
+<!-- $$$watchCall[overload1]$$$watchCallQDBusPendingCallWatcher*QJSValueQJSValue -->
+<h3 class="fn" id="watchCall"><a name="watchCall"></a><span class="type">void</span> PatchManager::<span class="name">watchCall</span>(<span class="type">QDBusPendingCallWatcher</span> *<i>call</i>, <span class="type">QJSValue</span> <i>callback</i> = QJSValue::UndefinedValue, <span class="type">QJSValue</span> <i>errorCallback</i> = QJSValue::UndefinedValue)</h3>
+<p>Calls <i>call</i> via D-Bus, executing <i>callback</i> on success, <i>errorCallback</i> on error.</p>
+<!-- @@@watchCall -->
+</div>
+<div align='center'><hr/> <p><small>Patchmanager Documentation
+Copyright (c) 2023 Patchmanager for SailfishOS contributors.
+This document may be used under the terms of the  <a href='https://spdx.org/licenses/CC-BY-SA-4.0.html'> Creative Commons Attribution Share Alike 4.0 International</a>  License.</small></p> <p/></div></body>
+</html>

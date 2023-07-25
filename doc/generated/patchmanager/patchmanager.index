@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE QDOCINDEX>
+<INDEX url="" title="Patchmanager" version="" project="patchmanager" indexTitle="Patchmanager Documentation">
+    <namespace threadsafety="unspecified" name="" status="active" access="public" module="patchmanager">
+        <page name="index.html" href="index.html" status="active" location="daemon.qdoc" filepath="/home/nemo/devel/git/patchmanager/repo/src/bin/patchmanager-daemon/daemon.qdoc" lineno="1" subtype="page" title="Patchmanager Documentation: Daemon" fulltitle="Patchmanager Documentation: Daemon" subtitle="" module="patchmanager">
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="documentation" title="Documentation:" level="2"/>
+        </page>
+        <page name="index.html" href="index.html" status="active" location="index.qdoc" filepath="/home/nemo/devel/git/patchmanager/repo/src/index.qdoc" lineno="1" subtype="page" title="Patchmanager Documentation" fulltitle="Patchmanager Documentation" subtitle="" module="patchmanager">
+            <contents name="internals" title="Internals" level="1"/>
+            <contents name="applications" title="Applications" level="1"/>
+            <contents name="gui-applications" title="GUI Applications" level="2"/>
+            <contents name="infrastructure-applications" title="Infrastructure Applications" level="2"/>
+        </page>
+        <page name="patchmeta.html" href="patchmeta.html" status="active" location="index.qdoc" filepath="/home/nemo/devel/git/patchmanager/repo/src/index.qdoc" lineno="352" subtype="page" title="Patch Metadata" fulltitle="Patch Metadata" subtitle="" module="patchmanager">
+            <target name="metadata"/>
+        </page>
+        <page name="pmconfig.html" href="pmconfig.html" status="active" location="index.qdoc" filepath="/home/nemo/devel/git/patchmanager/repo/src/index.qdoc" lineno="280" subtype="page" title="Patchmanager Configuration Files" fulltitle="Patchmanager Configuration Files" subtitle="" module="patchmanager">
+            <target name="inifile"/>
+            <contents name="op-op-etc-op-op-patchmanager2-op-op-conf" title="&lt;@op&gt;/&lt;/@op&gt;etc&lt;@op&gt;/&lt;/@op&gt;patchmanager2&lt;@op&gt;.&lt;/@op&gt;conf" level="2"/>
+            <contents name="settings" title="settings" level="3"/>
+            <contents name="op-op-votes-op-op" title="&lt;@op&gt;[&lt;/@op&gt;votes&lt;@op&gt;]&lt;/@op&gt;" level="3"/>
+            <contents name="op-op-var-op-op-lib-op-op-environment-op-op-patchmanager-op-op-dialog-comment-conf-comment" title="&lt;@op&gt;/&lt;/@op&gt;var&lt;@op&gt;/&lt;/@op&gt;lib&lt;@op&gt;/&lt;/@op&gt;environment&lt;@op&gt;/&lt;/@op&gt;patchmanager&lt;@op&gt;-&lt;/@op&gt;dialog&lt;@comment&gt;/*.conf&lt;/@comment&gt;" level="2"/>
+            <contents name="op-op-var-op-op-lib-op-op-environment-op-op-patchmanager-op-op-number-10-number-op-op-dbus-op-op-conf" title="&lt;@op&gt;/&lt;/@op&gt;var&lt;@op&gt;/&lt;/@op&gt;lib&lt;@op&gt;/&lt;/@op&gt;environment&lt;@op&gt;/&lt;/@op&gt;patchmanager&lt;@op&gt;/&lt;/@op&gt;&lt;@number&gt;10&lt;/@number&gt;&lt;@op&gt;-&lt;/@op&gt;dbus&lt;@op&gt;.&lt;/@op&gt;conf" level="2"/>
+        </page>
+        <page name="pmoverview.html" href="pmoverview.html" status="active" location="index.qdoc" filepath="/home/nemo/devel/git/patchmanager/repo/src/index.qdoc" lineno="42" subtype="page" title="Patchmanager Overview" fulltitle="Patchmanager Overview" subtitle="" module="patchmanager">
+            <contents name="operation-flow" title="Operation Flow" level="1"/>
+            <contents name="1-a-patch-is-activated" title="1. A Patch is &quot;activated&quot;" level="2"/>
+            <contents name="2-a-patched-application-is-launched" title="2. A patched application is launched." level="2"/>
+            <contents name="3-the-preload-library" title="3. The Preload Library:" level="2"/>
+            <contents name="patch-installation" title="Patch Installation" level="1"/>
+            <contents name="patch-folder-structure" title="Patch folder structure" level="2"/>
+            <contents name="web-catalog" title="Web Catalog" level="2"/>
+            <contents name="rpm-package" title="RPM package" level="2"/>
+            <contents name="tar-package" title="TAR package" level="2"/>
+            <contents name="manual-installation" title="manual installation" level="2"/>
+        </page>
+        <page name="pmservices.html" href="pmservices.html" status="active" location="index.qdoc" filepath="/home/nemo/devel/git/patchmanager/repo/src/index.qdoc" lineno="169" subtype="page" title="Patchmanager Services" fulltitle="Patchmanager Services" subtitle="" module="patchmanager">
+            <target name="dbus-sys"/>
+            <contents name="installation-and-configuration" title="Installation and Configuration" level="1"/>
+            <contents name="d-bus-system-service" title="D-Bus System Service" level="2"/>
+            <contents name="systemd-system-units" title="Systemd System Units" level="2"/>
+            <contents name="systemd-user-units" title="Systemd User Units" level="2"/>
+            <contents name="manual-invocation" title="Manual Invocation" level="1"/>
+            <contents name="logging-and-debugging" title="Logging and Debugging" level="1"/>
+        </page>
+        <page name="pmwc.html" href="pmwc.html" status="active" location="index.qdoc" filepath="/home/nemo/devel/git/patchmanager/repo/src/index.qdoc" lineno="156" subtype="page" title="Patchmanager Web Catalog" fulltitle="Patchmanager Web Catalog" subtitle="" module="patchmanager"/>
+    </namespace>
+</INDEX>

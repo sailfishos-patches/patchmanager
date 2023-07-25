@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE QDOCINDEX>
+<INDEX url="https://github.com/sailfishos-patches/patchmanager" title="Patchmanager Startup Dialog Documentation" version="2.0" project="dialog" indexTitle="Patchmanager Documentation">
+    <namespace threadsafety="unspecified" name="" status="active" access="public" module="dialog">
+        <page name="index.html" href="index.html" status="active" location="dialog.qdoc" filepath="/home/nemo/devel/git/patchmanager/repo/src/bin/dialog/dialog.qdoc" lineno="1" subtype="page" title="Patchmanager Documentation: Startup Dialog" fulltitle="Patchmanager Documentation: Startup Dialog" subtitle="" module="dialog">
+            <contents name="user-interface-dialog" title="User Interface: Dialog" level="1"/>
+            <contents name="application-startup" title="Application Startup" level="1"/>
+            <contents name="d-bus-interface" title="D-Bus interface" level="2"/>
+        </page>
+        <qmlclass threadsafety="unspecified" name="dialog" qml-module-name="dialog" href="qml-dialog.html" status="internal" access="private" location="dialog.qml" filepath="/home/nemo/devel/git/patchmanager/repo/src/bin/dialog/dialog.qml" lineno="40" title="dialog" fulltitle="dialog" subtitle="">
+            <qmlproperty threadsafety="unspecified" name="remorseItem" fullname="dialog::remorseItem" href="qml-dialog.html#remorseItem-prop" status="active" access="public" location="dialog.qml" filepath="/home/nemo/devel/git/patchmanager/repo/src/bin/dialog/dialog.qml" lineno="42" type="var" attached="false" writable="true"/>
+        </qmlclass>
+    </namespace>
+</INDEX>
