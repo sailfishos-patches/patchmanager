@@ -1,0 +1,54 @@
+/*!
+
+  \page user.html overview
+  \indexpage Patchmanager Documentation
+
+  \title Patchmanager for SailfishOS
+
+  Patchmanager is a tool for transparently modifying installed files by the
+  patch utility and for managing the special patch files ("Patches") for doing
+  so.
+
+  Since version 3.0, Patchmanager does not modify original files on mass
+  storage, it merely alters their content when they are loaded into RAM to be
+  executed.
+
+  \section1 Launching
+
+  Patchmanager does not install an application icon on the launcher, but
+  creates a new entry in SailfishOS' Settings app.
+
+  \section1 Installing
+
+  To install a recent Patchmanager the SailfishOS:Chum community repository can
+  be used, which is easily accessed with the SailfishOS:Chum GUI application,
+  which in turn can be installed via the
+  \l{https://openrepos.net/content/olf/sailfishoschum-gui-installer}{SailfishOS:Chum GUI Installer}
+
+  Alternatively Patchmanager can be installed from
+  \l{https://openrepos.net/user/16848/programs}{its OpenRepos repository}
+  using Storeman, which can be installed via the
+   \l{https://openrepos.net/content/olf/storeman-installer}{Storeman Installer}.
+
+  While these two sources can also be used to manually download and install
+  Patchmanager, you may alternatively obtain Patchmanager RPMs from
+  \l{https://github.com/sailfishos-patches/patchmanager/releases}{its releases page at GitHub}.
+
+  \note The Patchmanager's OpenRepos repository and GitHub releases page also
+  offer the final releases of Patchmanager 3.0 for SailfishOS < 3.4.0 and
+  Patchmanager 2.3.3 for SailfishOS < 2.2.x.
+
+  \section1 Getting Patches
+
+  Modern Patches for Patchmanager 3 are provided via
+  \l{https://coderus.openrepos.net/pm2/projects/}{the Web Catalog}
+  while older Patches were provided as
+  \l{https://openrepos.net/category/patches}{RPMs at OpenRepos}
+  and some of them are still maintained.
+
+  Mind that many Patches were first released at OpenRepos but later migrated to
+  the Web Catalog: For these you will find outdated RPMs, hence always search
+  in the Web Catalog first.
+
+
+*/

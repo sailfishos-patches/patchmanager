@@ -4,7 +4,9 @@ description = Patchmanager
 include (common.qdocconf)
 
 ## Sources
-sources += ../../src/index.qdoc
+sources += ../../src/index.qdoc \
+           ../../src/patchdev.qdoc \
+           ../../src/user.qdoc
 # for quoting
 exampledirs += ../../src/bin/patchmanager-daemon
 
