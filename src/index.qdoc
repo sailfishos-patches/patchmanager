@@ -347,3 +347,17 @@
   \section2 \c{/var/lib/environment/patchmanager-dialog/*.conf}
   \section2 \c{/var/lib/environment/patchmanager/10-dbus.conf}
 */
+
+  /****** Patch Metadata Documentation page *******/
+/*!
+  \title Patch Metadata
+  \previouspage {Patchmanager Configuration Files}
+
+  \page patchmeta.html overview
+
+
+  \target metadata
+
+  JSON file.
+*/
+
