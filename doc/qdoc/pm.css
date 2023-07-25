@@ -1,3 +1,7 @@
+body { margin-left: 15vw; margin-right: 15vw;
+    font-family: "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+code { font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace; }
 a:link { color: #8C001A; text-decoration: none; text-align: left; }
 a.qa-mark:target:before { content: "***"; color: #ff0000; }
 a:hover { color: #8C0060; text-align: left; }
