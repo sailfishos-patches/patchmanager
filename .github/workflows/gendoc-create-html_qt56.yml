@@ -17,18 +17,25 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: 3
+      # branch to compile from, and branch to commit/push to
       DOC_SOURCE_BRANCH: "master"
       DOC_TARGET_BRANCH: "gh-pages"
-      DOC_TARGET_DIR: "doctarget"
+      # Output location for generated content so we know where to copy from.
+      # Not related to output path in the repo.
+      DOC_TARGET_DIR:    "doctarget"
     steps:
-    - name: Checkout Source
+    - name: Checkout Source (${{ env.DOC_SOURCE_BRANCH }})
       uses: actions/checkout@v3
       with:
         ref: ${{ env.DOC_SOURCE_BRANCH }}
 
-    - name: Build Docs
+    - name: Generate Docs
+      env:
+        # docker image to run qdoc etc. on
+        DOCKER_IMG:        "icsinc/qt5.6.1-x64:latest"
       run: |
-        docker run --rm -v $PWD:/share icsinc/qt5.6.1-x64:latest /bin/bash -xc "
+        docker run --rm -v $PWD:/share $DOCKER_IMG /bin/bash -xc "
+            echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections;
             sudo apt-get -qq update;
             sudo apt-get -qq install -y qdoc-qt5;
             sudo apt-get -qq install -y qtbase5-dev;
@@ -44,7 +51,7 @@ jobs:
             cp -rv doc/generated/* /share/out/;
             "
 
-    - name: Checkout Target
+    - name: Checkout Target (${{ env.DOC_TARGET_BRANCH }})
       uses: actions/checkout@v3
       with:
         # only check out the target path:
@@ -52,8 +59,9 @@ jobs:
         ref: ${{ env.DOC_TARGET_BRANCH }}
         path: ${{ env.DOC_TARGET_DIR }}
 
-    - name: Copy Docs
+    - name: Copy Artifacts
       run: |
+        mkdir -p $GITHUB_WORKSPACE/$DOC_TARGET_DIR/doc/generated/
         rm -rf $GITHUB_WORKSPACE/$DOC_TARGET_DIR/doc/generated/*
         cp -rv out/* $GITHUB_WORKSPACE/$DOC_TARGET_DIR/doc/generated/
 
