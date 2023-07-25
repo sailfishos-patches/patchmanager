@@ -36,6 +36,7 @@ jobs:
       run: |
         docker run --rm -v $PWD:/share $DOCKER_IMG /bin/bash -xc "
             echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections;
+            sudo rm -f /etc/apt/sources.list.d/beineri-opt-qt561-trusty-trusty.list
             sudo apt-get -qq update;
             sudo apt-get -qq install -y qdoc-qt5;
             sudo apt-get -qq install -y qtbase5-dev;
