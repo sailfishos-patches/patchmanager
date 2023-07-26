@@ -15,5 +15,5 @@ sourcedirs = ../../src/qml
 sources += qmlplugin.qdoc
 #sources.fileextensions = "*.cpp *.qdoc *.qml"
 
-# get rid of warnings about undoicumented stuff in patchmanager.h
+# try to get rid of warnings about undocumented stuff in patchmanager.h
 Cpp.ignoretokens += Q_PROPERTY

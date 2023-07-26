@@ -1,7 +1,7 @@
 project = patchmanager
 description = Patchmanager
 
-include (common.qdocconf)
+include(common.qdocconf)
 
 ## Sources
 sources += ../../src/index.qdoc \

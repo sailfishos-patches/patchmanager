@@ -21,7 +21,7 @@
   well or enhance an existing translation, please read Patchmanager's
   corresponding Wiki page
 
-  \l{https://github.com/sailfishos-patches/patchmanager/wiki/Translations-(%22i18n%22,-%22l10n%22)}{Translations-("i18n", "l10n")}.
+  \l{https://github.com/sailfishos-patches/patchmanager/wiki/Translations-(%22i18n%22,-%22l10n%22)}{Translations ("i18n", "l10n")}.
 
   \section1 Internals
 
@@ -314,6 +314,9 @@
   \e{to be written...}
 
   \section2 \c{/var/lib/environment/patchmanager-dialog/*.conf}
+  \e{to be written...}
+
   \section2 \c{/var/lib/environment/patchmanager/10-dbus.conf}
+  \e{to be written...}
 */
 
