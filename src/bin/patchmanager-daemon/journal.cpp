@@ -6,9 +6,16 @@
 
 /*! \class Journal
     \inmodule PatchManagerDaemon
+    \brief Interface to the systemd Journal.
+
+    Listens on the systemd Journal for certain messages.
+
+    This is done to be able to detect when Lipstick throws an error on start,
+    and a file from a patch caused an error.
+
 */
 /*! \fn Journal::matchFound()
-   Emitted when the fileters found a log entry that matched.
+   Emitted when the filters found a log entry that matched.
 */
 Journal::Journal(QObject *parent)
     : QObject(parent)
@@ -45,7 +52,7 @@ void Journal::wait()
     thread->start();
 }
 
-/*! Attaches itself to the Journal, filetering for \e Lipstick and \e jolla-settings executables. */
+/*! Attaches itself to the Journal, filtering for \e Lipstick and \e jolla-settings executables. */
 void Journal::init()
 {
     qDebug() << Q_FUNC_INFO;
@@ -67,7 +74,7 @@ void Journal::init()
     wait();
 }
 
-/*! Read the message from the Journal, look got certain strings, and emit the matchFound signal if found.
+/*! Read the messages, look for certain strings, and emit the matchFound signal if found.
 
   Strings looked for are:
 
