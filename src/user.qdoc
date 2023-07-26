@@ -22,17 +22,14 @@
 
   To install a recent Patchmanager the SailfishOS:Chum community repository can
   be used, which is easily accessed with the SailfishOS:Chum GUI application,
-  which in turn can be installed via the
-  \l{https://openrepos.net/content/olf/sailfishoschum-gui-installer}{SailfishOS:Chum GUI Installer}
+  which in turn can be installed via the \l{SailfishOS:Chum GUI Installer}
 
-  Alternatively Patchmanager can be installed from
-  \l{https://openrepos.net/user/16848/programs}{its OpenRepos repository}
-  using Storeman, which can be installed via the
-   \l{https://openrepos.net/content/olf/storeman-installer}{Storeman Installer}.
+  Alternatively Patchmanager can be installed from its \l{OpenRepos repository}
+  using Storeman, which can be installed via the \l{Storeman Installer}.
 
   While these two sources can also be used to manually download and install
-  Patchmanager, you may alternatively obtain Patchmanager RPMs from
-  \l{https://github.com/sailfishos-patches/patchmanager/releases}{its releases page at GitHub}.
+  Patchmanager, you may alternatively obtain Patchmanager RPMs from its
+  \l{Releases page} at GitHub.
 
   \note The Patchmanager's OpenRepos repository and GitHub releases page also
   offer the final releases of Patchmanager 3.0 for SailfishOS < 3.4.0 and
@@ -40,10 +37,9 @@
 
   \section1 Getting Patches
 
-  Modern Patches for Patchmanager 3 are provided via
-  \l{https://coderus.openrepos.net/pm2/projects/}{the Web Catalog}
+  Modern Patches for Patchmanager 3 are provided via the \l{Web Catalog Site}
   while older Patches were provided as
-  \l{https://openrepos.net/category/patches}{RPMs at OpenRepos}
+  \l{Patch RPMs at OpenRepos}
   and some of them are still maintained.
 
   Mind that many Patches were first released at OpenRepos but later migrated to

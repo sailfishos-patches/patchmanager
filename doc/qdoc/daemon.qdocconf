@@ -7,8 +7,6 @@ url             = https://github.com/sailfishos-patches/patchmanager
 include(common.qdocconf)
 
 headerdirs += ../../src/bin/patchmanager-daemon
-
-headerdirs += ../../src/bin/patchmanager-daemon
 headers.fileextensions = "*.h *.hpp"
 
 sourcedirs += ../../src/bin/patchmanager-daemon
