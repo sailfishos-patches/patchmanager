@@ -28,7 +28,7 @@ HTML.footer = "<div align='center'><hr/>" \
               "License.</small></p>" \
               "<p/></div>"
 
-navigation.homepage = https://github.com/sailfishos-patches/patchmanager/wiki
+navigation.homepage = https://sailfishos-patches.github.io/patchmanager
 navigation.hometitle = Patchmanager
 navigation.landingpage = Patchmanager Documentation
 
