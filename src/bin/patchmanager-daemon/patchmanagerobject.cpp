@@ -1049,7 +1049,7 @@ QString PatchManagerObject::getRpmName(const QString &rpm) const
     handle command line arguments, and maybe daemonize.
 
     If called with any other argument other than \c --daemon, call a method
-    coreesponding to the command line option on the bus and exit.
+    coresponding to the command line option on the bus and exit.
 
     Currently supported command line options are:
 
@@ -1071,6 +1071,8 @@ QString PatchManagerObject::getRpmName(const QString &rpm) const
         \li \e none
         \li calls the "unapply" action for all patches
     \endtable
+
+    \note this is called from \c main() via \l{https://doc.qt.io/archives/qt-5.6/qtimer.html#singleShot-prop}{QTimer::singleShot}
 
 */
 void PatchManagerObject::process()
