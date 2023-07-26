@@ -8,6 +8,9 @@ sources += ../../src/index.qdoc \
            ../../src/patchdev.qdoc \
            ../../src/user.qdoc \
            ../../src/externalpages.qdoc
-# for quoting
-exampledirs += ../../src/bin/patchmanager-daemon
+# for quoting. WARNING: Setting this wrong, e.g. to
+# ../../src/bin/patchmanager-daemon will cause qdoc to create double index.html
+# files at the wrong place.
+# So, only give paths where the actual files reside:
+exampledirs += ../../src/bin/patchmanager-daemon/dbus
 

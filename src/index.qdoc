@@ -147,7 +147,7 @@
 
   It is defined as follows:
 
-  \quotefile dbus/org.SfietKonstantin.patchmanager.xml
+  \quotefile  org.SfietKonstantin.patchmanager.xml
 
   Calls can be issued e.g. like this:
 
