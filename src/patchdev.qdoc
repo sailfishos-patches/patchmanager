@@ -6,6 +6,7 @@
   \title Patch Developer Documentation
 
   \section1 Patch Installation
+  \target patchdevinstall
 
   There are three ways a Patch can end up on the system:
 
