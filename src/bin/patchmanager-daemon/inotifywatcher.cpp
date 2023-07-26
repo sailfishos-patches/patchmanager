@@ -80,7 +80,7 @@ INotifyWatcher::INotifyWatcher(QObject *parent)
     Parameters are the \a path and whether it was \a removed.
  */
 /*! \fn void INotifyWatcher::contentChanged(const QString &path, bool created);
-    This signal is emitted when directory content has changed
+    This signal is emitted when directory content has changed.
     Parameters are the \a path and whether something was \a created.
  */
 INotifyWatcher::~INotifyWatcher()
@@ -92,7 +92,7 @@ INotifyWatcher::~INotifyWatcher()
     ::close(inotifyFd);
 }
 
-/*! Add \a paths to the list of paths to be watched. */
+/*! This function adds \a paths to the list of paths to be watched and returns the new list. */
 QStringList INotifyWatcher::addPaths(const QStringList &paths)
 {
     QStringList p = paths;
@@ -142,7 +142,7 @@ QStringList INotifyWatcher::addPaths(const QStringList &paths)
     return p;
 }
 
-/*! Removes \a paths from the list of paths to be watched. */
+/*! This function removes \a paths from the list of paths to be watched and returns the new path list.  */
 QStringList INotifyWatcher::removePaths(const QStringList &paths)
 {
     QStringList p = paths;
