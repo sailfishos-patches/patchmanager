@@ -24,31 +24,31 @@ jobs:
       # Not related to output path in the repo.
       DOC_TARGET_DIR:    "doctarget"
     steps:
-    - name: Checkout Source (${{ env.DOC_SOURCE_BRANCH }})
-      uses: actions/checkout@v3
-      with:
-        ref: ${{ env.DOC_SOURCE_BRANCH }}
+      - name: Checkout Source (${{ env.DOC_SOURCE_BRANCH }})
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ env.DOC_SOURCE_BRANCH }}
 
-    - name: Generate Docs
-      env:
-        # docker image to run qdoc etc. on
-        DOCKER_IMG:        "icsinc/qt5.6.1-x64:latest"
-      run: |
-        docker run --rm -v $PWD:/share $DOCKER_IMG /bin/bash -xc "
-            echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections;
-            sudo rm -f /etc/apt/sources.list.d/beineri-opt-qt561-trusty-trusty.list
-            sudo apt-get -qq update;
-            sudo apt-get -qq install -y qtbase5-dev;
-            sudo apt-get -qq install -y git-core;
-            mkdir -p build ;
-            cd build ;
-            cp -r /share/* . ;
-            mkdir -p doc/generated;
-            git clone --depth 1 -b upgrade-4.5.0 https://github.com/sailfishos/sailfish-qdoc-template doc/qdoc/sailfish-qdoc-template;
-            /bin/bash -c ./makedocs;
-            mkdir /share/out;
-            cp -rv doc/generated/* /share/out/;
-            "
+      - name: Generate Docs
+        env:
+          # docker image to run qdoc etc. on
+          DOCKER_IMG:        "icsinc/qt5.6.1-x64:latest"
+        run: |
+          docker run --rm -v $PWD:/share $DOCKER_IMG /bin/bash -xc "
+              echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections;
+              sudo rm -f /etc/apt/sources.list.d/beineri-opt-qt561-trusty-trusty.list
+              sudo apt-get -qq update;
+              sudo apt-get -qq install -y qtbase5-dev;
+              sudo apt-get -qq install -y git-core;
+              mkdir -p build ;
+              cd build ;
+              cp -r /share/* . ;
+              mkdir -p doc/generated;
+              git clone --depth 1 -b upgrade-4.5.0 https://github.com/sailfishos/sailfish-qdoc-template doc/qdoc/sailfish-qdoc-template;
+              /bin/bash -c ./makedocs;
+              mkdir /share/out;
+              cp -rv doc/generated/* /share/out/;
+              "
 
 #    - name: Checkout Target (${{ env.DOC_TARGET_BRANCH }})
 #      uses: actions/checkout@v3
@@ -80,13 +80,13 @@ jobs:
 #
 #            Created by ${{ github.workflow }} via ${{ github.event_name }} from ${{ github.sha }}.
 #
-      # now deploy the artifacts to pages:
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: './doc/generated'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+        # now deploy the artifacts to pages:
+        - name: Setup Pages
+          uses: actions/configure-pages@v3
+        - name: Upload artifact
+          uses: actions/upload-pages-artifact@v1
+          with:
+            path: './doc/generated'
+        - name: Deploy to GitHub Pages
+          id: deployment
+          uses: actions/deploy-pages@v2
