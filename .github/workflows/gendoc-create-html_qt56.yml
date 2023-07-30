@@ -6,6 +6,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+# actions/deploy-pages needs this:
+permissions:
+  contents: write
+
 # Allow only one build run, skipping runs queued between the run in-progress and latest queued.
 # cancel in-progress runs
 concurrency:
