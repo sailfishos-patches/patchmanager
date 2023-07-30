@@ -9,6 +9,7 @@ on:
 # actions/deploy-pages needs this:
 permissions:
   id-token: write
+  pages: write
 
 # Allow only one build run, skipping runs queued between the run in-progress and latest queued.
 # cancel in-progress runs
