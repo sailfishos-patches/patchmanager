@@ -34,6 +34,26 @@ jobs:
       uses: actions/checkout@v3
       with:
         ref: ${{ env.DOC_SOURCE_BRANCH }}
+    # The builder outputs its index files in several subdirectories.
+    # The web root has no index file, so GH Pages throws a 404 when browsing there.
+    # So, lets add an index.html file to the root which redirects where we want to go:
+    - name: Add redirect Page
+      env:
+        REDIRECTOR: |
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Redirecting...</title>
+            <meta http-equiv="refresh" content="1; url='patchmanager'"/>
+          </head>
+          <body>
+            <p>You will be redirected to the Documentation pages soon!</p>
+          </body>
+          </html>
+      run: |
+        mkdir -p out
+        chmod ug+rwx out
+        echo "${REDIRECTOR}" > out/index.html
     - name: Generate Docs
       env:
         # docker image to run qdoc etc. on
@@ -54,23 +74,6 @@ jobs:
             mkdir /share/out;
             cp -rv doc/generated/* /share/out/;
             "
-    # The builder above outputs its index files in several subdirectories.
-    # The web root has no index file, so GH Pages throws a 404 when browsing there.
-    # So, lets add an index.html file to the root which redirects where we want to go:
-    - name: Add redirect Page
-      env:
-        REDIRECTOR: |
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <title>Redirecting...</title>
-            <meta http-equiv="refresh" content="1; url='patchmanager'"/>
-          </head>
-          <body>
-            <p>You will be redirected to the Documentation pages soon!</p>
-          </body>
-          </html>
-      run: echo "${REDIRECTOR}" > out/index.html
     # Upload artifact for deploying to pages:
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v1
