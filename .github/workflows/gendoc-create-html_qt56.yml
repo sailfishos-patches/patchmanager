@@ -27,13 +27,33 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: 3
-      # branch to compile from, and branch to commit/push to
+      # branch to compile from
       DOC_SOURCE_BRANCH: ${{ inputs.SOURCE_BRANCH != '' && inputs.SOURCE_BRANCH || 'master' }}
     steps:
     - name: Checkout Source (${{ env.DOC_SOURCE_BRANCH }})
       uses: actions/checkout@v3
       with:
         ref: ${{ env.DOC_SOURCE_BRANCH }}
+    - name: Generate Docs
+      env:
+        # docker image to run qdoc etc. on
+        DOCKER_IMG:        "icsinc/qt5.6.1-x64:latest"
+      run: |
+        mkdir -p out
+        docker run --rm -v $PWD:/share $DOCKER_IMG /bin/bash -xc "
+            echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections;
+            sudo rm -f /etc/apt/sources.list.d/beineri-opt-qt561-trusty-trusty.list
+            sudo apt-get -qq update;
+            sudo apt-get -qq install -y qtbase5-dev;
+            sudo apt-get -qq install -y git-core;
+            mkdir -p build ;
+            cd build ;
+            cp -r /share/* . ;
+            mkdir -p doc/generated;
+            git clone --depth 1 -b upgrade-4.5.0 https://github.com/sailfishos/sailfish-qdoc-template doc/qdoc/sailfish-qdoc-template;
+            /bin/bash -c ./makedocs;
+            cp -rv doc/generated/* /share/out/;
+            "
     # The builder outputs its index files in several subdirectories.
     # The web root has no index file, so GH Pages throws a 404 when browsing there.
     # So, lets add an index.html file to the root which redirects where we want to go:
@@ -50,30 +70,7 @@ jobs:
             <p>You will be redirected to the Documentation pages soon!</p>
           </body>
           </html>
-      run: |
-        mkdir -p out
-        chmod ug+rwx out
-        echo "${REDIRECTOR}" > out/index.html
-    - name: Generate Docs
-      env:
-        # docker image to run qdoc etc. on
-        DOCKER_IMG:        "icsinc/qt5.6.1-x64:latest"
-      run: |
-        docker run --rm -v $PWD:/share $DOCKER_IMG /bin/bash -xc "
-            echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections;
-            sudo rm -f /etc/apt/sources.list.d/beineri-opt-qt561-trusty-trusty.list
-            sudo apt-get -qq update;
-            sudo apt-get -qq install -y qtbase5-dev;
-            sudo apt-get -qq install -y git-core;
-            mkdir -p build ;
-            cd build ;
-            cp -r /share/* . ;
-            mkdir -p doc/generated;
-            git clone --depth 1 -b upgrade-4.5.0 https://github.com/sailfishos/sailfish-qdoc-template doc/qdoc/sailfish-qdoc-template;
-            /bin/bash -c ./makedocs;
-            mkdir /share/out;
-            cp -rv doc/generated/* /share/out/;
-            "
+      run: echo "${REDIRECTOR}" > out/index.html
     # Upload artifact for deploying to pages:
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v1
