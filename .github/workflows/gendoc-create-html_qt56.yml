@@ -28,7 +28,7 @@ jobs:
     env:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: 3
       # branch to compile from, and branch to commit/push to
-      DOC_SOURCE_BRANCH: ${{ inputs.SOURCE_BRANCH != '' && ${{ inputs.SOURCE_BRANCH }} || "master" }}
+      DOC_SOURCE_BRANCH: ${{ inputs.SOURCE_BRANCH != '' && inputs.SOURCE_BRANCH || "master" }}
     steps:
     - name: Checkout Source (${{ env.DOC_SOURCE_BRANCH }})
       uses: actions/checkout@v3
