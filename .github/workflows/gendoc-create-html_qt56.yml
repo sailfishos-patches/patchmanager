@@ -13,6 +13,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  ### Build the documentation files:
+  #     - check out the branch
+  #     - Use a docker image containing `qdoc` to generate the files
+  #     - upload the results so the deployment job can pick it up
   build:
     runs-on: ubuntu-22.04
     env:
@@ -52,7 +56,22 @@ jobs:
       uses: actions/upload-pages-artifact@v1
       with:
         path: './out'
-        
+    # the builder above outputs its index files in several subdirectories. Our main one is patchmanager/index.html
+    # The web root has no index file, so GH Pages throws a 404 when browsing there.
+    # So, lets add an index.html file to the root which redirects where we want to go:
+    - name: Add redirect Page
+      run: |
+        printf '<!DOCTYPE html>\n
+        <html>\n
+        <head>\n
+          <title>Redirecting...</title>\n
+          <meta http-equiv="refresh" content="1; url=\'patchmanager\'"/>\n
+        </head>\n
+        <body>\n
+          <p>You will be redirected to the Documentation pages soon!</p>\n
+        </body>\n
+        </html>' > out/index.html
+
   # Now deploy to GH Pages
   deploy:
     needs: build
