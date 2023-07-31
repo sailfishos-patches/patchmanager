@@ -62,13 +62,14 @@ jobs:
         REDIRECTOR: |
           <!DOCTYPE html>
           <html>
-          <head>
-            <title>Redirecting...</title>
-            <meta http-equiv="refresh" content="1; url='patchmanager'"/>
-          </head>
-          <body>
-            <p>You will be redirected to the Documentation pages soon!</p>
-          </body>
+            <head>
+              <title>Redirecting...</title>
+              <meta http-equiv="refresh" content="1; url='patchmanager'"/>
+            </head>
+            <body>
+              <p>You will be redirected to the Documentation pages soon.</p>
+              <p>If this does not happpen, <a href="patchmanager">please click here</a>.</p>
+            </body>
           </html>
       run: echo "${REDIRECTOR}" > out/index.html
     # Upload artifact for deploying to pages:
@@ -80,16 +81,15 @@ jobs:
   # Now deploy to GH Pages
   deploy:
     needs: build
-    runs-on: ubuntu-latest
-
-    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    runs-on: ubuntu-22.04
+    # Grant GITHUB_TOKEN the permissions required by deploy-pages action
     permissions:
       pages: write      # to deploy to Pages
       id-token: write   # to verify the deployment originates from an appropriate source
-      
     steps:
     - name: Setup Pages
       uses: actions/configure-pages@v3
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v2
+
