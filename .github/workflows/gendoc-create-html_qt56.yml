@@ -61,15 +61,15 @@ jobs:
     # So, lets add an index.html file to the root which redirects where we want to go:
     - name: Add redirect Page
       run: |
-        printf '<!DOCTYPE html>\n
-        <html>\n
-        <head>\n
-          <title>Redirecting...</title>\n
-          <meta http-equiv="refresh" content="1; url=\'patchmanager\'"/>\n
-        </head>\n
-        <body>\n
-          <p>You will be redirected to the Documentation pages soon!</p>\n
-        </body>\n
+        printf '<!DOCTYPE html>
+        <html>
+        <head>
+          <title>Redirecting...</title>
+          <meta http-equiv="refresh" content="1; url=\'patchmanager\'"/>
+        </head>
+        <body>
+          <p>You will be redirected to the Documentation pages soon!</p>
+        </body>
         </html>' > out/index.html
 
   # Now deploy to GH Pages
