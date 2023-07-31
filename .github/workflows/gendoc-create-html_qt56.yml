@@ -7,10 +7,10 @@ on:
   workflow_dispatch:
     inputs:
       SOURCE_BRANCH:
-      description: 'Branch to use as source'
-      required: true
-      default: 'master'
-      type: string
+        description: 'Branch to use as source'
+        required: true
+        default: 'master'
+        type: string
 
 # Allow only one build run, skipping runs queued between the run in-progress and latest queued.
 # cancel in-progress runs
