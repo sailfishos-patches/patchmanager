@@ -54,10 +54,6 @@ jobs:
             mkdir /share/out;
             cp -rv doc/generated/* /share/out/;
             "
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v1
-      with:
-        path: './out'
     # The builder above outputs its index files in several subdirectories.
     # The web root has no index file, so GH Pages throws a 404 when browsing there.
     # So, lets add an index.html file to the root which redirects where we want to go:
@@ -73,6 +69,11 @@ jobs:
           <p>You will be redirected to the Documentation pages soon!</p>
         </body>
         </html>' > out/index.html
+    # Upload artifact for deploying to pages:
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v1
+      with:
+        path: './out'
 
   # Now deploy to GH Pages
   deploy:
