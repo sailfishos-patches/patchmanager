@@ -6,6 +6,8 @@ url             = https://github.com/sailfishos-patches/patchmanager
 
 include(common.qdocconf)
 
+depends += qml-plugin
+
 sourcedirs = ../../src/plugin
 
 

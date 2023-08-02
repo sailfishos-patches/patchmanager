@@ -3,6 +3,8 @@ description = Patchmanager
 
 include(common.qdocconf)
 
+depends += daemon qml-plugin settings-plugin preload dialog
+
 ## Sources
 sources += ../../src/index.qdoc \
            ../../src/patchdev.qdoc \

@@ -7,6 +7,7 @@ url             = https://github.com/sailfishos-patches/patchmanager
 include(common.qdocconf)
 
 depends += qtcore qtqml
+depends += patchmanager daemon
 
 headerdirs = ../../src/qml
 #headers.fileextensions = "*.h *.hpp"

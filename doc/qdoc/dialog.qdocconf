@@ -6,5 +6,7 @@ url             = https://github.com/sailfishos-patches/patchmanager
 
 include(common.qdocconf)
 
+depends += patchmanager daemon qml-plugin
+
 sourcedirs = ../../src/bin/dialog
 
