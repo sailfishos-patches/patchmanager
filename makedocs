@@ -57,7 +57,7 @@ fi
 
 printf '## Generating Docs...\n'
 [ -d $OUT ] && rm -r $OUT
-qdoc --no-examples --outputdir $OUT --outputformat HTML --installdir $QMAKE_INSTALL_ROOT/doc doc/qdoc/master.qdocconf --single-exec $@
+qdoc --no-examples --showinternal --outputdir $OUT --outputformat HTML --installdir $QMAKE_INSTALL_ROOT/doc doc/qdoc/master.qdocconf --single-exec $@
 printf '## End of Doc generation at "%s"\n' "$OUT"
 
 [ $switched_dirs = "true" ] && popd >/dev/null || cd -
