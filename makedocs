@@ -14,29 +14,31 @@
 # In order to enable building in newer Qt versions, changes in both the qdoc
 # config files as well as the code comments will be required.
 
-echo '####### $0 starting... #######'
+printf '####### %s starting... #######\n' $0
+### verify "build" environment
+printf '## Verifying build environment:\n'
 switched_dirs="false"
 if gitroot=$(git rev-parse --show-toplevel 2>/dev/null); then
-	echo found a git root at $gitroot, running from there...
-	pushd $gitroot 2>/dev/null || cd $gitroot
+	printf '## found a git root at %s, running from there...\n' "$gitroot"
+	pushd $gitroot >/dev/null || cd $gitroot
 	switched_dirs="true"
 else
-	echo this is not a git repo, assuming root is \$PWD
+	printf '## this is not a git repo, assuming root is %s\n' "$PWD"
 fi
 
 # this is searched relative to the qdocconf file!!
 export SAILFISH_INSTALL_DOCS=sailfish-qdoc-template/config
 
-### verify "build" environment
-echo Verifying build environment...
-qdoc --version
+qdocver=$(qdoc --version)
 if [ $? -ne 0 ]; then
-  echo ERROR: qdoc does not seem to work! Please check your qt5 installation
+  printf '## ERROR: qdoc does not seem to work! Please check your qt5 installation\n'
   exit 1
+else
+  printf '## QDoc is: %s\n' "$qdocver"
 fi
 if [ ! -e doc/qdoc/sailfish-qdoc-template ]; then
-  echo ERROR: sailfish-qdoc-template does not exist
-  echo You should "'git clone --depth 1 -b upgrade-4.5.0 https://github.com/sailfishos/sailfish-qdoc-template doc/qdoc/sailfish-qdoc-template'"
+  printf '## ERROR: sailfish-qdoc-template does not exist\n'
+  printf "## You should \'git clone --depth 1 -b upgrade-4.5.0 https://github.com/sailfishos/sailfish-qdoc-template doc/qdoc/sailfish-qdoc-template'\n"
   exit 1
 fi
 
@@ -53,13 +55,13 @@ if [ -z "$QT_INSTALL_DOCS" ]; then
 	fi
 fi
 
-echo Generating Docs...
+printf '## Generating Docs...\n'
 [ -d $OUT ] && rm -r $OUT
-qdoc --no-examples --outputdir $OUT --outputformat HTML --installdir $QMAKE_INSTALL_ROOT/doc doc/qdoc/master.qdocconf --single-exec  $@
-echo Generated Docs at "$OUT"
+qdoc --no-examples --outputdir $OUT --outputformat HTML --installdir $QMAKE_INSTALL_ROOT/doc doc/qdoc/master.qdocconf --single-exec $@
+printf '## End of Doc generation at "%s"\n' "$OUT"
 
-[ $switched_dirs = "true" ] && popd 2>/dev/null || cd -
+[ $switched_dirs = "true" ] && popd >/dev/null || cd -
 
-echo '####### $0 done. #######'
+printf '####### %s done. #######\n' $0
 # always exit 0 for CI runs:
 exit 0

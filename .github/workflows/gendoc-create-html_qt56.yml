@@ -5,6 +5,12 @@ on:
     types: [published]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      SOURCE_BRANCH:
+        description: 'Branch to use as source'
+        required: true
+        default: 'master'
+        type: string
 
 # Allow only one build run, skipping runs queued between the run in-progress and latest queued.
 # cancel in-progress runs
@@ -13,57 +19,77 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  ### Build the documentation files:
+  #     - check out the branch
+  #     - Use a docker image containing `qdoc` to generate the files
+  #     - upload the results so the deployment job can pick it up
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: 3
-      DOC_SOURCE_BRANCH: "master"
-      DOC_TARGET_BRANCH: "gh-pages"
-      DOC_TARGET_DIR: "doctarget"
+      # branch to compile from
+      DOC_SOURCE_BRANCH: ${{ inputs.SOURCE_BRANCH != '' && inputs.SOURCE_BRANCH || 'master' }}
     steps:
-    - name: Checkout Source
+    - name: Checkout Source (${{ env.DOC_SOURCE_BRANCH }})
       uses: actions/checkout@v3
       with:
         ref: ${{ env.DOC_SOURCE_BRANCH }}
-
-    - name: Build Docs
+    - name: Generate Docs
+      env:
+        # docker image to run qdoc etc. on
+        DOCKER_IMG:        "icsinc/qt5.6.1-x64:latest"
       run: |
-        docker run --rm -v $PWD:/share icsinc/qt5.6.1-x64:latest /bin/bash -xc "
+        mkdir -p out
+        docker run --rm -v $PWD:/share $DOCKER_IMG /bin/bash -xc "
+            echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections;
+            sudo rm -f /etc/apt/sources.list.d/beineri-opt-qt561-trusty-trusty.list
             sudo apt-get -qq update;
-            sudo apt-get -qq install -y qdoc-qt5;
             sudo apt-get -qq install -y qtbase5-dev;
             sudo apt-get -qq install -y git-core;
-            qdoc --version;
             mkdir -p build ;
             cd build ;
             cp -r /share/* . ;
             mkdir -p doc/generated;
             git clone --depth 1 -b upgrade-4.5.0 https://github.com/sailfishos/sailfish-qdoc-template doc/qdoc/sailfish-qdoc-template;
             /bin/bash -c ./makedocs;
-            mkdir /share/out;
             cp -rv doc/generated/* /share/out/;
             "
-
-    - name: Checkout Target
-      uses: actions/checkout@v3
+    # The builder outputs its index files in several subdirectories.
+    # The web root has no index file, so GH Pages throws a 404 when browsing there.
+    # So, lets add an index.html file to the root which redirects where we want to go:
+    - name: Add redirect Page
+      env:
+        REDIRECTOR: |
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <title>Redirecting...</title>
+              <meta http-equiv="refresh" content="1; url='patchmanager'"/>
+            </head>
+            <body>
+              <p>You will be redirected to the Documentation pages soon.</p>
+              <p>If this does not happpen, <a href="patchmanager">please click here</a>.</p>
+            </body>
+          </html>
+      run: echo "${REDIRECTOR}" > out/index.html
+    # Upload artifact for deploying to pages:
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v1
       with:
-        # only check out the target path:
-        sparse-checkout: doc
-        ref: ${{ env.DOC_TARGET_BRANCH }}
-        path: ${{ env.DOC_TARGET_DIR }}
+        path: './out'
 
-    - name: Copy Docs
-      run: |
-        rm -rf $GITHUB_WORKSPACE/$DOC_TARGET_DIR/doc/generated/*
-        cp -rv out/* $GITHUB_WORKSPACE/$DOC_TARGET_DIR/doc/generated/
+  # Now deploy to GH Pages
+  deploy:
+    needs: build
+    runs-on: ubuntu-22.04
+    # Grant GITHUB_TOKEN the permissions required by deploy-pages action
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+    steps:
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2
 
-    # Add and commit the results to the target branch
-    - name: Add and Commit
-      uses: EndBug/add-and-commit@v9
-      with:
-        cwd: ${{ env.DOC_TARGET_DIR }}
-        add: '-A doc/generated'
-        author_name: 'Github Action Runner'
-        author_email: 'noreply@github.com'
-        fetch: false
-        message: "[Actions] Generated Documentation for ${{ github.ref_name }}"
