@@ -319,6 +319,10 @@
 
   \e{to be written...}
 
+  The location of the file is determined by the \c s_newConfigLocation constant
+  of the Patchmanager Daemon source (See the head of
+  \c{src/bin/patchmanager-daemon/patchmanagerobject.cpp})
+
   \section2 \c{/var/lib/environment/patchmanager-dialog/*.conf}
   \e{to be written...}
 

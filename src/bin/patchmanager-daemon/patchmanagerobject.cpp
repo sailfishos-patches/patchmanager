@@ -166,8 +166,7 @@ static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
     \enum PatchManagerObject::NotifyAction
     \relates PatchManagerObject::notify()
 
-    This enum specifies the type of notification to emit through \c
-    PatchManagerObject::notify()
+    This enum is used to signal state changes in the patch list.
 
         \value NotifyActionSuccessApply
             applying was successful
@@ -342,7 +341,7 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
 }
 
 /*!
-    Returns the list of applied patches via getSettings().
+    Returns the list of applied patches via \c getSettings().
     \sa getSettings(), getSettings(), setAppliedPatches()
 */
 QSet<QString> PatchManagerObject::getAppliedPatches() const
@@ -1128,6 +1127,7 @@ void PatchManagerObject::process()
         QCoreApplication::exit(0);
         return;
     }
+
 }
 
 
@@ -1162,7 +1162,8 @@ bool PatchManagerObject::isPatchApplied(const QString &patch)
 
 /*!
     Calls the corresponding method over D-Bus to apply \a patch
-    \warning This function always returns an empty(!) \c QVariantMap
+    \warning This function always returns an empty(!) map!
+
 */
 QVariantMap PatchManagerObject::applyPatch(const QString &patch)
 {
@@ -1183,7 +1184,7 @@ QVariantMap PatchManagerObject::applyPatch(const QString &patch)
 /*!
     call the corresponding method over D-Bus to unapply \a patch
 
-    Returns a \c QVariantMap with the call results.
+    Returns a map containing the call results.
 
 */
 QVariantMap PatchManagerObject::unapplyPatch(const QString &patch)
@@ -1384,9 +1385,11 @@ QVariantMap PatchManagerObject::getUpdates() const
 /*!  \fn bool PatchManagerObject::putSettings(const QString &name, const QDBusVariant &value)
      \fn bool PatchManagerObject::putSettings(const QString &name, const QVariant &value)
 
-    Store setting called \a name  to the persistent config, \c s_newConfigLocation, and give it value \a value
+    Store a setting called \a name to the persistent config, setting it to \a value.
 
     Returns \c true if successful.
+
+    \sa {Patchmanager Configuration Files}, inifile
 */
 bool PatchManagerObject::putSettings(const QString &name, const QDBusVariant &value)
 {
@@ -1412,10 +1415,11 @@ bool PatchManagerObject::putSettings(const QString &name, const QVariant &value)
 /*!  \fn QDBusVariant PatchManagerObject::getSettings(const QString &name, const QDBusVariant &def)
      \fn QVariant PatchManagerObject::getSettings(const QString &name, const QVariant &def) const
 
-    Retrieve a setting called \a name from the persistent config, \c s_newConfigLocation.
-    Use \a def as the default value if not present.
+    Retrieve a setting called \a name from the persistent config, using \a def as the default value if not present.
 
-    Returns a \c QDBusVariant or \c QVariant if successful.
+    Returns a variant containing the value(s) if successful.
+
+    \sa {Patchmanager Configuration Files}
 */
 
 QDBusVariant PatchManagerObject::getSettings(const QString &name, const QDBusVariant &def)
@@ -1558,7 +1562,7 @@ QStringList PatchManagerObject::getToggleServicesList() const
     return m_toggleServices.keys();
 }
 
-/*!  Returns \c true if whether there are services that should be restarted, \c false otherwise.
+/*!  Returns \c true when there are services that should be restarted, \c false otherwise.
 */
 bool PatchManagerObject::getToggleServices() const
 {
