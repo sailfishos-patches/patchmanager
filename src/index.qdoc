@@ -4,24 +4,19 @@
 
   \title Patchmanager Documentation
 
-  For User documentation, see:
+  \section1 User documentation
+
+  See:
 
   \list
   \li \l {Patchmanager for SailfishOS}
   \endlist
 
-  For Patch Developer documentation, see:
+  \section1 Patch Developers
+  For information for Patch Developers, see:
   \list
   \li \l{Patch Developer Documentation}
   \endlist
-
-  \section1 Translations
-
-  If you want to translate ("localise") Patchmanager to a language you know
-  well or enhance an existing translation, please read Patchmanager's
-  corresponding Wiki page
-
-  \l{https://github.com/sailfishos-patches/patchmanager/wiki/Translations-(%22i18n%22,-%22l10n%22)}{Translations ("i18n", "l10n")}.
 
   \section1 Internals
 
@@ -33,18 +28,28 @@
   \li \l {Patchmanager Configuration Files}
   \endlist
 
-  \section1 Applications
+  \section1 Patchmanager Developers
+
+  \section2 Translations
+
+  If you want to translate ("localise") Patchmanager to a language you know
+  well or enhance an existing translation, please read Patchmanager's
+  corresponding Wiki page
+
+  \l{https://github.com/sailfishos-patches/patchmanager/wiki/Translations-(%22i18n%22,-%22l10n%22)}{Translations ("i18n", "l10n")}.
+
+  \section2 Applications
 
   The Patchmanager project includes the following applications:
 
-  \section2 GUI Applications
+  \section3 GUI Applications
   \list
   \li \l {Patchmanager Documentation: Settings Plugin}{Patchmanager Settings Plugin}, a plugin for the Jolla Settings to launch the application
   \li \l {Patchmanager Documentation: QML Plugin}{Patchmanager QML Plugin}, the main UI Application
   \li \l {Patchmanager Documentation: Startup Dialog}{Patchmanager Startup Dialog}, a UI shown at Lipstick startup.
   \endlist
 
-  \section2 Infrastructure Applications
+  \section3 Infrastructure Applications
   \list
   \li \l {Patchmanager Documentation: Daemon}{Patchmanager Daemon}
   \li \l {Patchmanager Documentation: Preload Library}{Preload Library}
