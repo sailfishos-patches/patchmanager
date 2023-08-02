@@ -617,7 +617,9 @@ void PatchManager::doVote(const QString &patch, int action)
     putSettingsSync(QStringLiteral("votes/%1").arg(patch), action);
 }
 
-/*! \internal lets not spoil the fun (or the eggs!). */
+/*! lets not spoil the fun (or the eggs!).
+    \internal
+*/
 void PatchManager::checkEaster()
 {
     qDebug() << Q_FUNC_INFO;
@@ -1016,17 +1018,18 @@ bool PatchManagerTranslator::installTranslator(const QString &patch)
     return true;
 }
 
-/*! void PatchManager::activation(const QString & patch, const QString & version);
+/*!  Some function about \a patch and \a version
     \warning probably dead code, need to investigate
-    probably \internal, using \a patch and \a version
+    \internal
 */
 void PatchManager::activation(const QString & patch, const QString & version)
 {
 }
 
-/*!  void PatchManager::easterReceived(const QString & easterText);
+/*!
+    Signals that an Easter Egg (containing \a easterText) has been received
     \warning probably dead code, need to investigate
-    probably \internal, using \a easterText
+    \internal
 */
 void PatchManager::easterReceived(const QString & easterText);
 {
@@ -1034,7 +1037,7 @@ void PatchManager::easterReceived(const QString & easterText);
 
 /*!
     Returns \e true if \a filename exists, \e false otherwise.
-    \sa https://doc.qt.io/qt-5/qfile.html#exists-1
+    \sa Qt::QFile::exists()
 */
 bool PatchManager::fileExists(const QString &filename)
 {

@@ -56,18 +56,22 @@
 /*! \externalpage https://doc.qt.io/archives/qt-5.6/qml-qtqml-models-listmodel.html
     \title ListModel    */
 /*! \externalpage https://doc.qt.io/archives/qt-5.6/qstring.html
-    \title  QString                         */
+    \title  QString */
 /*! \externalpage https://doc.qt.io/archives/qt-5.6/qvariant.html
-    \title  QVariant                       */
+    \title  QVariant */
 /*! \externalpage https://doc.qt.io/archives/qt-5.6/qqmlpropertymap.html
-    \title  QQmlPropertyMap         */
+    \title  QQmlPropertyMap */
 /*! \externalpage https://doc.qt.io/archives/qt-5.6/qabstractitemmodel.html
-    \title  QAbstractItemModel   */
+    \title  QAbstractItemModel */
 /*! \externalpage https://doc.qt.io/archives/qt-5.6/qt.html#ItemDataRole-enum
-    \title  DisplayRole    */
+    \title  DisplayRole */
 /*! \externalpage https://doc.qt.io/archives/qt-5.6/qt.html#ItemDataRole-enum
     \title  DecorationRole */
 /*! \externalpage https://doc.qt.io/archives/qt-5.6/qt.html#ItemDataRole-enum
-    \title  EditRole       */
+    \title  EditRole */
 /*! \externalpage https://doc.qt.io/archives/qt-5.6/qml-qtqml-qt.html#qsTranslate-method
-    \title  qsTranslate()       */
+    \title  qsTranslate() */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qfile.html
+    \title QFile
+    \target Qt::QFile::exists()
+*/
