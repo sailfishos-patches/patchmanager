@@ -4,15 +4,19 @@
 */
 /*!
   \externalpage https://coderus.openrepos.net/pm2/projects/
-  \title {Web Catalog Site}
+  \title Web Catalog Site
+*/
+/*!
+  \externalpage https://github.com/CODeRUS/django-test
+  \title Web Catalog Source Code Repository
 */
 /*!
   \externalpage https://github.com/sailfishos-patches/patchmanager
-  \title {Patchmanager GitHub Repository}
+  \title Patchmanager GitHub Repository
 */
 /*!
   \externalpage https://github.com/sailfishos-patches/patchmanager/blob/master/README.md
-  \title {Patchmanager README}
+  \title Patchmanager README
 */
 /*!
   \externalpage https://openrepos.net/content/olf/sailfishoschum-gui-installer

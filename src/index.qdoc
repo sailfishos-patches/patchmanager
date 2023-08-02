@@ -129,6 +129,12 @@
 
   \e{to be continued...}
 
+  \section2 Development
+
+  Web Catalog is in production, but its development is in maintainance-only mode.
+
+  The source code is currently maintained at \l {Web Catalog Source Code Repository}
+
 */
 
 /****** Services Documentation page *******/

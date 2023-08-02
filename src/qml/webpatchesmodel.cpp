@@ -118,10 +118,10 @@ WebPatchesModel::~WebPatchesModel()
 */
 
 /*! \property WebPatchesModel::queryParams
-  Query parameters
+  Parameters used to perform the web catalog query.
 */
 /*! \qmlproperty var WebPatchesModel::queryParams
-  Query parameters
+  Parameters used to perform the web catalog query.
 */
 /*! \qmlsignal WebPatchesModel::queryParamsChanged()
   Emitted when query parameters change
@@ -172,7 +172,7 @@ bool compareStrings(const QString &a, const QString &b)
    Retrieves the list of patches from the \l {Patchmanager Web Catalog}{Web Catalog}, and populates the model
    with its contents, sorting them if necessary.
 
-   \sa setSorted()
+   \sa setSorted(), PatchManagerObject::downloadCatalog()
 */
 void WebPatchesModel::componentComplete()
 {
