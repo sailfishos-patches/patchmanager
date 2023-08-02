@@ -75,7 +75,10 @@ static const char *noop_strings[] = {
 
     \brief Patchmanager QML Plugin
 */
-
+/*!
+   \typedef VersionCheck
+   \relates PatchManagerVersionCheck
+ */
 PatchManager::PatchManager(QObject *parent)
     : QObject(parent)
     , m_nam(new QNetworkAccessManager(this))
@@ -669,7 +672,7 @@ void PatchManager::checkForUpdates()
 }
 
 /*!
-    Saves the setting \a name to \a value over DBus.
+    Saves the setting \a name to \a value over D-Bus.
     Returns \c true when done, \c false otherwise.
 
     \sa {} {PatchManagerObject::putSettings(const QString &name, const QDBusVariant &value)}
@@ -686,7 +689,7 @@ bool PatchManager::putSettingsSync(const QString &name, const QVariant &value)
 }
 
 /*!
-    Saves the setting \a name to \a value over DBus.
+    Saves the setting \a name to \a value over D-Bus.
 
     Calls \a callback in success, \a errorCallback on failure.
 
@@ -697,7 +700,7 @@ void PatchManager::putSettingsAsync(const QString &name, const QVariant &value, 
 }
 
 /*!
-    Returns the setting \a name over DBus.
+    Returns the setting \a name over D-Bus.
     Defaults to \a def
 */
 QVariant PatchManager::getSettingsSync(const QString &name, const QVariant &def) const
@@ -711,7 +714,7 @@ QVariant PatchManager::getSettingsSync(const QString &name, const QVariant &def)
 }
 
 /*!
-    Retrieves the setting \a name over DBus.
+    Retrieves the setting \a name over D-Bus.
     Defaults to \a def
 
     Calls \a callback in success, \a errorCallback on failure.
@@ -746,7 +749,7 @@ void PatchManager::errorCall(QJSValue errorCallback, const QString &message)
 }
 
 /*!
-    Handler for the DBus signal. Sets the internal list to \a updates if different.
+    Handler for the D-Bus signal. Sets the internal list to \a updates if different.
 
     Emits signal /e updatesChanged()
 */
@@ -763,7 +766,7 @@ void PatchManager::onUpdatesAvailable(const QVariantMap &updates)
 }
 
 /*!
-    Handler for the DBus signal. Sets the internal list to \a toggle if different.
+    Handler for the D-Bus signal. Sets the internal list to \a toggle if different.
 
     Emits signal /e toggleServicesChanged(bool toggle)
 */
@@ -781,7 +784,7 @@ void PatchManager::onToggleServicesChanged(bool toggle)
 
 
 /*!
-    Handler for the DBus signal. Sets the internal property to \a failed if different.
+    Handler for the D-Bus signal. Sets the internal property to \a failed if different.
 
     Emits \e failureChanged(bool failed)
 */
@@ -798,7 +801,7 @@ void PatchManager::onFailureChanged(bool failed)
 }
 
 /*!
-    Handler for the DBus signal. Sets the internal list to \a loaded if different.
+    Handler for the D-Bus signal. Sets the internal list to \a loaded if different.
 
     Emits \e loadedChanged(bool loaded)
 */
@@ -823,7 +826,7 @@ void PatchManager::resolveFailure()
 }
 
 /*!
-    Helper to translate a DBus reply object \a val to a valid/usable QVariant
+    Helper to translate a D-Bus reply object \a val to a valid/usable QVariant
 
     Recurse up to \a depth (max. 32).
 

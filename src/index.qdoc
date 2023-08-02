@@ -268,42 +268,42 @@
     \li default
     \li Description
     \row
-    \li applied
+    \li \c applied
     \li list of strings, comma-separated
     \li empty
     \li stores the list of "activated" patches
     \row
-    \li applyOnBoot
+    \li \c applyOnBoot
     \li Boolean
     \li \c false
     \li Whether to activate Patches at boot, or show the {Patchmanager Documentation: Startup Dialog}{Startup Dialog}
     \row
-    \li bitnessMangle
+    \li \c bitnessMangle
     \li Boolean
     \li \c false
     \li Convert patch contents so they can apply on the local architecture (e.g. \c lib vs. \c lib64 path segments)
     \row
-    \li developerMode
+    \li \c developerMode
     \li Boolean
     \li \c false
     \li \warning \b deprecated. Pre-Patchmanager v3.2.7, this was used to store the settings for "Developer Mode". This has now been split into \c patchDevelMode and \c sfosVersionCheck
     \row
-    \li notifyOnSuccess
+    \li \c notifyOnSuccess
     \li Boolean
     \li \c true
     \li Whether to show success messages in the UI
     \row
-    \li order
+    \li \c order
     \li list of strings, comma-separated
     \li empty
     \li The order of the list of patches, both in the UI as well as the order they will be applied/activated.
     \row
-    \li patchDevelMode
+    \li \c patchDevelMode
     \li Boolean
     \li \c false
     \li
     \row
-    \li sfosVersionCheck
+    \li \c sfosVersionCheck
     \li Integer (Enum)
     \li 0 (strict)
     \li Whether to relax the version checking in the PM GUI. The default will only allow Patches to be downloaded, or activated, whose compatibility field matches the currently running OS version exactly.

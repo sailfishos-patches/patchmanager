@@ -134,19 +134,19 @@
   Required / Recommended:
 
    \list
-   \li name: An internal name for the Patch.  As this is used as a directory name, it should only contain alphanumeric characters, underscores and hyphens.  Notably NO spaces, dollar signs or other special characters should be used!
-   \li display_name: The name of the Patch, which will be shown on the patch list.
-   \li version: A version string.  It MUST be in the format X.Y.Z
-   \li author: The name of the principal Patch author or maintainer.  Either use your real name, as displayed on Github or Twitter, or your usual nickname.
-   \li compatible: A list of SailfishOS releases the Patch works on.  Versions MUST be given in full with all four fields populated, e.g. "3.3.0.16" (using just "3.3" is invalid).
+   \li \c name: An internal name for the Patch.  As this is used as a directory name, it should only contain alphanumeric characters, underscores and hyphens.  Notably NO spaces, dollar signs or other special characters should be used!
+   \li \c display_name: The name of the Patch, which will be shown on the patch list.
+   \li \c version: A version string.  It MUST be in the format X.Y.Z
+   \li \c author: The name of the principal Patch author or maintainer.  Either use your real name, as displayed on Github or Twitter, or your usual nickname.
+   \li \c compatible: A list of SailfishOS releases the Patch works on.  Versions MUST be given in full with all four fields populated, e.g. "3.3.0.16" (using just "3.3" is invalid).
    \endlist
 
   Optional:
    \list
-   \li description: Explanation of what the Patch does.
-   \li category: This is used to structure the list of Patches in categories, but also certain categories will cause Patchmanager to restart affected system services or applications.  For example, Patches in the category "homescreen" will prompt the user to restart Lipstick after their activation.
-   \li discussion, sources, donations: Optional links to websites.
-   \li last_updated": An ISO date string, the Web Catalog sets this.  It is used for sorting and update detection.
+   \li \c description: Explanation of what the Patch does.
+   \li \c category: This is used to structure the list of Patches in categories, but also certain categories will cause Patchmanager to restart affected system services or applications.  For example, Patches in the category "homescreen" will prompt the user to restart Lipstick after their activation.
+   \li \c discussion, sources, donations: Optional links to websites.
+   \li \c last_updated: An ISO date string, the Web Catalog sets this.  It is used for sorting and update detection.
    \endlist
 
   Reserved:

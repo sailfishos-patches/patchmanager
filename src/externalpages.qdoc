@@ -34,3 +34,32 @@
   \externalpage https://openrepos.net/category/patches
   \title Patch RPMs at OpenRepos
 */
+
+/****** Try to fix autlinking errors for Silica types*****/
+/*!
+  \externalpage https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-sectionheader.html/
+  \title SectionHeader
+*/
+/*!
+  \externalpage https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-viewplaceholder.html/
+  \title ViewPlaceholder
+*/
+/****** Try to fix autlinking errors for standard Qt types*****/
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qml-qtqml-models-listmodel.html
+    \title ListModel    */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qstring.html
+    \title  QString                         */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qvariant.html
+    \title  QVariant                       */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qqmlpropertymap.html
+    \title  QQmlPropertyMap         */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qabstractitemmodel.html
+    \title  QAbstractItemModel   */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qt.html#ItemDataRole-enum
+    \title  DisplayRole    */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qt.html#ItemDataRole-enum
+    \title  DecorationRole */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qt.html#ItemDataRole-enum
+    \title  EditRole       */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qml-qtqml-qt.html#qsTranslate-method
+    \title  qsTranslate()       */

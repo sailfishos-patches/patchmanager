@@ -156,7 +156,7 @@ static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
   A D-Bus activated background service which manages patch un/installation,
   listing, de/actvation, and communication with the preload library.
 
-  PatchManager is usually launched by its DBus service.
+  PatchManager is usually launched by its D-Bus service.
   The binary can also serve as a simple command-line client to a running
   daemon. See the output of \c{patchmanager --help} for more information.
 
@@ -715,7 +715,7 @@ void PatchManagerObject::doStartLocalServer()
 
     - setting up the patch translator
     - checking configuration constants and environment
-    - setting up DBus connections to Lipstick and the Store client
+    - setting up D-Bus connections to Lipstick and the Store client
 
 */
 void PatchManagerObject::initialize()
@@ -1331,7 +1331,11 @@ QString PatchManagerObject::checkEaster()
     return QString();
 }
 
-/*!  Calls the corresponding method over D-Bus to update the \l {Patchmanager Web Catalog}{Web Catalog} Metadata. \a params stores the connection properties. */
+/*!  Calls the corresponding method over D-Bus to update the \l {Patchmanager Web Catalog}{Web Catalog} Metadata.
+   \a params holds the query properties.
+
+  \sa requestDownloadCatalog_link
+ * */
 QVariantList PatchManagerObject::downloadCatalog(const QVariantMap &params)
 {
     DBUS_GUARD(QVariantList())
@@ -1346,7 +1350,7 @@ QVariantList PatchManagerObject::downloadCatalog(const QVariantMap &params)
 /*!
     Calls the corresponding method over D-Bus to download metadata for the patch with the name \a name
 
-    \sa requestDownloadPatchInfo
+    \sa requestDownloadPatchInfo_link
 */
 QVariantMap PatchManagerObject::downloadPatchInfo(const QString &name)
 {
@@ -1470,7 +1474,7 @@ QString PatchManagerObject::maxVersion(const QString &version1, const QString &v
 
     For regular processes, \c killall will be performed on them.
 
-    For SystemD services, they will be restarted via D-Bus call, or if that fails, via \c systemctl-user.
+    For systemd services, they will be restarted via D-Bus call, or if that fails, via \c systemctl-user.
 
 */
 void PatchManagerObject::restartServices()
@@ -2563,6 +2567,9 @@ void PatchManagerObject::downloadPatch(const QString &patch, const QUrl &url, co
     });
 }
 
+/*! Connect to the Web Catalog and retrieve a response configured by \a params.
+  \target requestDownloadCatalog_link
+ */
 void PatchManagerObject::requestDownloadCatalog(const QVariantMap &params, const QDBusMessage &message)
 {
     qDebug() << Q_FUNC_INFO << params;
@@ -2605,7 +2612,7 @@ void PatchManagerObject::requestDownloadCatalog(const QVariantMap &params, const
 /*!
     Retrieve patch metadata from the \l {Patchmanager Web Catalog}{Web Catalog} got patch \a name, reply with message \a message
 
-    \target requestDownloadPatchInfo
+    \target requestDownloadPatchInfo_link
  */
 void PatchManagerObject::requestDownloadPatchInfo(const QString &name, const QDBusMessage &message)
 {

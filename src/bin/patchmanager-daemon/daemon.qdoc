@@ -9,7 +9,7 @@
     A D-Bus activated background service which manages patch un/installation,
     listing, de/actvation, and communication with the preload library.
 
-    Patchmanager is usually launched by its DBus service.
+    Patchmanager is usually launched by its D-Bus service.
 
     If the \c patchmanager binary is called from command line, it
     can also serve as a simple CLI to a running daemon.

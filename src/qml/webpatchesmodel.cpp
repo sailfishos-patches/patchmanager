@@ -50,31 +50,31 @@
         \li QML Role Name
       \row
         \li {Qt::UserRole}
-        \li description
+        \li \c description
       \row
         \li {Qt::UserRole}
-        \li last_updated
+        \li \c last_updated
       \row
         \li {Qt::UserRole}
-        \li name
+        \li \c name
       \row
         \li {Qt::UserRole}
-        \li display_name
+        \li \c display_name
       \row
         \li {Qt::UserRole}
-        \li category
+        \li \c category
       \row
         \li {Qt::UserRole}
-        \li author
+        \li \c author
       \row
         \li {Qt::UserRole}
-        \li rating
+        \li \c rating
       \row
         \li {Qt::UserRole}
-        \li total_activations
+        \li \c total_activations
     \endtable
 
-    \sa {https://doc.qt.io/qt-5/qabstractitemmodel.html}{Qt::QAbstractItemModel}
+    \sa QAbstractItemModel
 */
 /*! \fn virtual QHash<int, QByteArray> WebPatchesModel::roleNames() const
     Returns the model's role names.

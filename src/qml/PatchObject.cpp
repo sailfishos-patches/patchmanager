@@ -106,7 +106,7 @@ PatchObject::PatchObject(const QVariantMap &data, QObject *parent)
     \inmodule org.SfietKonstantin.patchmanager
     \brief An element to be used as content of an \l {PatchManagerModel}
 
-    Upon construction, the \c data parameter is mapped to PatchObject::detail
+    Upon construction, the \c data parameter is mapped to PatchObject::details
 */
 PatchObject::~PatchObject()
 {
@@ -118,7 +118,7 @@ PatchObject::~PatchObject()
 
     Maps the internal property names and values to QML properties.
 
-    See \l {https://doc.qt.io/qt-5/qqmlpropertymap.html}{QQmlPropertyMap}
+    See QQmlPropertyMap
  */
 QQmlPropertyMap *PatchObject::details()
 {
