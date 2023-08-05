@@ -73,6 +73,7 @@ INotifyWatcher::INotifyWatcher(QObject *parent)
     \inmodule PatchManagerDaemon
     \inherits QSocketNotifier
     \brief watches a list of files or directories for changes
+    \internal
 */
 /*! \fn void INotifyWatcher::directoryChanged(const QString &path, bool removed);
     \fn void INotifyWatcher::fileChanged(const QString &path, bool removed);

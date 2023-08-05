@@ -7,6 +7,7 @@
 /*! \class Journal
     \inmodule PatchManagerDaemon
     \brief Interface to the systemd Journal.
+    \internal
 
     Listens on the systemd Journal for certain messages.
 
