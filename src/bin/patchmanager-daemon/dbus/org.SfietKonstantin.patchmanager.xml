@@ -107,10 +107,10 @@
         <method name="getLoaded">
             <arg name="loaded" type="b" direction="out" />
         </method>
-        <method name="revertToLastGood">
+        <method name="restorePatchList">
             <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
         </method>
-        <method name="setKnownGood">
+        <method name="backupWorkingPatchList">
             <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
         </method>
         <method name="resolveFailure">

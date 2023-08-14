@@ -240,9 +240,9 @@ Page {
             }
 
             MenuItem {
-                text: qsTranslate("", "Load Pre-Failure List")
+                text: qsTranslate("", "Restore prior enabled list")
                 visible: PatchManager.failure
-                onClicked: menuRemorse.execute( text, function() { PatchManager.call(PatchManager.revertToLastGood()) } )
+                onClicked: menuRemorse.execute( text, function() { PatchManager.call(PatchManager.restorePatchList()) } )
             }
 
             MenuItem {

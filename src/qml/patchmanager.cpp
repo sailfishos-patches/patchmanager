@@ -817,20 +817,20 @@ void PatchManager::onLoadedChanged(bool loaded)
     emit loadedChanged(m_loaded);
 }
 
-/*! Calls the \e revertToLastGood method on D-Bus */
-void PatchManager::revertToLastGood()
+/*! Calls the \e restorePatchList method on D-Bus */
+void PatchManager::restorePatchList()
 {
     qDebug() << Q_FUNC_INFO;
 
-    m_interface->revertToLastGood();
+    m_interface->restorePatchList();
 }
 
-/*! Calls the \e setKnownGood method on D-Bus */
-void PatchManager::setKnownGood()
+/*! Calls the \e backupWorkingPatchList method on D-Bus */
+void PatchManager::backupWorkingPatchList()
 {
     qDebug() << Q_FUNC_INFO;
 
-    m_interface->setKnownGood();
+    m_interface->backupWorkingPatchList();
 }
 
 /*! Calls the \e resolveFailure method on D-Bus */
