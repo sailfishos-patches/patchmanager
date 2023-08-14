@@ -1048,7 +1048,7 @@ QString PatchManagerObject::getRpmName(const QString &rpm) const
     handle command line arguments, and maybe daemonize.
 
     If called with any other argument other than \c --daemon, call a method
-    coresponding to the command line option on the bus and exit.
+    coresponding to the command line option on D-Bus and exit.
 
     Currently supported command line options are:
 
@@ -1141,7 +1141,7 @@ QVariantList PatchManagerObject::listPatches()
     return QVariantList();
 }
 
-/*!  Returns all versions contained in all patch metadata.  */
+/*! Returns all versions contained in the metadata of all patches, indexed by patch name. */
 QVariantMap PatchManagerObject::listVersions()
 {
     qDebug() << Q_FUNC_INFO;
@@ -1642,7 +1642,7 @@ void PatchManagerObject::loadRequest(bool apply)
       \li "restarted"
     \endlist
 
-    See also \c lipstick-patchmanager.service, {Patchmanager Service}
+    See the documentation for \c lipstick-patchmanager.service under {Patchmanager Services}
 */
 void PatchManagerObject::lipstickChanged(const QString &state)
 {
