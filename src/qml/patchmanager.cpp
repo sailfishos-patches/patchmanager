@@ -1025,7 +1025,7 @@ void PatchManager::activation(const QString &patch, const QString &version)
     \warning probably dead code, need to investigate
     probably \internal, using \a easterText
 */
-void PatchManager::easterReceived(const QString &easterText);
+void PatchManager::easterReceived(const QString &easterText)
 {
 }
 
