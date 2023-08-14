@@ -63,5 +63,9 @@ printf '## End of Doc generation at "%s"\n' "$OUT"
 [ $switched_dirs = "true" ] && popd >/dev/null || cd -
 
 printf '####### %s done. #######\n' $0
+printf '## Generating Graphs...\n'
+rm -r doc/graphviz/html
+doxygen doc/doxygen/config
+printf '####### %s done. #######\n' $0
 # always exit 0 for CI runs:
 exit 0
