@@ -228,8 +228,8 @@
 
   \c lipstick-patchmanager.service watches the state of the Lipstick service.
   If Lipstick crashes, Patchmanager Daemon assumes it was caused by a patch
-  and goes into \c failed state. In  this state, all enabled services are
-  disabled, and PM must be reactivated via the GUI.
+  and goes into \c failed state. In  this state, no Patches are
+  activated, and PM must be reactivated via the GUI.
 
   \section1 Manual Invocation
 
