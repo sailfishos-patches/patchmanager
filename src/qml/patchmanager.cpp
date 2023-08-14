@@ -1013,22 +1013,6 @@ bool PatchManagerTranslator::installTranslator(const QString &patch)
     return true;
 }
 
-/*! void PatchManager::activation(const QString &patch, const QString &version);
-    \warning probably dead code, need to investigate
-    probably \internal, using \a patch and \a version
-*/
-void PatchManager::activation(const QString &patch, const QString &version)
-{
-}
-
-/*!  void PatchManager::easterReceived(const QString &easterText);
-    \warning probably dead code, need to investigate
-    probably \internal, using \a easterText
-*/
-void PatchManager::easterReceived(const QString &easterText)
-{
-}
-
 /*!
     Returns \e true if \a filename exists, \e false otherwise.
     \sa https://doc.qt.io/qt-5/qfile.html#exists-1
