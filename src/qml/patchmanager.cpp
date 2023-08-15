@@ -1013,6 +1013,43 @@ bool PatchManagerTranslator::installTranslator(const QString &patch)
     return true;
 }
 
+/*
+The only purpose of the following two empty methods is to document 
+their corresponding definitions in /src/qml/patchmanager.h, 
+because qdoc warns about undocumented classes and functions, but 
+does not allow for qdoc source documentation in header files.  
+*/
+    
+/*! void PatchManager::activation(const QString & patch, const QString & version);
+    Defined in line 160 (section "public slots:") of /src/qml/patchmanager.h
+    Used in line 295 of /src/qml/AboutPage.qml
+    \warning probably dead code, need to investigate
+    probably \internal, using \a patch and \a version
+*/
+void PatchManager::activation(const QString & patch, const QString & version)
+{
+    /* 
+        Requires dummy operations, utilising patch and version;
+        otherwise an "unused variable"-warning is emitted, which
+        is turned into an error by "treat warnings as errors".
+    */
+}
+
+/*! void PatchManager::easterReceived(const QString & easterText);
+    Defined in line 188 (section "signals:") of /src/qml/patchmanager.h
+    Used in line 2514 of /src/bin/patchmanager-daemon/patchmanagerobject.cpp
+    \warning probably dead code, need to investigate
+    probably \internal, using \a easterText
+*/
+void PatchManager::easterReceived(const QString & easterText)
+{
+    /* 
+        Requires a dummy operation, utilising easterText;
+        otherwise an "unused variable"-warning is emitted, which
+        is turned into an error by "treat warnings as errors".
+    */
+}
+
 /*!
     Returns \e true if \a filename exists, \e false otherwise.
     \sa https://doc.qt.io/qt-5/qfile.html#exists-1
