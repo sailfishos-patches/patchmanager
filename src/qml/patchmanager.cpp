@@ -1029,9 +1029,9 @@ does not allow for qdoc source documentation in header files.
 void PatchManager::activation(const QString & patch, const QString & version)
 {
     /* 
-        Requires dummy operations, utilising patch and version;
-        otherwise an "unused variable"-warning is emitted, which
-        is turned into an error by "treat warnings as errors".
+        Requires dummy operations, utilising patch and version; otherwise
+        a [-Werror=unused-parameter] is emitted, turned into an error
+        by the global CONFIG_WERROR=y switch.
     */
 }
 
@@ -1044,9 +1044,9 @@ void PatchManager::activation(const QString & patch, const QString & version)
 void PatchManager::easterReceived(const QString & easterText)
 {
     /* 
-        Requires a dummy operation, utilising easterText;
-        otherwise an "unused variable"-warning is emitted, which
-        is turned into an error by "treat warnings as errors".
+        Requires a dummy operation, utilising easterText; otherwise
+        a [-Werror=unused-parameter] is emitted, turned into an error
+        by the global CONFIG_WERROR=y switch.
     */
 }
 
