@@ -1031,7 +1031,7 @@ void PatchManager::activation(const QString & patch, const QString & version)
     /* 
         Requires dummy operations, utilising patch and version; otherwise
         a [-Werror=unused-parameter] is emitted, turned into an error
-        by the global CONFIG_WERROR=y switch.
+        by the global CONFIG_WERROR=y switch, which breaks the CI runs.
     */
 }
 
@@ -1046,7 +1046,7 @@ void PatchManager::easterReceived(const QString & easterText)
     /* 
         Requires a dummy operation, utilising easterText; otherwise
         a [-Werror=unused-parameter] is emitted, turned into an error
-        by the global CONFIG_WERROR=y switch.
+        by the global CONFIG_WERROR=y switch, which breaks the CI runs.
     */
 }
 
