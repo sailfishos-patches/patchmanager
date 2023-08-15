@@ -157,7 +157,7 @@ public slots:
 
     bool installTranslator(const QString & patch);
     bool removeTranslator(const QString & patch);
-    void activation(const QString & patch, const QString & version);    // Apparently unused!
+    void activation(const QString & patch, const QString & version);
     int checkVote(const QString &patch) const;
     void doVote(const QString &patch, int action);
     void checkEaster();
@@ -185,7 +185,7 @@ public slots:
     void resolveFailure();
 
 signals:
-    void easterReceived(const QString & easterText);    // Apparently unused!
+    void easterReceived(const QString & easterText);
     void developerModeChanged(bool developerMode);
     void patchDevelModeChanged(bool patchDevelMode);
     void sfosVersionCheckChanged(bool sfosVersionCheck);
