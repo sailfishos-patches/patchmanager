@@ -66,7 +66,7 @@ public:
     enum CheckMode {
         Strict,
         NoCheck,
-        //Relaxed,    // TODO, Issue #322, also see https://github.com/sailfishos-patches/patchmanager/issues/333#issuecomment-1374118045
+        //Relaxed,    // TODO, see issue #322, also see https://github.com/sailfishos-patches/patchmanager/issues/333#issuecomment-1374118045
     };
     Q_ENUM(CheckMode)
 private:
@@ -157,7 +157,7 @@ public slots:
 
     bool installTranslator(const QString & patch);
     bool removeTranslator(const QString & patch);
-    void activation(const QString & patch, const QString & version);
+    void activation(const QString & patch, const QString & version);    // Apparently unused!
     int checkVote(const QString &patch) const;
     void doVote(const QString &patch, int action);
     void checkEaster();
@@ -185,7 +185,7 @@ public slots:
     void resolveFailure();
 
 signals:
-    void easterReceived(const QString & easterText);
+    void easterReceived(const QString & easterText);    // Apparently unused!
     void developerModeChanged(bool developerMode);
     void patchDevelModeChanged(bool patchDevelMode);
     void sfosVersionCheckChanged(bool sfosVersionCheck);
