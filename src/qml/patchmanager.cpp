@@ -1018,23 +1018,6 @@ bool PatchManagerTranslator::installTranslator(const QString &patch)
     return true;
 }
 
-/*!  Some function about \a patch and \a version
-    \warning probably dead code, need to investigate
-    \internal
-*/
-void PatchManager::activation(const QString & patch, const QString & version)
-{
-}
-
-/*!
-    Signals that an Easter Egg (containing \a easterText) has been received
-    \warning probably dead code, need to investigate
-    \internal
-*/
-void PatchManager::easterReceived(const QString & easterText);
-{
-}
-
 /*!
     Returns \e true if \a filename exists, \e false otherwise.
     \sa Qt::QFile::exists()
