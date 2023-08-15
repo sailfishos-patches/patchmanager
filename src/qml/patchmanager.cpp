@@ -1014,10 +1014,10 @@ bool PatchManagerTranslator::installTranslator(const QString &patch)
 }
 
 /*
-The only purpose of the following two empty methods is to document 
-their corresponding definitions in /src/qml/patchmanager.h, 
-because qdoc warns about undocumented classes and functions, but 
-does not allow for qdoc source documentation in header files.  
+    The only purpose of the following two dummy methods is to document
+    their corresponding definitions in /src/qml/patchmanager.h,
+    because qdoc warns about undocumented classes and functions, but
+    does not allow for qdoc source documentation in header files.
 */
     
 /*! void PatchManager::activation(const QString & patch, const QString & version);
