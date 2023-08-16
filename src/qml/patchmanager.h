@@ -66,7 +66,7 @@ public:
     enum CheckMode {
         Strict,
         NoCheck,
-        //Relaxed,    // TODO, Issue #322, also see https://github.com/sailfishos-patches/patchmanager/issues/333#issuecomment-1374118045
+        //Relaxed,    // TODO, see issue #322, also see https://github.com/sailfishos-patches/patchmanager/issues/333#issuecomment-1374118045
     };
     Q_ENUM(CheckMode)
 private:
