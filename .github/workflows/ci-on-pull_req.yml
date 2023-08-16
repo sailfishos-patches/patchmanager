@@ -1,17 +1,35 @@
-name: CI on Pull Request to master and patchmanager3 branches
+name: CI on PRs to master & patchmanager3 branches
 
 on:
   pull_request:
     branches:
       - master
       - patchmanager3
+  # Allows to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  # Do not wait up to the default of 10 minutes for network timeouts in a workflow which runs at most 3 minutes
+  SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
+
+defaults:
+  run:
+    # Note thas 'bash' provides -o pipefail, in contrast to the default (i.e., unspecified, which also uses bash) or 'sh',
+    # see https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
+    shell: sh
+
+concurrency:
+  group: ${{ github.ref_name }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-22.04
     env:
-      SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
+      ARCH: i486
+      RELEASE: 3.4.0.24
     steps:
+
     - name: Checkout
       uses: actions/checkout@v3
 
@@ -28,9 +46,6 @@ jobs:
     #    key: cache
 
     - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
-      env:
-        ARCH: i486
-        RELEASE: 3.4.0.24
       run: |
         set -x
         mkdir -p output/$RELEASE/$ARCH
@@ -44,7 +59,7 @@ jobs:
     - name: Upload build results
       uses: actions/upload-artifact@v3
       with:
-        name: RPM-build-results
+        name: RPM-build-results-${{ env.RELEASE }}-${{ env.ARCH }}
         path: output/
 
 # "Create release" does not fit here, because this workflow is triggered by Pull Requests,
@@ -61,3 +76,10 @@ jobs:
 #        hub release create"$assets" -m "$tag_name" "$tag_name"
 #      env:
 #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+# Just for fun, see https://feathericons.com/ and
+# https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#branding
+branding:
+  icon: 'gift'
+  color: 'purple'
+
