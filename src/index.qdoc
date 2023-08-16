@@ -329,13 +329,18 @@
   \c{src/bin/patchmanager-daemon/patchmanagerobject.cpp})
 
   \section2 \c{/var/lib/environment/patchmanager-dialog/*.conf}
-  \e{to be written...}
+
+  Standard environment files for a D-Bus service, read by \c
+  dbus-org.SfietKonstantin.patchmanager.service.
+
+  Files placed here can be used to alter logging behaviour of the Dialog by
+  changing the value of \c QT_LOGGING_RULES.
+
+  \note Per default, this location does not exist.
 
   \section2 \c{/var/lib/environment/patchmanager/10-dbus.conf}
 
-  Standard environment file for a D-Bus service.
-
-  Holds environment variables for the Daemon.
+  This file is read by the Daemon.
 
   Configures the location of the socket file used to communicate with
   applications in user scope via \c DBUS_SESSION_BUS_ADDRESS.
@@ -346,8 +351,9 @@
   \warning Due to this setting, the socket can only be accessed by applications
   runing as the "Device Owner" user (UID 100000), i.e. either \c nemo or \c defaultuser.
 
-  This file can also be used to alter logging behaviour of the Daemon by changing the value
-  of \c QT_LOGGING_RULES. Per default this is set to \c{*.debug=false}.
+  This file can also be used to alter logging behaviour of the Daemon by
+  changing the value of \c QT_LOGGING_RULES. Per default this is set to
+  \c{*.debug=false}.
 
   \sa {D-Bus Documentation}, {Qt Logging Rules}
 */
