@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 env:
-  # Do not wait up to the default of 10 minutes for network timeouts in a workflow which runs at most 3 minutes
+  # Do not wait up to the default of 10 minutes for network timeouts in a workflow which runs ca. 5 minutes
   SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
 
 defaults:
@@ -18,9 +18,10 @@ defaults:
     # see https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
     shell: sh
 
+# See, e.g.: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-only-cancel-in-progress-jobs-or-runs-for-the-current-workflow
 concurrency:
-  group: ${{ github.ref_name }}
-  cancel-in-progress: true
+  group: ci-${{ github.ref_name }}
+  cancel-in-progress: false  # 'false' (default) allows for two concurrent runs, one executing and one freshly enqueued; 'true' for only one; no 'concurrency:' defined for multiple.
 
 jobs:
   build:
@@ -79,6 +80,6 @@ jobs:
 
 # Just for fun, see https://feathericons.com/ and
 # https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#branding
-#branding:  # "Invalid workflow file: Unexpected value 'branding'"; maybe the name MUST be action.yml, see e.g., https://github.com/actions/cache/blob/main/action.yml#L37
+#branding:  # "Invalid workflow file: Unexpected value 'branding'"; maybe action MUST be located in '/' or the name MUST be action.yml, see e.g., https://github.com/actions/cache/blob/main/action.yml#L37
 #  icon: 'gift'
 #  color: 'purple'
