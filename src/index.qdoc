@@ -269,8 +269,12 @@
 
   INI-style configuration file and state storage.
 
+  The location of the file is determined by the \c s_newConfigLocation constant
+  of the Patchmanager Daemon source (See the head of
+  \c{src/bin/patchmanager-daemon/patchmanagerobject.cpp})
+
   It currently consists of two sections: \c settings, and \c votes
-  \section3 \c [settings]
+  \section3 Config section \c [settings]
 
   \table
     \header
@@ -320,13 +324,10 @@
     \li Whether to relax the version checking in the PM GUI. The default will only allow Patches to be downloaded, or activated, whose compatibility field matches the currently running OS version exactly.
   \endtable
 
-  \section3 \c [votes]
+  \section3 Config section [votes]
 
-  \e{to be written...}
-
-  The location of the file is determined by the \c s_newConfigLocation constant
-  of the Patchmanager Daemon source (See the head of
-  \c{src/bin/patchmanager-daemon/patchmanagerobject.cpp})
+  Saves the voting state for each patch a user has voted about in the
+  {Settings Plugin}{Patchmanager Settings Plugin}.
 
   \section2 \c{/var/lib/environment/patchmanager-dialog/*.conf}
 
