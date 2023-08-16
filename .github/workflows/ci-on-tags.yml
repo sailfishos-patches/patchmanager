@@ -3,18 +3,39 @@ name: CI on tags
 on:
   push:
     tags:
-      - '*'
+      # '**' also matches the slash ('/'), in contrast to '*', see 
+      - '**'
+  # Allows to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 env:
+  # For the latest available docker image, see https://github.com/CODeRUS/docker-sailfishos-platform-sdk
   LATEST: 4.5.0.16
+  # Do not wait up to the default of 10 minutes for a workflow which runs at most 15 minutes
+  SEGMENT_DOWNLOAD_TIMEOUT_MINS: 2
+
+defaults:
+  run:
+    # Note thas 'bash' provides -o pipefail, in contrast to the default (i.e., unspecified, which also uses bash) or 'sh',
+    # see https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
+    shell: sh
+
+concurrency:
+  group: ${{ github.ref_name }}
+  cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-22.04
+  # One job for the latest Docker images used and one for the oldest ones.
+  # Trying to download three multi-GB, layered docker images in a single job may
+  # result in "docker: write /var/lib/docker/tmp/GetImageBlobXYZ: no space left on device."
+  
+  build-on-LATEST:
     env:
-      SEGMENT_DOWNLOAD_TIMEOUT_MINS: 2
+      RELEASE: ${{ env.LATEST }}
+    runs-on: ubuntu-22.04
     steps:
-    - name: Checkout
+
+    - name: Checkout git repository
       uses: actions/checkout@v3
 
     #- name: Prepare
@@ -31,8 +52,7 @@ jobs:
 
     - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
       env:
-        ARCH: aarch64
-        RELEASE: ${{ env.LATEST }}
+        ARCH: i486
       run: |
         set -x
         mkdir -p output/$RELEASE/$ARCH
@@ -46,7 +66,6 @@ jobs:
     - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
       env:
         ARCH: armv7hl
-        RELEASE: ${{ env.LATEST }}
       run: |
         set -x
         mkdir -p output/$RELEASE/$ARCH
@@ -59,8 +78,48 @@ jobs:
 
     - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
       env:
+        ARCH: aarch64
+      run: |
+        set -x
+        mkdir -p output/$RELEASE/$ARCH
+        docker run --rm -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
+           mkdir -p build
+           cd build
+           cp -r /share/. .
+           mb2 -t SailfishOS-$1-$2 build -d
+           sudo cp -r RPMS/. /share/output/$1/$2/' sh_mb2 $RELEASE $ARCH
+
+    - name: Upload build results
+      uses: actions/upload-artifact@v3
+      with:
+        name: RPM-build-results-${{ env.RELEASE }}
+        path: output/
+
+  build-on-OLDEST:
+    runs-on: ubuntu-22.04
+    steps:
+
+    - name: Checkout git repository
+      uses: actions/checkout@v3
+
+    - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
+      env:
         ARCH: i486
-        RELEASE: ${{ env.LATEST }}
+        RELEASE: 3.4.0.24
+      run: |
+        set -x
+        mkdir -p output/$RELEASE/$ARCH
+        docker run --rm -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
+           mkdir -p build
+           cd build
+           cp -r /share/. .
+           mb2 -t SailfishOS-$1-$2 build -d
+           sudo cp -r RPMS/. /share/output/$1/$2/' sh_mb2 $RELEASE $ARCH
+
+    - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
+      env:
+        ARCH: armv7hl
+        RELEASE: 3.4.0.24
       run: |
         set -x
         mkdir -p output/$RELEASE/$ARCH
@@ -85,38 +144,10 @@ jobs:
            mb2 -t SailfishOS-$1-$2 build -d
            sudo cp -r RPMS/. /share/output/$1/$2/' sh_mb2 $RELEASE $ARCH
 
-    - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
-      env:
-        ARCH: armv7hl
-        RELEASE: 3.4.0.24
-      run: |
-        set -x
-        mkdir -p output/$RELEASE/$ARCH
-        docker run --rm -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
-           mkdir -p build
-           cd build
-           cp -r /share/. .
-           mb2 -t SailfishOS-$1-$2 build -d
-           sudo cp -r RPMS/. /share/output/$1/$2/' sh_mb2 $RELEASE $ARCH
-
-    - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
-      env:
-        ARCH: i486
-        RELEASE: 3.4.0.24
-      run: |
-        set -x
-        mkdir -p output/$RELEASE/$ARCH
-        docker run --rm -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
-           mkdir -p build
-           cd build
-           cp -r /share/. .
-           mb2 -t SailfishOS-$1-$2 build -d
-           sudo cp -r RPMS/. /share/output/$1/$2/' sh_mb2 $RELEASE $ARCH
-
     - name: Upload build results
       uses: actions/upload-artifact@v3
       with:
-        name: RPM-build-results
+        name: RPM-build-results-OLDEST
         path: output/
 
 # Due to building two releases for each architecture, they will clobber each other,
@@ -133,3 +164,9 @@ jobs:
 #        hub release create"$assets" -m "$tag_name" "$tag_name"
 #      env:
 #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+# Just for fun, see https://feathericons.com/ and
+# https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#branding
+branding:
+  icon: 'gift'
+  color: 'purple'
