@@ -270,7 +270,7 @@
   INI-style configuration file and state storage.
 
   It currently consists of two sections: \c settings, and \c votes
-  \section3 \c settings
+  \section3 \c [settings]
 
   \table
     \header
@@ -332,6 +332,23 @@
   \e{to be written...}
 
   \section2 \c{/var/lib/environment/patchmanager/10-dbus.conf}
-  \e{to be written...}
+
+  Standard environment file for a D-Bus service.
+
+  Holds environment variables for the Daemon.
+
+  Configures the location of the socket file used to communicate with
+  applications in user scope via \c DBUS_SESSION_BUS_ADDRESS.
+  Per default this is \c {unix:path=/run/user/100000/dbus/user_bus_socket}.
+
+  If unset, the Daemon will fallback to a hardcoded default.
+
+  \warning Due to this setting, the socket can only be accessed by applications
+  runing as the "Device Owner" user (UID 100000), i.e. either \c nemo or \c defaultuser.
+
+  This file can also be used to alter logging behaviour of the Daemon by changing the value
+  of \c QT_LOGGING_RULES. Per default this is set to \c{*.debug=false}.
+
+  \sa {D-Bus Documentation}, {Qt Logging Rules}
 */
 

@@ -75,3 +75,12 @@
     \title QFile
     \target Qt::QFile::exists()
 */
+
+
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qloggingcategory.html#logging-rules
+    \title Qt Logging Rules
+*/
+
+/*! \externalpage https://dbus.freedesktop.org/doc/dbus-daemon.1.html
+    \title D-Bus Documentation
+*/
