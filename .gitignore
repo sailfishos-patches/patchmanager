@@ -19,3 +19,5 @@ src/icons/ss
 *.list
 doc/generated
 doc/doxygen/html
+doc/doxygen/xml
+doc/doxygen/dot

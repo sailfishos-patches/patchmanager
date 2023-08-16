@@ -65,6 +65,8 @@ printf '## End of Doc generation at "%s"\n' "$OUT"
 printf '####### %s done. #######\n' $0
 printf '## Generating Graphs...\n'
 rm -r doc/graphviz/html
+rm -r doc/graphviz/xml
+rm -r doc/graphviz/dot
 doxygen doc/doxygen/config
 printf '####### %s done. #######\n' $0
 # always exit 0 for CI runs:
