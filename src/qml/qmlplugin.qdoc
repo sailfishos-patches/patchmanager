@@ -5,11 +5,9 @@
 
     \section1 Overview
 
-    The QML Plugin makes up the main Patchmanager GUI Application.
+    The QML Plugin provides the main Patchmanager GUI Application elements.
 
-    Jolla Settings loads PatchManagerPage from the QML Plugin.
-
-    It is a both a front-end to the Daemon and a Patch management application.
+    It serves as a both a front-end to the Daemon, and a Patch management application.
 
     It allows to:
 

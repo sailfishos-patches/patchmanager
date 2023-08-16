@@ -7,12 +7,14 @@
 
     The Settings Plugin makes up the main Patchmanager GUI Application.
 
-    Jolla Settings loads this page which in turn loads
+    Jolla Settings loads {patchmanager}{this page} which in turn loads
     PatchManagerPage, a part of \l {Patchmanager Documentation: QML Plugin}{Patchmanager QML Plugin}.
 
     \section2 Configuration
 
-    The Jolla Settings plugin configuration looks like this:
+    The Jolla Settings plugin configuration looks like below.
+    It adds an entry to the Settings application, and
+    optionally can be added to the Top Menu quick links.
 
     \badcode
     {
@@ -33,8 +35,5 @@
     }
     \endcode
 
-    \section2 Types
-
-    This plugin provides no types.
 */
 
