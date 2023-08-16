@@ -48,7 +48,8 @@ jobs:
         doxygen doc/doxygen/config
         git clone --depth 1 https://github.com/jitsuCM/doxygraph doc/doxygraph
         pushd doc/doxygraph/doxygraph
-        sudo apt-get install -y cpanminus libgraphviz-perl libhash-fieldhash-perl libmoose-perl libnamespace-autoclean-perl
+        sudo apt-get -qq install -y cpanminus libgraphviz-perl libhash-fieldhash-perl libmoose-perl libnamespace-autoclean-perl
+        cpanm -Sq --no-interactive GraphViz2@2.50
         cpanm -Sq --no-interactive XML::Rabbit
         cpanm -Sq --no-interactive lib::abs
         perl Makefile.PL
