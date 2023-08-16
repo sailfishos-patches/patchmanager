@@ -319,9 +319,8 @@ PatchManagerModel *PatchManager::installedModel()
 }
 
 /*!
-    Helper for SectionHeader titles. Looks up translations for \a category.
+    Helper for \l{Sailfish.Silica.SectionHeader}{SectionHeader} titles. Looks up translations for \a category.
     Returns the translated string.
-    \sa {https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-sectionheader.html/}
 */
 QString PatchManager::trCategory(const QString &category) const
 {

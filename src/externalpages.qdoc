@@ -46,11 +46,15 @@
 /****** Try to fix autlinking errors for Silica types*****/
 /*!
   \externalpage https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-sectionheader.html/
-  \title SectionHeader
+  \title Sailfish.Silica.SectionHeader
 */
 /*!
   \externalpage https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-viewplaceholder.html/
-  \title ViewPlaceholder
+  \title Sailfish.Silica.ViewPlaceholder
+*/
+/*!
+  \externalpage https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-page.html/
+  \title Sailfish.Silica.Page
 */
 /****** Try to fix autlinking errors for standard Qt types*****/
 /*! \externalpage https://doc.qt.io/archives/qt-5.6/qml-qtqml-models-listmodel.html
