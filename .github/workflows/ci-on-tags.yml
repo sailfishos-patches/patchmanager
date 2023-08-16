@@ -3,7 +3,8 @@ name: CI on tags
 on:
   push:
     tags:
-      # '**' also matches the slash ('/'), in contrast to '*', see 
+      # '**' also matches the slash ('/'), in contrast to '*',
+      # see https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#filter-pattern-cheat-sheet
       - '**'
   # Allows to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -11,7 +12,7 @@ on:
 env:
   # For the latest available docker image, see https://github.com/CODeRUS/docker-sailfishos-platform-sdk
   LATEST: 4.5.0.16
-  # Do not wait up to the default of 10 minutes for a workflow which runs at most 15 minutes
+  # Do not wait up to the default of 10 minutes for network timeouts in a workflow which runs at most 15 minutes
   SEGMENT_DOWNLOAD_TIMEOUT_MINS: 2
 
 defaults:
