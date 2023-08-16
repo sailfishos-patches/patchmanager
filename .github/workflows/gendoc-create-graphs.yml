@@ -1,0 +1,84 @@
+name: Generate Documentation Graphs
+
+on:
+  release:
+    types: [published]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      SOURCE_BRANCH:
+        description: 'Branch to use as source'
+        required: true
+        default: 'master'
+        type: string
+
+# Allow only one build run, skipping runs queued between the run in-progress and latest queued.
+# cancel in-progress runs
+concurrency:
+  group: "gendoc"
+  cancel-in-progress: true
+
+jobs:
+  ### Build the documentation files:
+  #     - check out the branch
+  #     - Use a docker image containing `qdoc` to generate the files
+  #     - upload the results so the deployment job can pick it up
+  build:
+    runs-on: ubuntu-22.04
+    env:
+      SEGMENT_DOWNLOAD_TIMEOUT_MINS: 3
+      # branch to compile from
+      DOC_SOURCE_BRANCH: ${{ inputs.SOURCE_BRANCH != '' && inputs.SOURCE_BRANCH || 'master' }}
+    steps:
+    - name: Checkout Source (${{ env.DOC_SOURCE_BRANCH }})
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ env.DOC_SOURCE_BRANCH }}
+    - name: Generate Graphs
+      run: |
+        export DEBIAN_FRONTEND=noninteractive
+        sudo apt-get -qq install -y graphviz doxygen
+        sudo apt-get -qq install -y make perl
+        rm -rf doc/doxygen/html
+        rm -rf doc/doxygen/xml
+        rm -rf doc/doxygen/dot
+        mkdir -p doc/doxygen/html
+        mkdir -p doc/doxygen/xml
+        mkdir -p doc/doxygen/dot
+        doxygen doc/doxygen/config
+        git clone --depth 1 https://github.com/jitsuCM/doxygraph doc/doxygraph
+        pushd doc/doxygraph/doxygraph
+        sudo apt-get install -y cpanminus libgraphviz-perl libhash-fieldhash-perl libmoose-perl libnamespace-autoclean-perl
+        cpanm -Sq --no-interactive XML::Rabbit
+        cpanm -Sq --no-interactive lib::abs
+        perl Makefile.PL
+        make
+        popd
+        perl doc/doxygraph/doxygraph/doxygraph doc/doxygen/xml/index.xml doc/doxygen/dot/graph.dot
+        dot -T svg -o doc/doxygen/dot/graph.svg doc/doxygen/dot/graph.dot
+        mkdir -p out/graphs
+        cp -rv doc/doxygraph/doxyviz/htdocs/* out/graphs/
+        cp -rv doc/doxygen/dot/graph.dot out/graphs/
+        cp -rv doc/doxygen/dot/graph.svg out/graphs/
+
+    # Upload artifact for deploying to pages:
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v1
+      with:
+        path: './out'
+
+  # Now deploy to GH Pages
+  deploy:
+    needs: build
+    runs-on: ubuntu-22.04
+    # Grant GITHUB_TOKEN the permissions required by deploy-pages action
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+    steps:
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2
+
