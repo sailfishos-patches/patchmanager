@@ -168,7 +168,6 @@ jobs:
 
 # Just for fun, see https://feathericons.com/ and
 # https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#branding
-branding:
-  icon: 'gift'
-  color: 'purple'
-
+# branding:  # It does not like it, may be the name MUST be action.yml, see e.g., https://github.com/actions/cache/blob/main/action.yml#L37
+#  icon: 'gift'
+#  color: 'purple'
