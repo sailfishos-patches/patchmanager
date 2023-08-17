@@ -6,6 +6,7 @@ url             = https://github.com/sailfishos-patches/patchmanager
 
 include(common.qdocconf)
 
+depends += qtdbus qtnetwork
 depends += patchmanager daemon qml-plugin
 
 sourcedirs = ../../src/bin/dialog
