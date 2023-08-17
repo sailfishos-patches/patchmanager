@@ -168,7 +168,7 @@ bool PatchObject::busy() const
 }
 
 /*!
-    Populates the \l{PatchObject::details}{details} property from \a data.
+    Populates the \c details property from \a data.
 
     If there is a \c display_name field in \a data, and \a data is treated as
     regular patch metadata (\c isNewPatch is set to \c true).
