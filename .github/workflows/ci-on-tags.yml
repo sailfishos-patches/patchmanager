@@ -24,7 +24,8 @@ defaults:
 
 concurrency:
   group: ci-${{ github.ref_name }}
-  cancel-in-progress: false  # 'false' (default) allows for two concurrent runs, one executing and one freshly enqueued; 'true' for only one; no 'concurrency:' defined for multiple.
+  # 'false' (default) allows for two concurrent runs, one executing and one freshly enqueued; 'true' for only one; no 'concurrency:' defined for multiple.
+  cancel-in-progress: false
 
 jobs:
   # One job for the latest Docker images used and one for the oldest ones.
@@ -94,7 +95,7 @@ jobs:
     - name: Upload build results
       uses: actions/upload-artifact@v3
       with:
-        name: RPM-build-results-${{ env.RELEASE }}
+        name: RPM-build-results_${{ env.RELEASE }}
         path: output/
 
   build-on-OLDEST:
@@ -149,7 +150,7 @@ jobs:
     - name: Upload build results
       uses: actions/upload-artifact@v3
       with:
-        name: RPM-build-results-OLDEST
+        name: RPM-build-results_OLDEST
         path: output/
 
 # Due to building two releases for each architecture, they will clobber each other,
@@ -169,6 +170,6 @@ jobs:
 
 # Just for fun, see https://feathericons.com/ and
 # https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#branding
-#branding:  # "Invalid workflow file: Unexpected value 'branding'"; maybe action MUST be located in '/' or the name MUST be action.yml, see e.g., https://github.com/actions/cache/blob/main/action.yml#L37
+#branding:  # "Invalid workflow file: Unexpected value 'branding'"; maybe action MUST be located in '/' or the name MUST be action.yml or both, see e.g., https://github.com/actions/cache/blob/main/action.yml#L37
 #  icon: 'gift'
 #  color: 'purple'
