@@ -9,7 +9,6 @@ on:
   # Allows to run this workflow manually from the Actions tab.
   workflow_dispatch:
 
-# See, e.g.: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-only-cancel-in-progress-jobs-or-runs-for-the-current-workflow
 env:
   # For the latest available docker image, see https://github.com/CODeRUS/docker-sailfishos-platform-sdk
   LATEST: 4.5.0.16
@@ -22,6 +21,7 @@ defaults:
     # see https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
     shell: sh
 
+# See, e.g.: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-only-cancel-in-progress-jobs-or-runs-for-the-current-workflow
 concurrency:
   group: ci-${{ github.ref_name }}
   # 'false' (default) allows for two concurrent runs, one executing and one freshly enqueued; 'true' for only one; no 'concurrency:' defined for multiple.
