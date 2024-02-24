@@ -6,9 +6,9 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
-      SOURCE_BRANCH:
+      DOC_SOURCE_BRANCH:
         description: 'Branch to use as source'
-        required: true
+        required: false
         default: 'master'
         type: string
 
@@ -27,13 +27,11 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: 3
-      # branch to compile from
-      DOC_SOURCE_BRANCH: ${{ inputs.SOURCE_BRANCH != '' && inputs.SOURCE_BRANCH || 'master' }}
     steps:
-    - name: Checkout Source (${{ env.DOC_SOURCE_BRANCH }})
+    - name: Checkout Source (${{ inputs.DOC_SOURCE_BRANCH }})
       uses: actions/checkout@v3
       with:
-        ref: ${{ env.DOC_SOURCE_BRANCH }}
+        ref: ${{ inputs.DOC_SOURCE_BRANCH }}
     - name: Generate Docs
       env:
         # docker image to run qdoc etc. on
@@ -71,7 +69,7 @@ jobs:
               <p>If this does not happpen, <a href="patchmanager">please click here</a>.</p>
             </body>
           </html>
-      run: echo "${REDIRECTOR}" > out/index.html
+      run: echo "$REDIRECTOR" > out/index.html
     # Upload artifact for deploying to pages:
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v1
