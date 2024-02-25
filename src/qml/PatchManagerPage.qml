@@ -198,7 +198,7 @@ Page {
 
         PullDownMenu {
             busy: view.busy
-            enabled: !busy
+            enabled: !busy && backgound.drag.target === null
 
             /*
             Disabled due to discussion at https://github.com/sailfishos-patches/patchmanager/pull/272#issuecomment-1047685536
