@@ -552,11 +552,20 @@ Page {
                     icon.height: Theme.iconSizeSmallPlus
                     icon.width: Theme.iconSizeSmallPlus
                     icon.opacity: patchObject.details.patched ? 1.0 : 0.5
+
                     palette.primaryColor: Theme.secondaryColor
                     palette.highlightColor: Theme.primaryColor
-                    highlighted: down || patchObject.details.patched
+                    highlighted: down || patchObject.details.patched || busy
+
                     property bool busy: patchObject.busy
+                    enabled: !busy
                     onClicked: background.doPatch()
+
+                    BusyIndicator {
+                        anchors.centerIn: parent
+                        running: parent.busy
+                        size: BusyIndicatorSize.ExtraSmall
+                    }
                 }
 
                 Column {
