@@ -517,24 +517,57 @@ Page {
                     to: 0
                     duration: 200
                 }
-
-                Switch {
+                IconButton {
                     id: appliedSwitch
                     anchors.verticalCenter: parent.verticalCenter
-                    automaticCheck: false
-                    checked: patchObject.details.patched
+                    property string fallbackSource : fallbackIcon[patchObject.details.category]
+                    readonly property var fallbackIcon: {
+                        "browser":      "image://theme/icon-m-website",
+                        "camera":       "image://theme/icon-m-camera",
+                        "calendar":     "image://theme/icon-m-date",
+                        "clock":        "image://theme/icon-m-clock",
+                        "contacts":     "image://theme/icon-m-users",
+                        "email":        "image://theme/icon-m-mail",
+                        "gallery":      "image://theme/icon-m-image",
+                        "homescreen":   "image://theme/icon-m-device",
+                        "media":        "image://theme/icon-m-media-playlists",
+                        "messages":     "image://theme/icon-m-message",
+                        "phone":        "image://theme/icon-m-call",
+                        "silica":       "image://theme/icon-m-sailfish",
+                        "settings":     "image://theme/icon-m-setting",
+                        "keyboard":     "image://theme/icon-m-keyboard",
+                        "other":        "image://theme/icon-m-patchmanager2",
+                    }
+                    icon.source: "image://theme/icon-m-patchmanager2"
+                    Component.onCompleted:{
+                        var patchSource = PatchManager.iconForPatch(patchObject.details.patch, Theme.colorScheme ? (Theme.colorScheme == Theme.LightOnDark) : true)
+                        if (patchSource.length > 0) {
+                            icon.source = patchSource
+                        } else if (fallbackSource) {
+                            icon.source = fallbackSource
+                        }
+                    }
+                    icon.sourceSize.height: Theme.iconSizeSmallPlus
+                    icon.sourceSize.width: Theme.iconSizeSmallPlus
+                    icon.height: Theme.iconSizeSmallPlus
+                    icon.width: Theme.iconSizeSmallPlus
+                    icon.opacity: patchObject.details.patched ? 1.0 : 0.5
+                    palette.primaryColor: Theme.secondaryColor
+                    palette.highlightColor: Theme.primaryColor
+                    highlighted: down || patchObject.details.patched
+                    property bool busy: patchObject.busy
                     onClicked: background.doPatch()
-                    enabled: !busy && PatchManager.loaded
-                    busy: patchObject.busy
                 }
 
                 Column {
                     id: nameLabel
                     anchors.left: appliedSwitch.right
-                    anchors.right: patchIcon.status == Image.Ready ? patchIcon.left : parent.right
+                    //anchors.right: patchIcon.status == Image.Ready ? patchIcon.left : parent.right
+                    anchors.right: appliedSwitch.status == Image.Ready ? appliedSwitch.left : parent.right
                     anchors.margins: Theme.paddingMedium
                     anchors.verticalCenter: parent.verticalCenter
                     Label {
+                        width: parent.width
                         text: name
                         color: patchObject.details.isCompatible ? background.down ? Theme.highlightColor : ( patchObject.details.patched ? Theme.primaryColor : Theme.secondaryColor )
                                                                 : background.down ? Theme.highlightBackgroundFromColor(Theme.errorColor, Theme.colorScheme) : ( patchObject.details.patched ? Theme.errorColor : Theme.secondaryHighlightFromColor(Theme.errorColor, Theme.colorScheme) )
@@ -556,16 +589,6 @@ Page {
                             font.pixelSize: Theme.fontSizeTiny
                         }
                     }
-                }
-
-                Image {
-                    id: patchIcon
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: Theme.itemSizeExtraSmall
-                    height: Theme.itemSizeExtraSmall
-                    visible: status == Image.Ready
-                    source: PatchManager.iconForPatch(patchObject.details.patch, Theme.colorScheme ? (Theme.colorScheme == Theme.LightOnDark) : true)
                 }
             }
 
