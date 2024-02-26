@@ -594,11 +594,10 @@ Page {
                     enabled: !busy
                     onClicked: background.doPatch()
 
-                    BusyIndicator {
-                        anchors.centerIn: parent
-                        running: parent.busy
-                        size: BusyIndicatorSize.ExtraSmall
-                    }
+                    Behavior on icon.opacity { PropertyAnimation {
+                        duration: 1200; alwaysRunToEnd : true; easing.type: Easing.OutBack
+                    }}
+
                 }
 
                 Column {
