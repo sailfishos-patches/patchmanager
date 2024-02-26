@@ -75,6 +75,7 @@ Page {
         path: "/org/SfietKonstantin/patchmanager/uisettings"
 
         property bool showUnapplyAll: false
+        property int hintShown: 0
     }
 
     Component.onCompleted: migrateDevModeSettings()
@@ -255,6 +256,11 @@ Page {
 //            text: section
 //        }
 //        section.property: "section"
+
+        property bool showHint: {
+            var now = Math.floor(Date.now()/1000)
+            return ( (now - uisettings.hintShown) > 1209600) // a fortnight
+        }
 
         property bool busy
         signal unapplyAll
@@ -517,6 +523,33 @@ Page {
                     to: 0
                     duration: 200
                 }
+
+                Loader { id: hintLoader
+                    active: (index === 1)
+                    anchors.centerIn: appliedSwitch
+                    sourceComponent: TapInteractionHint { id: tapHint
+                        running: view.showHint && view.visible && !startTimer.running
+                        loops: 2
+                        taps: 1
+                        opacity: running ? 1.0 : 0.0
+                        onRunningChanged: if (!running && view.showHint) {
+                            view.showHint = false
+                            uisettings.hintShown = Math.floor(Date.now()/1000)
+                        }
+                    }
+                }
+                InteractionHintLabel {
+                    visible: (hintLoader.status === Loader.Ready) && hintLoader.item.running
+                    text: qsTranslate("", "Tap the icon to activate/deactivate a Patch!")
+                    anchors.top: nameLabel.bottom
+                    topMargin: nameLabel.height
+                    height: parent.height*4
+                    palette.primaryColor: Theme.darkSecondaryColor
+                    backgroundColor: Theme.rgba(Theme.darkSecondaryColor, 0.9)
+                    opacity: visible ? 1.0 : 0.0
+                    Behavior on opacity { FadeAnimation { duration: 800 } }
+                }
+
                 IconButton {
                     id: appliedSwitch
                     anchors.verticalCenter: parent.verticalCenter
