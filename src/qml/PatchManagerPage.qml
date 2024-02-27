@@ -75,6 +75,7 @@ Page {
         path: "/org/SfietKonstantin/patchmanager/uisettings"
 
         property bool showUnapplyAll: false
+        property int hintShown: 0
     }
 
     Component.onCompleted: migrateDevModeSettings()
@@ -198,7 +199,7 @@ Page {
 
         PullDownMenu {
             busy: view.busy
-            enabled: !busy
+            enabled: !busy && background.drag && (background.drag.target === null)
 
             /*
             Disabled due to discussion at https://github.com/sailfishos-patches/patchmanager/pull/272#issuecomment-1047685536
@@ -255,6 +256,11 @@ Page {
 //            text: section
 //        }
 //        section.property: "section"
+
+        property bool showHint: {
+            var now = Math.floor(Date.now()/1000)
+            return ( (now - uisettings.hintShown) > 1209600) // a fortnight
+        }
 
         property bool busy
         signal unapplyAll
@@ -518,23 +524,91 @@ Page {
                     duration: 200
                 }
 
-                Switch {
+                Loader { id: hintLoader
+                    active: (index === 1)
+                    anchors.centerIn: appliedSwitch
+                    sourceComponent: TapInteractionHint { id: tapHint
+                        running: view.showHint && view.visible && !startTimer.running
+                        loops: 2
+                        taps: 1
+                        opacity: running ? 1.0 : 0.0
+                        onRunningChanged: if (!running && view.showHint) {
+                            view.showHint = false
+                            uisettings.hintShown = Math.floor(Date.now()/1000)
+                        }
+                    }
+                }
+                InteractionHintLabel {
+                    visible: (hintLoader.status === Loader.Ready) && hintLoader.item.running
+                    text: qsTranslate("", "Tap the icon to activate/deactivate a Patch!")
+                    anchors.top: nameLabel.bottom
+                    topMargin: nameLabel.height
+                    height: parent.height*4
+                    palette.primaryColor: Theme.darkSecondaryColor
+                    backgroundColor: Theme.rgba(Theme.darkSecondaryColor, 0.9)
+                    opacity: visible ? 1.0 : 0.0
+                    Behavior on opacity { FadeAnimation { duration: 800 } }
+                }
+
+                IconButton {
                     id: appliedSwitch
                     anchors.verticalCenter: parent.verticalCenter
-                    automaticCheck: false
-                    checked: patchObject.details.patched
+                    property string fallbackSource : fallbackIcon[patchObject.details.category]
+                    readonly property var fallbackIcon: {
+                        "browser":      "image://theme/icon-m-website",
+                        "camera":       "image://theme/icon-m-camera",
+                        "calendar":     "image://theme/icon-m-date",
+                        "clock":        "image://theme/icon-m-clock",
+                        "contacts":     "image://theme/icon-m-users",
+                        "email":        "image://theme/icon-m-mail",
+                        "gallery":      "image://theme/icon-m-image",
+                        "homescreen":   "image://theme/icon-m-device",
+                        "media":        "image://theme/icon-m-media-playlists",
+                        "messages":     "image://theme/icon-m-message",
+                        "phone":        "image://theme/icon-m-call",
+                        "silica":       "image://theme/icon-m-sailfish",
+                        "settings":     "image://theme/icon-m-setting",
+                        "keyboard":     "image://theme/icon-m-keyboard",
+                        "other":        "image://theme/icon-m-patchmanager2",
+                    }
+                    icon.source: "image://theme/icon-m-patchmanager2"
+                    Component.onCompleted:{
+                        var patchSource = PatchManager.iconForPatch(patchObject.details.patch, Theme.colorScheme ? (Theme.colorScheme == Theme.LightOnDark) : true)
+                        if (patchSource.length > 0) {
+                            icon.source = patchSource
+                        } else if (fallbackSource) {
+                            icon.source = fallbackSource
+                        }
+                    }
+                    icon.sourceSize.height: Theme.iconSizeSmallPlus
+                    icon.sourceSize.width: Theme.iconSizeSmallPlus
+                    icon.height: Theme.iconSizeSmallPlus
+                    icon.width: Theme.iconSizeSmallPlus
+                    icon.opacity: patchObject.details.patched ? 1.0 : 0.5
+
+                    palette.primaryColor: Theme.secondaryColor
+                    palette.highlightColor: Theme.primaryColor
+                    highlighted: down || patchObject.details.patched || busy
+
+                    property bool busy: patchObject.busy
+                    enabled: !busy
                     onClicked: background.doPatch()
-                    enabled: !busy && PatchManager.loaded
-                    busy: patchObject.busy
+
+                    Behavior on icon.opacity { PropertyAnimation {
+                        duration: 1200; alwaysRunToEnd : true; easing.type: Easing.OutBack
+                    }}
+
                 }
 
                 Column {
                     id: nameLabel
                     anchors.left: appliedSwitch.right
-                    anchors.right: patchIcon.status == Image.Ready ? patchIcon.left : parent.right
+                    //anchors.right: patchIcon.status == Image.Ready ? patchIcon.left : parent.right
+                    anchors.right: appliedSwitch.status == Image.Ready ? appliedSwitch.left : parent.right
                     anchors.margins: Theme.paddingMedium
                     anchors.verticalCenter: parent.verticalCenter
                     Label {
+                        width: parent.width
                         text: name
                         color: patchObject.details.isCompatible ? background.down ? Theme.highlightColor : ( patchObject.details.patched ? Theme.primaryColor : Theme.secondaryColor )
                                                                 : background.down ? Theme.highlightBackgroundFromColor(Theme.errorColor, Theme.colorScheme) : ( patchObject.details.patched ? Theme.errorColor : Theme.secondaryHighlightFromColor(Theme.errorColor, Theme.colorScheme) )
@@ -556,16 +630,6 @@ Page {
                             font.pixelSize: Theme.fontSizeTiny
                         }
                     }
-                }
-
-                Image {
-                    id: patchIcon
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: Theme.itemSizeExtraSmall
-                    height: Theme.itemSizeExtraSmall
-                    visible: status == Image.Ready
-                    source: PatchManager.iconForPatch(patchObject.details.patch, Theme.colorScheme ? (Theme.colorScheme == Theme.LightOnDark) : true)
                 }
             }
 
