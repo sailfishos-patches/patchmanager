@@ -584,7 +584,7 @@ Page {
                     icon.sourceSize.width: Theme.iconSizeSmallPlus
                     icon.height: Theme.iconSizeSmallPlus
                     icon.width: Theme.iconSizeSmallPlus
-                    icon.opacity: patchObject.details.patched ? 1.0 : 0.5
+                    icon.opacity: (highlighted || patchObject.details.patched) ? 1.0 : Theme.opacityLow
 
                     palette.primaryColor: Theme.secondaryColor
                     palette.highlightColor: Theme.primaryColor
