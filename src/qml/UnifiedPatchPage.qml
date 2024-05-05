@@ -265,8 +265,6 @@ Page {
                                 }
                                 Label {
                                     anchors.verticalCenter: parent.verticalCenter
-                                    color: Theme.secondaryHighlightColor
-                                    linkColor: Theme.highlightColor
                                     text: linktext
                                 }
                             }
