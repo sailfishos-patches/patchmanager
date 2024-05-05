@@ -298,7 +298,6 @@ Page {
                     right: parent.right
                     margins: Theme.horizontalPageMargin
                 }
-                horizontalAlignment: Text.AlignJustify
                 wrapMode: Text.WordWrap
                 text: !!patchData && patchData.description ? patchData.description : ""
             }

@@ -204,7 +204,6 @@ Page {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.margins: Theme.horizontalPageMargin
-                horizontalAlignment: Text.AlignJustify
                 wrapMode: Text.WordWrap
                 text: modelData.description
             }
