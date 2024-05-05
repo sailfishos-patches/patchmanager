@@ -190,12 +190,26 @@ Page {
         }
     }
 
+    InteractionHintLabel {
+        id: hintLabel
+        visible: false
+        anchors.fill: parent
+        anchors.centerIn: parent
+        text: qsTranslate("", "Tap the icon to activate/deactivate a Patch!")
+        invert: true
+        opacity: visible ? 1.0 : 0.0
+        Behavior on opacity { FadeAnimation { duration: 2000 } }
+    }
+
     SilicaListView {
         id: view
         anchors.fill: parent
 
         readonly property int topmostY: -view.headerItem.height
         readonly property int bottommostY: view.contentHeight - view.height - view.headerItem.height
+
+        opacity: hintLabel.visible ? Theme.opacityMedium : 1.0
+        Behavior on opacity { FadeAnimation { duration: 800 } }
 
         PullDownMenu {
             busy: view.busy
@@ -529,27 +543,19 @@ Page {
                     anchors.centerIn: appliedSwitch
                     sourceComponent: TapInteractionHint { id: tapHint
                         running: view.showHint && view.visible && !startTimer.running
-                        loops: 2
-                        taps: 1
+                        loops: 4
+                        taps: 2
+                        z: 100
                         opacity: running ? 1.0 : 0.0
-                        onRunningChanged: if (!running && view.showHint) {
-                            view.showHint = false
-                            uisettings.hintShown = Math.floor(Date.now()/1000)
+                        onRunningChanged: {
+                            if (!running && view.showHint) {
+                                view.showHint = false
+                                uisettings.hintShown = Math.floor(Date.now()/1000)
+                            }
+                            hintLabel.visible = running
                         }
                     }
                 }
-                InteractionHintLabel {
-                    visible: (hintLoader.status === Loader.Ready) && hintLoader.item.running
-                    text: qsTranslate("", "Tap the icon to activate/deactivate a Patch!")
-                    anchors.top: nameLabel.bottom
-                    topMargin: nameLabel.height
-                    height: parent.height*4
-                    palette.primaryColor: Theme.darkSecondaryColor
-                    backgroundColor: Theme.rgba(Theme.darkSecondaryColor, 0.9)
-                    opacity: visible ? 1.0 : 0.0
-                    Behavior on opacity { FadeAnimation { duration: 800 } }
-                }
-
                 IconButton {
                     id: appliedSwitch
                     anchors.verticalCenter: parent.verticalCenter
@@ -584,7 +590,7 @@ Page {
                     icon.sourceSize.width: Theme.iconSizeSmallPlus
                     icon.height: Theme.iconSizeSmallPlus
                     icon.width: Theme.iconSizeSmallPlus
-                    icon.opacity: (highlighted || patchObject.details.patched) ? 1.0 : Theme.opacityLow
+                    icon.opacity: highlighted ? 1.0 : Theme.opacityLow
 
                     palette.primaryColor: Theme.secondaryColor
                     palette.highlightColor: Theme.primaryColor
