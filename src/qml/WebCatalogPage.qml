@@ -215,15 +215,24 @@ Page {
         spacing: Theme.paddingSmall
 
         delegate: BackgroundItem {
-            id: background
+            id: listDelegate
             height: delegateContent.height
             property bool isInstalled: typeof(container.versions) != "undefined" && typeof(container.versions[model.name]) != "undefined"
-
+            property bool hasUpdate: (PatchManager.updatesNames.indexOf(model.name) >= 0)
             // while we have updates, only show them.
-            visible: (PatchManager.updatesNames.length == 0)
-                          ? true
-                          : ((PatchManager.updatesNames.indexOf(model.name) >= 0) && uisettings.showUpdatesOnly)
-
+            property bool hidden: (PatchManager.updatesNames.length == 0 )
+                ? false
+                : (uisettings.showUpdatesOnly && !hasUpdate)
+            states: State {
+                when: listDelegate.hidden
+                name: "hidden"
+                PropertyChanges {
+                    target: listDelegate
+                    height: 0
+                    enabled: false
+                    opacity: 0.0
+                }
+            }
             onClicked: {
                 pageStack.push(Qt.resolvedUrl("WebPatchPage.qml"),
                                { modelData: model, versions: versions })
@@ -242,7 +251,7 @@ Page {
                         id: nameLabel
                         width: parent.width - secondaryLabel.width - Theme.paddingMedium
                         text: model.display_name
-                        color: background.down ? Theme.highlightColor : Theme.primaryColor
+                        color: listDelegate.down ? Theme.highlightColor : Theme.primaryColor
                         font.bold: isInstalled
                         truncationMode: TruncationMode.Fade
                     }
@@ -260,7 +269,7 @@ Page {
                 Label {
                     width: parent.width
                     text: model.description.replace("\r\n\r\n", "\r\n")
-                    color: background.down ? Theme.secondaryHighlightColor : Theme.secondaryColor
+                    color: listDelegate.down ? Theme.secondaryHighlightColor : Theme.secondaryColor
                     font.pixelSize: Theme.fontSizeExtraSmall
                     wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                     maximumLineCount: 3
@@ -290,7 +299,7 @@ Page {
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         text: visible ? qsTranslate("", "Update available: %1").arg(PatchManager.updates[model.name]) : ""
-                        color: background.down ? Theme.secondaryHighlightColor : Theme.secondaryColor
+                        color: listDelegate.down ? Theme.secondaryHighlightColor : Theme.secondaryColor
                         font.bold: true
                         font.pixelSize: Theme.fontSizeExtraSmall
                         wrapMode: Text.NoWrap
