@@ -528,7 +528,9 @@ Page {
                     radius: 0.14
                     falloffRadius: 0.13
                     visible: (down || busy || patchObject.details.patched)
-                    color: (down || busy || patchObject.details.patched) ? Theme.primaryColor : Theme.rgba(Theme.secondaryColor, Theme.opacityLow)
+                    color: (down || busy || patchObject.details.patched)
+                        ? Theme.rgba(Theme.primaryColor, Theme.opacityLow)
+                        : Theme.rgba(Theme.secondaryColor, Theme.opacityLow)
                     Behavior on color { FadeAnimation {} }
                 }
 
@@ -567,7 +569,6 @@ Page {
                     icon.sourceSize.width: Theme.iconSizeSmallPlus
                     icon.height: Theme.iconSizeSmallPlus
                     icon.width: Theme.iconSizeSmallPlus
-                    icon.opacity: highlighted ? 1.0 : Theme.opacityLow
 
                     palette.primaryColor: Theme.secondaryColor
                     palette.highlightColor: Theme.primaryColor
