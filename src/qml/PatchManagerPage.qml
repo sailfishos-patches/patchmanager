@@ -519,9 +519,23 @@ Page {
                     duration: 200
                 }
 
+                GlassItem {
+                    id: glass
+                    width: Theme.itemSizeLarge
+                    height: Theme.itemSizeLarge
+                    anchors.horizontalCenter: parent.left
+                    anchors.verticalCenter: nameLabel.verticalCenter
+                    radius: 0.14
+                    falloffRadius: 0.13
+                    visible: (down || busy || patchObject.details.patched)
+                    color: (down || busy || patchObject.details.patched) ? Theme.primaryColor : Theme.rgba(Theme.secondaryColor, Theme.opacityLow)
+                    Behavior on color { FadeAnimation {} }
+                }
+
                 IconButton {
                     id: appliedSwitch
                     anchors.verticalCenter: parent.verticalCenter
+                    x: Theme.paddingLarge
                     property string fallbackSource : fallbackIcon[patchObject.details.category]
                     readonly property var fallbackIcon: {
                         "browser":      "image://theme/icon-m-website",
@@ -566,7 +580,6 @@ Page {
                     Behavior on icon.opacity { PropertyAnimation {
                         duration: 1200; alwaysRunToEnd : true; easing.type: Easing.OutBack
                     }}
-
                 }
 
                 Column {
