@@ -96,23 +96,28 @@ Page {
         interval: 1500
         repeat: false
         running: true
-        onTriggered: console.debug()
-        onRunningChanged: console.debug(running)
+        onTriggered: {
+            if (PatchManager.updatesNames.length > 0) {
+                hintTimer.start()
+            }
+        }
+    }
+
+    Timer {
+        id : hintTimer
+        interval: 3000
+        repeat: false
+        running: false
     }
 
     Connections {
         target: PatchManager
         onUpdatesChanged: {
-            if (!startTimer.running) {
+            if (startTimer.running) {
                 return
             }
-            if (PatchManager.updatesNames.length === 0) {
-                return
-            }
-            if (pageStack.busy) {
-                pageStack.busyChanged.connect(showUpdates)
-            } else {
-                showUpdates(true)
+            if (PatchManager.updatesNames.length > 0) {
+                hintTimer.start()
             }
         }
     }
@@ -123,71 +128,6 @@ Page {
         }
     }
 
-    /*! \qmlmethod function showUpdates(manual)
-
-        Flashes the Pulley Menu if updates are available and \a manual is  \c false.
-        Does nothing if \a manual is \c true.
-
-     */
-    function showUpdates(manual) {
-        if (pageStack.busy) {
-            return
-        }
-        if (!manual) {
-            pageStack.busyChanged.disconnect(showUpdates)
-        }
-
-        pulleyAnimation.start()
-    }
-
-    /*! \qmlproperty real PatchManagerPage::pullDownDistance
-        \internal
-        Amount of space the pulley "pops down" when it's showing a hint, e.g the result of showUpdates().
-
-        \warning This is probably broken in recent SFOS versions (?).
-    */
-    property real pullDownDistance: Theme.itemSizeLarge
-
-    SequentialAnimation {
-        id: pulleyAnimation
-        PropertyAction {
-            target: view.pullDownMenu
-            property: "_hinting"
-            value: true
-        }
-        PropertyAction {
-            target: view.pullDownMenu
-            property: "active"
-            value: true
-        }
-        NumberAnimation {
-            target: view
-            property: "contentY"
-            to: -pullDownDistance - view.headerItem.height
-            duration: 400*Math.max(1.0, pullDownDistance/Theme.itemSizeLarge)
-            easing.type: Easing.OutCubic
-        }
-        PauseAnimation {
-            duration: 800
-        }
-        NumberAnimation {
-            target: view
-            property: "contentY"
-            to: -view.headerItem.height
-            duration: 400 // Matches bounceback animation duration
-            easing.type: Easing.InOutCubic
-        }
-        PropertyAction {
-            target: view.pullDownMenu
-            property: "active"
-            value: false
-        }
-        PropertyAction {
-            target: view.pullDownMenu
-            property: "_hinting"
-            value: false
-        }
-    }
     SilicaListView {
         id: view
         anchors.fill: parent
@@ -195,16 +135,9 @@ Page {
         readonly property int topmostY: -view.headerItem.height
         readonly property int bottommostY: view.contentHeight - view.height - view.headerItem.height
 
-        opacity: startTimer.running ? Theme.opacityLow : 1.0
-        Behavior on opacity { FadeAnimation { duration: 800 } }
-
         PullDownMenu {
             busy: view.busy
             enabled: !busy && background.drag && (background.drag.target === null)
-
-            /*
-            Disabled due to discussion at https://github.com/sailfishos-patches/patchmanager/pull/272#issuecomment-1047685536
-            */
 
             MenuItem {
                 text: qsTranslate("", "Disable and deactivate all Patches")
@@ -279,6 +212,9 @@ Page {
             menu: contextMenu
             contentHeight: content.height
             enabled: !view.busy
+
+            opacity: (hintTimer.running || startTimer.running) ? Theme.opacityLow : 1.0
+            Behavior on opacity { FadeAnimation { duration: 800 } }
 
             /* properties */
             property bool applying: appliedSwitch.busy
@@ -653,7 +589,12 @@ Page {
             }
 
         }
-
+        ViewPlaceholder {
+            id: updateHint
+            enabled: hintTimer.running
+            text: qsTranslate("", "Updates available")
+            hintText: qsTranslate("", "Pull down to update from the %1").arg(qsTranslate("", "Web Catalog"))
+        }
         ViewPlaceholder {
             enabled: PatchManager.installedModel && (PatchManager.installedModel.count == 0)
             text: qsTranslate("", "No Patches available")
