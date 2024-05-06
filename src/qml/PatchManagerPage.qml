@@ -75,7 +75,6 @@ Page {
         path: "/org/SfietKonstantin/patchmanager/uisettings"
 
         property bool showUnapplyAll: false
-        property int hintShown: 0
     }
 
     Component.onCompleted: migrateDevModeSettings()
@@ -189,18 +188,6 @@ Page {
             value: false
         }
     }
-
-    InteractionHintLabel {
-        id: hintLabel
-        visible: false
-        anchors.fill: parent
-        anchors.centerIn: parent
-        text: qsTranslate("", "Tap the icon to activate/deactivate a Patch!")
-        invert: true
-        opacity: visible ? 1.0 : 0.0
-        Behavior on opacity { FadeAnimation { duration: 2000 } }
-    }
-
     SilicaListView {
         id: view
         anchors.fill: parent
@@ -208,7 +195,6 @@ Page {
         readonly property int topmostY: -view.headerItem.height
         readonly property int bottommostY: view.contentHeight - view.height - view.headerItem.height
 
-        opacity: hintLabel.visible ? Theme.opacityMedium : 1.0
         Behavior on opacity { FadeAnimation { duration: 800 } }
 
         PullDownMenu {
@@ -270,11 +256,6 @@ Page {
 //            text: section
 //        }
 //        section.property: "section"
-
-        property bool showHint: {
-            var now = Math.floor(Date.now()/1000)
-            return ( (now - uisettings.hintShown) > 1209600) // a fortnight
-        }
 
         property bool busy
         signal unapplyAll
@@ -538,24 +519,6 @@ Page {
                     duration: 200
                 }
 
-                Loader { id: hintLoader
-                    active: (index === 1)
-                    anchors.centerIn: appliedSwitch
-                    sourceComponent: TapInteractionHint { id: tapHint
-                        running: view.showHint && view.visible && !startTimer.running
-                        loops: 4
-                        taps: 2
-                        z: 100
-                        opacity: running ? 1.0 : 0.0
-                        onRunningChanged: {
-                            if (!running && view.showHint) {
-                                view.showHint = false
-                                uisettings.hintShown = Math.floor(Date.now()/1000)
-                            }
-                            hintLabel.visible = running
-                        }
-                    }
-                }
                 IconButton {
                     id: appliedSwitch
                     anchors.verticalCenter: parent.verticalCenter
