@@ -80,23 +80,48 @@ Dialog {
             width: parent.width -  Theme.horizontalPageMargin * 2
             Repeater {
                 model: PatchManager.appsToRestart
-                delegate: Component { TextSwitch {
-                    text: qsTranslate("Sections", modelData)
-                    automaticCheck: false
-                    checked: true
-                    enabled: true
-                    description: {
-                        if ((modelData == "homescreen")
-                         || (modelData == "silica"))
-                                                           { return qsTranslate("","Note that this will close all apps."); }
-                        else if (modelData == "settings")  { return qsTranslate("","Note that this will close %1.").arg(qsTranslate("", "Patchmanager")); }
-                        else if (modelData == "keyboard")  { return "" }
-                        else if (modelData == "other")     { return "" }
-                        else { return qsTranslate("","Note that this will close the %1 app.").arg(text); }
+                delegate: Component { Row {
+                    spacing: Theme.paddingLarge
+                    Icon { id: catIcon
+                        source : iconList[modelData] || "image://theme/icon-m-setting"
+                        readonly property var iconList: {
+                            "browser":      "image://theme/icon-m-website",
+                            "camera":       "image://theme/icon-m-camera",
+                            "calendar":     "image://theme/icon-m-date",
+                            "clock":        "image://theme/icon-m-clock",
+                            "contacts":     "image://theme/icon-m-users",
+                            "email":        "image://theme/icon-m-mail",
+                            "gallery":      "image://theme/icon-m-image",
+                            "homescreen":   "image://theme/icon-m-device",
+                            "media":        "image://theme/icon-m-media-playlists",
+                            "messages":     "image://theme/icon-m-message",
+                            "phone":        "image://theme/icon-m-call",
+                            "silica":       "image://theme/icon-m-sailfish",
+                            "homescreen":   "image://theme/icon-m-device",
+                            "settings":     "image://theme/icon-m-setting",
+                            "keyboard":     "image://theme/icon-m-keyboard",
+                            "other":        "image://theme/icon-m-patchmanager2",
+                        }
                     }
-                    TouchBlocker { anchors.fill: parent}
-                  }
-                }
+                    Column {
+                        Label {
+                            text: qsTranslate("Sections", modelData)
+                        }
+                        Label {
+                            font.pixelSize: Theme.fontSizeSmall
+                            color: Theme.secondaryColor
+                            text: {
+                                if ((modelData == "homescreen")
+                                    || (modelData == "silica"))
+                                { return qsTranslate("","Note that this will close all apps."); }
+                                else if (modelData == "settings")  { return qsTranslate("","Note that this will close %1.").arg(qsTranslate("", "Patchmanager")); }
+                                else if (modelData == "keyboard")  { return "" }
+                                else if (modelData == "other")     { return "" }
+                                else { return qsTranslate("","Note that this will close the %1 app.").arg(text); }
+                            }
+                        }
+                    }
+                }}
             }
         }
     }
