@@ -263,24 +263,21 @@ Page {
         signal applyPatchFinished(string patchName)
         signal unapplyPatchFinished(string patchName)
 
+
         add: Transition {
-            SequentialAnimation {
-                NumberAnimation { properties: "z"; to: -1; duration: 1 }
-                NumberAnimation { properties: "opacity"; to: 0.0; duration: 1 }
-                NumberAnimation { properties: "x,y"; duration: 1 }
-                NumberAnimation { properties: "z"; to: 0; duration: 200 }
-                NumberAnimation { properties: "opacity"; from: 0.0; to: 1.0; duration: 100 }
+            ParallelAnimation {
+                NumberAnimation { property: "opacity"; from: 0.6; to: 1.0; duration: 400 }
+                NumberAnimation { property: "scale"  ; from: 0.8; to: 1.0; duration: 400 }
             }
         }
         remove: Transition {
             ParallelAnimation {
-                NumberAnimation { properties: "z"; to: -1; duration: 1 }
-                NumberAnimation { properties: "x"; to: 0; duration: 100 }
-                NumberAnimation { properties: "opacity"; to: 0.0; duration: 100 }
+                NumberAnimation { property: "scale";   from: 1; to: 0; duration: 200 }
+                NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 200 }
             }
         }
         displaced: Transition {
-            NumberAnimation { properties: "x,y"; duration: 200 }
+            NumberAnimation { properties: "x,y"; duration: 200; easing.type: Easing.OutBounce }
         }
 
         delegate: ListItem {
