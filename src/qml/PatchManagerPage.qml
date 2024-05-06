@@ -664,18 +664,15 @@ Page {
         }
 
         ViewPlaceholder {
-            enabled: view.count == 0
+            enabled: PatchManager.installedModel && (PatchManager.installedModel.count == 0)
             text: qsTranslate("", "No Patches available")
+            hintText: qsTranslate("", "Pull down to install some from the %1").arg(qsTranslate("", "Web Catalog"))
         }
         RemorsePopup { id: menuRemorse }
         VerticalScrollDecorator {}
     }
 
-//    BusyIndicator {
-//        id: indicator
-//        running: visible
-//        visible: view.count == 0
-//        anchors.centerIn: parent
-//        size: BusyIndicatorSize.Large
-//    }
+    PageBusyIndicator {
+        running: startTimer.running
+    }
 }
