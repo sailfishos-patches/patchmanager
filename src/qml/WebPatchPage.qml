@@ -107,6 +107,36 @@ Page {
     */
     property bool fetching: true
 
+    onPatchDataChanged: linksmodel.populate()
+    ListModel {
+        id: linksmodel
+        // simply defining the ListItems does not work, errors with "cannot assign a script item"
+        // so we append them when we're ready
+        function populate() {
+            if (patchData.discussion) {
+                linksmodel.append({
+                    "link": patchData.discussion,
+                    "linktext": qsTranslate("", "Discussion"),
+                    "iconname": "icon-s-chat"
+                })
+            }
+            if (patchData.sources) {
+                linksmodel.append({
+                    "link": patchData.sources,
+                    "linktext": qsTranslate("", "Sources"),
+                    "iconname": "icon-s-developer"
+                })
+            }
+            if (patchData.donations) {
+                linksmodel.append({
+                    "link": patchData.donations,
+                    "linktext": qsTranslate("", "Donations"),
+                    "iconname": "icon-s-invitation"
+                })
+            }
+        }
+    }
+
     onStatusChanged: {
         if (status == PageStatus.Active) {
             voteAction = PatchManager.checkVote(modelData.name)
@@ -257,8 +287,12 @@ Page {
                 }
             }
 
+            SectionHeader {
+                text: qsTranslate("", "Description")
+            }
+
             Label {
-                color: Theme.highlightColor
+                color: Theme.secondaryHighlightColor
                 anchors {
                     left: parent.left
                     right: parent.right
@@ -270,69 +304,40 @@ Page {
 
             SectionHeader {
                 text: qsTranslate("", "Links")
-                visible: !!patchData && (!!patchData.discussion || !!patchData.donations || !!patchData.sources)
+                visible: (linksmodel.count > 0)
             }
 
-            BackgroundItem {
-                width: parent.width
-                height: Theme.itemSizeExtraSmall
-                visible: !!patchData && !!patchData.discussion
-
-                onClicked: {
-                    Qt.openUrlExternally(patchData.discussion)
-                }
-
-                Label {
-                    color: Theme.highlightColor
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                        margins: Theme.horizontalPageMargin
-                        verticalCenter: parent.verticalCenter
+            Column {
+                id: links
+                visible: linksmodel.count > 0
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: Theme.horizontalPageMargin
+                spacing: Theme.paddingSmall
+                Repeater {
+                    model: linksmodel
+                    delegate: Component {
+                        ListItem {
+                            contentHeight: Theme.itemSizeExtraSmall
+                            width: parent.width
+                            Row {
+                                width: parent.width
+                                anchors.verticalCenter: parent.verticalCenter
+                                spacing: Theme.paddingMedium
+                                Icon {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    source: "image://theme/" + iconname
+                                    sourceSize.width: Theme.iconSizeMedium
+                                    sourceSize.height: sourceSize.width
+                                }
+                                Label {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    text: linktext
+                                }
+                            }
+                            onClicked: Qt.openUrlExternally(link)
+                        }
                     }
-                    text: !!patchData && patchData.discussion ? qsTranslate("", "Open discussion link") : ""
-                }
-            }
-
-            BackgroundItem {
-                width: parent.width
-                height: Theme.itemSizeExtraSmall
-                visible: !!patchData && !!patchData.donations
-
-                onClicked: {
-                    Qt.openUrlExternally(patchData.donations)
-                }
-
-                Label {
-                    color: Theme.highlightColor
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                        margins: Theme.horizontalPageMargin
-                        verticalCenter: parent.verticalCenter
-                    }
-                    text: !!patchData && patchData.donations ? qsTranslate("", "Donate") : ""
-                }
-            }
-
-            BackgroundItem {
-                width: parent.width
-                height: Theme.itemSizeExtraSmall
-                visible: !!patchData && patchData.sources
-
-                onClicked: {
-                    Qt.openUrlExternally(patchData.value.sources)
-                }
-
-                Label {
-                    color: Theme.highlightColor
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                        margins: Theme.horizontalPageMargin
-                        verticalCenter: parent.verticalCenter
-                    }
-                    text: !!patchData && patchData.sources ? qsTranslate("", "Sources") : ""
                 }
             }
 
