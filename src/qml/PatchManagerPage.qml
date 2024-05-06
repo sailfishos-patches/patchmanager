@@ -195,6 +195,7 @@ Page {
         readonly property int topmostY: -view.headerItem.height
         readonly property int bottommostY: view.contentHeight - view.height - view.headerItem.height
 
+        opacity: startTimer.running ? Theme.opacityLow : 1.0
         Behavior on opacity { FadeAnimation { duration: 800 } }
 
         PullDownMenu {
