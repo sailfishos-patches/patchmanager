@@ -263,13 +263,6 @@ Page {
         signal applyPatchFinished(string patchName)
         signal unapplyPatchFinished(string patchName)
 
-
-        add: Transition {
-            ParallelAnimation {
-                NumberAnimation { property: "opacity"; from: 0.6; to: 1.0; duration: 400 }
-                NumberAnimation { property: "scale"  ; from: 0.8; to: 1.0; duration: 400 }
-            }
-        }
         remove: Transition {
             ParallelAnimation {
                 NumberAnimation { property: "scale";   from: 1; to: 0; duration: 200 }
