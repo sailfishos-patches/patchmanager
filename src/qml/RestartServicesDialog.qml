@@ -97,7 +97,6 @@ Dialog {
                             "messages":     "image://theme/icon-m-message",
                             "phone":        "image://theme/icon-m-call",
                             "silica":       "image://theme/icon-m-sailfish",
-                            "homescreen":   "image://theme/icon-m-device",
                             "settings":     "image://theme/icon-m-setting",
                             "keyboard":     "image://theme/icon-m-keyboard",
                             "other":        "image://theme/icon-m-patchmanager2",
