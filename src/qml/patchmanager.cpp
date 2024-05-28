@@ -614,7 +614,10 @@ void PatchManager::doVote(const QString &patch, int action)
     putSettingsSync(QStringLiteral("votes/%1").arg(patch), action);
 }
 
-/*! \internal lets not spoil the fun (or the eggs!). */
+/*!
+   \internal
+   lets not spoil the fun (or the eggs!).
+*/
 void PatchManager::checkEaster()
 {
     qDebug() << Q_FUNC_INFO;
@@ -1023,14 +1026,18 @@ bool PatchManagerTranslator::installTranslator(const QString &patch)
 /*! \fn void PatchManager::activation(const QString & patch, const QString & version);
     \internal
     using \a patch and \a version
-    \warning dead code, need to investigate removal
+    \warning This seems to be dead code as nothing seems to attach to this slot, need to investigate removal
 */
 
 /*! \fn void PatchManager::easterReceived(const QString &easterText);
     \internal
-    This signal is emitted when checkEaster() has determined there is an easter egg to display.
-    using \a easterText
-    \warning probably dead code, need to investigate removal
+
+    This signal is emitted when checkEaster() has determined there is an easter
+    egg to display, and contains \a easterText as a string parameter.
+
+    Used in AboutPage to display an easter egg.
+
+    \sa AboutPage
 */
 
 /*!
