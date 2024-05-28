@@ -5,3 +5,7 @@ THEMENAME=sailfish-default
 
 CONFIG += sailfish-svg2png
 
+# also install SVG:
+svg.path = /usr/share/icons/hicolor/scalable/apps
+svg.files = svgs/icon-m-patchmanager2.svg
+INSTALLS += svg
