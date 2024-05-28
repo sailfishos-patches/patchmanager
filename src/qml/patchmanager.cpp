@@ -1019,36 +1019,19 @@ bool PatchManagerTranslator::installTranslator(const QString &patch)
     because qdoc warns about undocumented classes and functions, but
     does not allow for qdoc source documentation in header files.
 */
-    
-/*! void PatchManager::activation(const QString & patch, const QString & version);
-    Defined in line 160 (section "public slots:") of /src/qml/patchmanager.h
-    Used in line 295 of /src/qml/AboutPage.qml
-    \warning probably dead code, need to investigate
-    probably \internal, using \a patch and \a version
-*/
-void PatchManager::activation(const QString & patch, const QString & version)
-{
-    /* 
-        Requires dummy operations, utilising patch and version; otherwise
-        a [-Werror=unused-parameter] is emitted, turned into an error
-        by the global CONFIG_WERROR=y switch, which breaks the CI runs.
-    */
-}
 
-/*! void PatchManager::easterReceived(const QString & easterText);
-    Defined in line 188 (section "signals:") of /src/qml/patchmanager.h
-    Used in line 2514 of /src/bin/patchmanager-daemon/patchmanagerobject.cpp
-    \warning probably dead code, need to investigate
-    probably \internal, using \a easterText
+/*! \fn void PatchManager::activation(const QString & patch, const QString & version);
+    \internal
+    using \a patch and \a version
+    \warning dead code, need to investigate removal
 */
-void PatchManager::easterReceived(const QString & easterText)
-{
-    /* 
-        Requires a dummy operation, utilising easterText; otherwise
-        a [-Werror=unused-parameter] is emitted, turned into an error
-        by the global CONFIG_WERROR=y switch, which breaks the CI runs.
-    */
-}
+
+/*! \fn void PatchManager::easterReceived(const QString &easterText);
+    \internal
+    This signal is emitted when checkEaster() has determined there is an easter egg to display.
+    using \a easterText
+    \warning probably dead code, need to investigate removal
+*/
 
 /*!
     Returns \e true if \a filename exists, \e false otherwise.
