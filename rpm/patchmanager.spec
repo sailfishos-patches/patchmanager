@@ -291,7 +291,7 @@ exit 0
 %{_datadir}/jolla-settings/entries/%{name}.json
 %{_datadir}/%{name}/icons/icon-m-patchmanager.png
 
-%{_datadir}/themes/%{theme}/meegotouch/*/icons/*.png
+%{_datadir}/themes/%{theme}/*/*/icons/*.png
 
 %changelog
 * Thu Sep  9 1999 SailfishOS Patches <sailfishos-patches@users.noreply.github.com> - 99.99.99
