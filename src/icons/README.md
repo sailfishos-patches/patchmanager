@@ -8,5 +8,5 @@ For all SailfishOS versions up to v4.6 (and possible also Meego):
 For SailishOS 4.6 and higher
 
  - svg files must be in svgs/icons and svgs/icons-monochrome
- - png files will be in /usr/share/sailfish-default/silica/zX.Y/icons
+ - png files will be in /usr/share/sailfish-default/silica/zX.Y/icons and /usr/share/sailfish-default/silica/zX.Y/icons-monochrome
 
