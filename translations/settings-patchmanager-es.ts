@@ -457,8 +457,8 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="235"/>
-        <source>Patch %1 activated.</source>
-        <translation>Parche %1 activado.</translation>
+        <source>Patch %1 activated</source>
+        <translation>Parche %1 activado</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="238"/>
