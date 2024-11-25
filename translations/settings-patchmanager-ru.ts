@@ -442,8 +442,8 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="235"/>
-        <source>Patch %1 activated.</source>
-        <translation>Применён патч %1.</translation>
+        <source>Patch %1 activated</source>
+        <translation>Применён патч %1</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="238"/>
