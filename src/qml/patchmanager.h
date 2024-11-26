@@ -42,6 +42,9 @@
 #include "webdownloader.h"
 #include "patchmanagermodel.h"
 
+#include <QLoggingCategory>
+Q_DECLARE_LOGGING_CATEGORY(patchmanagerPlugin)
+
 class PatchManagerTranslator: public QObject
 {
     Q_OBJECT

@@ -38,6 +38,8 @@
 #include "patchmanager.h"
 #include "webpatchesmodel.h"
 
+Q_LOGGING_CATEGORY(patchmanagerPlugin, "patchmanager.plugin")
+
 // TODO: ask for paypal.me
 static QString PAYPAL_DONATE = QStringLiteral("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R6AJV4U2G33XG");
 

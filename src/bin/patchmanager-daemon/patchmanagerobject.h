@@ -51,6 +51,10 @@
 
 #include <systemd/sd-journal.h>
 
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(patchmanagerDaemon)
+
 #ifndef SERVER_URL
 #define SERVER_URL          "https://coderus.openrepos.net"
 #endif
@@ -67,6 +71,7 @@
 
 #define CATALOG_URL         SERVER_URL "/" API_PATH
 #define MEDIA_URL           SERVER_URL "/" MEDIA_PATH
+
 
 class QTimer;
 class QSettings;

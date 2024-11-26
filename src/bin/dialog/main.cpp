@@ -11,6 +11,10 @@
 #include <QDBusReply>
 #include <QTimer>
 
+#include <QLoggingCategory>
+Q_DECLARE_LOGGING_CATEGORY(patchmanagerDialog)
+Q_LOGGING_CATEGORY(patchmanagerDialog, "patchmanager.dialog")
+
 int main(int argc, char *argv[])
 {
     qputenv("NO_PM_PRELOAD", "1");

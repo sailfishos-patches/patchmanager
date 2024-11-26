@@ -86,6 +86,8 @@ if (!calledFromDBus()) {\
     return x;\
 }
 
+Q_LOGGING_CATEGORY(patchmanagerDaemon, "patchmanager.daemon")
+
 // locations
 static const QString PATCHES_DIR            = QStringLiteral("/usr/share/patchmanager/patches");
 static const QString PATCHES_WORK_DIR_PREFIX= QStringLiteral("/tmp/patchmanager3");
