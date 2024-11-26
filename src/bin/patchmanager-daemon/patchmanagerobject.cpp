@@ -518,7 +518,7 @@ void PatchManagerObject::doRegisterDBus()
     QDBusConnection connection = QDBusConnection::systemBus();
 
     if (connection.interface()->isServiceRegistered(DBUS_SERVICE_NAME)) {
-        qWarning() << Q_FUNC_INFO << "Already was registered D-Bus service" << DBUS_SERVICE_NAME;
+        qWarning() << Q_FUNC_INFO << "D-Bus service was already registered" << DBUS_SERVICE_NAME;
         return;
     }
 
@@ -728,10 +728,10 @@ void PatchManagerObject::initialize()
                                    QStringLiteral("-"),
                                    QStringLiteral("/usr/share/translations/"),
                                    QStringLiteral(".qm"));
-    qInfo() << Q_FUNC_INFO << "Translator loaded" << success;
+    qDebug() << Q_FUNC_INFO << "Translator loaded" << success;
 
     success = qApp->installTranslator(translator);
-    qInfo() << Q_FUNC_INFO << "Translator installed" << success;
+    qDebug() << Q_FUNC_INFO << "Translator installed" << success;
 
     m_nam = new QNetworkAccessManager(this);
     m_settings = new QSettings(s_newConfigLocation, QSettings::IniFormat, this);
@@ -2180,10 +2180,10 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
 
     if (message.isDelayedReply()) {
         QVariantMap reply = {{ QStringLiteral("ok"), ok }, { QStringLiteral("log"), log }};
-        qWarning() << Q_FUNC_INFO << "Sending reply.";
+        qDebug() << Q_FUNC_INFO << "Sending reply.";
         sendMessageReply(message, reply);
     } else {
-        qWarning() << Q_FUNC_INFO << "Message is not a delayed reply.";
+        qDebug() << Q_FUNC_INFO << "Message is not a delayed reply.";
     }
 }
 
