@@ -442,7 +442,7 @@
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="235"/>
-        <source>Patch %1 activated.</source>
+        <source>Patch %1 activated</source>
         <translation>Popravek %1 je aktiviran</translation>
     </message>
     <message>

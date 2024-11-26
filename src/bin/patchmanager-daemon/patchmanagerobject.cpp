@@ -274,7 +274,7 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
     switch (action) {
     case NotifyActionSuccessApply:
         summary = qApp->translate("", "Patch activated");
-        body = qApp->translate("", "Patch %1 activated.").arg(patch);
+        body = qApp->translate("", "Patch %1 activated").arg(patch);
         if (getToggleServices()) {
             body.append( ", " );
             body.append( qApp->translate("", "some service(s) should be restarted.") );
