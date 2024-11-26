@@ -52,6 +52,10 @@ if [ -z "$QT_INSTALL_DOCS" ]; then
 		QT_INSTALL_DOCS=/usr/share/doc/qt5
 	elif [ -f /usr/share/qt5/doc/global/macros.qdocconf ]; then
 		QT_INSTALL_DOCS=/usr/share/qt5/doc
+	else
+		printf '## ERROR: global macro config does not exist.\n'
+		printf "## You probably need to install \'qt5-tools\''\n"
+		exit 1
 	fi
 fi
 
