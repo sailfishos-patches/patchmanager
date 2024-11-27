@@ -151,14 +151,14 @@ static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
   \class PatchManagerObject
   \inmodule PatchManagerDaemon
 
-  \brief The Patchmanager Daemon.
+  \brief The Patchmanager daemon.
 
   A D-Bus activated background service which manages patch un/installation,
   listing, de/actvation, and communication with the preload library.
 
-  PatchManager is usually launched by its DBus service.
+  Patchmanager is usually launched by its D-Bus service.
   The binary can also serve as a simple command-line client to a running
-  daemon. See the output of \c{patchmanager --help} for more information.
+  daemon.  See the output of \c{patchmanager --help} for more information.
 
 */
 
@@ -178,7 +178,7 @@ static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
         \value NotifyActionFailedUnapply
             unapplying was not successful
         \value NotifyActionUpdateAvailable
-            one of the patches has an update
+            one of the Patches has an update
 */
 
 QString getLang()
@@ -259,7 +259,7 @@ bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, Q
 }
 
 /*!
-    Sends a notification to the user. \a patch is the patch name, \a action one of:
+    Sends a notification to the user.  \a patch is the Patch name, \a action one of:
     \sa PatchManagerObject::NotifyAction
 */
 void PatchManagerObject::notify(const QString &patch, NotifyAction action)
@@ -342,8 +342,8 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
 }
 
 /*!
-    Returns the list of applied patches via getSettings().
-    \sa getSettings(), getSettings(), setAppliedPatches()
+    Returns the list of applied \a patches via \c getSettings().
+    \sa putSettings(), setAppliedPatches()
 */
 QSet<QString> PatchManagerObject::getAppliedPatches() const
 {
@@ -351,12 +351,39 @@ QSet<QString> PatchManagerObject::getAppliedPatches() const
 }
 
 /*!
-    Saves the list of applied \a patches via \c putSettings().
-    \sa getSettings(), getSettings(), getAppliedPatches()
+    Stores a list of applied \a patches via \c putSettings().
+    \sa getSettings(), getAppliedPatches()
 */
 void PatchManagerObject::setAppliedPatches(const QSet<QString> &patches)
 {
     putSettings(QStringLiteral("applied"), QStringList(patches.toList()));
+}
+
+/*!
+    Returns the list of successfully auto-applied \a patches via \c getSettings().
+    \sa putSettings(), setWorkingPatches()
+*/
+QSet<QString> PatchManagerObject::getWorkingPatches() const
+{
+    return getSettings(QStringLiteral("workingPatches"), QStringList()).toStringList().toSet();
+}
+
+/*!
+    Stores a list of successfully auto-applied \a patches via \c putSettings().
+    \sa getSettings(), getWorkingPatches()
+*/
+void PatchManagerObject::setWorkingPatches(const QSet<QString> &patches)
+{
+    putSettings(QStringLiteral("workingPatches"), QStringList(patches.toList()));
+}
+
+/*!
+    Stores a list of currently applied \a patches as "last-known-good" / working via \c setWorkingPatches().
+    \sa getSettings(), getWorkingPatches()
+*/
+void PatchManagerObject::setWorking()
+{
+    setWorkingPatches(getAppliedPatches());
 }
 
 QStringList PatchManagerObject::getMangleCandidates()
@@ -451,7 +478,7 @@ void PatchManagerObject::lateInitialize()
 //    connect(additionalWatcher, &INotifyWatcher::contentChanged, [this](const QString &path, bool created) {
 //        qDebug() << Q_FUNC_INFO << "Content in" << path << "changed; is newly created (bool):" << created;
 //        refreshPatchList();
-    //    });
+//        });
 
     registerDBus();
     checkForUpdates();
@@ -544,6 +571,24 @@ void PatchManagerObject::doRegisterDBus()
     m_dbusRegistered = true;
 }
 
+/*!
+    \fn void PatchManagerObject::prepareCacheRoot()
+
+    Despite its name, it does not actually prepare the cache root!
+    Instead, this is the main "auto-apply" function.
+
+    \list
+    \li First, apply all enabled Patches which are listend in the \l{order}{inifile} settings key.
+    \li Second, apply all enabled Patches which remain (if any).
+    \li If applying any Patch fails, the local \c success variable will be set to \c false, but the applying run will continue.
+    \li At the end of the process, if \c success is \c true, calls setWorkingPatches()
+    \li At the end of the process, if \c success is \c false, calls refreshPatchList()
+    \endlist
+()
+    Emits signals \c autoApplyingStarted(), \c autoApplyingPatch(), \c autoApplyingFailed(), autoApplyingFinished(), depending on state.
+
+    \sa PatchManagerObject::doPrepareCache(), {Patchmanager Configuration Files}, inifile, refreshPatchList(), setWorkingPatches()
+*/
 void PatchManagerObject::doPrepareCacheRoot()
 {
     qDebug() << Q_FUNC_INFO;
@@ -592,6 +637,10 @@ void PatchManagerObject::doPrepareCacheRoot()
         emit m_adaptor->autoApplyingFinished(success);
     }
 
+    if (success) {
+        setWorkingPatches(m_appliedPatches);
+    }
+
     if (!success) {
         setAppliedPatches(m_appliedPatches);
         refreshPatchList();
@@ -600,10 +649,13 @@ void PatchManagerObject::doPrepareCacheRoot()
 
 /*!
     \fn void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply = true)
-    \fn void PatchManagerObject::prepareCacheRoot()
 
     Creates the cache directory where patched files will be stored
-    and read from when passed to the preload library
+    and read from when passed to the preload library.
+
+    \c It will create the cache for the Patch \a patchName, and optionally \a apply it.
+
+    \sa PatchManagerObject::prepareCacheRoot()
 */
 void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 {
@@ -690,7 +742,7 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
   \fn void PatchManagerObject::doStartLocalServer()
   \fn void PatchManagerObject::startLocalServer()
 
-  Starts the internal Server thread if not already started.
+  Starts the internal server thread if not already started.
   Emits \c loadedChanged if successful.
 */
 void PatchManagerObject::doStartLocalServer()
@@ -709,13 +761,13 @@ void PatchManagerObject::doStartLocalServer()
   \fn void PatchManagerObject::initialize()
   \fn void PatchManagerObject::lateInitialize()
 
-  Initialize the engines.
+  Initialise the engines.
 
-  The initialization sequence consists of:
+  The initialisation sequence comprises:
 
     - setting up the patch translator
     - checking configuration constants and environment
-    - setting up DBus connections to Lipstick and the Store client
+    - setting up D-Bus connections to Lipstick and the Store client
 
 */
 void PatchManagerObject::initialize()
@@ -820,7 +872,7 @@ void PatchManagerObject::initialize()
     m_originalWatcher = new QFileSystemWatcher(this);
     connect(m_originalWatcher, &QFileSystemWatcher::fileChanged, this, &PatchManagerObject::onOriginalFileChanged);
 
-    m_localServer = new QLocalServer(nullptr); // controlled by separate thread
+    m_localServer = new QLocalServer(nullptr); // controlled by a separate thread
     m_localServer->setSocketOptions(QLocalServer::WorldAccessOption);
     m_localServer->setMaxPendingConnections(2147483647);
 
@@ -916,7 +968,7 @@ void PatchManagerObject::doRestartKeyboard()
 
     For regular processes, \c killall will be performed on them.
 
-    For SystemD services, they will be restarted via D-Bus call, or if that fails, via \c systemctl-user.
+    Systemd services will be restarted via D-Bus call, or if that fails, via \c systemctl-user.
 
 */
 void PatchManagerObject::restartService(const QString &serviceName)
@@ -1035,7 +1087,7 @@ void PatchManagerObject::clearFakeroot()
 }
 
 /*! 
-    retrieve the RPM name from a full package string
+    Retrieve the RPM name from a full package string.
 */
 QString PatchManagerObject::getRpmName(const QString &rpm) const
 {
@@ -1045,11 +1097,10 @@ QString PatchManagerObject::getRpmName(const QString &rpm) const
 }
 
 /*!
-
-    handle command line arguments, and maybe daemonize.
+    Handle command line arguments, and may daemonise.
 
     If called with any other argument other than \c --daemon, call a method
-    coreesponding to the command line option on the bus and exit.
+    corresponding to the command line option on the bus and exit.
 
     Currently supported command line options are:
 
@@ -1061,15 +1112,15 @@ QString PatchManagerObject::getRpmName(const QString &rpm) const
     \row
         \li \c -a
         \li a patch internal name
-        \li calls the "apply" action for the patch
+        \li Calls the "apply" action for a Patch.
     \row
         \li \c -u
         \li a patch internal name
-        \li calls the "unapply" action for the patch
+        \li Calls the "unapply" action for a Patch.
     \row
         \li \c --unapply-all
         \li \e none
-        \li calls the "unapply" action for all patches
+        \li Calls the "unapply" action for all Patches.
     \endtable
 
 */
@@ -1113,6 +1164,10 @@ void PatchManagerObject::process()
             }
         } else if (args[1] == QStringLiteral("--unapply-all")) {
             method = QStringLiteral("unapplyAllPatches");
+        } else if (args[1] == QStringLiteral("--backup-working")) {
+            method = QStringLiteral("backupWorkingPatchList");
+        } else if (args[1] == QStringLiteral("--restore-working")) {
+            method = QStringLiteral("restorePatchList");
         } else {
             return;
         }
@@ -1129,7 +1184,7 @@ void PatchManagerObject::process()
 }
 
 
-/*!  Retrieves a list of patches via D-Bus.  */
+/*!  Retrieves a list of Patches via D-Bus.  */
 QVariantList PatchManagerObject::listPatches()
 {
     DBUS_GUARD(QVariantList())
@@ -1139,7 +1194,7 @@ QVariantList PatchManagerObject::listPatches()
     return QVariantList();
 }
 
-/*!  Returns all versions contained in all patch metadata.  */
+/*!  Returns all versions contained in all Patch metadata.  */
 QVariantMap PatchManagerObject::listVersions()
 {
     qDebug() << Q_FUNC_INFO;
@@ -1151,7 +1206,7 @@ QVariantMap PatchManagerObject::listVersions()
     return versionsList;
 }
 
-/*!  Returns whether \a patch is in the list of currently applied patches. */
+/*!  Returns whether \a patch is in the list of currently active (applied) Patches. */
 bool PatchManagerObject::isPatchApplied(const QString &patch)
 {
     qDebug() << Q_FUNC_INFO;
@@ -1159,7 +1214,8 @@ bool PatchManagerObject::isPatchApplied(const QString &patch)
 }
 
 /*!
-    Calls the corresponding method over D-Bus to apply \a patch
+    Calls the corresponding method over D-Bus to activate (apply) \a patch
+    
     \warning This function always returns an empty(!) \c QVariantMap
 */
 QVariantMap PatchManagerObject::applyPatch(const QString &patch)
@@ -1179,10 +1235,9 @@ QVariantMap PatchManagerObject::applyPatch(const QString &patch)
 }
 
 /*!
-    call the corresponding method over D-Bus to unapply \a patch
+    Call the corresponding method over D-Bus to deactivate (unapply) \a patch
 
     Returns a \c QVariantMap with the call results.
-
 */
 QVariantMap PatchManagerObject::unapplyPatch(const QString &patch)
 {
@@ -1206,7 +1261,8 @@ QVariantMap PatchManagerObject::unapplyPatch(const QString &patch)
 }
 
 /*!
-    Calls the corresponding method over D-Bus to unapply all active patches.
+    Calls the corresponding method over D-Bus to deactivate (unapply) all active Patches.
+    
     Returns \c true if successful.
 */
 bool PatchManagerObject::unapplyAllPatches()
@@ -1247,9 +1303,9 @@ bool PatchManagerObject::installPatch(const QString &patch, const QString &versi
 }
 
 /*!
-    Calls the corresponding method over D-Bus to uninstall (delete) \a patch from system.
+    Calls the corresponding method over D-Bus to remove (uninstall / delete) \a patch.
 
-    Returns \c true if uninstallation was successful.
+    Returns \c true if removal (deinstallation) was successful.
 */
 bool PatchManagerObject::uninstallPatch(const QString &patch)
 {
@@ -1270,7 +1326,7 @@ bool PatchManagerObject::uninstallPatch(const QString &patch)
 /*!
     Calls the corresponding method over D-Bus to reset applied state of \a patch
 
-    Returns \c true if successful
+    Returns \c true if successful.
 
     \sa doResetPatchState
 */
@@ -1291,7 +1347,7 @@ bool PatchManagerObject::resetPatchState(const QString &patch)
 }
 
 /*!
-    Calls the corresponding method over D-Bus to retrieve a vote for patch \a patch
+    Calls the corresponding method over D-Bus to retrieve a vote for Patch \a patch
 
     \link doCheckVote \endlink
 */
@@ -1307,7 +1363,7 @@ int PatchManagerObject::checkVote(const QString &patch)
 }
 
 /*!
-    Calls the corresponding method over D-Bus to send a vote of type \a action for patch \a patch.
+    Calls the corresponding method over D-Bus to send a vote of type \a action for Patch \a patch.
 
     \sa sendVote
 */
@@ -1319,7 +1375,7 @@ void PatchManagerObject::votePatch(const QString &patch, int action)
                               Q_ARG(int, action));
 }
 
-/*!  an \internal thing, let's not spoil the eggs!  */
+/*!  An \internal thing, let's not spoil the eggs!  */
 QString PatchManagerObject::checkEaster()
 {
     DBUS_GUARD(QString())
@@ -1329,7 +1385,10 @@ QString PatchManagerObject::checkEaster()
     return QString();
 }
 
-/*!  Calls the corresponding method over D-Bus to update the \l {Patchmanager Web Catalog}{Web Catalog} Metadata. \a params stores the connection properties. */
+/*!
+    Calls the corresponding method over D-Bus to update the \l {Patchmanager Web Catalog}{Web Catalog} 
+    metadata.  \a params stores the connection properties.
+*/
 QVariantList PatchManagerObject::downloadCatalog(const QVariantMap &params)
 {
     DBUS_GUARD(QVariantList())
@@ -1342,7 +1401,7 @@ QVariantList PatchManagerObject::downloadCatalog(const QVariantMap &params)
 }
 
 /*!
-    Calls the corresponding method over D-Bus to download metadata for the patch with the name \a name
+    Calls the corresponding method over D-Bus to download metadata for a Patch with the name \a name
 
     \sa requestDownloadPatchInfo
 */
@@ -1358,10 +1417,10 @@ QVariantMap PatchManagerObject::downloadPatchInfo(const QString &name)
 }
 
 /*!
-    Calls the corresponding method over D-Bus to check whether the \l {Patchmanager Web Catalog}{Web Catalog} contains updated patch entries.
+    Calls the corresponding method over D-Bus to check whether the 
+    \l {Patchmanager Web Catalog}{Web Catalog} contains updated patch entries.
 
     \sa requestCheckForUpdates
-
 */
 void PatchManagerObject::checkForUpdates()
 {
@@ -1375,10 +1434,11 @@ QVariantMap PatchManagerObject::getUpdates() const
     return m_updates;
 }
 
-/*!  \fn bool PatchManagerObject::putSettings(const QString &name, const QDBusVariant &value)
-     \fn bool PatchManagerObject::putSettings(const QString &name, const QVariant &value)
+/*!
+    \fn bool PatchManagerObject::putSettings(const QString &name, const QDBusVariant &value)
+    \fn bool PatchManagerObject::putSettings(const QString &name, const QVariant &value)
 
-    Store setting called \a name  to the persistent config, \c s_newConfigLocation, and give it value \a value
+    Store setting called \a name to the persistent config, \c s_newConfigLocation, and give it value \a value.
 
     Returns \c true if successful.
 */
@@ -1403,10 +1463,11 @@ bool PatchManagerObject::putSettings(const QString &name, const QVariant &value)
     return false;
 }
 
-/*!  \fn QDBusVariant PatchManagerObject::getSettings(const QString &name, const QDBusVariant &def)
-     \fn QVariant PatchManagerObject::getSettings(const QString &name, const QVariant &def) const
+/*!
+    \fn QDBusVariant PatchManagerObject::getSettings(const QString &name, const QDBusVariant &def)
+    \fn QVariant PatchManagerObject::getSettings(const QString &name, const QVariant &def) const
 
-    Retrieve a setting called \a name from the persistent config, \c s_newConfigLocation.
+    Retrieve a setting called \a name from the persistent config, \c s_newConfigLocation
     Use \a def as the default value if not present.
 
     Returns a \c QDBusVariant or \c QVariant if successful.
@@ -1426,7 +1487,7 @@ QVariant PatchManagerObject::getSettings(const QString &name, const QVariant &de
 
 /*!
     Compares two dot-separated version strings \a version1 and \a version2, and
-    returns the semanticly higher one.
+    returns the semantically higher one.
 */
 QString PatchManagerObject::maxVersion(const QString &version1, const QString &version2)
 {
@@ -1463,13 +1524,12 @@ QString PatchManagerObject::maxVersion(const QString &version1, const QString &v
 }
 
 /*!
-    Stops, Restarts, or kills running processes belonging to a category which
+    Stops, restarts, or kills running processes belonging to a category which
     has been marked as to-be-restarted.
 
     For regular processes, \c killall will be performed on them.
 
-    For SystemD services, they will be restarted via D-Bus call, or if that fails, via \c systemctl-user.
-
+    Systemd services will be restarted via D-Bus call, or if that fails, via \c systemctl-user.
 */
 void PatchManagerObject::restartServices()
 {
@@ -1520,7 +1580,7 @@ void PatchManagerObject::restartServices()
 
 /*!
     Checks the category of \a patch for membership in a category.
-    If found appends its service toggles to the service toggle list.
+    If found, append its service toggles to the service toggle list.
 */
 void PatchManagerObject::patchToggleService(const QString &patch)
 {
@@ -1552,8 +1612,7 @@ QStringList PatchManagerObject::getToggleServicesList() const
     return m_toggleServices.keys();
 }
 
-/*!  Returns \c true if whether there are services that should be restarted, \c false otherwise.
-*/
+/*!  Returns \c true if there are services that should be restarted, \c false otherwise.  */
 bool PatchManagerObject::getToggleServices() const
 {
     return !m_toggleServices.isEmpty();
@@ -1565,10 +1624,21 @@ bool PatchManagerObject::getFailure() const
     return m_failed;
 }
 
-/*!  Returns the internal state whether the server thread is running. */
+/*!  Returns the internal state whether the server thread is running.  */
 bool PatchManagerObject::getLoaded() const
 {
     return m_serverThread->isRunning();
+}
+
+/*! Retrieves the list of "last-known-good" / working Patches if available, and applies them. */
+void PatchManagerObject::restorePatchList()
+{
+    QSet<QString> patches = getWorkingPatches();
+    if (!patches.empty()) {
+        m_appliedPatches = patches;
+        setAppliedPatches(patches);
+        refreshPatchList();
+    }
 }
 
 /*!
@@ -1595,9 +1665,8 @@ void PatchManagerObject::resolveFailure()
 }
 
 /*!
-    If \a apply is \c true, prepare all internals, start the server, apply all patches and restart Lipstick.
-    If \a apply is \c false, start the server, unapply all patches.
-
+    If \a apply is \c true, prepare all internals, start the server, activate all enabled Patches and restart Lipstick.
+    If \a apply is \c false, start the server, deactivate all Patches.
 */
 void PatchManagerObject::loadRequest(bool apply)
 {
@@ -1621,9 +1690,9 @@ void PatchManagerObject::loadRequest(bool apply)
     }
 }
 /*!
-    D-Bus Method handler.
+    D-Bus method handler
 
-    Called on Lipstick (Re-)Start. Launched the Patchmanager Dialog app (if enabled).
+    Called on Lipstick (re-)start.  Launches the Patchmanager Dialog app (if enabled).
     \a state passed the Lipstick state:
 
     \list
@@ -1699,7 +1768,7 @@ QString PatchManagerObject::getOsVersion() const
 //    refreshPatchList();
 //}
 
-/*!  Return the result of calling \c QObject::eventFilter() on \a watched, \a event */
+/*!  Return the result of calling \c QObject::eventFilter() on \a watched, \a event  */
 bool PatchManagerObject::eventFilter(QObject *watched, QEvent *event)
 {
     if (qEnvironmentVariableIsSet("PM_DEBUG_EVENTFILTER")) {
@@ -1709,7 +1778,7 @@ bool PatchManagerObject::eventFilter(QObject *watched, QEvent *event)
 }
 
 /*!
-    Detect a Lipstick crash, assume it was us, clean up and set ourselves into filed state.
+    Detect a Lipstick crash, assume it was our fault, clean up and set ourselves into failed state.
 
     \sa PatchManagerObject::onFailureOccured()
     \sa PatchManagerObject::FailureOccured()
@@ -1882,7 +1951,7 @@ void PatchManagerObject::doRefreshPatchList()
 {
     qDebug() << Q_FUNC_INFO;
 
-    // Create mangling replacement tokens.
+    // create mangling replacement tokens
     QStringList toManglePaths{}, mangledPaths{};
     if(getSettings(QStringLiteral("bitnessMangle"), false).toBool()) {
         toManglePaths = getMangleCandidates();
@@ -1986,7 +2055,7 @@ void PatchManagerObject::doRefreshPatchList()
     QList<QVariantMap> patches = listPatchesFromDir(PATCHES_DIR, existingPatches);
     patches.append(listPatchesFromDir(PATCHES_ADDITIONAL_DIR, existingPatches, false));
     qDebug() << Q_FUNC_INFO << "patches:" << patches.count();
-//    std::sort(patches.begin(), patches.end(), patchSort);
+//  std::sort(patches.begin(), patches.end(), patchSort);
 
     // fill patch conflicts and rpm names
 
@@ -2087,7 +2156,6 @@ void PatchManagerObject::doListPatches(const QDBusMessage &message)
     }
 
 //    for (const QVariantMap &patch : m_metadata) {
-
 //        result.append(patch);
 //    }
     sendMessageReply(message, result);
@@ -2163,7 +2231,7 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
         }
     }
 
-    // is this parameter used anywhere??
+    // Is this parameter used anywhere??
     if (!params.value(QStringLiteral("dont_notify"), false).toBool()) {
         if (ok) {
             bool donotify = getSettings(QStringLiteral("notifyOnSuccess"), true).toBool();
@@ -2185,7 +2253,7 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
 }
 
 /*!
-    Removes \a patch from list of applied patches.  Returns the result in \a message.
+    Removes \a patch from the list of applied Patches.  Returns the result in \a message.
 
     \target doResetPatchState
 */
@@ -2410,7 +2478,7 @@ int PatchManagerObject::getVote(const QString &patch)
 /*!
     \target doCheckVote
 
-    Send a reply \a message regarding the result or \e getVote() for patch \a patch
+    Send a reply \a message regarding the result or \e getVote() for Patch \a patch
 
     \sa getVote()
 */
@@ -2423,7 +2491,7 @@ void PatchManagerObject::doCheckVote(const QString &patch, const QDBusMessage &m
 
 /*!
     Submit a vote for patch \a patch.
-    \a action can be an integet representing an "upvote" or "downvote" (1)
+    \a action can be an integer representing an "upvote" or "downvote" (1)
 
     \target sendVote
 */
@@ -2601,7 +2669,7 @@ void PatchManagerObject::requestDownloadCatalog(const QVariantMap &params, const
 }
 
 /*!
-    Retrieve patch metadata from the \l {Patchmanager Web Catalog}{Web Catalog} got patch \a name, reply with message \a message
+    Retrieve Patch metadata from the \l {Patchmanager Web Catalog}{Web Catalog}, use Patch \a name, reply with message \a message
 
     \target requestDownloadPatchInfo
  */
@@ -2646,9 +2714,9 @@ void PatchManagerObject::requestDownloadPatchInfo(const QString &name, const QDB
     Connects to the \l {Patchmanager Web Catalog}{Web Catalog} to check for Patch updates.
     Updates internal state with any results.
 
-    Emits updatesAvailable() if yes.
+    Emits updatesAvailable() if true.
 
-   \target requestCheckForUpdates
+    \target requestCheckForUpdates
 */
 void PatchManagerObject::requestCheckForUpdates()
 {
