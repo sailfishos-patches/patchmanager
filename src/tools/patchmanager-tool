@@ -23,6 +23,8 @@ function usage() {
   printf "\t-A | --activate-all\t\tActivate / apply all Patches formerly marked as active.\n"
   printf "\t-d | --deactivate\t\tDeactivate / unapply Patches from list or file (via -f).\n"
   printf "\t-D | --deactivate-all\t\tDeactivate / unapply all Patches.\n"
+  printf "\t-B | --backup-working\t\tSave list of enabled Patches as \"working\"\n"
+  printf "\t-R | --restore-working\t\tEnable backup list of \"working\" Patches\n"
   printf "\t-f | --file <filepath>\t\tUse <filepath> for the list of Patches.\n"
   printf "\t-e | --export\t\t\tExport list of Patches marked as active either to STDout or (via -f) to a file.\n"
   printf "\t-? | --help\t\t\tPrint this help.\n"
@@ -90,6 +92,16 @@ case "$1" in
   ;;
   -D|--deactivate-all|--unapply-all)
     operation="--unapply-all"
+    shift
+    surplus "$*"
+  ;;
+  -B|--backup-working)
+    operation="--backup-working"
+    shift
+    surplus "$*"
+  ;;
+  -R|--restore-working)
+    operation="--restore-working"
     shift
     surplus "$*"
   ;;

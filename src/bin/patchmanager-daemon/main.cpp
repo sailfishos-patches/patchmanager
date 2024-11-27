@@ -57,11 +57,13 @@ void help()
 {
     std::cout << "Patchmanager " << BUILD_VERSION << std::endl;
     std::cout << "Usage:" << std::endl;
-    std::cout << "  patchmanager [--help]       : Print this help text" << std::endl;
-    std::cout << "  patchmanager -a <Patch>     : Enable and activate a Patch" << std::endl;
-    std::cout << "  patchmanager -u <Patch>     : Deactivate and disable (unapply) a Patch" << std::endl;
-    std::cout << "  patchmanager --unapply-all  : Deactivate and disable (unapply) all Patches" << std::endl;
-    std::cout << "  patchmanager --daemon       : Start Patchmanager as daemon" << std::endl;
+    std::cout << "  patchmanager [--help]          : Print this help text" << std::endl;
+    std::cout << "  patchmanager -a <Patch>        : Enable and activate a Patch" << std::endl;
+    std::cout << "  patchmanager -u <Patch>        : Deactivate and disable (unapply) a Patch" << std::endl;
+    std::cout << "  patchmanager --unapply-all     : Deactivate and disable (unapply) all Patches" << std::endl;
+    std::cout << "  patchmanager --backup-working  : Save list of enabled Patches as \"working\"" << std::endl;
+    std::cout << "  patchmanager --restore-working : Enable backup list of \"working\" Patches" << std::endl;
+    std::cout << "  patchmanager --daemon          : Start Patchmanager as daemon" << std::endl;
 }
 
 int main(int argc, char **argv)
