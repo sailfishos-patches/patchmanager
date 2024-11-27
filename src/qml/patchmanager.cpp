@@ -817,6 +817,22 @@ void PatchManager::onLoadedChanged(bool loaded)
     emit loadedChanged(m_loaded);
 }
 
+/*! Calls the \e restorePatchList method on D-Bus */
+void PatchManager::restorePatchList()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    m_interface->restorePatchList();
+}
+
+/*! Calls the \e backupWorkingPatchList method on D-Bus */
+void PatchManager::backupWorkingPatchList()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    m_interface->backupWorkingPatchList();
+}
+
 /*! Calls the \e resolveFailure method on D-Bus */
 void PatchManager::resolveFailure()
 {
