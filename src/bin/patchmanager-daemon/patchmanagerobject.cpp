@@ -2861,3 +2861,32 @@ bool PatchManagerObject::tryToUnlinkFakeParent(const QString &path)
     }
     return false;
 }
+
+QString PatchManagerObject::pathToMangledPath(const QString &path, const QStringList &candidates) const
+{
+    if(!getSettings(QStringLiteral("bitnessMangle"), false).toBool())
+        return path;
+    // Create mangling replacement tokens.
+    QStringList toManglePaths = candidates;
+    QStringList mangledPaths = candidates;
+    mangledPaths.replaceInStrings("/usr/lib/", "/usr/lib64/");
+    if (Q_PROCESSOR_WORDSIZE == 4) { // 32 bit
+        std::swap(toManglePaths, mangledPaths);
+    }
+    qDebug() << Q_FUNC_INFO << "toManglePaths" << toManglePaths;
+    qDebug() << Q_FUNC_INFO << "mangledPaths" << mangledPaths;
+
+    QString newpath = path;
+
+    for (int i = 0; i < toManglePaths.size(); i++) {
+        // we need to deal with either absolute, or "git-style" beginnings, see #426:
+        QString checkpath = path.mid(path.indexOf('/', 0));
+        if (checkpath.startsWith(toManglePaths[i])) {
+            qDebug() << Q_FUNC_INFO << "Mangle: Editing path: " << path;
+            newpath.replace(toManglePaths[i], mangledPaths[i]);
+            qDebug() << Q_FUNC_INFO << "Mangle: Edited path: " << path;
+        }
+    }
+    qDebug() << Q_FUNC_INFO << "Path after mangle" << newpath;
+    return newpath;
+}
