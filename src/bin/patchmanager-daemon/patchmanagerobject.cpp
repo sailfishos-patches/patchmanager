@@ -2216,8 +2216,8 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
 
     QString log;
     bool ok = doPatch(patch, apply, &log);
-    qInfo() << "Patchmanager: Applying patch " << ok ? "successful" : "failed" ;
     if (ok) {
+        qInfo() << "Patchmanager: Applying patch successful";
         if (apply) {
             m_appliedPatches.insert(patch);
             const QString rpmPatch = m_metadata[patch][RPM_KEY].toString();
@@ -2232,6 +2232,8 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
         if (!at_init) {
             patchToggleService(patch);
         }
+    } else {
+        qInfo() << "Patchmanager: Applying patch failed" ;
     }
 
     // Is this parameter used anywhere??
