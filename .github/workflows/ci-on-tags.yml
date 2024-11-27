@@ -11,8 +11,9 @@ on:
   # Rather set a new tag in the format N/X.Y.Z (e.g., 1/0.6.3) to build a release originally tagged with 0.6.3 again.
 
 env:
-  # For the latest available docker image, see https://github.com/CODeRUS/docker-sailfishos-platform-sdk
-  LATEST: 4.5.0.16
+  # For the available docker images, see https://github.com/CODeRUS/docker-sailfishos-platform-sdk
+  # But LATEST means here, "known to run on the latest SailfishOS release": Binaries for 4.3.0 are known to run on 5.0.0.
+  LATEST: 4.3.0.12
   # Do not wait up to the default of 10 minutes for network timeouts in a workflow which runs at most 20 minutes.
   SEGMENT_DOWNLOAD_TIMEOUT_MINS: 2
 
@@ -174,4 +175,3 @@ jobs:
 #branding:  # "Invalid workflow file: Unexpected value 'branding'"; maybe action MUST be located in '/' or the name MUST be action.yml or both, see e.g., https://github.com/actions/cache/blob/main/action.yml#L37
 #  icon: 'gift'
 #  color: 'purple'
-
