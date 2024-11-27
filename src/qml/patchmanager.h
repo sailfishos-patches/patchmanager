@@ -182,6 +182,8 @@ public slots:
     void onFailureChanged(bool failed);
     void onLoadedChanged(bool loaded);
 
+    void backupWorkingPatchList();
+    void restorePatchList();
     void resolveFailure();
 
 signals:
