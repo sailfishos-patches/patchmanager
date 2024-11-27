@@ -772,7 +772,7 @@ void PatchManagerObject::doStartLocalServer()
 */
 void PatchManagerObject::initialize()
 {
-    qInfo() << "Patchmanager: initialized version " << qApp->applicationVersion();
+    qInfo() << "Patchmanager: Initialized version " << qApp->applicationVersion();
 
     QTranslator *translator = new QTranslator(this);
     bool success = translator->load(QLocale(getLang()),
