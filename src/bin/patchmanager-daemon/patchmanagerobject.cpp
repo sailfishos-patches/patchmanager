@@ -166,8 +166,7 @@ static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
     \enum PatchManagerObject::NotifyAction
     \relates PatchManagerObject::notify()
 
-    This enum specifies the type of notification to emit through \c
-    PatchManagerObject::notify()
+    This enum is used to signal state changes in the patch list.
 
         \value NotifyActionSuccessApply
             applying was successful
@@ -1100,7 +1099,7 @@ QString PatchManagerObject::getRpmName(const QString &rpm) const
     Handle command line arguments, and may daemonise.
 
     If called with any other argument other than \c --daemon, call a method
-    corresponding to the command line option on the bus and exit.
+    coresponding to the command line option on D-Bus and exit.
 
     Currently supported command line options are:
 
@@ -1122,6 +1121,8 @@ QString PatchManagerObject::getRpmName(const QString &rpm) const
         \li \e none
         \li Calls the "unapply" action for all Patches.
     \endtable
+
+    \note this is called from \c main() via \l{https://doc.qt.io/archives/qt-5.6/qtimer.html#singleShot-prop}{QTimer::singleShot}
 
 */
 void PatchManagerObject::process()
@@ -1181,6 +1182,7 @@ void PatchManagerObject::process()
         QCoreApplication::exit(0);
         return;
     }
+
 }
 
 
@@ -1194,7 +1196,7 @@ QVariantList PatchManagerObject::listPatches()
     return QVariantList();
 }
 
-/*!  Returns all versions contained in all Patch metadata.  */
+/*! Returns all versions contained in the metadata of all patches, indexed by patch name. */
 QVariantMap PatchManagerObject::listVersions()
 {
     qDebug() << Q_FUNC_INFO;
@@ -1213,9 +1215,8 @@ bool PatchManagerObject::isPatchApplied(const QString &patch)
     return m_appliedPatches.contains(patch);
 }
 
-/*!
-    Calls the corresponding method over D-Bus to activate (apply) \a patch
-    
+/*! Calls the corresponding method over D-Bus to activate (apply) \a patch
+
     \warning This function always returns an empty(!) \c QVariantMap
 */
 QVariantMap PatchManagerObject::applyPatch(const QString &patch)
@@ -1385,10 +1386,11 @@ QString PatchManagerObject::checkEaster()
     return QString();
 }
 
-/*!
-    Calls the corresponding method over D-Bus to update the \l {Patchmanager Web Catalog}{Web Catalog} 
-    metadata.  \a params stores the connection properties.
-*/
+/*!  Calls the corresponding method over D-Bus to update the \l {Patchmanager Web Catalog}{Web Catalog} Metadata.
+   \a params holds the query properties.
+
+  \sa requestDownloadCatalog_link
+ * */
 QVariantList PatchManagerObject::downloadCatalog(const QVariantMap &params)
 {
     DBUS_GUARD(QVariantList())
@@ -1403,7 +1405,7 @@ QVariantList PatchManagerObject::downloadCatalog(const QVariantMap &params)
 /*!
     Calls the corresponding method over D-Bus to download metadata for a Patch with the name \a name
 
-    \sa requestDownloadPatchInfo
+    \sa requestDownloadPatchInfo_link
 */
 QVariantMap PatchManagerObject::downloadPatchInfo(const QString &name)
 {
@@ -1438,9 +1440,11 @@ QVariantMap PatchManagerObject::getUpdates() const
     \fn bool PatchManagerObject::putSettings(const QString &name, const QDBusVariant &value)
     \fn bool PatchManagerObject::putSettings(const QString &name, const QVariant &value)
 
-    Store setting called \a name to the persistent config, \c s_newConfigLocation, and give it value \a value.
+    Store a setting called \a name to the persistent config, setting it to \a value.
 
     Returns \c true if successful.
+
+    \sa {Patchmanager Configuration Files}, inifile
 */
 bool PatchManagerObject::putSettings(const QString &name, const QDBusVariant &value)
 {
@@ -1467,10 +1471,11 @@ bool PatchManagerObject::putSettings(const QString &name, const QVariant &value)
     \fn QDBusVariant PatchManagerObject::getSettings(const QString &name, const QDBusVariant &def)
     \fn QVariant PatchManagerObject::getSettings(const QString &name, const QVariant &def) const
 
-    Retrieve a setting called \a name from the persistent config, \c s_newConfigLocation
-    Use \a def as the default value if not present.
+    Retrieve a setting called \a name from the persistent config, using \a def as the default value if not present.
 
-    Returns a \c QDBusVariant or \c QVariant if successful.
+    Returns a variant containing the value(s) if successful.
+
+    \sa {Patchmanager Configuration Files}
 */
 
 QDBusVariant PatchManagerObject::getSettings(const QString &name, const QDBusVariant &def)
@@ -1529,7 +1534,8 @@ QString PatchManagerObject::maxVersion(const QString &version1, const QString &v
 
     For regular processes, \c killall will be performed on them.
 
-    Systemd services will be restarted via D-Bus call, or if that fails, via \c systemctl-user.
+    For systemd services, they will be restarted via D-Bus call, or if that fails, via \c systemctl-user.
+
 */
 void PatchManagerObject::restartServices()
 {
@@ -1612,7 +1618,8 @@ QStringList PatchManagerObject::getToggleServicesList() const
     return m_toggleServices.keys();
 }
 
-/*!  Returns \c true if there are services that should be restarted, \c false otherwise.  */
+/*!  Returns \c true when there are services that should be restarted, \c false otherwise.
+*/
 bool PatchManagerObject::getToggleServices() const
 {
     return !m_toggleServices.isEmpty();
@@ -1701,7 +1708,7 @@ void PatchManagerObject::loadRequest(bool apply)
       \li "restarted"
     \endlist
 
-    See also \c lipstick-patchmanager.service, {Patchmanager Service}
+    See the documentation for \c lipstick-patchmanager.service under {Patchmanager Services}
 */
 void PatchManagerObject::lipstickChanged(const QString &state)
 {
@@ -2629,6 +2636,9 @@ void PatchManagerObject::downloadPatch(const QString &patch, const QUrl &url, co
     });
 }
 
+/*! Connect to the Web Catalog and retrieve a response configured by \a params.
+  \target requestDownloadCatalog_link
+ */
 void PatchManagerObject::requestDownloadCatalog(const QVariantMap &params, const QDBusMessage &message)
 {
     qDebug() << Q_FUNC_INFO << params;
@@ -2671,7 +2681,7 @@ void PatchManagerObject::requestDownloadCatalog(const QVariantMap &params, const
 /*!
     Retrieve Patch metadata from the \l {Patchmanager Web Catalog}{Web Catalog}, use Patch \a name, reply with message \a message
 
-    \target requestDownloadPatchInfo
+    \target requestDownloadPatchInfo_link
  */
 void PatchManagerObject::requestDownloadPatchInfo(const QString &name, const QDBusMessage &message)
 {

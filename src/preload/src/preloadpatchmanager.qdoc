@@ -49,11 +49,11 @@
     \li Default
     \li Description
   \row
-    \li NO_INTERCEPT
+    \li \c NO_INTERCEPT
     \li undefined
     \li Compiles out all of the actual redirection code, leaving the rest in place. Can be used in extreme debugging cases te track what is going on without affecting applications.
   \row
-    \li ALLOW_ALL_USERS
+    \li \c ALLOW_ALL_USERS
     \li defined
     \li Only allow preloading for users with an UID >= \c UID_MIN, default 100000
   \endtable
@@ -82,11 +82,11 @@
     \li Default
     \li Description
   \row
-    \li NO_PM_PRELOAD
+    \li \c NO_PM_PRELOAD
     \li undefined
     \li Makes the lib skip finding files to redirect to, effectively diabling it ofr practical purposes. Intended to be set for processes which should operate on unpatched original files.
   \row
-    \li PM_PRELOAD_DEBUG
+    \li \c PM_PRELOAD_DEBUG
     \li undefined
     \li Enables debugging output; messages are prefixed with \c{[pm_name]}, \c{[open]}, or \c{[open64]} depending on operation.
   \endtable
