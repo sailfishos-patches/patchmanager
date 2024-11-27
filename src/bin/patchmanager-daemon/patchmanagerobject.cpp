@@ -1882,21 +1882,10 @@ void PatchManagerObject::doRefreshPatchList()
 {
     qDebug() << Q_FUNC_INFO;
 
-    // Create mangling replacement tokens.
-    QStringList toManglePaths{}, mangledPaths{};
-    if(getSettings(QStringLiteral("bitnessMangle"), false).toBool()) {
-        toManglePaths = getMangleCandidates();
-        mangledPaths = getMangleCandidates().replaceInStrings("/usr/lib/", "/usr/lib64/");
-        if (Q_PROCESSOR_WORDSIZE == 4) { // 32 bit
-            std::swap(toManglePaths, mangledPaths);
-        }
-    }
-    qDebug() << Q_FUNC_INFO << "toManglePaths" << toManglePaths;
-    qDebug() << Q_FUNC_INFO << "mangledPaths" << mangledPaths;
-
     // load applied patches
 
     m_appliedPatches = getAppliedPatches();
+    if (m_mangleCandidates.empty()) getMangleCandidates();
 
     // scan all patches
     // collect conflicts per file
@@ -1916,21 +1905,19 @@ void PatchManagerObject::doRefreshPatchList()
             const QByteArray line = patchFile.readLine();
             if (line.startsWith(QByteArrayLiteral("+++ "))) {
                 const QString toPatch = QString::fromLatin1(line.split(' ')[1].split('\t')[0].split('\n')[0]);
-                QString path = toPatch;
 
-                for (int i = 0; i < toManglePaths.size(); i++) {
-                    // we need to deal with either absolute, or "git-style" beginnings, see #426:
-                    QString checkpath = path.mid(path.indexOf('/', 0));
-                    if (checkpath.startsWith(toManglePaths[i])) {
-                        qDebug() << Q_FUNC_INFO << "Mangle: Editing path: " << path;
-                        path.replace(toManglePaths[i], mangledPaths[i]);
-                        qDebug() << Q_FUNC_INFO << "Mangle: Edited path: " << path;
-                    }
-                }
+                QString path = pathToMangledPath(toPatch, m_mangleCandidates);
 
+                // remove anything left of the slash until we find something that exists.
+                // deals with 
+                //   +++ patched/usr/foo/bar/...
+                //   +++ a/usr/share/...
+                // FIXME: what if we find something that exists, but has nothing to do with our patch?
                 while (!QFileInfo::exists(path) && path.count('/') > 1) {
                     path = path.mid(path.indexOf('/', 1));
                 }
+                // if the loop finishes with no path/file found, it's likely a new file.
+                // so just accept whatever's in the patch, but do remove things left of the slash:
                 if (!QFileInfo::exists(path)) {
                     if (toPatch.startsWith(QChar('/'))) {
                         path = toPatch;
