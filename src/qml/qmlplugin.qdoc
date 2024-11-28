@@ -6,6 +6,7 @@
     \section1 Overview
 
     The QML Plugin provides the main Patchmanager GUI Application elements.
+    It is designed to be invoked through the \l {Patchmanager Documentation: Settings Plugin}{Settings Plugin}.
 
     It serves as a both a front-end to the Daemon, and a Patch management application.
 

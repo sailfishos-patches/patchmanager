@@ -208,17 +208,17 @@
           \li Component
           \li Description
         \row
-          \li \c UNITDIR/checkForUpdates-org.SfietKonstantin.patchmanager.service
+          \li \c checkForUpdates-org.SfietKonstantin.patchmanager.service
           \li service
           \li -
-          \li Calls the \c checkForUpdates() method via D-Bus.
+          \li Calls the \l {PatchManagerObject::checkForUpdates}{checkForUpdates()} method via D-Bus.
         \row
-          \li \c UNITDIR/checkForUpdates-org.SfietKonstantin.patchmanager.timer
+          \li \c checkForUpdates-org.SfietKonstantin.patchmanager.timer
           \li timer
           \li -
           \li Runs the service above, every two hours.
         \row
-          \li \c UNITDIR/dbus-org.SfietKonstantin.patchmanager.service
+          \li \c dbus-org.SfietKonstantin.patchmanager.service
           \li dbus-activated service
           \li \l {Patchmanager Documentation: Daemon}{Daemon}
           \li Starts / activates the D-Bus service.
@@ -235,6 +235,7 @@
       \endtable
 
   \section2 Systemd User Units
+  \target sd_userunits
 
       \table
         \header
@@ -243,15 +244,15 @@
           \li Component
           \li Description
         \row
-          \li \c $USERUNITDIR/dbus-org.SfietKonstantin.patchmanager.service
+          \li \c dbus-org.SfietKonstantin.patchmanager.service
           \li dbus-activated service
           \li \l {Patchmanager Documentation: Startup Dialog}{Dialog}
           \li Starts the Startup Dialog, if necessary.
         \row
-          \li \c $USERUNITDIR/lipstick-patchmanager.service
+          \li \c lipstick-patchmanager.service
           \li service
           \li \l {Patchmanager Documentation: Startup Dialog}{Dialog}
-          \li Calls the \c lipstickChanged() method via D-Bus.
+          \li Calls the \l {PatchManagerObject::lipstickChanged}{lipstickChanged()} method via D-Bus.
         \row
           \li \c /var/lib/environment/patchmanager-dialog/*.conf
           \li environment file
@@ -260,13 +261,16 @@
       \endtable
 
   \c lipstick-patchmanager.service watches the state of the Lipstick service.
-  If Lipstick crashes, Patchmanager Daemon assumes it was caused by a patch
-  and goes into \c failed state. In  this state, no Patches are
-  activated, and PM must be reactivated via the GUI.
+  If Lipstick crashes, the Patchmanager daemon assumes it was caused by a patch
+  and goes into \c failed state. In this state, no Patches are activated, and
+  PM must be reactivated via the GUI.
 
   \section1 Manual Invocation
 
-  Aside of using appropriate tools as \c systemctl, \c busctl, or \c dbus-send to invoke Patchmanager's functions, the patchmanager binary can also serve as CLI, if called from command line.  See the output of \c{patchmanager --help} and PatchManagerObject::process() for more information.
+  Aside of using appropriate tools as \c systemctl, \c busctl, or \c dbus-send
+  to invoke Patchmanager's functions, the patchmanager binary can also serve as
+  CLI, if called from command line.  See the output of \c{patchmanager --help}
+  and PatchManagerObject::process() for more information.
 
   There is also a shell script called \c patchmanager-tool, wrapping the
   capabilities of \c patchmanager to generate more useful functions.
@@ -277,9 +281,9 @@
 
   \section1 Logging and Debugging
 
-  Debug logging by the Patchmananger daemon can be configured by setting the \c QT_LOGGING_RULES variable to, e.g., \c{"*.debug=true"} in the environment file \c /var/lib/environment/patchmanager/10-dbus.conf
+  About the contents of the configuration files, see \l {Patchmanager Configuration Files}.
 
-  After changing this, Patchmanager's system service must be restarted for evaluating the new values.
+  After changing its configuration, Patchmanager's system service must be restarted.
 
 */
   /****** Services Documentation page *******/
@@ -293,15 +297,13 @@
 
   \target inifile
 
-  An INI-style configuration file and state storage.
+  Stores configuration and state storage for the \l {Patchmanager Documentation: Daemon}{Daemon}.
 
-  It consists of two sections: \c settings and \c votes
+  It is an INI-style configuration file and has two possible sections: \c settings and \c votes.
 
-  The location of the file is determined by the \c s_newConfigLocation constant
-  of the Patchmanager Daemon source (See the head of
-  \c{src/bin/patchmanager-daemon/patchmanagerobject.cpp})
+  \note The location of the file is determined by the \c s_newConfigLocation constant
+  of the daemon source. (See the head of \c{src/bin/patchmanager-daemon/patchmanagerobject.cpp})
 
-  It currently consists of two sections: \c settings, and \c votes
   \section3 Config section \c [settings]
 
   \table
@@ -316,28 +318,28 @@
     \li empty
     \li Stores the list of "activated" Patches.
     \row
-    \li workingPatches
+    \li \c workingPatches
     \li list of strings, comma-separated
     \li empty
     \li Stores a list of Patches, which represent a "last-known-good" / working set of enabled Patches.  This list is automatically copied from \c applied after each successful run of auto-apply.
     \row
     \li \c applyOnBoot
-    \li Boolean
+    \li boolean
     \li \c false
     \li Whether to activate all enabled Patches during OS startup or to show the {Patchmanager Documentation: Startup Dialog}{Startup Dialog}.
     \row
     \li \c bitnessMangle
-    \li Boolean
+    \li boolean
     \li \c false
     \li Convert Patch contents so they are applicable to the local architecture (e.g., \c lib versus \c lib64 path elements).
     \row
     \li \c developerMode
-    \li Boolean
+    \li boolean
     \li \c false
     \li \warning \b deprecated.  Before Patchmanager 3.2.7, this was used to store the settings for the "Developer Mode".  This mode has been split into \c patchDevelMode and \c sfosVersionCheck
     \row
     \li \c notifyOnSuccess
-    \li Boolean
+    \li boolean
     \li \c true
     \li Whether to show notifications about successful actions on the GUI.
     \row
@@ -347,34 +349,37 @@
     \li The order of Patches, both in the list on the GUI, and the sequence in which they will be activated and hence their patch files applied.
     \row
     \li \c patchDevelMode
-    \li Boolean
+    \li boolean
     \li \c false
     \li
     \row
     \li \c sfosVersionCheck
-    \li Integer (Enum)
+    \li integer (enum)
     \li 0 (strict)
     \li Whether to relax the version checking in the Patchmanager GUI.  The default setting will only allow Patches to be downloaded or activated, of which an entry in their compatibility field exactly matches the currently installed OS version.
   \endtable
 
   \section3 Config section [votes]
 
-  Saves the voting state for each patch a user has voted about in the
-  {Settings Plugin}{Patchmanager Settings Plugin}.
+  Saves the voting state for each patch a user has voted on in the
+  {Patchmanager Documentation: Settings Plugin}{Settings Plugin}.
 
-  \section2 \c{/var/lib/environment/patchmanager-dialog/*.conf}
+  \section2 \c{/var/lib/environment/patchmanager-dialog/}
 
-  Standard environment files for a D-Bus service, read by \c
-  dbus-org.SfietKonstantin.patchmanager.service.
+  This location can contain one or more environment files for a systemd service
+  (see \l {https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html}{systemd.exec}).
+  Their filename must end in \c{.conf} and are read by \l {sd_userunits}{dbus-org.SfietKonstantin.patchmanager.service}.
 
   Files placed here can be used to alter logging behaviour of the Dialog by
   changing the value of \c QT_LOGGING_RULES.
 
-  \note Per default, this location does not exist.
+  \sa {Patchmanager Services}
+
+  \note In default patchmanager installations, this location does not exist.
 
   \section2 \c{/var/lib/environment/patchmanager/10-dbus.conf}
 
-  This file is read by the Daemon.
+  This file is read by the \l {Patchmanager Documentation: Daemon}{Daemon}.
 
   Configures the location of the socket file used to communicate with
   applications in user scope via \c DBUS_SESSION_BUS_ADDRESS.
@@ -389,6 +394,7 @@
   changing the value of \c QT_LOGGING_RULES. Per default this is set to
   \c{*.debug=false}.
 
-  \sa {D-Bus Documentation}, {Qt Logging Rules}
+  \sa {Patchmanager Services}, {D-Bus Documentation}, {Qt Logging Rules}
+
 */
 

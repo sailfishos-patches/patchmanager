@@ -21,7 +21,7 @@ HTML.stylesheets  += ./pm.css
 # assign custom HTML footer to replace Qt's default copyright notice
 HTML.footer = "<div align='center'><hr/>" \
               "<p><small>Patchmanager Documentation\n" \
-              "Copyright (c) 2023 Patchmanager for SailfishOS contributors.\n" \
+              "Copyright (c) 2023,2024 Patchmanager for SailfishOS contributors.\n" \
               "This document may be used under the terms of the " \
               "<a href='https://spdx.org/licenses/CC-BY-SA-4.0.html'>" \
               "Creative Commons Attribution Share Alike 4.0 International</a> " \
