@@ -62,6 +62,41 @@ success() {
   exit 0
 }
 
+check_cleanliness() {
+  if [ -f "$PATCH_PATH" ]; then
+    log
+    log "----------------------------------"
+    log "Checking for QA issues"
+    log "----------------------------------"
+    log
+
+    rejs=$(grep -c "^+++.*\.rej$" "$PATCH_PATH")
+    orgs=$(grep -c "^+++.*\.orig$" "$PATCH_PATH")
+    if [ $rejs -ne 0 ]; then
+      log
+      log "----------------------------------"
+      log "WARNING: Patch appears to contain reject (.rej) files"
+      log "----------------------------------"
+      log
+    fi
+    if [ $orgs -ne 0 ]; then
+      log
+      log "----------------------------------"
+      log "WARNING: Patch appears to contain backup (.orig) files"
+      log "----------------------------------"
+      log
+    fi
+    mrgs=$(grep -c "[<>=|]{7}" "$PATCH_PATH")
+    if [ $mrgs -ne 0 ]; then
+      log
+      log "----------------------------------"
+      log "WARNING: Patch appears to contain incomplete merge markers"
+      log "----------------------------------"
+      log
+    fi
+  fi
+}
+
 test_if_applied() {
   if [ -f "$PATCH_PATH" ]; then
     log
@@ -235,6 +270,8 @@ fi
 [ -n "$MANGLE_CANDIDATES" ] && mangle_libpath
 
 test_if_applied
+
+check_cleanliness
 
 verify_text_patch
 
