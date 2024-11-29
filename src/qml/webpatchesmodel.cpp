@@ -50,31 +50,31 @@
         \li QML Role Name
       \row
         \li {Qt::UserRole}
-        \li description
+        \li \c description
       \row
         \li {Qt::UserRole}
-        \li last_updated
+        \li \c last_updated
       \row
         \li {Qt::UserRole}
-        \li name
+        \li \c name
       \row
         \li {Qt::UserRole}
-        \li display_name
+        \li \c display_name
       \row
         \li {Qt::UserRole}
-        \li category
+        \li \c category
       \row
         \li {Qt::UserRole}
-        \li author
+        \li \c author
       \row
         \li {Qt::UserRole}
-        \li rating
+        \li \c rating
       \row
         \li {Qt::UserRole}
-        \li total_activations
+        \li \c total_activations
     \endtable
 
-    \sa {https://doc.qt.io/qt-5/qabstractitemmodel.html}{Qt::QAbstractItemModel}
+    \sa QAbstractItemModel
 */
 /*! \fn virtual QHash<int, QByteArray> WebPatchesModel::roleNames() const
     Returns the model's role names.
@@ -118,10 +118,10 @@ WebPatchesModel::~WebPatchesModel()
 */
 
 /*! \property WebPatchesModel::queryParams
-  Query parameters
+  Parameters used to perform the web catalog query.
 */
 /*! \qmlproperty var WebPatchesModel::queryParams
-  Query parameters
+  Parameters used to perform the web catalog query.
 */
 /*! \qmlsignal WebPatchesModel::queryParamsChanged()
   Emitted when query parameters change
@@ -172,7 +172,7 @@ bool compareStrings(const QString &a, const QString &b)
    Retrieves the list of patches from the \l {Patchmanager Web Catalog}{Web Catalog}, and populates the model
    with its contents, sorting them if necessary.
 
-   \sa setSorted()
+   \sa setSorted(), PatchManagerObject::downloadCatalog()
 */
 void WebPatchesModel::componentComplete()
 {
