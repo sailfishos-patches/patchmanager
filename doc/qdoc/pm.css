@@ -39,8 +39,11 @@ a.qa-mark:target:before { content: "***"; color: #ff0000; }
 a:link { color: var(--pm-pflaster-darker); text-decoration: none; text-align: left; }
 a:active { color: var(--pm-red); text-align: left; }
 a:active:hover { text-decoration: underline; }
-a:visited { color: var(--pm-green); text-align: left; }
-a:visited:hover { text-decoration: underline; }
+
+.content a:visited { color: var(--pm-green); text-align: left; }
+.content a:visited:hover { text-decoration: underline; }
+span.type a:visited { text-decoration: underline; }
+
 /*
 a:visited { color: var(--pm-pflaster-dark); text-align: left; }
 a:active { color: var(--pm-green); text-align: left; }
@@ -68,10 +71,10 @@ th {
     border-left: 1px solid var(--pm-gray-dark);
 }
 
+/* Margins, padding etc */
+.content ul li { padding-left: 0.5em }
+.content ul { padding-left: 2.0em; }
 .content h2 {
-    margin-top: 2em;
-    margin-bottom: 1em;
-}
-.content h3 {
-    margin: 0;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
 }
