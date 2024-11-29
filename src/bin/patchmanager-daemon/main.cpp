@@ -53,7 +53,7 @@
 #endif
 
 
-void help()
+static void help()
 {
     std::cout << "Patchmanager " << BUILD_VERSION << std::endl;
     std::cout << "Usage:" << std::endl;
