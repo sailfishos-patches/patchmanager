@@ -17,6 +17,11 @@ codesuffix         = "\n"
 
 # override/add some things to the stylesheets:
 HTML.stylesheets  += ./pm.css
+# the above does not acutally add the stylesheet to the html file, so do it
+# manually here. Include the default first.
+HTML.headerstyles = \
+    "  <link rel=\"stylesheet\" type=\"text/css\" href=\"style/offline.css\" />\n" \
+    "  <link rel=\"stylesheet\" type=\"text/css\" href=\"style/pm.css\" />\n"
 
 # assign custom HTML footer to replace Qt's default copyright notice
 HTML.footer = "<div align='center'><hr/>" \
