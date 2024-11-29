@@ -52,10 +52,14 @@
 #define BUILD_VERSION "99.99.99"
 #endif
 
+static void version()
+{
+    std::cout << "Patchmanager " << BUILD_VERSION << std::endl;
+}
 
 static void help()
 {
-    std::cout << "Patchmanager " << BUILD_VERSION << std::endl;
+    version();
     std::cout << "Usage:" << std::endl;
     std::cout << "  patchmanager [--help]          : Print this help text" << std::endl;
     std::cout << "  patchmanager -a <Patch>        : Enable and activate a Patch" << std::endl;
@@ -64,6 +68,9 @@ static void help()
     std::cout << "  patchmanager --backup-working  : Save list of enabled Patches as \"working\"" << std::endl;
     std::cout << "  patchmanager --restore-working : Enable backup list of \"working\" Patches" << std::endl;
     std::cout << "  patchmanager --daemon          : Start Patchmanager as daemon" << std::endl;
+    std::cout << "  patchmanager --version         : Print the build version and exit." << std::endl;
+    std::cout << std::endl;
+    std::cout << "Patchmanager must be run as root." << std::endl;
 }
 
 int main(int argc, char **argv)
