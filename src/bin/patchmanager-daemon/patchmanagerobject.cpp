@@ -1127,22 +1127,28 @@ QString PatchManagerObject::getRpmName(const QString &rpm) const
 void PatchManagerObject::process()
 {
     const QStringList args = QCoreApplication::arguments();
+    const int argc = args.count();
 
-    if (args.count() == 1) {
-        return;  // Prints help text.
-    } else if (args.count() == 2) {
-        if (args[1] == QStringLiteral("--help")) {
-            return;  // Also prints help text.
-        } else if (args[1] == QStringLiteral("--daemon")) {
+    /* argc == 1 and "--help/--version" should already be handled in main.cpp */
+    if (argc == 1) {
+        qCritical() << "Something went wrong handling the arguments.";
+        QCoreApplication::exit(2);
+        return;
+    } else if (argc == 2) {
+        if (args[1] == QStringLiteral("--daemon")) {
             initialize();
         } else if (args[1] == QStringLiteral("--reset-system")) {
             resetSystem();
             QCoreApplication::exit(2);
             return;
         }
-    } else if (args.count() > 1) {  // Must be "> 1", not "> 2" for "--unapply-all"
+    /*
+     * "client mode": from here on, handle options which send dbus messages
+     * Must be "> 1", not "> 2" for "--unapply-all" and other singular arguments.
+     */
+    } else if (argc > 1) {
         QDBusConnection connection = QDBusConnection::systemBus();
-        qDebug() << Q_FUNC_INFO << "Has arguments, sending D-Bus message and quit.";
+        qDebug() << Q_FUNC_INFO << "Called with arguments, will send a D-Bus message and quit.";
 
         QString method;
         QVariantList data;
