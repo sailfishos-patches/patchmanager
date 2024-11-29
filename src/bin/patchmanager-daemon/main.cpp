@@ -75,19 +75,27 @@ static void help()
 
 int main(int argc, char **argv)
 {
-    qputenv("NO_PM_PRELOAD", "1");
+    // further argument processing in patchmanagerobject.cpp
+    switch (argc) {
+      case 1: // we want arguments.
+        help(); exit(2); break;
+      case 2:
+        if (!strcmp(argv[1], "--help")) {
+            help(); exit(0);
+        } else if (!strcmp(argv[1], "--version")) {
+            version(); exit(0);
+        }
+        break;
+    }
 
     if (getuid() != 0) {
-        fprintf(stderr, "%s: Not running as root, exiting.\n", argv[0]);
+        fprintf(stderr, "%s: Not running as root, exiting.\n\n", argv[0]);
+        help();
         exit(2);
     }
 
+    qputenv("NO_PM_PRELOAD", "1");
     QCoreApplication app(argc, argv);
-    if (app.arguments().length() < 2) {
-        help();
-        return 0;
-    }
-
     app.setApplicationVersion(QStringLiteral(BUILD_VERSION));
 
     PatchManagerObject patchManager;
