@@ -44,6 +44,8 @@ a:active:hover { text-decoration: underline; }
 .content a:visited:hover { text-decoration: underline; }
 span.type a:visited { text-decoration: underline; }
 
+.red { color: var(--pm-red); }
+
 /*
 a:visited { color: var(--pm-pflaster-dark); text-align: left; }
 a:active { color: var(--pm-green); text-align: left; }
@@ -53,10 +55,10 @@ a:active { color: var(--pm-green); text-align: left; }
 .header .breadcrumb { background-color: var(--pm-gray-light-2); }
 
 .generic .odd .alphaChar{ background-color: var(--pm-gray-light-2); }
-.generic .even .alphaChar{ background-color:  var(--pm-gray-medium-1); }
+.generic .even .alphaChar{ background-color:  var(--pm-gray-light-1); }
 
 table tr.odd { background-color:  var(--pm-gray-light-2); }
-table tr.even { background-color:  var(--pm-gray-medium-1); }
+table tr.even { background-color:  var(--pm-gray-light-1); }
 
 table, pre {
   background-color: var(--pm-gray-light-1);
