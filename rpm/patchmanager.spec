@@ -39,6 +39,7 @@ Requires:   grep
 Requires:   sed
 Requires:   sailfish-version >= 3.4.0
 Requires:   qml(Nemo.Configuration)
+Requires:   %{name}-icons
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Qml)
@@ -54,6 +55,19 @@ BuildRequires:  qt5-qttools-linguist
 BuildRequires:  pkgconfig(rpm)
 BuildRequires:  pkgconfig(popt)
 
+%package icons-silica
+Summary:    Icon files for %{name}
+BuildArch:  noarch
+Requires:   sailfish-version >= 4.6.0
+Provides:   %{name}-icons
+Conflicts:  %{name}-icons-meegotouch
+
+%package icons-meegotouch
+Summary:    Icon files for %{name}
+BuildArch:  noarch
+Requires:   sailfish-version < 4.6.0
+Provides:   %{name}-icons
+Conflicts:  %{name}-icons-silica
 
 %package testcases
 Summary:    Provides test cases for Patchmanager
@@ -61,6 +75,20 @@ Group:      Development
 BuildArch:  noarch
 Requires:   %{name}
 Requires:   libsailfishapp-launcher
+
+%description icons-silica
+Provides icons for Sailfish OS 4.6 and later
+%if 0%{?_chum}
+Title: Icons for Patchmanager
+Type: addon
+%endif
+
+%description icons-meegotouch
+Provides icons for Sailfish OS 4.5 and earlier
+%if 0%{?_chum}
+Title: Icons for Patchmanager
+Type: addon
+%endif
 
 # This description section includes metadata for SailfishOS:Chum, see
 # https://github.com/sailfishos-chum/main/blob/main/Metadata.md
@@ -288,14 +316,15 @@ exit 0
 %{_datadir}/jolla-settings/pages/%{name}
 %{_datadir}/jolla-settings/entries/%{name}.json
 %{_datadir}/%{name}/icons/icon-m-patchmanager.png
-
-# On SailfishOS < 4.6:
-# /usr/share/themes/sailfish-default/meegotouch/zX.Y/icons/*.png
-# On SailfishOS >= 4.6:
-# /usr/share/themes/sailfish-default/silica/zX.Y/icons/*.png
-# /usr/share/themes/sailfish-default/silica/zX.Y/icons-monochrome/*.png
-%{_datadir}/themes/sailfish-default/*/z*/icons*/*.png
 %{_datadir}/icons/hicolor/scalable/apps/*.svg
+
+%files icons-silica
+%{_datadir}/themes/sailfish-default/silica/z*/icons/*.png
+%{_datadir}/themes/sailfish-default/silica/z*/icons-monochrome/*.png
+
+%files icons-meegotouch
+%{_datadir}/themes/sailfish-default/meegotouch/z*/icons/*.png
+
 
 %changelog
 * Thu Sep  9 1999 SailfishOS Patches <sailfishos-patches@users.noreply.github.com> - 99.99.99
