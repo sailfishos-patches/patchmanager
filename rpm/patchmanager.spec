@@ -176,6 +176,27 @@ ln -s ../lipstick-patchmanager.service %{buildroot}/%{_userunitdir}/lipstick.ser
 
 mkdir -p %{buildroot}%{_datadir}/%{name}/patches
 
+# copy icons around.
+# See https://github.com/sailfishos-patches/patchmanager/pull/472#issuecomment-2514204204
+if [ -e %{buildroot}%{_datadir}/themes/sailfish-default/meegotouch/z1.0/icons ]; then
+    mkdir -p %{buildroot}%{_datadir}/themes/sailfish-default/silica
+    pushd %{buildroot}%{_datadir}/themes/sailfish-default/meegotouch
+    for d in z*; do
+      mkdir %{buildroot}%{_datadir}/themes/sailfish-default/silica/${d}
+      cp -r ${d}/icons %{buildroot}%{_datadir}/themes/sailfish-default/silica/${d}/icons
+      cp -r ${d}/icons %{buildroot}%{_datadir}/themes/sailfish-default/silica/${d}/icons-monochrome
+    done
+    popd
+elif [ -e %{buildroot}%{_datadir}/themes/sailfish-default/silica/z1.0/icons ]; then
+    mkdir -p %{buildroot}%{_datadir}/themes/sailfish-default/meegotouch
+    pushd %{buildroot}%{_datadir}/themes/sailfish-default/silica
+    for d in z*; do
+      mkdir %{buildroot}%{_datadir}/themes/sailfish-default/meegotouch/${d}
+      cp -r ${d}/icons %{buildroot}%{_datadir}/themes/sailfish-default/meegotouch/${d}/icons
+    done
+    popd
+fi
+# end of icon shenanigans
 
 %pre
 export NO_PM_PRELOAD=1
