@@ -61,6 +61,7 @@ BuildArch:  noarch
 Requires:   sailfish-version >= 4.6.0
 Provides:   %{name}-icons
 Conflicts:  %{name}-icons-meegotouch
+Obsoletes:  %{name}-icons-meegotouch
 
 %package icons-meegotouch
 Summary:    Icon files for %{name}
