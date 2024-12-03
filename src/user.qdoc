@@ -13,10 +13,37 @@
   storage, it merely alters their content when they are loaded into RAM to be
   executed.
 
-  \section1 Launching
+  \section1 Using
 
-  Patchmanager does not install an application icon on the launcher, but
-  creates a new entry in SailfishOS' Settings app.
+  \section2 Launching
+
+  Patchmanager does not install an application icon on the Launcher, but
+  creates a new entry in the SailfishOS \b Settings app.
+
+  \section2 Using
+
+  We do not have a detailed User Guide for Patchmanager. If there is need for
+  one, it has to be written and contributed.
+
+  In the mean time, browsing the {Patchmanager Overview} and other parts of the
+  existing documentation may prove helpful.
+
+  \section3 Main Page
+
+  See PatchManagerPage
+
+  \section3 Settings
+
+  See SettingsPage
+
+  \section3 Web Catalog
+
+   See WebCatalogPage
+
+  \section3 Activating and deactivating Patches
+
+   \e{to be continued...}
+
 
   \section1 Installing
 
