@@ -59,6 +59,7 @@ BuildRequires:  pkgconfig(popt)
 Summary:    Icon files for %{name}
 BuildArch:  noarch
 Requires:   sailfish-version >= 4.6.0
+Requires:   %{name} >= %{version}
 Provides:   %{name}-icons
 Conflicts:  %{name}-icons-meegotouch
 Obsoletes:  %{name}-icons-meegotouch
@@ -67,6 +68,7 @@ Obsoletes:  %{name}-icons-meegotouch
 Summary:    Icon files for %{name}
 BuildArch:  noarch
 Requires:   sailfish-version < 4.6.0
+Requires:   %{name} >= %{version}
 Provides:   %{name}-icons
 Conflicts:  %{name}-icons-silica
 
