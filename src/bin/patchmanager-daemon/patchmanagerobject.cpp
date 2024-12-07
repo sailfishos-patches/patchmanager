@@ -1895,6 +1895,10 @@ void PatchManagerObject::startReadingLocalServer()
         if (payload == request) { // didn't exist
             m_hotcache.insert(request, nullptr); // TODO: do we want a cost here?
             qDebug() << Q_FUNC_INFO << "Hot cache: now has" << m_hotcache.size() << "entries";
+        } else {
+            if (m_hotcache.remove(request)) {
+                qWarning() << Q_FUNC_INFO << "Hot cache: contained a patched file!";
+            }
         }
     }, Qt::DirectConnection);
 }
