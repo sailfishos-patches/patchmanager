@@ -147,6 +147,8 @@ static const QString SILICA_CODE      = QStringLiteral("silica");
 static const QString SETTINGS_CODE    = QStringLiteral("settings");
 static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
 
+static const int HOTCACHE_MAXCOST = 5000;
+
 /*!
   \class PatchManagerObject
   \inmodule PatchManagerDaemon
@@ -508,6 +510,8 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
     : QObject(parent)
     , m_sbus(s_sessionBusConnection)
 {
+    // set up cache
+    m_hotcache.setMaxCost(HOTCACHE_MAXCOST);
 }
 
 PatchManagerObject::~PatchManagerObject()
@@ -1862,20 +1866,36 @@ void PatchManagerObject::startReadingLocalServer()
         const QByteArray request = clientConnection->readAll();
         QByteArray payload;
         const QString fakePath = QStringLiteral("%1%2").arg(s_patchmanagerCacheRoot, QString::fromLatin1(request));
-        if (!m_failed && QFileInfo::exists(fakePath)) {
-            payload = fakePath.toLatin1();
-            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
-                qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sending:" << payload;
-            }
-        } else {
-            payload = request;
-            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
-                qDebug() << Q_FUNC_INFO << "Requested:" << request << "is sent unaltered.";
+        payload = request;
+        if (!m_failed) {
+        /* Hot cache: cache the most often-used missed paths, and return early if they are in the cache */
+            if (!m_hotcache.contains(request)) { // not in the cache. do all the lookups
+                if (Q_UNLIKELY(QFileInfo::exists(fakePath))) {
+                    payload = fakePath.toLatin1();
+                    if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
+                        qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sending:" << payload;
+                    }
+                } else {
+                    if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
+                        qDebug() << Q_FUNC_INFO << "Requested:" << request << "is sent unaltered.";
+                    }
+                }
+            } else { //hotcache hit, i.e. file does not exist
+                qDebug() << Q_FUNC_INFO << "Hot cache: hit:" << request;
+                if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
+                    qDebug() << Q_FUNC_INFO << "Requested:" << request << "is sent unaltered.";
+                }
             }
         }
         clientConnection->write(payload);
         clientConnection->flush();
 //        clientConnection->waitForBytesWritten();
+
+        // manage the cache after writing the data:
+        if (payload == request) { // didn't exist
+            m_hotcache.insert(request, nullptr); // TODO: do we want a cost here?
+            qDebug() << Q_FUNC_INFO << "Hot cache: now has" << m_hotcache.size() << "entries";
+        }
     }, Qt::DirectConnection);
 }
 

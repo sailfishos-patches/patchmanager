@@ -48,6 +48,7 @@
 #include <QDBusMessage>
 #include <QDBusVariant>
 #include <QFileSystemWatcher>
+#include <QCache>
 
 #include <systemd/sd-journal.h>
 
@@ -267,6 +268,8 @@ private:
 
     QTimer *m_sessionBusConnector = nullptr;
     QDBusConnection m_sbus;
+
+    QCache<QString, QObject> m_hotcache;
 };
 
 #endif // PATCHMANAGEROBJECT_H
