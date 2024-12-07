@@ -1867,24 +1867,19 @@ void PatchManagerObject::startReadingLocalServer()
         QByteArray payload;
         const QString fakePath = QStringLiteral("%1%2").arg(s_patchmanagerCacheRoot, QString::fromLatin1(request));
         payload = request;
-        if (!m_failed) {
-        /* Hot cache: cache the most often-used missed paths, and return early if they are in the cache */
-            if (!m_hotcache.contains(request)) { // not in the cache. do all the lookups
-                if (Q_UNLIKELY(QFileInfo::exists(fakePath))) {
-                    payload = fakePath.toLatin1();
-                    if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
-                        qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sending:" << payload;
-                    }
-                } else {
-                    if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
-                        qDebug() << Q_FUNC_INFO << "Requested:" << request << "is sent unaltered.";
-                    }
-                }
-            } else { //hotcache hit, i.e. file does not exist
-                qDebug() << Q_FUNC_INFO << "Hot cache: hit:" << request;
-                if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
-                    qDebug() << Q_FUNC_INFO << "Requested:" << request << "is sent unaltered.";
-                }
+        if (
+                (!m_failed) // return unaltered for failed
+             && (!m_hotcache.contains(request)) // hotcache has the most often asked unpatched files
+             && (Q_UNLIKELY(QFileInfo::exists(fakePath))) // file is patched
+           )
+        {
+            payload = fakePath.toLatin1();
+            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
+                qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sending:" << payload;
+            }
+        } else { // failed state or file is unpatched
+            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
+                qDebug() << Q_FUNC_INFO << "Requested:" << request << "is sent unaltered.";
             }
         }
         clientConnection->write(payload);
