@@ -1891,7 +1891,6 @@ void PatchManagerObject::startReadingLocalServer()
         if (payload == request) { // didn't exist
             QObject *dummy = new QObject(); // the cache will own it later
             m_hotcache.insert(request, dummy); // TODO: do we want a cost here?
-            qDebug() << Q_FUNC_INFO << "Hot cache: now has" << m_hotcache.size() << "entries";
         } else {
             if (m_hotcache.remove(request)) {
                 qWarning() << Q_FUNC_INFO << "Hot cache: contained a patched file!";
