@@ -1869,7 +1869,8 @@ void PatchManagerObject::startReadingLocalServer()
         payload = request;
         if (
                 (!m_failed) // return unaltered for failed
-             && (!m_hotcache.contains(request)) // hotcache has the most often asked unpatched files
+             //&& (!m_hotcache.contains(request)) // hotcache has the most often asked unpatched files
+             && (m_hotcache.take(request) == nullptr) // like contains(), but request the object so its use count goes up
              && (Q_UNLIKELY(QFileInfo::exists(fakePath))) // file is patched
            )
         {
@@ -1888,7 +1889,8 @@ void PatchManagerObject::startReadingLocalServer()
 
         // manage the cache after writing the data:
         if (payload == request) { // didn't exist
-            m_hotcache.insert(request, nullptr); // TODO: do we want a cost here?
+            QObject *dummy = new QObject(); // the cache will own it later
+            m_hotcache.insert(request, dummy); // TODO: do we want a cost here?
             qDebug() << Q_FUNC_INFO << "Hot cache: now has" << m_hotcache.size() << "entries";
         } else {
             if (m_hotcache.remove(request)) {
