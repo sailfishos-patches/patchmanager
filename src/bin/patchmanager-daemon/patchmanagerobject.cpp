@@ -1869,8 +1869,12 @@ void PatchManagerObject::startReadingLocalServer()
         payload = request;
         if (
                 (!m_failed) // return unaltered for failed
-             //&& (!m_hotcache.contains(request)) // hotcache has the most often asked unpatched files
-             && (m_hotcache.take(request) == nullptr) // like contains(), but request the object so its use count goes up
+             /* Note: contains() is not enough, we want the cache to notice the access so the entry counts as "used".
+              * Also, it returns 0 in qt5.6, nullptr in qt5.15
+              * See https://code.qt.io/cgit/qt/qtbase.git/tree/src/corelib/tools/qcache.h?h=5.6#n68
+              * vs. https://code.qt.io/cgit/qt/qtbase.git/tree/src/corelib/tools/qcache.h?h=5.15#n74
+              */
+             && (m_hotcache[request] == 0) // it is not in the list of unpatched files
              && (Q_UNLIKELY(QFileInfo::exists(fakePath))) // file is patched
            )
         {
