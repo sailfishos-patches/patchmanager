@@ -1879,23 +1879,24 @@ void PatchManagerObject::startReadingLocalServer()
            )
         {
             payload = fakePath.toLatin1();
-            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
-                qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sending:" << payload;
-            }
-        } else { // failed state or file is unpatched
-            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
-                qDebug() << Q_FUNC_INFO << "Requested:" << request << "is sent unaltered.";
-            }
+        } else {
+            // failed state or file is unpatched
         }
         clientConnection->write(payload);
         clientConnection->flush();
 //        clientConnection->waitForBytesWritten();
 
-        // manage the cache after writing the data:
-        if (payload == request) { // didn't exist
+        // print debug and manage the cache after writing the data:
+        if (payload == request) { // file didn't exist
+            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
+                qDebug() << Q_FUNC_INFO << "Requested:" << request << "was sent unaltered.";
+            }
             QObject *dummy = new QObject(); // the cache will own it later
             m_hotcache.insert(request, dummy); // TODO: do we want a cost here?
         } else {
+            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
+                qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sent:" << payload;
+            }
             if (m_hotcache.remove(request)) {
                 qWarning() << Q_FUNC_INFO << "Hot cache: contained a patched file!";
             }
