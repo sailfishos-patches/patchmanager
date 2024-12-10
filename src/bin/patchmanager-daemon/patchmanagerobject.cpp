@@ -3027,20 +3027,8 @@ PatchManagerFilter::PatchManagerFilter(QObject *parent, int maxCost )
 {
 }
 
-void PatchManagerFilter::setup()
-{
-    static const char *etcList[] = {
-        "/etc/passwd",
-        "/etc/group",
-        "/etc/shadow",
-        "/etc/localtime",
-        "/etc/ld.so.preload",
-        "/etc/ld.so.cache",
-        "/usr/share/locale/locale.alias"
-    };
-
-    /* only use relatively stable sonames here. No symlinks! */
-    static const char *libList[] = {
+/* only use relatively stable sonames here. No symlinks! */
+const PatchManagerFilter::libList = QStringList({
         "/usr/lib64/libtls-padding.so",
         "/usr/lib64/libpreloadpatchmanager.so",
         "/lib64/libc.so.6",
@@ -3053,19 +3041,30 @@ void PatchManagerFilter::setup()
         "/usr/lib64/libmount.so.1",
         "/usr/lib64/libblkid.so.1",
         "/usr/lib64/libgpg-error.so.0"
-    };
+});
+const PatchManagerFilter::etcList = QStringList({
+    "/etc/passwd",
+    "/etc/group",
+    "/etc/shadow",
+    "/etc/localtime",
+    "/etc/ld.so.preload",
+    "/etc/ld.so.cache",
+    "/usr/share/locale/locale.alias"
+});
 
+void PatchManagerFilter::setup()
+{
     // set up cache
     setMaxCost(HOTCACHE_COST_MAX);
 
     // use a cost of 1 here so they have less chance to be evicted
-    foreach( const char* entry, etcList) {
+    for(const QString &entry : etcList) {
         if (QFileInfo::exists(entry))
-            insert(QString(entry), new QObject(), HOTCACHE_COST_STRONG);
+            insert(entry, new QObject(), HOTCACHE_COST_STRONG);
         }
     }
     // they may be wrong, so use a higher cost than default
-    foreach( const char* entry, libList) {
+    for( const QString &entry : libList) {
         QString libentry(entry);
         if (Q_PROCESSOR_WORDSIZE == 4) { // 32 bit
             libentry.replace("lib64", "lib");
