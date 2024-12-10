@@ -3055,6 +3055,7 @@ const QStringList PatchManagerFilter::etcList = QStringList({
 
 void PatchManagerFilter::setup()
 {
+    qDebug() << Q_FUNC_INFO;
     // set up cache
     setMaxCost(HOTCACHE_COST_MAX);
 
@@ -3079,6 +3080,7 @@ void PatchManagerFilter::setup()
 //QList<QPair<QString, QVariant>> PatchManagerFilter::stats() const
 QString PatchManagerFilter::stats() const
 {
+    qDebug() << Q_FUNC_INFO;
     QStringList topTen;
     const int ttmax = qEnvironmentVariableIsSet("PM_DEBUG_HOTCACHE") ? size() : 10;
     foreach(const QString &key, keys() ) {
