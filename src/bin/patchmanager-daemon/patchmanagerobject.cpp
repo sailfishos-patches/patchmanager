@@ -3020,6 +3020,13 @@ void PatchManagerObject::setupFilter()
  *
  * \sa m_filter
  */
+
+PatchManagerFilter::PatchManagerFilter(QObject *parent, int maxCost )
+    : QObject(parent)
+    , QCache(maxCost)
+{
+}
+
 void PatchManagerFilter::setup()
 {
     static const char *etcList[] = {

@@ -75,18 +75,17 @@ class QNetworkAccessManager;
 class PatchManagerAdaptor;
 class QLocalServer;
 
-template <typename Key, typename T>
-class PatchManagerFilter : public QCache<Key, T>
+class PatchManagerFilter : public QObject, public QCache<QString, QObject>
 {
-    //Q_OBJECT
-    //Q_PROPERTY(bool active READ active WRITE setActive NOTIFY activeChanged)
+    Q_OBJECT
+    Q_PROPERTY(bool active READ active WRITE setActive NOTIFY activeChanged)
 public:
-    //PatchManagerFilter(quint maxCost = 100) : QCache(maxCost)
+    PatchManagerFilter(QObject *parent = nullptr, int maxCost = 100);
     //~PatchManagerFilter();
 
     void setup();
     // override QCache::contains()
-    bool contains(const Key &key) const
+    bool contains(const QString &key) const
     {
        if (m_active) {
            return false;
@@ -300,7 +299,7 @@ private:
     QTimer *m_sessionBusConnector = nullptr;
     QDBusConnection m_sbus;
 
-    PatchManagerFilter<QString, QObject> m_filter;
+    PatchManagerFilter m_filter;
     void setupFilter();
 };
 
