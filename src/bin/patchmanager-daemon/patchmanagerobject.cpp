@@ -1873,7 +1873,7 @@ void PatchManagerObject::startReadingLocalServer()
         payload = request;
         if (
              (!m_failed) // return unaltered for failed
-             && (!m_filter.contains(request)) // it is not in the list of unpatched files
+             && (!m_filter.active() || !m_filter.contains(request)) // filter inactive or not in the list of unpatched files
              && (Q_UNLIKELY(QFileInfo::exists(fakePath))) // file is patched
            )
         {
@@ -3027,6 +3027,7 @@ PatchManagerFilter::PatchManagerFilter(QObject *parent, int maxCost )
 {
 }
 
+/* initialize the static members */
 /* only use relatively stable sonames here. No symlinks! */
 const QStringList PatchManagerFilter::libList = QStringList({
         "/usr/lib64/libtls-padding.so",
