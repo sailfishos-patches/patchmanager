@@ -3058,13 +3058,13 @@ void PatchManagerFilter::setup()
     setMaxCost(HOTCACHE_COST_MAX);
 
     // use a cost of 1 here so they have less chance to be evicted
-    for(const QString &entry : etcList) {
+    foreach(const QString &entry, etcList) {
         if (QFileInfo::exists(entry))
             insert(entry, new QObject(), HOTCACHE_COST_STRONG);
         }
     }
     // they may be wrong, so use a higher cost than default
-    for( const QString &entry : libList) {
+    foreach(const QString &entry, libList) {
         QString libentry(entry);
         if (Q_PROCESSOR_WORDSIZE == 4) { // 32 bit
             libentry.replace("lib64", "lib");
