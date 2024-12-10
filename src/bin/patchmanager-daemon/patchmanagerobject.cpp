@@ -3075,3 +3075,7 @@ void PatchManagerFilter::setup()
         }
     }
 }
+
+QList<QPair<QString, QVariant>> PatchManagerFilter::stats() const
+{
+}
