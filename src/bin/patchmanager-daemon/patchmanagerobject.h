@@ -270,6 +270,7 @@ private:
     QDBusConnection m_sbus;
 
     QCache<QString, QObject> m_hotcache;
+    void setupFilter();
 };
 
 #endif // PATCHMANAGEROBJECT_H

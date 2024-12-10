@@ -147,7 +147,10 @@ static const QString SILICA_CODE      = QStringLiteral("silica");
 static const QString SETTINGS_CODE    = QStringLiteral("settings");
 static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
 
-static const int HOTCACHE_MAXCOST = 5000;
+static const int HOTCACHE_COST_MAX = 5000;
+static const int HOTCACHE_COST_STRONG = 1;
+static const int HOTCACHE_COST_WEAK = 3;
+static const int HOTCACHE_COST = 2;
 
 /*!
   \class PatchManagerObject
@@ -510,8 +513,6 @@ PatchManagerObject::PatchManagerObject(QObject *parent)
     : QObject(parent)
     , m_sbus(s_sessionBusConnection)
 {
-    // set up cache
-    m_hotcache.setMaxCost(HOTCACHE_MAXCOST);
 }
 
 PatchManagerObject::~PatchManagerObject()
@@ -813,6 +814,9 @@ void PatchManagerObject::initialize()
     } else {
         qWarning() << Q_FUNC_INFO << "Failed to find ld.so.preload!";
     }
+
+    // prepare the hotcache
+    setupFilter();
 
     qDebug() << Q_FUNC_INFO << PM_APPLY;
     QFileInfo pa(PM_APPLY);
@@ -1892,7 +1896,7 @@ void PatchManagerObject::startReadingLocalServer()
                 qDebug() << Q_FUNC_INFO << "Requested:" << request << "was sent unaltered.";
             }
             QObject *dummy = new QObject(); // the cache will own it later
-            m_hotcache.insert(request, dummy); // TODO: do we want a cost here?
+            m_hotcache.insert(request, dummy, HOTCACHE_COST); // cost: see setupFilter, use middle ground here
         } else {
             if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
                 qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sent:" << payload;
@@ -2993,4 +2997,66 @@ QString PatchManagerObject::pathToMangledPath(const QString &path, const QString
     }
     qDebug() << Q_FUNC_INFO << "Path after mangle" << newpath;
     return newpath;
+}
+
+/*! Set up the filter parameters and fill it with some initial contents.
+ *
+ * The current implementation of the filter is a QCache, whole Object contents are not actually used, only the keys are.
+ * Once a file path has been identified as non-existing, it is added to the cache.
+ *
+ * Checking for presence is done using QCache::object() (or
+ * QCache::operator[]), not QCache::contains() in order to have the cache
+ * notice "usage" of th cached object.
+ *
+ * \sa m_hotcache
+ */
+void PatchManagerObject::setupFilter()
+{
+    if (!m_hotcache.isEmpty()) return;
+
+    static const char *etcList[] = {
+        "/etc/passwd",
+        "/etc/group",
+        "/etc/shadow",
+        "/etc/localtime",
+        "/etc/ld.so.preload",
+        "/etc/ld.so.cache",
+        "/usr/share/locale/locale.alias"
+    };
+
+    /* only use relatively stable sonames here. No symlinks! */
+    static const char *libList[] = {
+        "/usr/lib64/libtls-padding.so",
+        "/usr/lib64/libpreloadpatchmanager.so",
+        "/lib64/libc.so.6",
+        "/lib64/libdl.so.2",
+        "/lib64/librt.so.1",
+        "/lib64/libpthread.so.0",
+        "/lib64/libgcc_s.so.1",
+        "/usr/lib64/libsystemd.so.0",
+        "/usr/lib64/libcap.so.2",
+        "/usr/lib64/libmount.so.1",
+        "/usr/lib64/libblkid.so.1",
+        "/usr/lib64/libgpg-error.so.0"
+    };
+
+    // set up cache
+    m_hotcache.setMaxCost(HOTCACHE_COST_MAX);
+
+    // use a cost of 1 here so they have less chance to be evicted
+    foreach( const char* entry, etcList) {
+        if (QFileInfo::exists(entry))
+            m_hotcache.insert(QString(entry), new QObject(), HOTCACHE_COST_STRONG);
+        }
+    }
+    // they may be wrong, so use a higher cost than default
+    foreach( const char* entry, libList) {
+        QString libentry(entry);
+        if (Q_PROCESSOR_WORDSIZE == 4) { // 32 bit
+            libentry.replace("lib64", "lib");
+        }
+        if (QFileInfo::exists(libentry)) {
+            m_hotcache.insert(libentry, new QObject(), HOTCACHE_COST_WEAK);
+        }
+    }
 }
