@@ -1872,13 +1872,8 @@ void PatchManagerObject::startReadingLocalServer()
         const QString fakePath = QStringLiteral("%1%2").arg(s_patchmanagerCacheRoot, QString::fromLatin1(request));
         payload = request;
         if (
-                (!m_failed) // return unaltered for failed
-             /* Note: contains() is not enough, we want the cache to notice the access so the entry counts as "used".
-              * Also, it returns 0 in qt5.6, nullptr in qt5.15
-              * See https://code.qt.io/cgit/qt/qtbase.git/tree/src/corelib/tools/qcache.h?h=5.6#n68
-              * vs. https://code.qt.io/cgit/qt/qtbase.git/tree/src/corelib/tools/qcache.h?h=5.15#n74
-              */
-             && (m_hotcache[request] == 0) // it is not in the list of unpatched files
+             (!m_failed) // return unaltered for failed
+             && (!m_filter.contains(request)) // it is not in the list of unpatched files
              && (Q_UNLIKELY(QFileInfo::exists(fakePath))) // file is patched
            )
         {
@@ -1896,12 +1891,12 @@ void PatchManagerObject::startReadingLocalServer()
                 qDebug() << Q_FUNC_INFO << "Requested:" << request << "was sent unaltered.";
             }
             QObject *dummy = new QObject(); // the cache will own it later
-            m_hotcache.insert(request, dummy, HOTCACHE_COST); // cost: see setupFilter, use middle ground here
+            m_filter.insert(request, dummy, HOTCACHE_COST); // cost: see setupFilter, use middle ground here
         } else {
             if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
                 qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sent:" << payload;
             }
-            if (m_hotcache.remove(request)) {
+            if (m_filter.remove(request)) {
                 qWarning() << Q_FUNC_INFO << "Hot cache: contained a patched file!";
             }
         }
@@ -3001,19 +2996,32 @@ QString PatchManagerObject::pathToMangledPath(const QString &path, const QString
 
 /*! Set up the filter parameters and fill it with some initial contents.
  *
- * The current implementation of the filter is a QCache, whole Object contents are not actually used, only the keys are.
- * Once a file path has been identified as non-existing, it is added to the cache.
+ *  \sa PatchManagerFilter::setup()
+*/
+void PatchManagerObject::setupFilter()
+{
+    if (!getSettings(QStringLiteral("enableFSFilter"), false).toBool()) {
+        m_filter.setActive(false);
+        return;
+    } else {
+        m_filter.setup();
+        m_filter.setActive(true);
+    }
+}
+
+/*!
+ * The current implementation of the filter is a QCache, whole Object contents
+ * are not actually used, only the keys are.  Once a file path has been
+ * identified as non-existing, it is added to the cache.
  *
  * Checking for presence is done using QCache::object() (or
  * QCache::operator[]), not QCache::contains() in order to have the cache
  * notice "usage" of th cached object.
  *
- * \sa m_hotcache
+ * \sa m_filter
  */
-void PatchManagerObject::setupFilter()
+void PatchManagerFilter::setup()
 {
-    if (!m_hotcache.isEmpty()) return;
-
     static const char *etcList[] = {
         "/etc/passwd",
         "/etc/group",
@@ -3041,12 +3049,12 @@ void PatchManagerObject::setupFilter()
     };
 
     // set up cache
-    m_hotcache.setMaxCost(HOTCACHE_COST_MAX);
+    setMaxCost(HOTCACHE_COST_MAX);
 
     // use a cost of 1 here so they have less chance to be evicted
     foreach( const char* entry, etcList) {
         if (QFileInfo::exists(entry))
-            m_hotcache.insert(QString(entry), new QObject(), HOTCACHE_COST_STRONG);
+            insert(QString(entry), new QObject(), HOTCACHE_COST_STRONG);
         }
     }
     // they may be wrong, so use a higher cost than default
@@ -3056,7 +3064,7 @@ void PatchManagerObject::setupFilter()
             libentry.replace("lib64", "lib");
         }
         if (QFileInfo::exists(libentry)) {
-            m_hotcache.insert(libentry, new QObject(), HOTCACHE_COST_WEAK);
+            insert(libentry, new QObject(), HOTCACHE_COST_WEAK);
         }
     }
 }

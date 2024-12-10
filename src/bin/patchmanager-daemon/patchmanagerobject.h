@@ -74,6 +74,37 @@ class QSettings;
 class QNetworkAccessManager;
 class PatchManagerAdaptor;
 class QLocalServer;
+
+template <typename Key, typename T>
+class PatchManagerFilter : public QCache<Key, T>
+{
+    //Q_OBJECT
+    //Q_PROPERTY(bool active READ active WRITE setActive NOTIFY activeChanged)
+public:
+    //PatchManagerFilter(quint maxCost = 100) : QCache(maxCost)
+    //~PatchManagerFilter();
+
+    void setup();
+    // override QCache::contains()
+    bool contains(const Key &key) const
+    {
+       if (m_active) {
+           return false;
+       } else {
+           return (object(key) == 0);
+       };
+    };
+
+    void setActive(bool active) { m_active = active; emit activeChanged(active); };
+    bool active() const { return m_active; };
+
+signals:
+    void activeChanged(bool);
+
+private:
+    bool m_active;
+};
+
 class PatchManagerObject : public QObject, public QDBusContext
 {
     Q_OBJECT
@@ -269,7 +300,7 @@ private:
     QTimer *m_sessionBusConnector = nullptr;
     QDBusConnection m_sbus;
 
-    QCache<QString, QObject> m_hotcache;
+    PatchManagerFilter<QString, QObject> m_filter;
     void setupFilter();
 };
 
