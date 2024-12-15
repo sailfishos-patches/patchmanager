@@ -218,7 +218,7 @@ ApplicationWindow {
             }
 
             CoverActionList {
-                enabled: appWindow.remorseItem.pending
+                enabled: !!appWindow.remorseItem && appWindow.remorseItem.pending
                 CoverAction {
                     iconSource: "image://theme/icon-cover-cancel"
                     onTriggered: {
