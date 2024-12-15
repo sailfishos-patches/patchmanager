@@ -59,6 +59,7 @@ ApplicationWindow {
     }
     initialPage: Component {
         Page {
+            allowedOrientations: Orientation.All
             onStatusChanged: {
                 if (status == PageStatus.Active && !appWindow.remorseItem) {
                     var timeout = dialogConf.value * 1000
