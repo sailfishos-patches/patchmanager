@@ -4,4 +4,4 @@ The `patchmanager_200x200.png` and `patchmanager_86x86.png` are exported version
 
 For the icons in the "social-media" directory, the `patchmanager_200x200.png` was simply put on a larger, transparent canvas to create `patchmanager_284x284.png` (200 × √2 = 282,842712475, so the icon proper is fully visible when clipped circularly, as GitHub does it at multiple places) and `patchmanager_480x240.png` (2:1 "social media" format, see in GitHub's general settings page of a project).
 
-The original SVG of the `icon-patchmanager_100x100.png` (with the patch in red hue) seems be lost, too.
+The original SVG of the `icon-patchmanager_100x100.png` (with the patch in red hue) seems to be lost, too.
