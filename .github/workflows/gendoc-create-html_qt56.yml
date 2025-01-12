@@ -86,7 +86,7 @@ jobs:
       id-token: write   # to verify the deployment originates from an appropriate source
     steps:
     - name: Setup Pages
-      uses: actions/configure-pages@v3
+      uses: actions/configure-pages@v5
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
