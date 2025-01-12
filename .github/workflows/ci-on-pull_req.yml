@@ -29,7 +29,7 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     env:
-      # Solely builds for i486 on 3.4.0, because of https://github.com/sailfishos-patches/patchmanager/pull/437#issuecomment-1615317003
+      # Solely build for i486 on 3.4.0, because of https://github.com/sailfishos-patches/patchmanager/pull/437#issuecomment-1615317003
       ARCH: i486
       RELEASE: 3.4.0.24
     steps:
