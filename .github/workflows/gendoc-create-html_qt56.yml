@@ -24,12 +24,12 @@ jobs:
   #     - Use a docker image containing `qdoc` to generate the files
   #     - upload the results so the deployment job can pick it up
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: 3
     steps:
     - name: Checkout Source (${{ inputs.DOC_SOURCE_BRANCH }})
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         ref: ${{ inputs.DOC_SOURCE_BRANCH }}
     - name: Generate Docs
@@ -72,14 +72,14 @@ jobs:
       run: echo "$REDIRECTOR" > out/index.html
     # Upload artifact for deploying to pages:
     - name: Upload artifact
-      uses: actions/upload-pages-artifact@v1
+      uses: actions/upload-pages-artifact@v3
       with:
         path: './out'
 
   # Now deploy to GH Pages
   deploy:
     needs: build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     # Grant GITHUB_TOKEN the permissions required by deploy-pages action
     permissions:
       pages: write      # to deploy to Pages
@@ -89,5 +89,5 @@ jobs:
       uses: actions/configure-pages@v3
     - name: Deploy to GitHub Pages
       id: deployment
-      uses: actions/deploy-pages@v2
+      uses: actions/deploy-pages@v4
 
