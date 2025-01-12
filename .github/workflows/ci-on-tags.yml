@@ -50,7 +50,7 @@ jobs:
     # https://github.com/storeman-developers/harbour-storeman-installer/blob/devel/cache-docker-images_github-ci.md
     #- name: Cache Docker images of the Sailfish-SDK
     #  id: cache-sdk
-    #  uses: actions/cache@v3
+    #  uses: actions/cache@v4
     #  with:
     #    path: $GITHUB_WORKSPACE/…
     #    key: cache
