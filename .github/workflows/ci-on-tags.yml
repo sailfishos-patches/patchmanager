@@ -12,7 +12,8 @@ on:
 
 env:
   # For the available docker images, see https://github.com/CODeRUS/docker-sailfishos-platform-sdk
-  # But LATEST means here, "known to run on the latest SailfishOS release": Binaries for 4.3.0 are known to run on 5.0.0.
+  # But LATEST means here, "known to run on the latest SailfishOS release": Binaries for 4.3.0 are known to run on 5.0.0,
+  # but altered icon paths by 4.6.0 require building for it, for details see https://github.com/sailfishos-patches/patchmanager/pull/479#pullrequestreview-2483451820.
   LATEST: 4.6.0.13
   # Do not wait up to the default of 10 minutes for network timeouts in a workflow which runs at most 20 minutes.
   SEGMENT_DOWNLOAD_TIMEOUT_MINS: 2
