@@ -305,7 +305,7 @@
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="59"/>
         <source>Some services will be restarted now. Reloading the homescreen of the device might take a little time.</source>
-        <translation>Jotkin palvelut käynnistetään nyt uudelleen. Alkunäytön uudelleenlataamisessa saattaa kestää hieman.</translation>
+        <translation>Jotkin palvelut käynnistetään nyt uudelleen. Alkunäytön uudelleenlataaminen saattaa viedä hieman aikaa.</translation>
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="63"/>
