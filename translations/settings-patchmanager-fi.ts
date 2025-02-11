@@ -36,7 +36,7 @@
         <location filename="../src/qml/AboutPage.qml" line="54"/>
         <location filename="../src/qml/PatchManagerPage.qml" line="168"/>
         <source>About Patchmanager</source>
-        <translation>Tietoja Patchmanagerista</translation>
+        <translation>Tietoja sovelluksesta</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="283"/>
