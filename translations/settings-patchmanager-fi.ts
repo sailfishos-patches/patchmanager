@@ -520,7 +520,7 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="85"/>
         <source>Show notification on success</source>
-        <translation>Näytä ilmoitus käyttöönoton onnistuessa</translation>
+        <translation>Näytä ilmoitus aktivoinnin onnistuessa</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="86"/>
