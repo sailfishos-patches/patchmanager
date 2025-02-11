@@ -181,7 +181,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="170"/>
         <source>This Patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for details.</source>
-        <translation>Tämän muutostiedoston patch.json-tiedosto on vanhentuneessa muodossa. Mikäli olet tämän muutostiedoston kehittäjä, harkitse päivittämistä uuteen muotoon; käyttäessäsi Verkkokatalogia, julkaisuun ei tule sisällyttää patch.json-tiedostoa!&lt;br /&gt;Katso lisätietoja &lt;a href=&quot;%1&quot;&gt;README-tiedoston&lt;/a&gt;kehittäjäosiosta.</translation>
+        <translation>Tämän muutostiedoston patch.json-tiedosto on vanhentuneessa muodossa. Mikäli olet tämän muutostiedoston kehittäjä, harkitse päivittämistä uuteen muotoon; käyttäessäsi verkkokatalogia, julkaisuun ei tule sisällyttää patch.json-tiedostoa!&lt;br /&gt;Katso lisätietoja &lt;a href=&quot;%1&quot;&gt;README-tiedoston&lt;/a&gt;kehittäjäosiosta.</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="176"/>
