@@ -325,7 +325,7 @@
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="82"/>
         <source>Note that this will close the %1 app.</source>
-        <translation>Huomaa, että tämä sulkee %1 -sovelluksen</translation>
+        <translation>Huomaa, että tämä sulkee %1-sovelluksen</translation>
     </message>
     <message>
         <location filename="../src/qml/ScreenshotsPage.qml" line="71"/>
