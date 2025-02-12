@@ -494,7 +494,7 @@
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="261"/>
         <source>Deactivating Patch %1 failed!</source>
-        <translation>Muutostiedoston %1 käytöstä poistaminen epäonnistui!</translation>
+        <translation>Muutostiedoston %1 deaktivointi epäonnistui!</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="264"/>
