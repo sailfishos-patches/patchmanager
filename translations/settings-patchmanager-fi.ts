@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="90"/>
         <source>Start Patchmanager&apos;s daemon before activating Patches</source>
-        <translation>Käynnistä Patchmanagerin taustaprosessi ennen muutostiedostojen aktivoimista</translation>
+        <translation>Käynnistä Patchmanagerin taustapalvelu ennen muutostiedostojen aktivoimista</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="112"/>
