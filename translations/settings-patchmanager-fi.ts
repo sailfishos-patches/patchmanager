@@ -54,7 +54,7 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="87"/>
         <source>Patchmanager allows to automatically modify system files via Patches. It provides a daemon which performs the activation of Patches, plus a GUI to configure these operations and to install or remove Patches.</source>
-        <translation>Patchmanager mahdollistaa järjestelmätiedostojen automaattisen muokkauksen muutostiedostojen kautta. Se tarjoaa taustaprosessin, joka suorittaa muutostiedostojen aktivoimisen, sekä GUI:n näiden konfiguroimiseksi ja muutostiedostojen asentamiseksi tai poistamiseksi.</translation>
+        <translation>Muutostiedostojen hallinta mahdollistaa järjestelmätiedostojen automaattisen muokkauksen muutostiedostojen kautta. Siihen kuuluu taustapalvelu, joka suorittaa muutostiedostojen aktivoimisen, sekä GUI:n näiden konfiguroimiseksi ja muutostiedostojen asentamiseksi tai poistamiseksi.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="101"/>
@@ -80,7 +80,7 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="165"/>
         <source>If you appreciate our work, please consider a donation to help covering the hosting costs for Openrepos. Openrepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of Patches is hosted there.</source>
-        <translation>Jos arvostat työtämme, harkitse lahjoittamista Openreposin ylläpitokulujen kattamiseksi. Openrepos on osa kriittistä infrastruktuuria erityisesti Muutostiedostojen hallinnan kannalta, sillä Verkkokatalogia ylläpidetään Openreposin palvelimella.</translation>
+        <translation>Jos arvostat työtämme, harkitse lahjoittamista Openreposin ylläpitokulujen kattamiseksi. Openrepos on osa kriittistä infrastruktuuria erityisesti Muutostiedostojen hallinnan kannalta, sillä verkkokatalogia ylläpidetään Openreposin palvelimella.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="186"/>
@@ -120,12 +120,12 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="72"/>
         <source>Deactivate Patch</source>
-        <translation>Ota muutostiedosto käytöstä</translation>
+        <translation>Deaktivoi muutostiedosto</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="73"/>
         <source>Activate Patch</source>
-        <translation>Ota muutostiedosto käyttöön</translation>
+        <translation>Aktivoi muutostiedosto</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="80"/>
@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="90"/>
         <source>Start Patchmanager&apos;s daemon before activating Patches</source>
-        <translation>Käynnistä Patchmanagerin taustaprosessi ennen muutostiedostojen aktivoimista</translation>
+        <translation>Käynnistä Muutostiedostojen hallinnan taustapalvelu ennen muutostiedostojen aktivoimista</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="112"/>
@@ -181,7 +181,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="170"/>
         <source>This Patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for details.</source>
-        <translation>Tämän muutostiedoston patch.json-tiedosto on vanhentuneessa muodossa. Mikäli olet tämän muutostiedoston kehittäjä, harkitse päivittämistä uuteen muotoon; käyttäessäsi Verkkokatalogia, julkaisuun ei tule sisällyttää patch.json-tiedostoa!&lt;br /&gt;Katso lisätietoja &lt;a href=&quot;%1&quot;&gt;README-tiedoston&lt;/a&gt;kehittäjäosiosta.</translation>
+        <translation>Tämän muutostiedoston patch.json-tiedosto on vanhentuneessa muodossa. Mikäli olet tämän muutostiedoston kehittäjä, harkitse päivittämistä uuteen muotoon; käyttäessäsi verkkokatalogia, julkaisuun ei tule sisällyttää patch.json-tiedostoa!&lt;br /&gt;Katso lisätietoja &lt;a href=&quot;%1&quot;&gt;README-tiedoston&lt;/a&gt;kehittäjäosiosta.</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="176"/>
@@ -279,12 +279,12 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="519"/>
         <source>Deactivate</source>
-        <translation>Poista käytöstä</translation>
+        <translation>Deaktivoi</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="519"/>
         <source>Activate</source>
-        <translation>Ota käyttöön</translation>
+        <translation>Aktivoi</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="524"/>
@@ -305,7 +305,7 @@
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="59"/>
         <source>Some services will be restarted now. Reloading the homescreen of the device might take a little time.</source>
-        <translation>Jotkin palvelut käynnistetään nyt uudelleen. Alkunäytön uudelleenlataamisessa saattaa kestää hieman.</translation>
+        <translation>Jotkin palvelut käynnistetään nyt uudelleen. Alkunäytön uudelleenlataaminen saattaa viedä hieman aikaa.</translation>
     </message>
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="63"/>
@@ -325,7 +325,7 @@
     <message>
         <location filename="../src/qml/RestartServicesDialog.qml" line="82"/>
         <source>Note that this will close the %1 app.</source>
-        <translation>Huomaa, että tämä sulkee %1 -sovelluksen</translation>
+        <translation>Huomaa, että tämä sulkee %1-sovelluksen</translation>
     </message>
     <message>
         <location filename="../src/qml/ScreenshotsPage.qml" line="71"/>
@@ -469,32 +469,32 @@
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="245"/>
         <source>Patch deactivated</source>
-        <translation>Muutostiedosto poistettu käytöstä</translation>
+        <translation>Muutostiedosto deaktivoitu</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="246"/>
         <source>Patch %1 is now inactive.</source>
-        <translation>Muutostiedosto %1 ei ole käytössä</translation>
+        <translation>Muutostiedosto %1 ei ole enää aktiivinen.</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="256"/>
         <source>Failed to activate Patch</source>
-        <translation>Muutostiedoston käyttöönotto epäonnistui</translation>
+        <translation>Muutostiedoston aktivointi epäonnistui</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="257"/>
         <source>Activating Patch %1 failed!</source>
-        <translation>Muutostiedoston %1 käyttöön ottaminen epäonnistui!</translation>
+        <translation>Muutostiedoston %1 aktivointi epäonnistui!</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="260"/>
         <source>Failed to deactivate Patch</source>
-        <translation>Muutostiedoston käytöstä poisto epäonnistui</translation>
+        <translation>Muutostiedoston deaktivointi epäonnistui</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="261"/>
         <source>Deactivating Patch %1 failed!</source>
-        <translation>Muutostiedoston %1 käytöstä poistaminen epäonnistui!</translation>
+        <translation>Muutostiedoston %1 deaktivointi epäonnistui!</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="264"/>
@@ -520,7 +520,7 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="85"/>
         <source>Show notification on success</source>
-        <translation>Näytä ilmoitus käyttöönoton onnistuessa</translation>
+        <translation>Näytä ilmoitus aktivoinnin onnistuessa</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="86"/>
@@ -540,7 +540,7 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="102"/>
         <source>Enable an additional pulley menu entry for Patchmanager&apos;s main page to disable and deactivate all Patches.</source>
-        <translation>Ota käyttöön ylimääräinen valikon valinta Patchmanagerin pääsivulla kaikkien muutostiedostojen käytöstä poistamiseksi.</translation>
+        <translation>Ota käyttöön ylimääräinen valikon valinta sovelluksen pääsivulla kaikkien muutostiedostojen deaktivoimiseksi.</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="116"/>
