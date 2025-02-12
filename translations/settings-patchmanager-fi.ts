@@ -125,7 +125,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="73"/>
         <source>Activate Patch</source>
-        <translation>Ota muutostiedosto käyttöön</translation>
+        <translation>Aktivoi muutostiedosto</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="80"/>
