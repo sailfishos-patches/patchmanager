@@ -540,7 +540,7 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="102"/>
         <source>Enable an additional pulley menu entry for Patchmanager&apos;s main page to disable and deactivate all Patches.</source>
-        <translation>Ota käyttöön ylimääräinen valikon valinta Patchmanagerin pääsivulla kaikkien muutostiedostojen deaktivoimiseksi.</translation>
+        <translation>Ota käyttöön ylimääräinen valikon valinta sovelluksen pääsivulla kaikkien muutostiedostojen deaktivoimiseksi.</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="116"/>
