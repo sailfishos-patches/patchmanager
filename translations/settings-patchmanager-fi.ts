@@ -469,7 +469,7 @@
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="245"/>
         <source>Patch deactivated</source>
-        <translation>Muutostiedosto poistettu käytöstä</translation>
+        <translation>Muutostiedosto deaktivoitu</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="246"/>
