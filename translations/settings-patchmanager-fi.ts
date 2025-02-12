@@ -484,7 +484,7 @@
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="257"/>
         <source>Activating Patch %1 failed!</source>
-        <translation>Muutostiedoston %1 käyttöön ottaminen epäonnistui!</translation>
+        <translation>Muutostiedoston %1 aktivointi epäonnistui!</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="260"/>
