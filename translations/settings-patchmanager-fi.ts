@@ -474,7 +474,7 @@
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="246"/>
         <source>Patch %1 is now inactive.</source>
-        <translation>Muutostiedosto %1 ei ole käytössä</translation>
+        <translation>Muutostiedosto %1 ei ole enää aktiivinen.</translation>
     </message>
     <message>
         <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="256"/>
