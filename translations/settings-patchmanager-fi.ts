@@ -284,7 +284,7 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="519"/>
         <source>Activate</source>
-        <translation>Ota käyttöön</translation>
+        <translation>Aktivoi</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="524"/>
