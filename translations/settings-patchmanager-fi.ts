@@ -279,7 +279,7 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="519"/>
         <source>Deactivate</source>
-        <translation>Poista käytöstä</translation>
+        <translation>Deaktivoi</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="519"/>
