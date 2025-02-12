@@ -120,7 +120,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="72"/>
         <source>Deactivate Patch</source>
-        <translation>Ota muutostiedosto käytöstä</translation>
+        <translation>Deaktivoi muutostiedosto</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="73"/>
