@@ -1,10 +1,18 @@
 project = patchmanager
 description = Patchmanager
 
-include (common.qdocconf)
+include(common.qdocconf)
+
+depends += daemon qml-plugin settings-plugin preload dialog
 
 ## Sources
-sources += ../../src/index.qdoc
-# for quoting
-exampledirs += ../../src/bin/patchmanager-daemon
+sources += ../../src/index.qdoc \
+           ../../src/patchdev.qdoc \
+           ../../src/user.qdoc \
+           ../../src/externalpages.qdoc
+# for quoting. WARNING: Setting this wrong, e.g. to
+# ../../src/bin/patchmanager-daemon will cause qdoc to create double index.html
+# files at the wrong place.
+# So, only give paths where the actual files reside:
+exampledirs += ../../src/bin/patchmanager-daemon/dbus
 
