@@ -52,10 +52,14 @@
 #define BUILD_VERSION "99.99.99"
 #endif
 
-
-void help()
+static void version()
 {
     std::cout << "Patchmanager " << BUILD_VERSION << std::endl;
+}
+
+static void help()
+{
+    version();
     std::cout << "Usage:" << std::endl;
     std::cout << "  patchmanager [--help]          : Print this help text" << std::endl;
     std::cout << "  patchmanager -a <Patch>        : Enable and activate a Patch" << std::endl;
@@ -64,23 +68,34 @@ void help()
     std::cout << "  patchmanager --backup-working  : Save list of enabled Patches as \"working\"" << std::endl;
     std::cout << "  patchmanager --restore-working : Enable backup list of \"working\" Patches" << std::endl;
     std::cout << "  patchmanager --daemon          : Start Patchmanager as daemon" << std::endl;
+    std::cout << "  patchmanager --version         : Print the build version and exit." << std::endl;
+    std::cout << std::endl;
+    std::cout << "Patchmanager must be run as root." << std::endl;
 }
 
 int main(int argc, char **argv)
 {
-    qputenv("NO_PM_PRELOAD", "1");
+    // further argument processing in patchmanagerobject.cpp
+    switch (argc) {
+      case 1: // we want arguments.
+        help(); exit(2); break;
+      case 2:
+        if (!strcmp(argv[1], "--help")) {
+            help(); exit(0);
+        } else if (!strcmp(argv[1], "--version")) {
+            version(); exit(0);
+        }
+        break;
+    }
 
     if (getuid() != 0) {
-        fprintf(stderr, "%s: Not running as root, exiting.\n", argv[0]);
+        fprintf(stderr, "%s: Not running as root, exiting.\n\n", argv[0]);
+        help();
         exit(2);
     }
 
+    qputenv("NO_PM_PRELOAD", "1");
     QCoreApplication app(argc, argv);
-    if (app.arguments().length() < 2) {
-        help();
-        return 0;
-    }
-
     app.setApplicationVersion(QStringLiteral(BUILD_VERSION));
 
     PatchManagerObject patchManager;
