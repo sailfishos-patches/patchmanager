@@ -176,7 +176,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="142"/>
         <source>May conflict with:</source>
-        <translation>Saattaa olla ristiriidassa seuraavien kanssa:</translation>
+        <translation>Saattaa olla ristiriidassa seuraavien muutostiedostojen kanssa:</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="170"/>
