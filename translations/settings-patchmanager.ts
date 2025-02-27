@@ -177,7 +177,7 @@
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="142"/>
-        <source>May conflict with:</source>
+        <source>May conflict with the following Patches:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
