@@ -275,7 +275,7 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="515"/>
         <location filename="../src/qml/WebPatchPage.qml" line="99"/>
-        <source>Patch details</source>
+        <source>Details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
