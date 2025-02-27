@@ -65,7 +65,7 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="111"/>
-        <source>Sources and Issue Tracker&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;on GitHub&lt;/a&gt;</source>
+        <source>Source code and Issue Tracker&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;on GitHub&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -414,7 +414,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="208"/>
         <location filename="../src/qml/WebPatchPage.qml" line="281"/>
-        <source>Sources</source>
+        <source>Source code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
