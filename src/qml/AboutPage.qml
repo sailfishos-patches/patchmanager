@@ -169,7 +169,7 @@ Page {
                     font.pixelSize: Theme.fontSizeSmall
                     wrapMode: Text.WordWrap
                     horizontalAlignment: Text.AlignJustify
-                    text: qsTranslate("", "If you appreciate our work, please consider a donation to help covering the hosting costs for Openrepos. Openrepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of Patches is hosted there.")
+                    text: qsTranslate("", "If you appreciate our work, please consider a donation to help covering the hosting costs for OpenRepos. OpenRepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of Patches is hosted there.")
                 }
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -190,7 +190,7 @@ Page {
                     font.pixelSize: Theme.fontSizeSmall
                     wrapMode: Text.WordWrap
                     horizontalAlignment: Text.AlignJustify
-                    text: qsTranslate("", "If for some reason you cannot donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).")
+                    text: qsTranslate("", "If for some reason you cannot donate to OpenRepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).")
                 }
 
                 Text {
