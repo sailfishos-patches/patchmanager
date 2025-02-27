@@ -162,7 +162,7 @@ Page {
             }
             SectionHeader {
                 visible: modelData.conflicts.length > 0
-                text: qsTranslate("", "May conflict with:")
+                text: qsTranslate("", "May conflict with the following Patches:")
             }
             Repeater {
                 visible: modelData.conflicts.length > 0
