@@ -81,12 +81,12 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="165"/>
-        <source>If you appreciate our work, please consider a donation to help covering the hosting costs for Openrepos. Openrepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of Patches is hosted there.</source>
+        <source>If you appreciate our work, please consider a donation to help covering the hosting costs for OpenRepos. OpenRepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of Patches is hosted there.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="186"/>
-        <source>If for some reason you cannot donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).</source>
+        <source>If for some reason you cannot donate to OpenRepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
