@@ -227,7 +227,7 @@ Page {
                     if (modelData.sources) {
                       linksmodel.append({
                           "link": modelData.sources,
-                          "linktext": qsTranslate("", "Sources"),
+                          "linktext": qsTranslate("", "Source code"),
                           "iconname": "icon-s-developer"
                       })
                     }
