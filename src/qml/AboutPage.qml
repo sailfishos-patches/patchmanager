@@ -115,7 +115,7 @@ Page {
                 }
                 Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: qsTranslate("", "Sources and Issue Tracker<br /><a href=\"%1\">on GitHub</a>").arg(SOURCE_REPO)
+                        text: qsTranslate("", "Source code and Issue Tracker<br /><a href=\"%1\">on GitHub</a>").arg(SOURCE_REPO)
                         textFormat: Text.StyledText
                         horizontalAlignment: Text.AlignHCenter
                         font.pixelSize: Theme.fontSizeSmall
