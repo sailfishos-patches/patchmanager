@@ -4,7 +4,9 @@ versionsym      =
 version         = 2.0
 url             = https://github.com/sailfishos-patches/patchmanager
 
-include (common.qdocconf)
+include(common.qdocconf)
+depends += qtcore qtdbus qtnetwork
+depends += patchmanager qml-plugin
 
 headerdirs += ../../src/bin/patchmanager-daemon
 headers.fileextensions = "*.h *.hpp"

@@ -76,7 +76,7 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
     This property holds the Operating System version. This is used for version checking.
 */
 /*! \qmlproperty bool PatchManager::patchDevelMode
-    \sa {Patchmanager Configuration Files}, inifile
+    \sa {Patchmanager Configuration Files}, {inifile}{\c{/etc/patchmanager2.conf}}
 */
 /*! \qmlproperty string PatchManager::patchmanagerVersion
     This property holds our own version
@@ -90,11 +90,11 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
 */
 /*! \qmlproperty var PatchManager::updates
     Map of internal names and metadata of patches which can be updated.
-    \sa PatchManagerObject::getUpdates, dbus-sys
+    \sa PatchManagerObject::getUpdates, {dbus-sys}{D-Bus System Service}
 */
 /*! \qmlproperty var PatchManager::updatesNames
     List of display names of patches which can be updated.
-    \sa PatchManagerObject::getUpdates, dbus-sys
+    \sa PatchManagerObject::getUpdates, {dbus-sys}{D-Bus System Service}
 */
 
 /*****  PatchManagerTranslator ******/
