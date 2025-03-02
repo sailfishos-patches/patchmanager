@@ -94,11 +94,12 @@
   \li asks the Patchmanager daemon (via UNIX Socket) whether it knows of a patched version.
   \endlist
 
-  If yes, the daemon will return a path to its cache directory, and the library
-  redirects the call to that file instead of the original. Otherwise, the
-  \c{open()} is executed on the original file.
+  If that is the case, the daemon will return a path to its cache directory, and
+  the library redirects the call to that file instead of the original. Otherwise,
+  the \c{open()} call is executed on the original file.
 
-  Certain paths are blacklisted for these operations to reduce the risk of critical services, or the Patchmanager binaries proper, stumbling over these redirections.
+  Certain paths are blacklisted for these operations to reduce the risk of critical
+  services, or the Patchmanager binaries proper, stumbling over these redirections.
 
   \warning After activating a Patch , the daemon may also inform the UI that some
   apps or services need restart. The UI client is expected to issue the command
