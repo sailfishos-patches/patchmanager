@@ -78,7 +78,7 @@
   file is put into a cache directory in \c /tmp, and the changes are applied
   to this copy instead of the original file.
 
-  If there are paths or files involved in the patch which do not exist yet
+  If there are paths or files involved in a patch which do not exist yet
   in the filesystem, they will be created in the cache directory, and a symbolic link
   pointing to them is placed in the original filesystem.
 
