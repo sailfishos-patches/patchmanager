@@ -101,9 +101,9 @@
   Certain paths are blacklisted for these operations to reduce the risk of critical
   services, or the Patchmanager binaries proper, stumbling over these redirections.
 
-  \warning After activating a Patch , the daemon may also inform the UI that some
-  apps or services need restart. The UI client is expected to issue the command
-  to restart these soon.
+  \warning After activating a Patch, the daemon may also inform the UI that some
+  apps or services need to be restarted. The UI client is expected to issue the
+  command to restart these soon.
   As long as the corresponding processes are not restarted, the effect of the
   applied patch will not show, or may only show partially, depending on the "patch
   history" of the respective process.
