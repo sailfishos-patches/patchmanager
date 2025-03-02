@@ -90,7 +90,7 @@
 
   \list
   \li Intercepts calls to \l {https://www.man7.org/linux/man-pages/man2/open.2.html}{\c{open()} (or \c{open64()})},
-  \li analyzes which files the call was meant to open
+  \li analyses which files the call was meant to open
   \li asks the Patchmanager daemon (via UNIX Socket) whether it knows of a patched version.
   \endlist
 
