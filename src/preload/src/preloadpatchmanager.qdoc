@@ -11,11 +11,11 @@
 
   \list
   \li Intercepts calls to \l {https://www.man7.org/linux/man-pages/man2/open.2.html}{\c{open()}} (or \c{open64()}),
-  \li analyzes which files the call was meant to open
-  \li  asks the Patchmanager Daemon (via socket) whether it knows of a patched version.
+  \li analyses which files the call was meant to open
+  \li asks the Patchmanager daemon (via socket) whether it knows of a patched version.
   \endlist
 
-  If yes, the daemon will return a path to its cachedir, and the library
+  If this is the case, the daemon will return a path to its cachedir, and the library
   redirects the call to that file instead of the original. Otherwise, the
   \c{open()} is executed on the original file.
 
