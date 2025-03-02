@@ -74,9 +74,9 @@
 
   When a user activates a Patch via the GUI, a signal is sent to the Patchmanager daemon.
 
-  When activated, for each file the patch manipulates, a copy of the original
-  file is put into a cache directory in \c /tmp, and the changes are applied there
-  instead of on the original file.
+  When activated, for each file a patch alters, a copy of the original
+  file is put into a cache directory in \c /tmp, and the changes are applied
+  to this copy instead of the original file.
 
   If there are paths or files involved in the patch which do not exist yet
   in the filesystem, they will be created in the cache directory, and a symbolic link
