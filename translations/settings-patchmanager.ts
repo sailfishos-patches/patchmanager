@@ -65,7 +65,7 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="111"/>
-        <source>Sources and Issue Tracker&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;on GitHub&lt;/a&gt;</source>
+        <source>Source code and Issue Tracker&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;on GitHub&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -81,12 +81,12 @@
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="165"/>
-        <source>If you appreciate our work, please consider a donation to help covering the hosting costs for Openrepos. Openrepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of Patches is hosted there.</source>
+        <source>If you appreciate our work, please consider a donation to help covering the hosting costs for OpenRepos. OpenRepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of Patches is hosted there.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="186"/>
-        <source>If for some reason you cannot donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).</source>
+        <source>If for some reason you cannot donate to OpenRepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -177,7 +177,7 @@
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="142"/>
-        <source>May conflict with:</source>
+        <source>May conflict with the following Patches:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -275,7 +275,7 @@
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="515"/>
         <location filename="../src/qml/WebPatchPage.qml" line="99"/>
-        <source>Patch details</source>
+        <source>Details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -414,7 +414,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="208"/>
         <location filename="../src/qml/WebPatchPage.qml" line="281"/>
-        <source>Sources</source>
+        <source>Source code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
