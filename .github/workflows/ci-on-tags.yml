@@ -11,8 +11,10 @@ on:
   # Rather set a new tag in the format N/X.Y.Z (e.g., 1/0.6.3) to build a release originally tagged with 0.6.3 again.
 
 env:
-  # For the latest available docker image, see https://github.com/CODeRUS/docker-sailfishos-platform-sdk
-  LATEST: 4.5.0.16
+  # For the available docker images, see https://github.com/CODeRUS/docker-sailfishos-platform-sdk
+  # But LATEST means here, "known to run on the latest SailfishOS release": Binaries for 4.3.0 are known to run on 5.0.0,
+  # though altered icon paths by 4.6.0 require building for it, for details see https://github.com/sailfishos-patches/patchmanager/pull/479#pullrequestreview-2483451820
+  LATEST: 4.6.0.13
   # Do not wait up to the default of 10 minutes for network timeouts in a workflow which runs at most 20 minutes.
   SEGMENT_DOWNLOAD_TIMEOUT_MINS: 2
 
@@ -36,11 +38,11 @@ jobs:
   build-on-LATEST:
     env:
       RELEASE: ${{ env.LATEST }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
 
     - name: Checkout git repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     #- name: Prepare
     #  run: 
@@ -49,7 +51,7 @@ jobs:
     # https://github.com/storeman-developers/harbour-storeman-installer/blob/devel/cache-docker-images_github-ci.md
     #- name: Cache Docker images of the Sailfish-SDK
     #  id: cache-sdk
-    #  uses: actions/cache@v3
+    #  uses: actions/cache@v4
     #  with:
     #    path: $GITHUB_WORKSPACE/…
     #    key: cache
@@ -94,17 +96,85 @@ jobs:
            sudo cp -r RPMS/. /share/output/$1/$2/' sh_mb2 $RELEASE $ARCH
 
     - name: Upload build results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: RPM-build-results_SDK-for-${{ env.RELEASE }}
         path: output/
 
-  build-on-OLDEST:
-    runs-on: ubuntu-22.04
+
+  build-on-4-3-0:
+    env:
+      RELEASE: 4.3.0.12
+    runs-on: ubuntu-24.04
     steps:
 
     - name: Checkout git repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
+
+    #- name: Prepare
+    #  run: 
+
+    # Caching Docker images is not ready yet, see 
+    # https://github.com/storeman-developers/harbour-storeman-installer/blob/devel/cache-docker-images_github-ci.md
+    #- name: Cache Docker images of the Sailfish-SDK
+    #  id: cache-sdk
+    #  uses: actions/cache@v4
+    #  with:
+    #    path: $GITHUB_WORKSPACE/…
+    #    key: cache
+
+    - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
+      env:
+        ARCH: i486
+      run: |
+        set -x
+        mkdir -p output/$RELEASE/$ARCH
+        docker run --rm -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
+           mkdir -p build
+           cd build
+           cp -r /share/. .
+           mb2 -t SailfishOS-$1-$2 build -d
+           sudo cp -r RPMS/. /share/output/$1/$2/' sh_mb2 $RELEASE $ARCH
+
+    - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
+      env:
+        ARCH: armv7hl
+      run: |
+        set -x
+        mkdir -p output/$RELEASE/$ARCH
+        docker run --rm -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
+           mkdir -p build
+           cd build
+           cp -r /share/. .
+           mb2 -t SailfishOS-$1-$2 build -d
+           sudo cp -r RPMS/. /share/output/$1/$2/' sh_mb2 $RELEASE $ARCH
+
+    - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
+      env:
+        ARCH: aarch64
+      run: |
+        set -x
+        mkdir -p output/$RELEASE/$ARCH
+        docker run --rm -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
+           mkdir -p build
+           cd build
+           cp -r /share/. .
+           mb2 -t SailfishOS-$1-$2 build -d
+           sudo cp -r RPMS/. /share/output/$1/$2/' sh_mb2 $RELEASE $ARCH
+
+    - name: Upload build results
+      uses: actions/upload-artifact@v4
+      with:
+        name: RPM-build-results_SDK-for-${{ env.RELEASE }}
+        path: output/
+
+
+  build-on-OLDEST:
+    runs-on: ubuntu-24.04
+    steps:
+
+    - name: Checkout git repository
+      uses: actions/checkout@v4
 
     - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
       env:
@@ -149,7 +219,7 @@ jobs:
            sudo cp -r RPMS/. /share/output/$1/$2/' sh_mb2 $RELEASE $ARCH
 
     - name: Upload build results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: RPM-build-results_SDK-for-OLDEST
         path: output/
@@ -174,4 +244,3 @@ jobs:
 #branding:  # "Invalid workflow file: Unexpected value 'branding'"; maybe action MUST be located in '/' or the name MUST be action.yml or both, see e.g., https://github.com/actions/cache/blob/main/action.yml#L37
 #  icon: 'gift'
 #  color: 'purple'
-

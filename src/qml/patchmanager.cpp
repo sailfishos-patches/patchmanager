@@ -103,7 +103,7 @@ PatchManager::PatchManager(QObject *parent)
         watcher->deleteLater();
         QDBusPendingReply<QVariantMap> reply = *watcher;
         if (reply.isError()) {
-            qWarning() << Q_FUNC_INFO << reply.error().type() << reply.error().name() << reply.error().message();
+            qWarning() << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
 
@@ -119,7 +119,7 @@ PatchManager::PatchManager(QObject *parent)
         watcher->deleteLater();
         QDBusPendingReply<bool> reply = *watcher;
         if (reply.isError()) {
-            qWarning() << Q_FUNC_INFO << reply.error().type() << reply.error().name() << reply.error().message();
+            qWarning() << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
 
@@ -135,7 +135,7 @@ PatchManager::PatchManager(QObject *parent)
         watcher->deleteLater();
         QDBusPendingReply<bool> reply = *watcher;
         if (reply.isError()) {
-            qWarning() << Q_FUNC_INFO << reply.error().type() << reply.error().name() << reply.error().message();
+            qWarning() << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
 
@@ -151,7 +151,7 @@ PatchManager::PatchManager(QObject *parent)
         watcher->deleteLater();
         QDBusPendingReply<bool> reply = *watcher;
         if (reply.isError()) {
-            qWarning() << Q_FUNC_INFO << reply.error().type() << reply.error().name() << reply.error().message();
+            qWarning() << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
 
@@ -167,7 +167,7 @@ PatchManager::PatchManager(QObject *parent)
         watcher->deleteLater();
         QDBusPendingReply<QString> reply = *watcher;
         if (reply.isError()) {
-            qWarning() << Q_FUNC_INFO << reply.error().type() << reply.error().name() << reply.error().message();
+            qWarning() << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
 
@@ -402,7 +402,7 @@ void PatchManager::requestListPatches(const QString &patch, bool installed)
         watcher->deleteLater();
         QDBusPendingReply<QVariantList> reply = *watcher;
         if (reply.isError()) {
-            qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
+            qWarning() << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
         const QVariantList data = PatchManager::unwind(reply.value()).toList();
@@ -557,7 +557,7 @@ void PatchManager::watchCall(QDBusPendingCallWatcher *call, QJSValue callback, Q
         watcher->deleteLater();
         QDBusPendingReply<> reply = *watcher;
         if (reply.isError()) {
-            qWarning() << reply.error().type() << reply.error().name() << reply.error().message();
+            qWarning() << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
             if (errorCallback.isCallable()) {
                 QJSValueList callbackArguments;
                 callbackArguments << QJSValue(reply.error().message());
@@ -867,7 +867,7 @@ QVariant PatchManager::unwind(const QVariant &val, int depth)
 
     if( ++depth > maximum_dept ) {
         /* Leave result to invalid variant */
-        qWarning() << "Too deep recursion detected at userType:" << type;
+        qWarning() << Q_FUNC_INFO << "Too deep recursion detected at userType: " << type;
     }
     else if (type == QVariant::List) {
         /* Is built-in type, but does not get correctly converted
@@ -968,14 +968,14 @@ QVariant PatchManager::unwind(const QVariant &val, int depth)
 
         default:
             /* Unhandled types produce invalid QVariant */
-            qWarning() << "Unhandled QDBusArgument element type:" << elem;
+            qWarning() << Q_FUNC_INFO << "Unhandled QDBusArgument element type:" << elem;
             break;
         }
     } else {
         /* Default to using as is. This should leave for example QDBusError
          * types in a form that does not look like a string to qml code. */
         res = val;
-        qWarning() << "Unhandled QVariant userType:" << type;
+        qWarning() << Q_FUNC_INFO << "Unhandled QVariant userType:" << type;
     }
 
     return res;

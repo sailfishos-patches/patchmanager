@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 
     QSettings pm(QStringLiteral("/etc/patchmanager2.conf"), QSettings::IniFormat);
     if (pm.value(QStringLiteral("settings/applyOnBoot"), false).toBool()) {
-        qInfo() << Q_FUNC_INFO << "applyOnBoot is active, exiting!";
+        qInfo() << "Patchmanager UI: Setting applyOnBoot is active, exiting!";
         return 0;
     }
 
@@ -44,11 +44,11 @@ int main(int argc, char *argv[])
                                                           QStringLiteral("getLoaded"));
         QDBusReply<bool> reply = QDBusConnection::systemBus().call(msg);
         if (reply.isValid() && !reply.value()) {
-            qInfo() << Q_FUNC_INFO << "Showing dialog window";
+            qInfo() << "Patchmanager UI: Showing dialog window";
             v->setSource(QUrl::fromLocalFile(QStringLiteral("/usr/share/patchmanager/data/dialog.qml")));
             v->showFullScreen();
         } else {
-            qInfo() << Q_FUNC_INFO << "Exiting!";
+            qInfo() << "Patchmanager UI: Exiting!";
             qGuiApp->quit();
         }
     });
