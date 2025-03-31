@@ -148,9 +148,9 @@ static const QString SETTINGS_CODE    = QStringLiteral("settings");
 static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
 
 static const int HOTCACHE_COST_MAX = 5000;
-static const int HOTCACHE_COST_STRONG = 1;
-static const int HOTCACHE_COST_WEAK = 3;
-static const int HOTCACHE_COST = 2;
+static const int HOTCACHE_COST_STRONG  = 1;
+static const int HOTCACHE_COST_DEFAULT = 2;
+static const int HOTCACHE_COST_WEAK    = 3;
 
 /*!
   \class PatchManagerObject
@@ -1868,33 +1868,44 @@ void PatchManagerObject::startReadingLocalServer()
             return;
         }
         const QByteArray request = clientConnection->readAll();
-        QByteArray payload;
         const QString fakePath = QStringLiteral("%1%2").arg(s_patchmanagerCacheRoot, QString::fromLatin1(request));
-        payload = request;
+        bool passAsIs = true;
         if (
              (!m_failed) // return unaltered for failed
              && (!m_filter.active() || !m_filter.contains(request)) // filter inactive or not in the list of unpatched files
              && (Q_UNLIKELY(QFileInfo::exists(fakePath))) // file is patched
            )
         {
-            payload = fakePath.toLatin1();
+            passAsIs = false;
         } else {
             // failed state or file is unpatched
+            passAsIs = true;
         }
-        clientConnection->write(payload);
+        /* write the result back to the library as soon as possible */
+        if (passAsIs) {
+            clientConnection->write(request);
+        } else {
+            clientConnection->write(fakePath.toLatin1());
+        }
         clientConnection->flush();
 //        clientConnection->waitForBytesWritten();
 
-        // print debug and manage the cache after writing the data:
-        if (payload == request) { // file didn't exist
+        /* print debug and manage the cache after writing the data:
+         * if the file didn't exist, we add it to the cache.
+         * otherwise, we so nothing, but check that it wasn't wrongly in the
+         * cache, which shouldn't happen.
+         * Note that we don't actually store anything in the cache, we're only
+         * interested in the key and the cost management.
+         */
+        if (passAsIs) { // file didn't exist
             if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
                 qDebug() << Q_FUNC_INFO << "Requested:" << request << "was sent unaltered.";
             }
             QObject *dummy = new QObject(); // the cache will own it later
-            m_filter.insert(request, dummy, HOTCACHE_COST); // cost: see setupFilter, use middle ground here
+            m_filter.insert(request, dummy, HOTCACHE_COST_DEFAULT); // cost: see setupFilter, use middle ground here
         } else {
             if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
-                qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sent:" << payload;
+                qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sent:" << fakePath;
             }
             if (m_filter.remove(request)) {
                 qWarning() << Q_FUNC_INFO << "Hot cache: contained a patched file!";
