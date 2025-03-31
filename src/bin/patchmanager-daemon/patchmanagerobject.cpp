@@ -652,7 +652,7 @@ void PatchManagerObject::doPrepareCacheRoot()
     Creates the cache directory where patched files will be stored
     and read from when passed to the preload library.
 
-    If \apply is true, create the cache directories and files by copying from
+    If \a apply is true, create the cache directories and files by copying from
     and symlinking to the system filesystem, remove them as appropriate otherwise.
 
     \a patchName: name of the patch to prepare the cache for.
