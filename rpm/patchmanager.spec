@@ -272,6 +272,7 @@ exit 0
 %{_unitdir}/checkForUpdates-org.SfietKonstantin.patchmanager.timer
 %{_unitdir}/timers.target.wants/checkForUpdates-org.SfietKonstantin.patchmanager.timer
 %{_sharedstatedir}/environment/patchmanager/10-dbus.conf
+%{_sharedstatedir}/environment/patchmanager/99-debug.conf
 %{_userunitdir}/dbus-org.SfietKonstantin.patchmanager.service
 %{_userunitdir}/lipstick-patchmanager.service
 %{_userunitdir}/lipstick.service.wants/lipstick-patchmanager.service
