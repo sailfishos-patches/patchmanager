@@ -124,40 +124,9 @@
 
   All Patches managed by PM are installed under \c /usr/share/patchmanager/patches/NAME with NAME being a uniquely named directory.
 
-  This directory must contain at least two files: a \c JSON file called \c patch.json containing metadata, and a \c diff file called \c{unified_diff.patch}.
-
-  It may optionally also contain:
-    \list
-    \li Qt translation (.qm) files
-    \li icon files in PNG format
-    \li a QML file called \c main.qml (whose root element is a Sailfish Silica \c{Page}).
-    \li other QML-compatible files which are referenced / loaded from \c main.qml
-    \endlist
-
-  \note The directory NAME is usually and by convention the same as the Patch metadata field \c name, but this is not a strict requirement.  NAME should be reasonably unique though, in order to avoid naming conflicts with other Patches.
-
-  \section2 Web Catalog
-
-  Installation via Patchmanager's Web Catalog is the most common and recommended way of deploying Patches.
-  This is carried out in the Patchmanager GUI by selecting \uicontrol install on the \l {WebPatchPage}{Patch Page}.
-
-  PM will download metadata and a tar archive from the Web Catalog, extract the archive into the Patch storage location, and generate the necessary JSON file from the metadata.
-
-  \section2 RPM package
-
-  Patches may be distributed as RPM files, which assure the placement of files according to the structure explained above.  RPM files also provide advanced features as specifying dependencies and scriptlets which may be necessary for the correct operation or installation of a Patch.
-
-  \section2 TAR package
-
-  Patch developers may offer a Patch as a "naked" \c tar archive.  Although it should contain all necessary files, all checks to assure that the layout and content of the files in the archive are correct must be carried out by the user, in contrast to tar archives uploaded to the Web Catalog.
-
-  \section2 Manual installation
-
-  Patch developers or users may want to quickly place a Patch under PM's supervision without the effort of packaging and installing this Patch properly.  This can be easily done, as long the aforementioned requirements are obeyed.
-
-  \e{to be continued...}
-
+  For details about the structure of that location, as well as Patch packaging and installation methods, see the \l{patchdevinstall}{Patch Developer documentation}.
 */
+
 /****** Web Catalog page *******/
 /*!
   \title Patchmanager Web Catalog
