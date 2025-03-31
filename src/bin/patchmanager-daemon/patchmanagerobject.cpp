@@ -3042,15 +3042,17 @@ PatchManagerFilter::PatchManagerFilter(QObject *parent, int maxCost )
 }
 
 /* initialize the "static members", i.e. a list of very frequesntly accessed files. */
-/* only use relatively stable sonames here. No symlinks! */
+/* only use relatively stable sonames here. */
 const QStringList PatchManagerFilter::libList = QStringList({
-        "/usr/lib64/libtls-padding.so",
         "/usr/lib64/libpreloadpatchmanager.so",
+        "/lib/ld-linux-aarch64.so.1",
+        "/lib/ld-linux-armhf.so.3",
         "/lib64/libc.so.6",
         "/lib64/libdl.so.2",
         "/lib64/librt.so.1",
         "/lib64/libpthread.so.0",
         "/lib64/libgcc_s.so.1",
+        "/usr/lib64/libtls-padding.so",
         "/usr/lib64/libsystemd.so.0",
         "/usr/lib64/libcap.so.2",
         "/usr/lib64/libmount.so.1",
@@ -3085,8 +3087,10 @@ void PatchManagerFilter::setup()
         if (Q_PROCESSOR_WORDSIZE == 4) { // 32 bit
             libentry.replace("lib64", "lib");
         }
+
         if (QFileInfo::exists(libentry)) {
-            insert(libentry, new QObject(), HOTCACHE_COST_WEAK);
+            QFileInfo fi(libentry);
+            insert(fi.canonicalFilePath(), new QObject(), HOTCACHE_COST_WEAK);
         }
     }
 }
