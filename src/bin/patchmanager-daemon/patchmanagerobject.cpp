@@ -522,6 +522,9 @@ PatchManagerObject::~PatchManagerObject()
         connection.unregisterService(DBUS_SERVICE_NAME);
         connection.unregisterObject(DBUS_PATH_NAME);
     }
+    if (m_filter.active()) {
+        qDebug() << m_filter.stats();
+    }
 }
 
 void PatchManagerObject::registerDBus()
@@ -3027,7 +3030,7 @@ void PatchManagerObject::setupFilter()
  *
  * Checking for presence is done using QCache::object() (or
  * QCache::operator[]), not QCache::contains() in order to have the cache
- * notice "usage" of th cached object.
+ * notice "usage" of the cached object.
  *
  * \sa m_filter
  */
@@ -3038,7 +3041,7 @@ PatchManagerFilter::PatchManagerFilter(QObject *parent, int maxCost )
 {
 }
 
-/* initialize the static members */
+/* initialize the "static members", i.e. a list of very frequesntly accessed files. */
 /* only use relatively stable sonames here. No symlinks! */
 const QStringList PatchManagerFilter::libList = QStringList({
         "/usr/lib64/libtls-padding.so",
