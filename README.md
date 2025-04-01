@@ -24,4 +24,4 @@ Please see the [Patch Developer README](README-Patch-Developers.md) for informat
 
 ## Information for Patchmanager developers
 
-Please see the [PatchManager Developer README](README-Developers.md) for information on developing Patchmanager itself.
+Please see the [Patchmanager Developer README](README-Developers.md) for information on developing Patchmanager itself.
