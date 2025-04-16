@@ -27,7 +27,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # One job for the latest Docker image used and one for the oldest one(s).
+  # One job for the latest Docker image used, one for SFOS 4.3.0, and one for the oldest one(s).
   # Trying to download three multi-GB, layered docker images in a single job usually
   # results in "docker: write /var/lib/docker/tmp/GetImageBlobXYZ: no space left on device."
 
