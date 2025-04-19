@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
- * Copyright (c) 2021-2022, Patchmanager for SailfishOS contributors:
+ * Copyright (c) 2021-2025, Patchmanager for SailfishOS contributors:
  *                  - olf "Olf0" <https://github.com/Olf0>
  *                  - Peter G. "nephros" <sailfish@nephros.org>
  *
@@ -35,7 +35,8 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import org.nemomobile.dbus 2.0
+import Nemo.DBus 2.0
+import Nemo.Configuration 1.0
 
 ApplicationWindow {
     id: appWindow
@@ -58,14 +59,22 @@ ApplicationWindow {
     }
     initialPage: Component {
         Page {
+            allowedOrientations: Orientation.All
             onStatusChanged: {
                 if (status == PageStatus.Active && !appWindow.remorseItem) {
+                    var timeout = dialogConf.value * 1000
                     remorse.execute(button, qsTranslate("", "Activate all enabled Patches"), function() {
                         console.info("Accepted activation of all enabled Patches.");
                         dbusPm.call("loadRequest", [true]);
-                    }, 10000)
+                    }, timeout)
                     appWindow.remorseItem = remorse
                 }
+            }
+
+            ConfigurationValue {
+                id:  dialogConf
+                key: "/org/SfietKonstantin/patchmanager/dialog/timeout"
+                defaultValue: 10
             }
 
             SilicaFlickable {
@@ -86,7 +95,7 @@ ApplicationWindow {
                         anchors.right: parent.right
                         anchors.margins: Theme.horizontalPageMargin
                         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                        text: qsTranslate("", "Patchmanager will start to activate all enabled Patches in 10 seconds.")
+                        text: qsTranslate("", "Patchmanager will start to activate all enabled Patches in %1 seconds.").arg(dialogConf.value)
                     }
 
                     Item {
@@ -209,7 +218,7 @@ ApplicationWindow {
             }
 
             CoverActionList {
-                enabled: appWindow.remorseItem.pending
+                enabled: !!appWindow.remorseItem && appWindow.remorseItem.pending
                 CoverAction {
                     iconSource: "image://theme/icon-cover-cancel"
                     onTriggered: {
