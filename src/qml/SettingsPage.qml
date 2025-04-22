@@ -2,7 +2,7 @@
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
- * Copyright (c) 2021-2023 Patchmanager for SailfishOS contributors:
+ * Copyright (c) 2021-2025 Patchmanager for SailfishOS contributors:
  *                  - olf "Olf0" <https://github.com/Olf0>
  *                  - Peter G. "nephros" <sailfish@nephros.org>
  *                  - Vlad G. "b100dian" <https://github.com/b100dian>
@@ -71,6 +71,12 @@ Page {
         property bool showUpdatesOnly: true
     }
 
+    ConfigurationValue {
+        id:  dialogConf
+        key: "/org/SfietKonstantin/patchmanager/dialog/timeout"
+        defaultValue: 10
+    }
+
     SilicaFlickable {
         id: flick
         anchors.fill: parent
@@ -96,14 +102,6 @@ Page {
             }
 
             TextSwitch {
-                text: qsTranslate("", "Activate enabled Patches when booting")
-                description: qsTranslate("", "Automatically activate all enabled Patches when SailfishOS starts.")
-                checked: PatchManager.applyOnBoot
-                onClicked: PatchManager.applyOnBoot = !PatchManager.applyOnBoot
-                automaticCheck: false
-            }
-
-            TextSwitch {
                 text: qsTranslate("", "Show 'Disable and deactivate all Patches' pulley menu entry")
                 description: qsTranslate("", "Enable an additional pulley menu entry for Patchmanager's main page to disable and deactivate all Patches.")
                 checked: uisettings.showUnapplyAll
@@ -116,6 +114,42 @@ Page {
                 description: qsTranslate("", "When updates are available, hide all other Patches in Web Catalog.")
                 checked: uisettings.showUpdatesOnly
                 onClicked: uisettings.showUpdatesOnly = !uisettings.showUpdatesOnly
+                automaticCheck: false
+            }
+
+            SectionHeader { text: qsTranslate("", "Startup Activation") }
+
+            TextSwitch {
+                text: qsTranslate("", "Activate Patches on first login")
+                description: qsTranslate("", "Automatically activate all enabled Patches after Home Screen has been started for the first time.")
+                checked: !PatchManager.applyOnBoot
+                onClicked: PatchManager.applyOnBoot = !PatchManager.applyOnBoot
+                automaticCheck: false
+            }
+
+            Slider {
+                anchors {
+                    leftMargin: Theme.paddingLarge*2 // align to TextSwitch labels
+                    right: parent.right
+                    left: parent.left
+                }
+                enabled: !PatchManager.applyOnBoot
+                opacity: enabled ? 1.0 : Theme.opacityLow
+                Behavior on opacity { FadeAnimation{} }
+                label: qsTranslate("", "Activation Delay")
+                valueText: qsTranslate("", "%1 seconds").arg(sliderValue)
+                minimumValue: 5
+                maximumValue: 120
+                stepSize: 5
+                value: dialogConf.value
+                onSliderValueChanged: dialogConf.value = sliderValue
+            }
+
+            TextSwitch {
+                text: qsTranslate("", "Activate Patches when booting")
+                description: qsTranslate("", "Automatically activate all enabled Patches when SailfishOS starts.")
+                checked: PatchManager.applyOnBoot
+                onClicked: PatchManager.applyOnBoot = !PatchManager.applyOnBoot
                 automaticCheck: false
             }
 
