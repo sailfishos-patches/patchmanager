@@ -647,7 +647,7 @@ Page {
                     }
                     MenuItem {
                         id: patchinfoitem
-                        text: qsTranslate("", "Patch details")
+                        text: qsTranslate("", "Details")
                         onClicked: background.openPatchInfo()
                     }
                     MenuItem {
