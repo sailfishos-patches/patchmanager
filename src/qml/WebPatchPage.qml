@@ -113,6 +113,7 @@ Page {
         // simply defining the ListItems does not work, errors with "cannot assign a script item"
         // so we append them when we're ready
         function populate() {
+            clear()
             if (patchData.discussion) {
                 linksmodel.append({
                     "link": patchData.discussion,
