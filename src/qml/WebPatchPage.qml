@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
- * Copyright (c) 2021, Patchmanager for SailfishOS contributors:
+ * Copyright (c) 2021-2025 Patchmanager for SailfishOS contributors:
  *                  - olf "Olf0" <https://github.com/Olf0>
  *                  - Peter G. "nephros" <sailfish@nephros.org>
  *                  - Vlad G. "b100dian" <https://github.com/b100dian>
