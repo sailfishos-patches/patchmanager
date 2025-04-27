@@ -118,21 +118,21 @@ Page {
                 linksmodel.append({
                     "link": patchData.discussion,
                     "linktext": qsTranslate("", "Discussion"),
-                    "iconname": "icon-s-chat"
+                    "iconname": "icon-m-chat"
                 })
             }
             if (patchData.sources) {
                 linksmodel.append({
                     "link": patchData.sources,
                     "linktext": qsTranslate("", "Sources"),
-                    "iconname": "icon-s-developer"
+                    "iconname": "icon-m-developer-mode"
                 })
             }
             if (patchData.donations) {
                 linksmodel.append({
                     "link": patchData.donations,
                     "linktext": qsTranslate("", "Donations"),
-                    "iconname": "icon-s-invitation"
+                    "iconname": "icon-m-media-artists"
                 })
             }
         }
