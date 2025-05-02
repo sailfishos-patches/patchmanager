@@ -135,7 +135,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="83"/>
         <source>Patch %1 removed.</source>
-        <translation>Muutostiedosto %1 poistettu.</translation>
+        <translation>Muutostiedosto %1 poistettiin.</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="90"/>
