@@ -565,7 +565,7 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="130"/>
         <source>Enable various functions to be used by Patch developers. Among other things, it shows debug log files for applying the patch file when a Patch is activated on its details page.</source>
-        <translation>Ota käyttöön toimintoja muutostiedostojen kehittäjille. Tällöin näytetään muutostiedoston tietosivulla muun muassa virheenselvityslokit muutostiedoston käyttöönotosta kun muutostiedosto aktivoidaan.</translation>
+        <translation>Ota käyttöön toimintoja muutostiedostojen kehittäjille. Tällöin näytetään muutostiedoston tietosivulla muun muassa virheenselvityslokit muutostiedoston käyttöönotosta, kun muutostiedosto aktivoidaan.</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="108"/>
