@@ -54,7 +54,7 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="87"/>
         <source>Patchmanager allows to automatically modify system files via Patches. It provides a daemon which performs the activation of Patches, plus a GUI to configure these operations and to install or remove Patches.</source>
-        <translation>Muutostiedostojen hallinta mahdollistaa järjestelmätiedostojen automaattisen muokkauksen muutostiedostojen kautta. Siihen kuuluu taustapalvelu, joka suorittaa muutostiedostojen aktivoimisen, sekä GUI:n näiden konfiguroimiseksi ja muutostiedostojen asentamiseksi tai poistamiseksi.</translation>
+        <translation>Muutostiedostojen hallinta mahdollistaa järjestelmätiedostojen automaattisen muokkauksen muutostiedostojen kautta. Siihen sisältyy taustapalvelu, joka suorittaa muutostiedostojen aktivoimisen sekä graafinen käyttöliittymä, jolla voit konfiguroida näitä toimintoja ja asentaa tai poistaa muutostiedostoja.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="101"/>
