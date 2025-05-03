@@ -6,7 +6,8 @@ url             = https://github.com/sailfishos-patches/patchmanager
 
 include(common.qdocconf)
 
-depends += qtcore qtqml
+depends += qtcore qtqml qtnetwork qtdbus qtgui
+depends += patchmanager daemon
 
 headerdirs = ../../src/qml
 #headers.fileextensions = "*.h *.hpp"
@@ -15,5 +16,5 @@ sourcedirs = ../../src/qml
 sources += qmlplugin.qdoc
 #sources.fileextensions = "*.cpp *.qdoc *.qml"
 
-# get rid of warnings about undoicumented stuff in patchmanager.h
+# try to get rid of warnings about undocumented stuff in patchmanager.h
 Cpp.ignoretokens += Q_PROPERTY

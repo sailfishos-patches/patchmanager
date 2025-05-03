@@ -1,11 +1,10 @@
 import org.SfietKonstantin.patchmanager 2.0
 
 /*! \qmltype patchmanager
-    \inqmlmodule patchmanager
+    \inqmlmodule org.SfietKonstantin.patchmanager
     \brief Jolla Settings Plugin Page
-    \inherits \l {Page}
 
-    This loads the main Patchmanager UI from Jolla Settings.
+    This is a minimal QML Component that loads the main Patchmanager UI from Jolla Settings.
 */
 
 PatchManagerPage {}

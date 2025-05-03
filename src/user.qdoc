@@ -1,0 +1,78 @@
+/*!
+
+  \page user.html overview
+  \indexpage Patchmanager Documentation
+
+  \title Patchmanager for SailfishOS
+
+  Patchmanager is a tool for transparently modifying installed files by the
+  patch utility and for managing the special patch files ("Patches") for doing
+  so.
+
+  Since version 3.0, Patchmanager does not modify original files on mass
+  storage, it merely alters their content when they are loaded into RAM to be
+  executed.
+
+  \section1 Using
+
+  \section2 Launching
+
+  Patchmanager does not install an application icon on the Launcher, but
+  creates a new entry in the SailfishOS \b Settings app.
+
+  \section2 Using
+
+  We do not have a detailed User Guide for Patchmanager. If there is need for
+  one, it has to be written and contributed.
+
+  In the mean time, browsing the {Patchmanager Overview} and other parts of the
+  existing documentation may prove helpful.
+
+  \section3 Main Page
+
+  See PatchManagerPage
+
+  \section3 Settings
+
+  See SettingsPage
+
+  \section3 Web Catalog
+
+   See WebCatalogPage
+
+  \section3 Activating and deactivating Patches
+
+   \e{to be continued...}
+
+
+  \section1 Installing
+
+  To install a recent Patchmanager the SailfishOS:Chum community repository can
+  be used, which is easily accessed with the SailfishOS:Chum GUI application,
+  which in turn can be installed via the \l{SailfishOS:Chum GUI Installer}
+
+  Alternatively Patchmanager can be installed from its \l{OpenRepos repository}
+  using Storeman, which can be installed via the \l{Storeman Installer}.
+
+  While these two sources can also be used to manually download and install
+  Patchmanager, you may alternatively obtain Patchmanager RPMs from its
+  \l{Releases page} at GitHub.
+
+  \note The Patchmanager's OpenRepos repository and GitHub releases page also
+  offer the final releases of Patchmanager 3.0 for SailfishOS < 3.4.0 and
+  Patchmanager 2.3.3 for SailfishOS < 2.2.x.
+
+  \section1 Getting Patches
+
+  Modern Patches for Patchmanager 3 are provided via the \l{Web Catalog Site}
+  while older Patches were provided as
+  \l{Patch RPMs at OpenRepos}
+  and some of them are still maintained.
+
+  Mind that many Patches were first released at OpenRepos but later migrated to
+  the Web Catalog: For these you will find outdated RPMs, hence always search
+  in the Web Catalog first.
+
+  For other, more advanced methods of installing patches, see \l{patchdevinstall}{Patch Installation}
+
+*/

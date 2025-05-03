@@ -1,6 +1,6 @@
 /*!
   \title Patchmanager Documentation: Startup Dialog
-  \page index.html overview
+  \page index.html
   \indexpage Patchmanager Documentation
 
   This is a very simple Sailfish OS application that upon start checks the state of the Patchmanager Daemon to see whether it needs to launch a GUI.
