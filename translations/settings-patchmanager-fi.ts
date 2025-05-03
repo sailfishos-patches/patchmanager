@@ -54,7 +54,7 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="87"/>
         <source>Patchmanager allows to automatically modify system files via Patches. It provides a daemon which performs the activation of Patches, plus a GUI to configure these operations and to install or remove Patches.</source>
-        <translation>Muutostiedostojen hallinta mahdollistaa järjestelmätiedostojen automaattisen muokkauksen muutostiedostojen kautta. Siihen kuuluu taustapalvelu, joka suorittaa muutostiedostojen aktivoimisen, sekä GUI:n näiden konfiguroimiseksi ja muutostiedostojen asentamiseksi tai poistamiseksi.</translation>
+        <translation>Muutostiedostojen hallinta mahdollistaa järjestelmätiedostojen automaattisen muokkauksen muutostiedostojen kautta. Siihen sisältyy taustapalvelu, joka suorittaa muutostiedostojen aktivoimisen sekä graafinen käyttöliittymä, jolla voit konfiguroida näitä toimintoja ja asentaa tai poistaa muutostiedostoja.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="101"/>
@@ -135,7 +135,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="83"/>
         <source>Patch %1 removed.</source>
-        <translation>Muutostiedosto %1 poistettu.</translation>
+        <translation>Muutostiedosto %1 poistettiin.</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="90"/>
@@ -565,7 +565,7 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="130"/>
         <source>Enable various functions to be used by Patch developers. Among other things, it shows debug log files for applying the patch file when a Patch is activated on its details page.</source>
-        <translation>Ota käyttöön toimintoja muutostiedostojen kehittäjille. Tällöin näytetään muutostiedoston tietosivulla muun muassa virheenselvityslokit muutostiedoston käyttöönotosta kun muutostiedosto aktivoidaan.</translation>
+        <translation>Ota käyttöön toimintoja muutostiedostojen kehittäjille. Tällöin näytetään muutostiedoston tietosivulla muun muassa virheenselvityslokit muutostiedoston käyttöönotosta, kun muutostiedosto aktivoidaan.</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="108"/>
