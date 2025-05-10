@@ -61,7 +61,8 @@ systemd.files = \
 systemd.path = /usr/lib/systemd/system/
 INSTALLS += systemd
 
-env.files = environment/10-dbus.conf
+env.files = environment/10-dbus.conf \
+            environment/90-debug.conf 
 env.path = /var/lib/environment/patchmanager/
 INSTALLS += env
 

@@ -11,10 +11,6 @@ on:
   # Rather set a new tag in the format N/X.Y.Z (e.g., 1/0.6.3) to build a release originally tagged with 0.6.3 again.
 
 env:
-  # For the available docker images, see https://github.com/CODeRUS/docker-sailfishos-platform-sdk
-  # But LATEST means here, "known to run on the latest SailfishOS release": Binaries for 4.3.0 are known to run on 5.0.0,
-  # though altered icon paths by 4.6.0 require building for it, for details see https://github.com/sailfishos-patches/patchmanager/pull/479#pullrequestreview-2483451820
-  LATEST: 4.6.0.13
   # Do not wait up to the default of 10 minutes for network timeouts in a workflow which runs at most 20 minutes.
   SEGMENT_DOWNLOAD_TIMEOUT_MINS: 2
 
@@ -31,13 +27,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # One job for the latest Docker image used and one for the oldest one(s).
+  # One job for the latest Docker image used, one for SFOS 4.3.0, and one for the oldest one(s).
   # Trying to download three multi-GB, layered docker images in a single job usually
   # results in "docker: write /var/lib/docker/tmp/GetImageBlobXYZ: no space left on device."
 
   build-on-LATEST:
+  # For the available docker images, see https://github.com/CODeRUS/docker-sailfishos-platform-sdk
+  # But LATEST means here, "known to run on the latest SailfishOS release": Binaries for 4.3.0 are known to run on 5.0.0,
+  # though altered icon paths by 4.6.0 require building for it, for details see https://github.com/sailfishos-patches/patchmanager/pull/479#pullrequestreview-2483451820
     env:
-      RELEASE: ${{ env.LATEST }}
+      RELEASE: 4.6.0.13
     runs-on: ubuntu-24.04
     steps:
 
