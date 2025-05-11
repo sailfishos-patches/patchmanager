@@ -124,7 +124,7 @@ Page {
             if (patchData.sources) {
                 linksmodel.append({
                     "link": patchData.sources,
-                    "linktext": qsTranslate("", "Sources"),
+                    "linktext": qsTranslate("", "Source code repository"),
                     "iconname": "icon-m-developer-mode"
                 })
             }
