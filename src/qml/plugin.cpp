@@ -84,7 +84,9 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
     This property holds our own version
 */
 /*! \qmlproperty string PatchManager::serverMediaUrl
-    This poperty holds the URL to download screenshots from.
+    This poperty holds the URL to download screenshots from. The Patchmanager
+    Web Catalog backend supports hosting assets separately from the web
+    application, and this points to the asset URL.
 */
 /*! \qmlproperty int PatchManager::sfosVersionCheck
     This property keeps the setting of VersionCheck
