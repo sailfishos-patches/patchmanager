@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
- * Copyright (c) 2021, Patchmanager for SailfishOS contributors:
+ * Copyright (c) 2021-2025 Patchmanager for SailfishOS contributors:
  *                  - olf "Olf0" <https://github.com/Olf0>
  *                  - Peter G. "nephros" <sailfish@nephros.org>
  *                  - Vlad G. "b100dian" <https://github.com/b100dian>
@@ -113,25 +113,26 @@ Page {
         // simply defining the ListItems does not work, errors with "cannot assign a script item"
         // so we append them when we're ready
         function populate() {
+            clear()
             if (patchData.discussion) {
                 linksmodel.append({
                     "link": patchData.discussion,
                     "linktext": qsTranslate("", "Discussion"),
-                    "iconname": "icon-s-chat"
+                    "iconname": "icon-m-chat"
                 })
             }
             if (patchData.sources) {
                 linksmodel.append({
                     "link": patchData.sources,
-                    "linktext": qsTranslate("", "Sources"),
-                    "iconname": "icon-s-developer"
+                    "linktext": qsTranslate("", "Source code repository"),
+                    "iconname": "icon-m-developer-mode"
                 })
             }
             if (patchData.donations) {
                 linksmodel.append({
                     "link": patchData.donations,
                     "linktext": qsTranslate("", "Donations"),
-                    "iconname": "icon-s-invitation"
+                    "iconname": "icon-m-media-artists"
                 })
             }
         }

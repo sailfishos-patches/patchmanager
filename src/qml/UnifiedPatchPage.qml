@@ -162,7 +162,7 @@ Page {
             }
             SectionHeader {
                 visible: modelData.conflicts.length > 0
-                text: qsTranslate("", "May conflict with:")
+                text: qsTranslate("", "May conflict with these Patches:")
             }
             Repeater {
                 visible: modelData.conflicts.length > 0
@@ -227,7 +227,7 @@ Page {
                     if (modelData.sources) {
                       linksmodel.append({
                           "link": modelData.sources,
-                          "linktext": qsTranslate("", "Sources"),
+                          "linktext": qsTranslate("", "Source code repository"),
                           "iconname": "icon-s-developer"
                       })
                     }
