@@ -69,7 +69,7 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
 */
 /*! \qmlproperty bool PatchManager::developerMode
     \deprecated
-    \sa {Patchmanager Configuration Files}, inifile
+    \sa {Patchmanager Configuration Files}, \l{inifile}
 */
 /*! \qmlproperty bool PatchManager::failure
     If \c true, PM is in Failure Mode.
@@ -78,7 +78,7 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
     This property holds the Operating System version. This is used for version checking.
 */
 /*! \qmlproperty bool PatchManager::patchDevelMode
-    \sa {Patchmanager Configuration Files}, {inifile}{\c{/etc/patchmanager2.conf}}
+    \sa {Patchmanager Configuration Files}, \l{inifile}{\c{/etc/patchmanager2.conf}}
 */
 /*! \qmlproperty string PatchManager::patchmanagerVersion
     This property holds our own version
