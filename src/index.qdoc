@@ -72,7 +72,7 @@
 
   \section2 1. A Patch is "activated"
 
-  When a user activates a Patch via the GUI, a signal is sent to the Patchmanager daemon.
+  When a user activates a Patch via the GUI, a signal is sent to the Patchmanager Daemon.
 
   When activated, for each file a patch alters, a copy of the original
   file is put into a cache directory in \c /tmp, and the changes are applied
@@ -91,7 +91,7 @@
   \list
   \li Intercepts calls to \l {https://www.man7.org/linux/man-pages/man2/open.2.html}{\c{open()} (or \c{open64()})},
   \li analyses which files the call was meant to open
-  \li asks the Patchmanager daemon (via UNIX Socket) whether it knows of a patched version.
+  \li asks the Patchmanager Daemon (via UNIX Socket) whether it knows of a patched version.
   \endlist
 
   If that is the case, the daemon will return a path to its cache directory, and
@@ -231,7 +231,7 @@
       \endtable
 
   \c lipstick-patchmanager.service watches the state of the Lipstick service.
-  If Lipstick crashes, the Patchmanager daemon assumes it was caused by a patch
+  If Lipstick crashes, the Patchmanager Daemon assumes it was caused by a patch
   and goes into \c failed state. In this state, no Patches are activated, and
   PM must be reactivated via the GUI.
 
