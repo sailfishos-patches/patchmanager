@@ -1379,7 +1379,9 @@ void PatchManagerObject::votePatch(const QString &patch, int action)
                               Q_ARG(int, action));
 }
 
-/*!  An \internal thing, let's not spoil the eggs!  */
+/*!  Let's not spoil the eggs!
+     \internal
+ */
 QString PatchManagerObject::checkEaster()
 {
     DBUS_GUARD(QString())
@@ -1778,7 +1780,7 @@ QString PatchManagerObject::getOsVersion() const
 //    refreshPatchList();
 //}
 
-/*!  Return the result of calling \c QObject::eventFilter() on \a watched, \a event  */
+/*!  Call \l {QObject::} {QObject::eventFilter()} on \a watched, \a event, and return the result */
 bool PatchManagerObject::eventFilter(QObject *watched, QEvent *event)
 {
     if (qEnvironmentVariableIsSet("PM_DEBUG_EVENTFILTER")) {
@@ -1790,8 +1792,7 @@ bool PatchManagerObject::eventFilter(QObject *watched, QEvent *event)
 /*!
     Detect a Lipstick crash, assume it was our fault, clean up and set ourselves into failed state.
 
-    \sa PatchManagerObject::onFailureOccured()
-    \sa PatchManagerObject::FailureOccured()
+    \sa PatchManagerObject::onFailureOccured(), PatchManagerObject::FailureOccured()
 */
 void PatchManagerObject::onLipstickChanged(const QString &, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {

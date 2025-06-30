@@ -57,12 +57,18 @@
   \title Sailfish.Silica.Page
 */
 /****** Try to fix autlinking errors for standard Qt types*****/
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qobject.html
+    \title  QObject */
 /*! \externalpage https://doc.qt.io/archives/qt-5.6/qml-qtqml-models-listmodel.html
     \title ListModel    */
 /*! \externalpage https://doc.qt.io/archives/qt-5.6/qstring.html
     \title  QString */
 /*! \externalpage https://doc.qt.io/archives/qt-5.6/qvariant.html
     \title  QVariant */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qvariantlist.html
+    \title  QVariantList */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qvariantmap.html
+    \title  QVariantMap */
 /*! \externalpage https://doc.qt.io/archives/qt-5.6/qqmlpropertymap.html
     \title  QQmlPropertyMap */
 /*! \externalpage https://doc.qt.io/archives/qt-5.6/qabstractitemmodel.html
