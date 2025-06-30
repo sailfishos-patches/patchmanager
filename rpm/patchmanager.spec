@@ -183,6 +183,13 @@ export NO_PM_PRELOAD=1
 case "$1" in
 1)  # Installation
   echo "Installing %{name}: %%post section"
+  # See #507: https://github.com/sailfishos-patches/patchmanager/issues/507
+  if [ $(getent group inet) ]; then
+    echo "OK, this system has an 'inet' group."
+  else
+    echo "OK, this system does not have an 'inet' group. Lets hope it doesn't need one."
+    sed -i 's/SupplementaryGroups=inet/#SupplementaryGroups=inet/' %{_unitdir}/dbus-org.SfietKonstantin.patchmanager.service
+  fi
 ;;
 [2-9])  # Update
   echo "Updating %{name}: %%post section"
