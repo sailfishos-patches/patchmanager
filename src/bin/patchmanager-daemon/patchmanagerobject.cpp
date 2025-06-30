@@ -160,6 +160,8 @@ static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
   The binary can also serve as a simple command-line client to a running
   daemon.  See the output of \c{patchmanager --help} for more information.
 
+  \sa {Patchmanager Documentation: Daemon}
+
 */
 
 /*!

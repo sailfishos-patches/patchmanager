@@ -23,7 +23,7 @@
   For information on how Patchmanager operates internally, see:
 
   \list
-  \li \l {Patchmanager Overview}
+  \li \l {Overview of Patchmanager Internals}
   \li \l {Patchmanager Services}
   \li \l {Patchmanager Configuration Files}
   \endlist
@@ -60,7 +60,7 @@
 
 /****** Overview page *******/
 /*!
-  \title Patchmanager Overview
+  \title Overview of Patchmanager Internals
 
   \page pmoverview.html overview
   \indexpage Patchmanager Documentation
@@ -72,11 +72,13 @@
 
   \section2 1. A Patch is "activated"
 
-  When a user activates a Patch via the GUI, a signal is sent to the Patchmanager Daemon.
+  When a user activates a Patch via the GUI (or, theoretically, by calling the
+  right D-Bus method without a GUI), a signal is sent to the Patchmanager
+  Daemon.
 
-  When activated, for each file that is changed by the patch file, a copy of the original
-  file is put into a cache directory in \c /tmp, and the changes are applied
-  to this copy instead of the original file.
+  When the signal is received, for each file that is changed by the patch file,
+  a copy of the original file is put into a cache directory in \c /tmp, and the
+  changes are applied to this copy instead of the original file.
 
   If there are paths or files involved in the patch file which do not exist yet
   in the filesystem, they will be created in the cache directory, and a symbolic link
@@ -89,7 +91,7 @@
   \section2 3. The Preload Library:
 
   \list
-  \li Intercepts calls to \l {https://www.man7.org/linux/man-pages/man2/open.2.html}{\c{open()} (or \c{open64()})},
+  \li intercepts calls to \l {https://www.man7.org/linux/man-pages/man2/open.2.html}{\c{open()} (or \c{open64()})},
   \li analyses which files the call was meant to open
   \li asks the Patchmanager Daemon (via UNIX Socket) whether it knows of a patched version.
   \endlist
@@ -148,7 +150,7 @@
 /****** Services Documentation page *******/
 /*!
   \title Patchmanager Services
-  \previouspage {Patchmanager Overview}
+  \previouspage {Overview of Patchmanager Internals}
   \nextpage {Patchmanager Configuration Files}
 
   \page pmservices.html overview
