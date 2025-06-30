@@ -586,7 +586,7 @@ void PatchManagerObject::doRegisterDBus()
 ()
     Emits signals \c autoApplyingStarted(), \c autoApplyingPatch(), \c autoApplyingFailed(), autoApplyingFinished(), depending on state.
 
-    \sa PatchManagerObject::doPrepareCache(), {Patchmanager Configuration Files}, inifile, refreshPatchList(), setWorkingPatches()
+    \sa PatchManagerObject::doPrepareCache(), {Patchmanager Configuration Files}, refreshPatchList(), setWorkingPatches()
 */
 void PatchManagerObject::doPrepareCacheRoot()
 {
