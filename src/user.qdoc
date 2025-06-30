@@ -25,6 +25,35 @@
   We do not have a detailed User Guide for Patchmanager. If there is need for
   one, it has to be written and contributed.
 
+  \section3 Activating and deactivating Patches
+
+   \e{to be continued...}
+
+  \section3 Failure mode
+
+   Whenever Patchmanager detects a crash (of Home Screen) which may have
+   been caused by an active Patch, it goes into Failed State as a safety measure.
+
+   In this state, all Patches are deactivated, the Patchmanager daemon \e may
+   not be running, and Patches will not have any effect on the system.
+
+   This is important to allow Home Screen to start normally in the case of a
+   broken Patch, and not leave the user with no way to interact with their system.
+
+   A user will have to manually switch out of Failed State (ideally after
+   investigating which patch caused the failure), activate their wanted patches
+   again, and ideally \e not activate the one which caused the failure.
+
+   In Failed State, the following menu entries appear in the main page:
+   \list
+
+   \li \e{Start Patchmanager's daemon}: in case the Patchmanager Daemon is not running, this will start it.
+   \li \e{Restore prior enabled list}: Whenever Patchmanager succeeds applying a selection of activated Patches, it will store that set in the background. This option will load that set, and activate the Patches listed within.
+   \li \e{Resolve failure}: This will end Failed State, and resume normal operations of Patchmanager. Unless the Restore feature mentioned above was used, this will usually mean all patches are deactivated, and the user will have to re-activate them one by one.
+   \endlist
+
+  \section2 More information
+
   In the mean time, browsing the {Overview of Patchmanager Internals} and other parts of the
   existing documentation may prove helpful.
 
@@ -40,9 +69,6 @@
 
    See WebCatalogPage
 
-  \section3 Activating and deactivating Patches
-
-   \e{to be continued...}
 
 
   \section1 Installing
