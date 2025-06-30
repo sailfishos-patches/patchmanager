@@ -27,14 +27,81 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # One job for the latest Docker image used, one for SFOS 4.3.0, and one for the oldest one(s).
-  # Trying to download three multi-GB, layered docker images in a single job usually
-  # results in "docker: write /var/lib/docker/tmp/GetImageBlobXYZ: no space left on device."
+  # One job for the latest Docker image used, one for SFOS 4.6.0, one for SFOS 4.3.0, and one for the oldest one(s).
+  # Trying to download three multi-GB, layered docker images in a single job usually results in 
+  # "docker: write /var/lib/docker/tmp/GetImageBlobXYZ: no space left on device."
 
   build-on-LATEST:
   # For the available docker images, see https://github.com/CODeRUS/docker-sailfishos-platform-sdk
-  # But LATEST means here, "known to run on the latest SailfishOS release": Binaries for 4.3.0 are known to run on 5.0.0,
-  # though altered icon paths by 4.6.0 require building for it, for details see https://github.com/sailfishos-patches/patchmanager/pull/479#pullrequestreview-2483451820
+    env:
+      RELEASE: 5.0.0.43
+    runs-on: ubuntu-24.04
+    steps:
+
+    - name: Checkout git repository
+      uses: actions/checkout@v4
+
+    #- name: Prepare
+    #  run: 
+
+    # Caching Docker images is not ready yet, see 
+    # https://github.com/storeman-developers/harbour-storeman-installer/blob/devel/cache-docker-images_github-ci.md
+    #- name: Cache Docker images of the Sailfish-SDK
+    #  id: cache-sdk
+    #  uses: actions/cache@v4
+    #  with:
+    #    path: $GITHUB_WORKSPACE/…
+    #    key: cache
+
+    - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
+      env:
+        ARCH: i486
+      run: |
+        set -x
+        mkdir -p output/$RELEASE/$ARCH
+        docker run --rm -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
+           mkdir -p build
+           cd build
+           cp -r /share/. .
+           mb2 -t SailfishOS-$1-$2 build -d
+           sudo cp -r RPMS/. /share/output/$1/$2/' sh_mb2 $RELEASE $ARCH
+
+    - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
+      env:
+        ARCH: armv7hl
+      run: |
+        set -x
+        mkdir -p output/$RELEASE/$ARCH
+        docker run --rm -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
+           mkdir -p build
+           cd build
+           cp -r /share/. .
+           mb2 -t SailfishOS-$1-$2 build -d
+           sudo cp -r RPMS/. /share/output/$1/$2/' sh_mb2 $RELEASE $ARCH
+
+    - name: Build ${{ env.ARCH }} on ${{ env.RELEASE }}
+      env:
+        ARCH: aarch64
+      run: |
+        set -x
+        mkdir -p output/$RELEASE/$ARCH
+        docker run --rm -v $PWD:/share coderus/sailfishos-platform-sdk:$RELEASE /bin/sh -xc '
+           mkdir -p build
+           cd build
+           cp -r /share/. .
+           mb2 -t SailfishOS-$1-$2 build -d
+           sudo cp -r RPMS/. /share/output/$1/$2/' sh_mb2 $RELEASE $ARCH
+
+    - name: Upload build results
+      uses: actions/upload-artifact@v4
+      with:
+        name: RPM-build-results_SDK-for-${{ env.RELEASE }}
+        path: output/
+
+
+  build-on-4-6-0:
+  # Though Binaries for 4.3.0 are known to run on 5.0.0, the altered icon paths by 4.6.0 require building for it, 
+  # for details see https://github.com/sailfishos-patches/patchmanager/pull/479#pullrequestreview-2483451820
     env:
       RELEASE: 4.6.0.13
     runs-on: ubuntu-24.04
