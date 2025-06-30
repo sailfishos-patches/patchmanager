@@ -74,13 +74,13 @@
 
   When a user activates a Patch via the GUI, a signal is sent to the Patchmanager Daemon.
 
-  When activated, for each file a patch alters, a copy of the original
+  When activated, for each file that is changed by the patch file, a copy of the original
   file is put into a cache directory in \c /tmp, and the changes are applied
   to this copy instead of the original file.
 
-  If there are paths or files involved in a patch which do not exist yet
+  If there are paths or files involved in the patch file which do not exist yet
   in the filesystem, they will be created in the cache directory, and a symbolic link
-  pointing to them is placed in the original filesystem.
+  pointing to them is placed in the original filesystem location.
 
   \section2 2. A patched application is launched.
 
@@ -105,7 +105,7 @@
   apps or services need to be restarted. The UI client is expected to issue the
   command to restart these soon.
   As long as the corresponding processes are not restarted, the effect of the
-  applied patch will not show, or may only show partially, depending on the "patch
+  applied Patch will not show, or may only show partially, depending on the "patch
   history" of the respective process.
 
   \note Due to the nature of the interaction between the daemon and the
@@ -331,7 +331,7 @@
 
   \section3 Config section [votes]
 
-  Saves the voting state for each patch a user has voted on in the
+  Saves the voting state for each Patch a user has voted on in the
   {Patchmanager Documentation: Settings Plugin}{Settings Plugin}.
 
   \section2 \c{/var/lib/environment/patchmanager-dialog/}
