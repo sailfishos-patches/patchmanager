@@ -49,10 +49,46 @@ import org.SfietKonstantin.patchmanager 2.0
     \brief Manages Application Settings, both global and user-specific ones
 
      The usual, system-wide configuration values are set via D-Bus plugin by the
-     Patchmanager daemon, which stores them in \c{/etc/patchmanager2.conf}
+     Patchmanager Daemon, which stores them in \c{/etc/patchmanager2.conf}
      The configuration group \c uisettings is for settings which \e solely affect
      the PM GUI application and consequently also are per-user settings.
 
+    \section1 Settings Overview
+    \section2 General
+
+        \table
+            \header
+            \li Name
+            \li Description
+            \row
+               \li Show notification on success
+               \li If this is off, notifications will only be shown when something went wrong.
+            \row
+               \li Activate enabled Patches when booting
+               \li Automatically activate all enabled Patches when SailfishOS starts.
+            \row
+               \li Show 'Disable and deactivate all Patches' pulley menu entry
+               \li Enable an additional pulley menu entry for Patchmanager's main page to disable and deactivate all Patches.
+            \row
+               \li Show only updates in Web Catalog
+               \li When updates are available, hide all other Patches in Web Catalog.
+        \endtable
+
+    \section2 Advanced
+        \table
+            \header
+            \li Name
+            \li Description
+            \row
+              \li Version Check
+              \li Allow to enable Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.
+            \row
+              \li Mode for Patch developers
+              \li Enable various functions to be used by Patch developers. Among other things, it shows debug log files for applying the patch file when a Patch is activated on its details page.
+            \row
+              \li  Convert Patches between 32-bit and 64-bit
+              \li  Automatically convert lib or lib64 for select paths shown below.
+        \endtable
 */
 Page {
 

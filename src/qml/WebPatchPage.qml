@@ -101,7 +101,7 @@ Page {
 
     /*! \qmlproperty bool fetching
 
-        Indicates whether data is currently being downloaded. The WebPatchPage will show a ViewPlaceholder if true.
+        Indicates whether data is currently being downloaded. The WebPatchPage will show a \l{Sailfish.Silica.ViewPlaceholder}{ViewPlaceholder} if true.
 
         Default \c true
     */

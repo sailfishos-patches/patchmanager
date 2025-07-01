@@ -52,12 +52,16 @@ if [ -z "$QT_INSTALL_DOCS" ]; then
 		QT_INSTALL_DOCS=/usr/share/doc/qt5
 	elif [ -f /usr/share/qt5/doc/global/macros.qdocconf ]; then
 		QT_INSTALL_DOCS=/usr/share/qt5/doc
+	else
+		printf '## ERROR: global macro config does not exist.\n'
+		printf "## You probably need to install \'qt5-tools\''\n"
+		exit 1
 	fi
 fi
 
 printf '## Generating Docs...\n'
 [ -d $OUT ] && rm -r $OUT
-qdoc --no-examples --outputdir $OUT --outputformat HTML --installdir $QMAKE_INSTALL_ROOT/doc doc/qdoc/master.qdocconf --single-exec $@
+qdoc --no-examples --showinternal --outputdir $OUT --outputformat HTML --installdir $QMAKE_INSTALL_ROOT/doc doc/qdoc/master.qdocconf --single-exec $@
 printf '## End of Doc generation at "%s"\n' "$OUT"
 
 [ $switched_dirs = "true" ] && popd >/dev/null || cd -

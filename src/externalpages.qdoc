@@ -1,0 +1,96 @@
+/*!
+  \externalpage https://sailfishos-patches.github.io/patchmanager
+  \title Documentation Home
+*/
+/*!
+  \externalpage https://doc.qt.io/archives/qt-5.6/
+  \title Qt 5.6 Documentation
+*/
+/*!
+  \externalpage https://coderus.openrepos.net/pm2/projects/
+  \title Web Catalog Site
+*/
+/*!
+  \externalpage https://github.com/CODeRUS/django-test
+  \title Web Catalog Source Code Repository
+*/
+/*!
+  \externalpage https://github.com/sailfishos-patches/patchmanager
+  \title Patchmanager GitHub Repository
+*/
+/*!
+  \externalpage https://github.com/sailfishos-patches/patchmanager/blob/master/README.md
+  \title Patchmanager README
+*/
+/*!
+  \externalpage https://openrepos.net/content/olf/sailfishoschum-gui-installer
+  \title SailfishOS:Chum GUI Installer
+*/
+/*!
+  \externalpage https://openrepos.net/user/16848/programs
+  \title OpenRepos repository
+*/
+/*!
+   \externalpage https://openrepos.net/content/olf/storeman-installer
+   \title Storeman Installer
+*/
+/*!
+  \externalpage https://github.com/sailfishos-patches/patchmanager/releases
+  \title Releases page
+*/
+/*!
+  \externalpage https://openrepos.net/category/patches
+  \title Patch RPMs at OpenRepos
+*/
+
+/****** Try to fix autlinking errors for Silica types*****/
+/*!
+  \externalpage https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-sectionheader.html/
+  \title Sailfish.Silica.SectionHeader
+*/
+/*!
+  \externalpage https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-viewplaceholder.html/
+  \title Sailfish.Silica.ViewPlaceholder
+*/
+/*!
+  \externalpage https://sailfishos.org/develop/docs/silica/qml-sailfishsilica-sailfish-silica-page.html/
+  \title Sailfish.Silica.Page
+*/
+/****** Try to fix autlinking errors for standard Qt types*****/
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qobject.html
+    \title  QObject */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qml-qtqml-models-listmodel.html
+    \title ListModel    */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qstring.html
+    \title  QString */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qvariant.html
+    \title  QVariant */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qvariantlist.html
+    \title  QVariantList */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qvariantmap.html
+    \title  QVariantMap */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qqmlpropertymap.html
+    \title  QQmlPropertyMap */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qabstractitemmodel.html
+    \title  QAbstractItemModel */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qt.html#ItemDataRole-enum
+    \title  DisplayRole */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qt.html#ItemDataRole-enum
+    \title  DecorationRole */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qt.html#ItemDataRole-enum
+    \title  EditRole */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qml-qtqml-qt.html#qsTranslate-method
+    \title  qsTranslate() */
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qfile.html
+    \title QFile
+    \target Qt::QFile::exists()
+*/
+
+
+/*! \externalpage https://doc.qt.io/archives/qt-5.6/qloggingcategory.html#logging-rules
+    \title Qt Logging Rules
+*/
+
+/*! \externalpage https://dbus.freedesktop.org/doc/dbus-daemon.1.html
+    \title D-Bus Documentation
+*/

@@ -66,7 +66,7 @@ Page {
 
     /*
      * The usual, system-wide configuration values are set via D-Bus plugin by the
-     * Patchmanager daemon, which stores them in /etc/patchmanager2.conf
+     * Patchmanager Daemon, which stores them in /etc/patchmanager2.conf
      * This configuration group "uisettings" is for settings which *solely* affect
      * the PM GUI application and consequently also are per-user settings.
     */

@@ -1,0 +1,104 @@
+/*!
+
+  \page user.html overview
+  \indexpage Patchmanager Documentation
+
+  \title Patchmanager for SailfishOS
+
+  Patchmanager is a tool for transparently modifying installed files by the
+  patch utility and for managing the special patch files ("Patches") for doing
+  so.
+
+  Since version 3.0, Patchmanager does not modify original files on mass
+  storage, it merely alters their content when they are loaded into RAM to be
+  executed.
+
+  \section1 Using
+
+  \section2 Launching
+
+  Patchmanager does not install an application icon on the Launcher, but
+  creates a new entry in the SailfishOS \b Settings app.
+
+  \section2 Using
+
+  We do not have a detailed User Guide for Patchmanager. If there is need for
+  one, it has to be written and contributed.
+
+  \section3 Activating and deactivating Patches
+
+   \e{to be continued...}
+
+  \section3 Failure mode
+
+   Whenever Patchmanager detects a crash (of Home Screen) which may have
+   been caused by an active Patch, it goes into Failed State as a safety measure.
+
+   In this state, all Patches are deactivated, the Patchmanager daemon \e may
+   not be running, and Patches will not have any effect on the system.
+
+   This is important to allow Home Screen to start normally in the case of a
+   broken Patch, and not leave the user with no way to interact with their system.
+
+   A user will have to manually switch out of Failed State (ideally after
+   investigating which patch caused the failure), activate their wanted patches
+   again, and ideally \e not activate the one which caused the failure.
+
+   In Failed State, the following menu entries appear in the main page:
+   \list
+
+   \li \e{Start Patchmanager's daemon}: in case the Patchmanager Daemon is not running, this will start it.
+   \li \e{Restore prior enabled list}: Whenever Patchmanager succeeds applying a selection of activated Patches, it will store that set in the background. This option will load that set, and activate the Patches listed within.
+   \li \e{Resolve failure}: This will end Failed State, and resume normal operations of Patchmanager. Unless the Restore feature mentioned above was used, this will usually mean all patches are deactivated, and the user will have to re-activate them one by one.
+   \endlist
+
+  \section2 More information
+
+  In the mean time, browsing the {Overview of Patchmanager Internals} and other parts of the
+  existing documentation may prove helpful.
+
+  \section3 Main Page
+
+  See PatchManagerPage
+
+  \section3 Settings
+
+  See SettingsPage
+
+  \section3 Web Catalog
+
+   See WebCatalogPage
+
+
+
+  \section1 Installing
+
+  To install a recent Patchmanager the SailfishOS:Chum community repository can
+  be used, which is easily accessed with the SailfishOS:Chum GUI application,
+  which in turn can be installed via the \l{SailfishOS:Chum GUI Installer}
+
+  Alternatively Patchmanager can be installed from its \l{OpenRepos repository}
+  using Storeman, which can be installed via the \l{Storeman Installer}.
+
+  While these two sources can also be used to manually download and install
+  Patchmanager, you may alternatively obtain Patchmanager RPMs from its
+  \l{Releases page} at GitHub.
+
+  \note The Patchmanager's OpenRepos repository and GitHub releases page also
+  offer the final releases of Patchmanager 3.0 for SailfishOS < 3.4.0 and
+  Patchmanager 2.3.3 for SailfishOS < 2.2.x.
+
+  \section1 Getting Patches
+
+  Modern Patches for Patchmanager 3 are provided via the \l{Web Catalog Site}
+  while older Patches were provided as
+  \l{Patch RPMs at OpenRepos}
+  and some of them are still maintained.
+
+  Mind that many Patches were first released at OpenRepos but later migrated to
+  the Web Catalog: For these you will find outdated RPMs, hence always search
+  in the Web Catalog first.
+
+  For other, more advanced methods of installing patches, see \l{patchdevinstall}{Patch Installation}
+
+*/
