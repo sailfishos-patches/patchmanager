@@ -21,7 +21,7 @@
 Name:       patchmanager
 
 Summary:    Allows to manage Patches for SailfishOS
-Version:    3.2.12
+Version:    3.2.13
 Release:    1
 # The Group tag should comprise one of the groups listed here:
 # https://github.com/mer-tools/spectacle/blob/master/data/GROUPS
