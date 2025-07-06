@@ -15,7 +15,7 @@ systemd.files = \
 systemd.path = /usr/lib/systemd/user
 INSTALLS += systemd
 
-icons.files = ../../icon/patchmanager-icon.svg
+icons.files = ../../icons/patchmanager-icon.svg
 icons.path = /usr/share/patchmanager/data
 INSTALLS += icons
 
