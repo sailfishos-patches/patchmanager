@@ -1,7 +1,7 @@
 TEMPLATE = aux
 
-OTHER_FILES = patchmanager.png \
-    patchmanager-big.png \
+OTHER_FILES = \
+    ../icon/patchmanager-icon.svg \
     morpog.jpeg \
     ancelad.jpg \
     jakibaki.jpeg \
