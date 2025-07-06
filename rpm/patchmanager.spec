@@ -288,15 +288,13 @@ exit 0
 %{_datadir}/translations
 %{_datadir}/jolla-settings/pages/%{name}
 %{_datadir}/jolla-settings/entries/%{name}.json
-%{_datadir}/%{name}/icons/icon-m-patchmanager.png
-
+%{_datadir}/icons/hicolor/scalable/apps/*.svg
 # On SailfishOS < 4.6:
 # /usr/share/themes/sailfish-default/meegotouch/zX.Y/icons/*.png
 # On SailfishOS >= 4.6:
 # /usr/share/themes/sailfish-default/silica/zX.Y/icons/*.png
 # /usr/share/themes/sailfish-default/silica/zX.Y/icons-monochrome/*.png
 %{_datadir}/themes/sailfish-default/*/z*/icons*/*.png
-%{_datadir}/icons/hicolor/scalable/apps/*.svg
 
 %changelog
 * Thu Sep  9 1999 SailfishOS Patches <sailfishos-patches@users.noreply.github.com> - 99.99.99
