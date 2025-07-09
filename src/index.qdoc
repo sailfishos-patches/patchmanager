@@ -168,7 +168,7 @@
   Calls can be issued this way, for example:
 
   \badcode
-      dbus-send --print-reply --system --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager org.SfietKonstantin.patchmanager.checkforUpdates
+      dbus-send --print-reply --system --dest=org.SfietKonstantin.patchmanager /org/SfietKonstantin/patchmanager org.SfietKonstantin.patchmanager.checkForUpdates
   \endcode
 
   \section2 Systemd System Units
