@@ -95,9 +95,9 @@ Page {
             name: "olf"
             nickname: "Olf0"
             description: "Maintainer"
-	    socialmedia: "https://forum.sailfishos.org/u/olf/"
+            socialmedia: "https://forum.sailfishos.org/u/olf/"
             socialmedianame: "FSO"
-	    website: "https://github.com/Olf0"
+            website: "https://github.com/Olf0"
         }
         ListElement {
             icon: "/usr/share/patchmanager/data/morpog.jpeg"
@@ -125,7 +125,7 @@ Page {
             name: ""
             nickname: "marbalf (MBF)"
             description: "Icon master"
-	    socialmedia: "https://forum.sailfishos.org/u/marbalf/"
+            socialmedia: "https://forum.sailfishos.org/u/marbalf/"
             socialmedianame: "FSO"
             website: "https://codeberg.org/marbalf"
         }
