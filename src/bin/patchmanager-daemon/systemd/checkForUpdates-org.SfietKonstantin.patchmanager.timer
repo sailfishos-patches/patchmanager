@@ -2,7 +2,7 @@
 Description=Patchmanager check for updates timer
 Requires=dbus.service
 After=dbus.service
-After=multi-user.target
+PartOf=multi-user.target
 
 [Timer]
 Unit=checkForUpdates-org.SfietKonstantin.patchmanager.service
