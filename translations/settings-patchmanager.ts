@@ -44,7 +44,7 @@
         <location filename="../src/bin/dialog/dialog.qml" line="217"/>
         <location filename="../src/qml/AboutPage.qml" line="75"/>
         <location filename="../src/qml/RestartServicesDialog.qml" line="116"/>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="326"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="327"/>
         <source>Patchmanager</source>
         <translation type="unfinished"></translation>
     </message>
@@ -465,179 +465,179 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="277"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="278"/>
         <source>Patch activated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="278"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="279"/>
         <source>Patch %1 activated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="281"/>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="292"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="282"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="293"/>
         <source>some service(s) should be restarted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="288"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="289"/>
         <source>Patch deactivated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="289"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="290"/>
         <source>Patch %1 is now inactive.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="299"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="300"/>
         <source>Failed to activate Patch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="300"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="301"/>
         <source>Activating Patch %1 failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="303"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="304"/>
         <source>Failed to deactivate Patch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="304"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="305"/>
         <source>Deactivating Patch %1 failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="307"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="308"/>
         <source>Update available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="308"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="309"/>
         <source>An update for Patch %1 is available.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="220"/>
-        <location filename="../src/qml/SettingsPage.qml" line="91"/>
+        <location filename="../src/qml/SettingsPage.qml" line="127"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="94"/>
+        <location filename="../src/qml/SettingsPage.qml" line="130"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="97"/>
+        <location filename="../src/qml/SettingsPage.qml" line="133"/>
         <source>Show notification on success</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="98"/>
+        <location filename="../src/qml/SettingsPage.qml" line="134"/>
         <source>If this is off, notifications will only be shown when something went wrong.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="105"/>
+        <location filename="../src/qml/SettingsPage.qml" line="141"/>
         <source>Show &apos;Disable and deactivate all Patches&apos; pulley menu entry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="106"/>
+        <location filename="../src/qml/SettingsPage.qml" line="142"/>
         <source>Enable an additional pulley menu entry for Patchmanager&apos;s main page to disable and deactivate all Patches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="113"/>
+        <location filename="../src/qml/SettingsPage.qml" line="149"/>
         <source>Show only updates in Web Catalog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="114"/>
+        <location filename="../src/qml/SettingsPage.qml" line="150"/>
         <source>When updates are available, hide all other Patches in Web Catalog.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="120"/>
+        <location filename="../src/qml/SettingsPage.qml" line="156"/>
         <source>Startup Activation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="123"/>
+        <location filename="../src/qml/SettingsPage.qml" line="159"/>
         <source>Activate Patches on first login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="124"/>
+        <location filename="../src/qml/SettingsPage.qml" line="160"/>
         <source>Automatically activate all enabled Patches after Home Screen has been started for the first time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="139"/>
+        <location filename="../src/qml/SettingsPage.qml" line="175"/>
         <source>Activation Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="140"/>
+        <location filename="../src/qml/SettingsPage.qml" line="176"/>
         <source>%1 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="149"/>
+        <location filename="../src/qml/SettingsPage.qml" line="185"/>
         <source>Activate Patches when booting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="164"/>
+        <location filename="../src/qml/SettingsPage.qml" line="200"/>
         <source>Version Check</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="170"/>
+        <location filename="../src/qml/SettingsPage.qml" line="206"/>
         <source>Strict</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="171"/>
+        <location filename="../src/qml/SettingsPage.qml" line="207"/>
         <source>No check</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="177"/>
+        <location filename="../src/qml/SettingsPage.qml" line="213"/>
         <source>Mode for Patch developers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="178"/>
+        <location filename="../src/qml/SettingsPage.qml" line="214"/>
         <source>Enable various functions to be used by Patch developers. Among other things, it shows debug log files for applying the patch file when a Patch is activated on its details page.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="156"/>
+        <location filename="../src/qml/SettingsPage.qml" line="192"/>
         <source>Advanced</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="150"/>
+        <location filename="../src/qml/SettingsPage.qml" line="186"/>
         <source>Automatically activate all enabled Patches when SailfishOS starts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="165"/>
+        <location filename="../src/qml/SettingsPage.qml" line="201"/>
         <source>Allow to enable Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="197"/>
+        <location filename="../src/qml/SettingsPage.qml" line="233"/>
         <source>Convert Patches between 32-bit and 64-bit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="198"/>
+        <location filename="../src/qml/SettingsPage.qml" line="234"/>
         <source>Automatically convert lib or lib64 for select paths shown below.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -711,7 +711,7 @@
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="68"/>
-        <location filename="../src/qml/patchmanager.cpp" line="327"/>
+        <location filename="../src/qml/patchmanager.cpp" line="329"/>
         <source>other</source>
         <translation>Other</translation>
     </message>
