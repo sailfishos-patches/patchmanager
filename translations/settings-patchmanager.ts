@@ -399,6 +399,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/qml/WebCatalogPage.qml" line="315"/>
+        <source>The Web Catalog website may be experiencing issues, or there is a problem connecting to the Internet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/qml/WebPatchPage.qml" line="165"/>
         <source>Failed to fetch Patch data</source>
         <translation type="unfinished"></translation>

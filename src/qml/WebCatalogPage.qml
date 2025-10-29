@@ -312,6 +312,7 @@ Page {
         ViewPlaceholder {
             enabled: patchModel.count == 0
             text: qsTranslate("", "No Patches available")
+            hintText: qsTranslate("", "The Web Catalog website may be experiencing issues, or there is a problem connecting to the Internet.")
         }
 
         VerticalScrollDecorator {}
