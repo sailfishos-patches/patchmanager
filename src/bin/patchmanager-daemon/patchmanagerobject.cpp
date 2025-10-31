@@ -147,6 +147,11 @@ static const QString SILICA_CODE      = QStringLiteral("silica");
 static const QString SETTINGS_CODE    = QStringLiteral("settings");
 static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
 
+static const int HOTCACHE_COST_MAX = 5000;
+static const int HOTCACHE_COST_STRONG  = 1;
+static const int HOTCACHE_COST_DEFAULT = 2;
+static const int HOTCACHE_COST_WEAK    = 3;
+
 /*!
   \class PatchManagerObject
   \inmodule PatchManagerDaemon
@@ -517,6 +522,9 @@ PatchManagerObject::~PatchManagerObject()
         connection.unregisterService(DBUS_SERVICE_NAME);
         connection.unregisterObject(DBUS_PATH_NAME);
     }
+    if (m_filter.active()) {
+        qDebug() << m_filter.stats();
+    }
 }
 
 void PatchManagerObject::registerDBus()
@@ -809,6 +817,9 @@ void PatchManagerObject::initialize()
     } else {
         qWarning() << Q_FUNC_INFO << "Failed to find ld.so.preload!";
     }
+
+    // prepare the hotcache
+    setupFilter();
 
     qDebug() << Q_FUNC_INFO << PM_APPLY;
     QFileInfo pa(PM_APPLY);
@@ -1860,22 +1871,49 @@ void PatchManagerObject::startReadingLocalServer()
             return;
         }
         const QByteArray request = clientConnection->readAll();
-        QByteArray payload;
         const QString fakePath = QStringLiteral("%1%2").arg(s_patchmanagerCacheRoot, QString::fromLatin1(request));
-        if (!m_failed && QFileInfo::exists(fakePath)) {
-            payload = fakePath.toLatin1();
-            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
-                qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sending:" << payload;
-            }
+        bool passAsIs = true;
+        if (
+             (!m_failed) // return unaltered for failed
+             && (!m_filter.active() || !m_filter.contains(request)) // filter inactive or not in the list of unpatched files
+             && (Q_UNLIKELY(QFileInfo::exists(fakePath))) // file is patched
+           )
+        {
+            passAsIs = false;
         } else {
-            payload = request;
-            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
-                qDebug() << Q_FUNC_INFO << "Requested:" << request << "is sent unaltered.";
-            }
+            // failed state or file is unpatched
+            passAsIs = true;
         }
-        clientConnection->write(payload);
+        /* write the result back to the library as soon as possible */
+        if (passAsIs) {
+            clientConnection->write(request);
+        } else {
+            clientConnection->write(fakePath.toLatin1());
+        }
         clientConnection->flush();
 //        clientConnection->waitForBytesWritten();
+
+        /* print debug and manage the cache after writing the data:
+         * if the file didn't exist, we add it to the cache.
+         * otherwise, we so nothing, but check that it wasn't wrongly in the
+         * cache, which shouldn't happen.
+         * Note that we don't actually store anything in the cache, we're only
+         * interested in the key and the cost management.
+         */
+        if (passAsIs) { // file didn't exist
+            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
+                qDebug() << Q_FUNC_INFO << "Requested:" << request << "was sent unaltered.";
+            }
+            QObject *dummy = new QObject(); // the cache will own it later
+            m_filter.insert(request, dummy, HOTCACHE_COST_DEFAULT); // cost: see setupFilter, use middle ground here
+        } else {
+            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
+                qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sent:" << fakePath;
+            }
+            if (m_filter.remove(request)) {
+                qWarning() << Q_FUNC_INFO << "Hot cache: contained a patched file!";
+            }
+        }
     }, Qt::DirectConnection);
 }
 
@@ -2968,4 +3006,114 @@ QString PatchManagerObject::pathToMangledPath(const QString &path, const QString
     }
     qDebug() << Q_FUNC_INFO << "Path after mangle" << newpath;
     return newpath;
+}
+
+/*! Set up the filter parameters and fill it with some initial contents.
+ *
+ *  \sa PatchManagerFilter::setup()
+*/
+void PatchManagerObject::setupFilter()
+{
+    if (!getSettings(QStringLiteral("enableFSFilter"), false).toBool()) {
+        m_filter.setActive(false);
+        return;
+    } else {
+        m_filter.setup();
+        m_filter.setActive(true);
+    }
+}
+
+/*!
+ * The current implementation of the filter is a QCache, whole Object contents
+ * are not actually used, only the keys are.  Once a file path has been
+ * identified as non-existing, it is added to the cache.
+ *
+ * Checking for presence is done using QCache::object() (or
+ * QCache::operator[]), not QCache::contains() in order to have the cache
+ * notice "usage" of the cached object.
+ *
+ * \sa m_filter
+ */
+
+PatchManagerFilter::PatchManagerFilter(QObject *parent, int maxCost )
+    : QObject(parent)
+    , QCache(maxCost)
+{
+}
+
+/* initialize the "static members", i.e. a list of very frequesntly accessed files. */
+/* only use relatively stable sonames here. */
+const QStringList PatchManagerFilter::libList = QStringList({
+        "/usr/lib64/libpreloadpatchmanager.so",
+        "/lib/ld-linux-aarch64.so.1",
+        "/lib/ld-linux-armhf.so.3",
+        "/lib64/libc.so.6",
+        "/lib64/libdl.so.2",
+        "/lib64/librt.so.1",
+        "/lib64/libpthread.so.0",
+        "/lib64/libgcc_s.so.1",
+        "/usr/lib64/libtls-padding.so",
+        "/usr/lib64/libsystemd.so.0",
+        "/usr/lib64/libcap.so.2",
+        "/usr/lib64/libmount.so.1",
+        "/usr/lib64/libblkid.so.1",
+        "/usr/lib64/libgpg-error.so.0"
+});
+const QStringList PatchManagerFilter::etcList = QStringList({
+    "/etc/passwd",
+    "/etc/group",
+    "/etc/shadow",
+    "/etc/localtime",
+    "/etc/ld.so.preload",
+    "/etc/ld.so.cache",
+    "/usr/share/locale/locale.alias"
+});
+
+void PatchManagerFilter::setup()
+{
+    qDebug() << Q_FUNC_INFO;
+    // set up cache
+    setMaxCost(HOTCACHE_COST_MAX);
+
+    // use a cost of 1 here so they have less chance to be evicted
+    foreach(const QString &entry, etcList) {
+        if (QFileInfo::exists(entry)) {
+            insert(entry, new QObject(), HOTCACHE_COST_STRONG);
+        }
+    }
+    // they may be wrong, so use a higher cost than default
+    foreach(const QString &entry, libList) {
+        QString libentry(entry);
+        if (Q_PROCESSOR_WORDSIZE == 4) { // 32 bit
+            libentry.replace("lib64", "lib");
+        }
+
+        if (QFileInfo::exists(libentry)) {
+            QFileInfo fi(libentry);
+            insert(fi.canonicalFilePath(), new QObject(), HOTCACHE_COST_WEAK);
+        }
+    }
+}
+
+//QList<QPair<QString, QVariant>> PatchManagerFilter::stats() const
+QString PatchManagerFilter::stats() const
+{
+    qDebug() << Q_FUNC_INFO;
+    QStringList topTen;
+    const int ttmax = qEnvironmentVariableIsSet("PM_DEBUG_HOTCACHE") ? size() : 10;
+    foreach(const QString &key, keys() ) {
+        topTen << key;
+        if (topTen.size() >= ttmax)
+            break;
+    }
+
+    //QList<QPair<QString, QVariant>> list;
+    QString list;
+    list + "Filter Stats:"
+         + "\n==========================="
+         + "\n  Hotcache entries:: .............." + size()
+         + "\n  Hotcache cost: .................." + totalCost() + "/" + maxCost()
+         + "\n  Hotcache top entries: ..........." + "\n    " + topTen.join("\n    ")
+         + "\n===========================";
+    return list;
 }
