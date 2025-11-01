@@ -523,7 +523,7 @@ PatchManagerObject::~PatchManagerObject()
         connection.unregisterObject(DBUS_PATH_NAME);
     }
     if (m_filter.active()) {
-        qDebug() << m_filter.stats();
+        qInfo() << m_filter.stats();
     }
 }
 
