@@ -89,7 +89,7 @@ public:
     // override QCache::contains()
     bool contains(const QString &key) const
     {
-       if (m_active) {
+       if (!m_active) {
            return false;
        } else {
            return (object(key) == 0);
