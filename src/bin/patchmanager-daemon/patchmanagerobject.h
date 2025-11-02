@@ -48,7 +48,6 @@
 #include <QDBusMessage>
 #include <QDBusVariant>
 #include <QFileSystemWatcher>
-#include <QCache>
 
 #include <systemd/sd-journal.h>
 
@@ -74,50 +73,7 @@ class QSettings;
 class QNetworkAccessManager;
 class PatchManagerAdaptor;
 class QLocalServer;
-
-class PatchManagerFilter : public QObject, public QCache<QString, QObject>
-{
-    Q_OBJECT
-    Q_PROPERTY(bool active READ active WRITE setActive NOTIFY activeChanged)
-    Q_PROPERTY(unsigned int hits READ hits)
-    Q_PROPERTY(unsigned int misses READ misses)
-public:
-    PatchManagerFilter(QObject *parent = nullptr, int maxCost = 100);
-    //~PatchManagerFilter();
-
-    void setup();
-    // override QCache::contains()
-    bool contains(const QString &key) const
-    {
-       if (!m_active) {
-           return false;
-       } else {
-           return (object(key) == 0);
-       };
-    };
-
-    void setActive(bool active) { m_active = active; emit activeChanged(active); };
-    bool active() const { return m_active; };
-
-    void hit()  { m_hits++; };
-    void miss() { m_misses++; };
-    unsigned int hits()   const { return m_hits; };
-    unsigned int misses() const { return m_misses; };
-
-    //QList<QPair<QString, QVariant>> stats() const;
-    QString stats() const;
-
-    static const QStringList etcList;
-    static const QStringList libList;
-
-signals:
-    void activeChanged(bool);
-
-private:
-    bool m_active;
-    unsigned int m_hits = 0;
-    unsigned int m_misses = 0;
-};
+class PatchManagerFilter;
 
 class PatchManagerObject : public QObject, public QDBusContext
 {
