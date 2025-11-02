@@ -33,6 +33,7 @@ HEADERS += \
 SOURCES += \
     main.cpp \
     patchmanagerobject.cpp \
+    patchmanagerfilter.cpp \
     inotifywatcher.cpp \
     journal.cpp
 

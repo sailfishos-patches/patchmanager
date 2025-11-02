@@ -37,6 +37,7 @@
 
 #include "patchmanagerobject.h"
 #include "patchmanager_adaptor.h"
+#include "patchmanagerfilter.h"
 
 #include <QLocalSocket>
 #include <QLocalServer>
@@ -3023,97 +3024,3 @@ void PatchManagerObject::setupFilter()
     }
 }
 
-/*!
- * The current implementation of the filter is a QCache, whole Object contents
- * are not actually used, only the keys are.  Once a file path has been
- * identified as non-existing, it is added to the cache.
- *
- * Checking for presence is done using QCache::object() (or
- * QCache::operator[]), not QCache::contains() in order to have the cache
- * notice "usage" of the cached object.
- *
- * \sa m_filter
- */
-
-PatchManagerFilter::PatchManagerFilter(QObject *parent, int maxCost )
-    : QObject(parent)
-    , QCache(maxCost)
-{
-}
-
-/* initialize the "static members", i.e. a list of very frequesntly accessed files. */
-/* only use relatively stable sonames here. */
-const QStringList PatchManagerFilter::libList = QStringList({
-        "/usr/lib64/libpreloadpatchmanager.so",
-        "/lib/ld-linux-aarch64.so.1",
-        "/lib/ld-linux-armhf.so.3",
-        "/lib64/libc.so.6",
-        "/lib64/libdl.so.2",
-        "/lib64/librt.so.1",
-        "/lib64/libpthread.so.0",
-        "/lib64/libgcc_s.so.1",
-        "/usr/lib64/libtls-padding.so",
-        "/usr/lib64/libsystemd.so.0",
-        "/usr/lib64/libcap.so.2",
-        "/usr/lib64/libmount.so.1",
-        "/usr/lib64/libblkid.so.1",
-        "/usr/lib64/libgpg-error.so.0"
-});
-const QStringList PatchManagerFilter::etcList = QStringList({
-    "/etc/passwd",
-    "/etc/group",
-    "/etc/shadow",
-    "/etc/localtime",
-    "/etc/ld.so.preload",
-    "/etc/ld.so.cache",
-    "/usr/share/locale/locale.alias"
-});
-
-void PatchManagerFilter::setup()
-{
-    qDebug() << Q_FUNC_INFO;
-    // set up cache
-    setMaxCost(HOTCACHE_COST_MAX);
-
-    // use a cost of 1 here so they have less chance to be evicted
-    foreach(const QString &entry, etcList) {
-        if (QFileInfo::exists(entry)) {
-            insert(entry, new QObject(), HOTCACHE_COST_STRONG);
-        }
-    }
-    // they may be wrong, so use a higher cost than default
-    foreach(const QString &entry, libList) {
-        QString libentry(entry);
-        if (Q_PROCESSOR_WORDSIZE == 4) { // 32 bit
-            libentry.replace("lib64", "lib");
-        }
-
-        if (QFileInfo::exists(libentry)) {
-            QFileInfo fi(libentry);
-            insert(fi.canonicalFilePath(), new QObject(), HOTCACHE_COST_WEAK);
-        }
-    }
-}
-
-//QList<QPair<QString, QVariant>> PatchManagerFilter::stats() const
-QString PatchManagerFilter::stats() const
-{
-    qDebug() << Q_FUNC_INFO;
-    QStringList topTen;
-    const int ttmax = qEnvironmentVariableIsSet("PM_DEBUG_HOTCACHE") ? size() : 10;
-    foreach(const QString &key, keys() ) {
-        topTen << key;
-        if (topTen.size() >= ttmax)
-            break;
-    }
-
-    //QList<QPair<QString, QVariant>> list;
-    QString list;
-    list + "Filter Stats:"
-         + "\n==========================="
-         + "\n  Hotcache entries:: .............." + size()
-         + "\n  Hotcache cost: .................." + totalCost() + "/" + maxCost()
-         + "\n  Hotcache top entries: ..........." + "\n    " + topTen.join("\n    ")
-         + "\n===========================";
-    return list;
-}
