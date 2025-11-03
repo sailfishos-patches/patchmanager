@@ -1197,6 +1197,15 @@ void PatchManagerObject::process()
 
 }
 
+/*!  Retrieves some statistics via D-Bus.  */
+QString PatchManagerObject::statistics()
+{
+    DBUS_GUARD(QString())
+    qDebug() << Q_FUNC_INFO;
+    setDelayedReply(true);
+    QMetaObject::invokeMethod(this, NAME(doStatistics), Qt::QueuedConnection, Q_ARG(QDBusMessage, message()));
+    return QString();
+}
 
 /*!  Retrieves a list of Patches via D-Bus.  */
 QVariantList PatchManagerObject::listPatches()
@@ -1907,7 +1916,7 @@ void PatchManagerObject::startReadingLocalServer()
                 qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sent:" << fakePath;
             }
             if (m_filter.remove(request)) {
-                qWarning() << Q_FUNC_INFO << "Hot cache: contained a patched file!";
+                qWarning() << Q_FUNC_INFO << "Hot cache: contained a patched file:" << request << "/" << fakePath;
             }
         }
     }, Qt::DirectConnection);
@@ -2169,6 +2178,35 @@ void PatchManagerObject::doRefreshPatchList()
     if (m_adaptor) {
         emit m_adaptor->listPatchesChanged();
     }
+}
+
+void PatchManagerObject::doStatistics(const QDBusMessage &message)
+{
+    qDebug() << Q_FUNC_INFO;
+    QStringList result;
+
+    result << QStringLiteral("Patchmanager version: %1").arg(getPatchmanagerVersion())
+           << QStringLiteral("Applied Patches: %1").arg(m_appliedPatches.count())
+           << QStringLiteral("Patched files: %1").arg(m_patchedFiles.count());
+
+    if (m_originalWatcher)
+      result << QStringLiteral("Watched files: %1").arg(m_originalWatcher->files().count());
+
+    if (m_filter.active()) {
+        result << m_filter.stats();
+    } else {
+        result << QStringLiteral("Advanced filtering is not active.");
+    }
+
+    qInfo() << "==================================";
+    qInfo() << "======== STATISTICS BEGIN ========";
+    qInfo() << "==================================";
+    qInfo() << qPrintable(result.join("\n"));
+    qInfo() << "==================================";
+    qInfo() << "======== STATISTICS END ==========";
+    qInfo() << "==================================";
+
+    sendMessageReply(message, result.join("\n"));
 }
 
 void PatchManagerObject::doListPatches(const QDBusMessage &message)
@@ -2869,6 +2907,11 @@ void PatchManagerObject::requestCheckForUpdates()
             });
         }
     });
+
+    if (m_filter.active()) {
+        qInfo() << m_filter.stats();
+    }
+
 }
 
 void PatchManagerObject::sendMessageReply(const QDBusMessage &message, const QVariant &result)

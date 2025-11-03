@@ -97,6 +97,7 @@ public slots:
 
     QVariantList listPatches();
     QVariantMap listVersions();
+    QString statistics();
     bool isPatchApplied(const QString &patch);
     QVariantMap applyPatch(const QString &patch);
     QVariantMap unapplyPatch(const QString &patch);
@@ -161,6 +162,7 @@ private slots:
 
     void doRefreshPatchList();
     void doListPatches(const QDBusMessage &message);
+    void doStatistics(const QDBusMessage &message);
 
     bool doPatch(const QString &patchName, bool apply, QString *patchLog = nullptr);
     void doPatch(const QVariantMap &params, const QDBusMessage &message, bool apply);
