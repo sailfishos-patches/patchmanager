@@ -519,7 +519,7 @@ PatchManagerObject::~PatchManagerObject()
         connection.unregisterObject(DBUS_PATH_NAME);
     }
     if (m_filter.active()) {
-        qInfo() << m_filter.stats();
+        qInfo() << m_filter.stats(false);
     }
 }
 
@@ -1198,12 +1198,14 @@ void PatchManagerObject::process()
 }
 
 /*!  Retrieves some statistics via D-Bus.  */
-QString PatchManagerObject::statistics()
+QString PatchManagerObject::statistics(bool verbose=false)
 {
     DBUS_GUARD(QString())
     qDebug() << Q_FUNC_INFO;
     setDelayedReply(true);
-    QMetaObject::invokeMethod(this, NAME(doStatistics), Qt::QueuedConnection, Q_ARG(QDBusMessage, message()));
+    QMetaObject::invokeMethod(this, NAME(doStatistics), Qt::QueuedConnection,
+                              Q_ARG(QVariantMap, QVariantMap({{QStringLiteral("verbose"), verbose}})),
+                              Q_ARG(QDBusMessage, message()));
     return QString();
 }
 
@@ -1850,6 +1852,7 @@ void PatchManagerObject::onTimerAction()
 {
     qDebug() << Q_FUNC_INFO;
     checkForUpdates();
+    statistics(false);
 }
 
 void PatchManagerObject::startReadingLocalServer()
@@ -2180,20 +2183,23 @@ void PatchManagerObject::doRefreshPatchList()
     }
 }
 
-void PatchManagerObject::doStatistics(const QDBusMessage &message)
+void PatchManagerObject::doStatistics(const QVariantMap &params, const QDBusMessage &message)
 {
     qDebug() << Q_FUNC_INFO;
-    QStringList result;
 
+    bool verbose = params.value(QStringLiteral("verbose")).toBool();
+
+    QStringList result;
     result << QStringLiteral("Patchmanager version: %1").arg(getPatchmanagerVersion())
            << QStringLiteral("Applied Patches: %1").arg(m_appliedPatches.count())
-           << QStringLiteral("Patched files: %1").arg(m_patchedFiles.count());
+           //<< QStringLiteral("Patched files: %1").arg(m_patchedFiles.count());
+           << QStringLiteral("Patched files: %1").arg(m_fileToPatch.values().count());
 
     if (m_originalWatcher)
       result << QStringLiteral("Watched files: %1").arg(m_originalWatcher->files().count());
 
     if (m_filter.active()) {
-        result << m_filter.stats();
+        result << m_filter.stats(verbose);
     } else {
         result << QStringLiteral("Advanced filtering is not active.");
     }
@@ -2907,11 +2913,6 @@ void PatchManagerObject::requestCheckForUpdates()
             });
         }
     });
-
-    if (m_filter.active()) {
-        qInfo() << m_filter.stats();
-    }
-
 }
 
 void PatchManagerObject::sendMessageReply(const QDBusMessage &message, const QVariant &result)

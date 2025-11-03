@@ -128,35 +128,28 @@ bool PatchManagerFilter::contains(const QString &key) const
 };
 
 
-QString PatchManagerFilter::stats() const
+QString PatchManagerFilter::stats(bool verbose=false) const
 {
     qDebug() << Q_FUNC_INFO;
-    QStringList topTen;
-    int ttmax = qEnvironmentVariableIsSet("PM_DEBUG_HOTCACHE") ? size() : 10;
-    foreach(const QString &key, keys() ) {
-        topTen << key;
-        if (topTen.size() >= ttmax)
-            break;
-    }
-
     QStringList stats;
     stats << QStringLiteral("Filter Stats:")
           << QStringLiteral("===========================")
           << QStringLiteral("  Hotcache entries:: ..............%1").arg(size())
           << QStringLiteral("  Hotcache cost: ..................%1/%2").arg(totalCost()).arg(maxCost());
-    if (qEnvironmentVariableIsSet("PM_DEBUG_HOTCACHE")) {
-          unsigned int sum = hits()+misses();
+    if (verbose) {
+          unsigned int sum = m_hits + m_misses;
           if (sum > 0) {
               QString ratio;
-              float ratf = (hits() / sum);
-              ratio.setNum( ratf, 'f', 2);
-              stats << QStringLiteral("  Hotcache hit/miss: ..............%1/%2 (%3%%)").arg(hits()).arg(misses()).arg(ratio);
+              float ratf = (static_cast<float>(m_hits) / sum);
+              ratio.setNum(ratf, 'f', 2);
+              stats << QStringLiteral("  Hotcache hit/miss: ..............%1/%2 (%3%)").arg(m_hits).arg(m_misses).arg(ratio);
           }
+
+          stats << QStringLiteral("===========================")
+                << QStringLiteral("  Hotcache entries:")
+                << keys();
     }
-    stats << QStringLiteral("===========================")
-          << QStringLiteral("  Hotcache top entries: ...........")
-          << topTen
-          << QStringLiteral("===========================");
+    stats << QStringLiteral("===========================");
 
     return stats.join("\n");
 }

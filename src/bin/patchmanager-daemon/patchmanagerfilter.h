@@ -70,7 +70,7 @@ public:
     unsigned int misses() const { return m_misses; };
 
     //QList<QPair<QString, QVariant>> stats() const;
-    QString stats() const;
+    QString stats(bool verbose) const;
 
 signals:
     void activeChanged(bool);
