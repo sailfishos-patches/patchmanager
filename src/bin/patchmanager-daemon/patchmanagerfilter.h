@@ -38,6 +38,11 @@
 #include <QtCore/QObject>
 #include <QCache>
 
+static const int HOTCACHE_COST_MAX = 5000;
+static const int HOTCACHE_COST_STRONG  = 1;
+static const int HOTCACHE_COST_DEFAULT = 2;
+static const int HOTCACHE_COST_WEAK    = 3;
+
 class PatchManagerFilter : public QObject, public QCache<QString, QObject>
 {
     Q_OBJECT
@@ -45,41 +50,36 @@ class PatchManagerFilter : public QObject, public QCache<QString, QObject>
     Q_PROPERTY(unsigned int hits READ hits)
     Q_PROPERTY(unsigned int misses READ misses)
 public:
-    PatchManagerFilter(QObject *parent = nullptr, int maxCost = 100);
+    PatchManagerFilter(QObject *parent = nullptr, int maxCost = HOTCACHE_COST_MAX);
     //~PatchManagerFilter();
 
     void setup();
-    // override QCache::contains()
-    bool contains(const QString &key) const
-    {
-       if (!m_active) {
-           return false;
-       } else {
-           return (object(key) == 0);
-       };
-    };
 
-    void setActive(bool active) { m_active = active; emit activeChanged(active); };
+    // override QCache::contains()
+    bool contains(const QString &key) const;
+
+    void setActive(bool active) {
+        if (m_active != active) {
+            m_active = active;
+            emit activeChanged(active);
+        }
+    };
     bool active() const { return m_active; };
 
-    void hit()  { m_hits++; };
-    void miss() { m_misses++; };
     unsigned int hits()   const { return m_hits; };
     unsigned int misses() const { return m_misses; };
 
     //QList<QPair<QString, QVariant>> stats() const;
     QString stats() const;
 
-    static const QStringList etcList;
-    static const QStringList libList;
-
 signals:
     void activeChanged(bool);
 
 private:
     bool m_active;
-    unsigned int m_hits = 0;
-    unsigned int m_misses = 0;
+    // need to be mutable so we can count from const method.
+    mutable unsigned int m_hits = 0;
+    mutable unsigned int m_misses = 0;
 };
 
 #endif // PATCHMANAGERFILTER_H

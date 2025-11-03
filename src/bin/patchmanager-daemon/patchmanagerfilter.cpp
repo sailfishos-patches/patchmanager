@@ -48,36 +48,30 @@
 #include "patchmanagerfilter.h"
 
 #include <QtCore/QObject>
-#include <QStringBuilder>
 #include <QtCore/QStringList>
 #include <QtCore/QFileInfo>
 #include <QtCore/QDebug>
 
-PatchManagerFilter::PatchManagerFilter(QObject *parent, int maxCost )
-    : QObject(parent)
-    , QCache(maxCost)
-{
-}
-
 /* initialize the "static members", i.e. a list of very frequesntly accessed files. */
 /* only use relatively stable sonames here. */
-const QStringList PatchManagerFilter::libList = QStringList({
-        "/usr/lib64/libpreloadpatchmanager.so",
-        "/lib/ld-linux-aarch64.so.1",
-        "/lib/ld-linux-armhf.so.3",
-        "/lib64/libc.so.6",
-        "/lib64/libdl.so.2",
-        "/lib64/librt.so.1",
-        "/lib64/libpthread.so.0",
-        "/lib64/libgcc_s.so.1",
-        "/usr/lib64/libtls-padding.so",
-        "/usr/lib64/libsystemd.so.0",
-        "/usr/lib64/libcap.so.2",
-        "/usr/lib64/libmount.so.1",
-        "/usr/lib64/libblkid.so.1",
-        "/usr/lib64/libgpg-error.so.0"
+const QStringList libList = QStringList({
+    "/usr/lib64/libpreloadpatchmanager.so",
+    "/lib/ld-linux-aarch64.so.1",
+    "/lib/ld-linux-armhf.so.3",
+    "/lib64/libc.so.6",
+    "/lib64/libdl.so.2",
+    "/lib64/librt.so.1",
+    "/lib64/libpthread.so.0",
+    "/lib64/libgcc_s.so.1",
+    "/usr/lib64/libtls-padding.so",
+    "/usr/lib64/libsystemd.so.0",
+    "/usr/lib64/libcap.so.2",
+    "/usr/lib64/libmount.so.1",
+    "/usr/lib64/libblkid.so.1",
+    "/usr/lib64/libgpg-error.so.0"
 });
-const QStringList PatchManagerFilter::etcList = QStringList({
+
+const QStringList etcList = QStringList({
     "/etc/passwd",
     "/etc/group",
     "/etc/shadow",
@@ -86,6 +80,12 @@ const QStringList PatchManagerFilter::etcList = QStringList({
     "/etc/ld.so.cache",
     "/usr/share/locale/locale.alias"
 });
+
+PatchManagerFilter::PatchManagerFilter(QObject *parent, int maxCost)
+    : QObject(parent)
+    , QCache(maxCost)
+{
+}
 
 void PatchManagerFilter::setup()
 {
@@ -113,25 +113,50 @@ void PatchManagerFilter::setup()
     }
 }
 
-//QList<QPair<QString, QVariant>> PatchManagerFilter::stats() const
+// override QCache::contains()
+bool PatchManagerFilter::contains(const QString &key) const
+{
+   if (!m_active)
+       return false;
+
+   // we do not use QCache::contains here, because ::object() will make the cache notice usage of the object
+   bool ret = (QCache::object(key) != 0); // NB: returns 0 in Qt < 5.13, nullptr in later versions
+
+   if(ret) { m_hits+=1; } else { m_misses+=1; }
+
+   return ret;
+};
+
+
 QString PatchManagerFilter::stats() const
 {
     qDebug() << Q_FUNC_INFO;
     QStringList topTen;
-    const int ttmax = qEnvironmentVariableIsSet("PM_DEBUG_HOTCACHE") ? size() : 10;
+    int ttmax = qEnvironmentVariableIsSet("PM_DEBUG_HOTCACHE") ? size() : 10;
     foreach(const QString &key, keys() ) {
         topTen << key;
         if (topTen.size() >= ttmax)
             break;
     }
 
-    // % instead of + for QStringBuilder
-    QString list;
-    list % "Filter Stats:"
-         % "\n==========================="
-         % "\n  Hotcache entries:: .............." % size()
-         % "\n  Hotcache cost: .................." % totalCost() + "/" + maxCost()
-         % "\n  Hotcache top entries: ..........." % "\n    " + topTen.join("\n    ")
-         % "\n===========================";
-    return list;
+    QStringList stats;
+    stats << QStringLiteral("Filter Stats:")
+          << QStringLiteral("===========================")
+          << QStringLiteral("  Hotcache entries:: ..............%1").arg(size())
+          << QStringLiteral("  Hotcache cost: ..................%1/%2").arg(totalCost()).arg(maxCost());
+    if (qEnvironmentVariableIsSet("PM_DEBUG_HOTCACHE")) {
+          unsigned int sum = hits()+misses();
+          if (sum > 0) {
+              QString ratio;
+              float ratf = (hits() / sum);
+              ratio.setNum( ratf, 'f', 2);
+              stats << QStringLiteral("  Hotcache hit/miss: ..............%1/%2 (%3%%)").arg(hits()).arg(misses()).arg(ratio);
+          }
+    }
+    stats << QStringLiteral("===========================")
+          << QStringLiteral("  Hotcache top entries: ...........")
+          << topTen
+          << QStringLiteral("===========================");
+
+    return stats.join("\n");
 }

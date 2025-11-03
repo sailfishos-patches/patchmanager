@@ -51,6 +51,8 @@
 
 #include <systemd/sd-journal.h>
 
+#include "patchmanagerfilter.h"
+
 #ifndef SERVER_URL
 #define SERVER_URL          "https://coderus.openrepos.net"
 #endif
@@ -73,7 +75,6 @@ class QSettings;
 class QNetworkAccessManager;
 class PatchManagerAdaptor;
 class QLocalServer;
-class PatchManagerFilter;
 
 class PatchManagerObject : public QObject, public QDBusContext
 {

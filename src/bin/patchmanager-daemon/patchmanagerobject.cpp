@@ -148,11 +148,6 @@ static const QString SILICA_CODE      = QStringLiteral("silica");
 static const QString SETTINGS_CODE    = QStringLiteral("settings");
 static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
 
-static const int HOTCACHE_COST_MAX = 5000;
-static const int HOTCACHE_COST_STRONG  = 1;
-static const int HOTCACHE_COST_DEFAULT = 2;
-static const int HOTCACHE_COST_WEAK    = 3;
-
 /*!
   \class PatchManagerObject
   \inmodule PatchManagerDaemon
