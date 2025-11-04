@@ -38,7 +38,9 @@
 #include <QtCore/QObject>
 #include <QCache>
 
-static const int HOTCACHE_COST_MAX = 5000;
+// df -i / on SFOS 5.0 gives about 100k used inodes.
+// must be chosen so that lookup times do not eat any benefits.
+static const int HOTCACHE_COST_MAX =  2500;
 static const int HOTCACHE_COST_STRONG  = 1;
 static const int HOTCACHE_COST_DEFAULT = 2;
 static const int HOTCACHE_COST_WEAK    = 3;
