@@ -518,9 +518,6 @@ PatchManagerObject::~PatchManagerObject()
         connection.unregisterService(DBUS_SERVICE_NAME);
         connection.unregisterObject(DBUS_PATH_NAME);
     }
-    if (m_filter.active()) {
-        qInfo() << m_filter.stats(false);
-    }
 }
 
 void PatchManagerObject::registerDBus()
