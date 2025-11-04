@@ -48,7 +48,9 @@ static const int HOTCACHE_COST_WEAK    = 3;
 // output will be a dbus message. Don't make it too long.
 static const int HOTCACHE_LOG_MAX = 4096;
 
-class PatchManagerFilter : public QObject, public QCache<QString, QObject>
+// As we do not care about the actual cached object, try to use a small one.
+// quint8 should be one byte or so
+class PatchManagerFilter : public QObject, public QCache<QString, quint8>
 {
     Q_OBJECT
     Q_PROPERTY(bool active READ active WRITE setActive NOTIFY activeChanged)
@@ -59,6 +61,9 @@ public:
     //~PatchManagerFilter();
 
     void setup();
+
+    // override QCache::insert()
+    bool insert(const QString &key, quint8 value = 1, int cost = HOTCACHE_COST_DEFAULT);
 
     // override QCache::contains()
     bool contains(const QString &key) const;
@@ -82,6 +87,7 @@ signals:
 
 private:
     bool m_active;
+
     // need to be mutable so we can count from const method.
     mutable unsigned int m_hits = 0;
     mutable unsigned int m_misses = 0;

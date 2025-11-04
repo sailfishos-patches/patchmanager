@@ -96,7 +96,7 @@ void PatchManagerFilter::setup()
     // use a cost of 1 here so they have less chance to be evicted
     foreach(const QString &entry, etcList) {
         if (QFileInfo::exists(entry)) {
-            insert(entry, new QObject(), HOTCACHE_COST_STRONG);
+            insert(entry, 1, HOTCACHE_COST_STRONG);
         }
     }
     // they may be wrong, so use a higher cost than default
@@ -108,9 +108,25 @@ void PatchManagerFilter::setup()
 
         if (QFileInfo::exists(libentry)) {
             QFileInfo fi(libentry);
-            insert(fi.canonicalFilePath(), new QObject(), HOTCACHE_COST_WEAK);
+            insert(fi.canonicalFilePath(), 1, HOTCACHE_COST_WEAK);
         }
     }
+}
+
+// override QCache::insert().
+bool PatchManagerFilter::insert(const QString &key, quint8 value, int cost)
+{
+    quint8* data;
+    // In Qt 5.6 (up to and including 5.12), QCache::object() returns 0 for "not found",
+    // we cannot accept a zero value here.
+    if (value == 0) {
+        qCritical() << "PatchManagerFilter::insert: Inserting zero will lead to wrong results!"
+                    << "Forcing value to 1!";
+        data = new quint8(1);
+    } else {
+        data = new quint8(value);
+    }
+    return QCache::insert(key, data, cost);
 }
 
 // override QCache::contains()

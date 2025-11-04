@@ -1909,8 +1909,7 @@ void PatchManagerObject::startReadingLocalServer()
             if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
                 qDebug() << Q_FUNC_INFO << "Requested:" << request << "was sent unaltered.";
             }
-            QObject *dummy = new QObject(); // the cache will own it the next line
-            m_filter.insert(request, dummy, HOTCACHE_COST_DEFAULT); // cost: see setupFilter, use middle ground here
+            m_filter.insert(request);
         } else {
             if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
                 qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sent:" << fakePath;
