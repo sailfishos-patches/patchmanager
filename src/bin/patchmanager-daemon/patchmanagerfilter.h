@@ -38,8 +38,27 @@
 #include <QtCore/QObject>
 #include <QCache>
 
-// df -i / on SFOS 5.0 gives about 100k used inodes.
-// must be chosen so that lookup times do not eat any benefits.
+/* choosing the right cost obviously is critical and difficult ;)
+   we want lookup times to be faster than the cost of a QFileInfo::exists()
+   --> smaller is better.
+
+   We also want it to not hold  "stale" entries, i.e. files once added and
+   never accessed again.
+   --> smaller is also better
+
+   But we also want it to hold the most commonly accessed files, and not rotate
+   the entries all the time.  ideally after some time, it stays somewhat
+   stable.
+   --> too small is bad
+
+   Some observations:
+
+   df -i / on SFOS 5.0 gives about 100k used inodes.
+   On a system with about 100 patched files, running find /usr -exec head -n 1 {} >/dev/null \;
+   the cost() seems to not go over 3600 or so when maxCost is 5000.
+
+*/
+
 static const int HOTCACHE_COST_MAX =  2500;
 static const int HOTCACHE_COST_STRONG  = 1;
 static const int HOTCACHE_COST_DEFAULT = 2;
