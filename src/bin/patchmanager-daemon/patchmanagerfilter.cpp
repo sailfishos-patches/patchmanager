@@ -146,8 +146,16 @@ QString PatchManagerFilter::stats(bool verbose=false) const
           }
 
           stats << QStringLiteral("===========================")
-                << QStringLiteral("  Hotcache entries:")
-                << keys();
+                << QStringLiteral("  Hotcache entries:");
+                if (count() > HOTCACHE_LOG_MAX) {
+                    stats << QStringLiteral("showing %1/%2").arg(HOTCACHE_LOG_MAX).arg(count());
+                    auto beg = keys().begin(); auto end = beg + HOTCACHE_LOG_MAX;
+                    for (auto it = beg; it != end; ++it) {
+                          stats << *it;
+                    }
+                } else {
+                    stats << keys();
+                }
     }
     stats << QStringLiteral("===========================");
 
