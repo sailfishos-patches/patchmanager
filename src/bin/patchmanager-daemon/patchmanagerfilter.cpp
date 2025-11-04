@@ -128,7 +128,7 @@ bool PatchManagerFilter::contains(const QString &key) const
 };
 
 
-QString PatchManagerFilter::stats(bool verbose=false) const
+QString PatchManagerFilter::stats(bool verbose) const
 {
     qDebug() << Q_FUNC_INFO;
     QStringList stats;
