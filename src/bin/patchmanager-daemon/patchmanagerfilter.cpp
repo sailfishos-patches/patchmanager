@@ -156,8 +156,8 @@ QString PatchManagerFilter::stats(bool verbose) const
           unsigned int sum = m_hits + m_misses;
           if (sum > 0) {
               QString ratio;
-              float ratf = (static_cast<float>(m_hits) / sum);
-              ratio.setNum(ratf, 'f', 2);
+              float ratf = (static_cast<float>(m_hits) / sum)*100.0;
+              ratio.setNum(ratf, 'f', 1);
               stats << QStringLiteral("  Hotcache hit/miss: ..............%1/%2 (%3%)").arg(m_hits).arg(m_misses).arg(ratio);
           }
 
