@@ -1,0 +1,11 @@
+{
+  "description": "Patchmanager Test Case: Add a new file, using a git-style patch. This changes nothing in the UI, please just check that the resulting files are in the correct place.",
+  "name": "pm-test-case-add-a-file-git-style",
+  "display_name": "PM Test Case 3.1",
+  "category": "other",
+  "author": "patchmanager",
+  "version": "1.0.0",
+  "compatible": [
+    "5.0.0.29"
+  ]
+}
