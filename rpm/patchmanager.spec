@@ -39,6 +39,7 @@ Requires:   grep
 Requires:   sed
 Requires:   sailfish-version >= 3.4.0
 Requires:   qml(Nemo.Configuration)
+Requires:   oneshot
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Qml)
@@ -53,6 +54,7 @@ BuildRequires:  pkgconfig(libshadowutils)
 BuildRequires:  qt5-qttools-linguist
 BuildRequires:  pkgconfig(rpm)
 BuildRequires:  pkgconfig(popt)
+BuildRequires:  oneshot
 
 
 %package testcases
@@ -180,6 +182,7 @@ exit 0
 
 %post
 export NO_PM_PRELOAD=1
+%{_bindir}/add-oneshot patchmanager-setup-preload.sh
 case "$1" in
 1)  # Installation
   echo "Installing %{name}: %%post section"
@@ -198,13 +201,6 @@ case "$1" in
   echo "Case $1 is not handled in %%post section of %{name}!"
 ;;
 esac
-sed -i '/libpreload%{name}/ d' /etc/ld.so.preload
-echo '%{_libdir}/libpreload%{name}.so' >> /etc/ld.so.preload
-/sbin/ldconfig
-if ! grep -qsF 'include whitelist-common-%{name}.local' /etc/firejail/whitelist-common.local
-then
-  echo 'include whitelist-common-%{name}.local' >> /etc/firejail/whitelist-common.local
-fi
 dbus-send --system --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 systemctl daemon-reload
 systemctl-user daemon-reload
@@ -289,6 +285,8 @@ exit 0
 
 %attr(0755,root,root) %{_libexecdir}/pm_apply
 %attr(0755,root,root) %{_libexecdir}/pm_unapply
+
+%attr(0755,root,root) %{_oneshotdir}/patchmanager-setup-preload.sh
 
 %{_libdir}/qt5/qml/org/SfietKonstantin/%{name}
 %{_datadir}/%{name}/data
