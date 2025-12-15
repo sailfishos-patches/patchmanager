@@ -82,7 +82,7 @@ public:
     void setup();
 
     // override QCache::insert()
-    bool insert(const QString &key, quint8 value = 1, int cost = HOTCACHE_COST_DEFAULT);
+    bool insert(const QString &key, int cost = HOTCACHE_COST_DEFAULT);
 
     // override QCache::contains()
     bool contains(const QString &key) const;
