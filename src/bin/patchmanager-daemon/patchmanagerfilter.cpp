@@ -116,8 +116,8 @@ void PatchManagerFilter::setup()
 // override QCache::insert().
 bool PatchManagerFilter::insert(const QString &key, int cost)
 {
-    quint8 data = 1;
-    return QCache::insert(key, &data, cost);
+    quint8* data = new quint8(1);
+    return QCache::insert(key, data, cost);
 }
 
 // override QCache::contains()
