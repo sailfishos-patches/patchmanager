@@ -9,7 +9,7 @@ if [ x"${qual}" = x"64" ]; then
   libdir=/usr/lib64
 fi
 
-if ! grep -qsF '/libpreloadpatchmanager/' /etc/ld.so.preload
+if ! grep -qsF 'libpreloadpatchmanager.so' /etc/ld.so.preload
 then
 echo "${libdir}/libpreloadpatchmanager.so" >> /etc/ld.so.preload
 fi
