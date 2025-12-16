@@ -39,7 +39,6 @@ Requires:   grep
 Requires:   sed
 Requires:   sailfish-version >= 3.4.0
 Requires:   qml(Nemo.Configuration)
-Requires:   oneshot
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Qml)
@@ -54,8 +53,10 @@ BuildRequires:  pkgconfig(libshadowutils)
 BuildRequires:  qt5-qttools-linguist
 BuildRequires:  pkgconfig(rpm)
 BuildRequires:  pkgconfig(popt)
-BuildRequires:  oneshot
 
+%_oneshot_requires_post
+BuildRequires:  oneshot
+Requires:   oneshot
 
 %package testcases
 Summary:    Provides test cases for Patchmanager
@@ -183,14 +184,15 @@ exit 0
 %post
 export NO_PM_PRELOAD=1
 
-# set up the oneshot script, and run it immediately
-# If --now is given, job is run immediately instead of postponing it later
-# If instant run fails the link is created for later run
-%{_bindir}/add-oneshot --now patchmanager-setup-preload.sh
-
 case "$1" in
 1)  # Installation
   echo "Installing %{name}: %%post section"
+
+  # set up the oneshot script, and run it immediately
+  # If --now is given, job is run immediately instead of postponing it later
+  # If instant run fails the link is created for later run
+  %{_bindir}/add-oneshot --now patchmanager-setup-preload.sh
+
   # See #507: https://github.com/sailfishos-patches/patchmanager/issues/507
   if [ $(getent group inet) ]
   then echo "O.K., this system has an 'inet' group."
