@@ -182,7 +182,12 @@ exit 0
 
 %post
 export NO_PM_PRELOAD=1
-%{_bindir}/add-oneshot patchmanager-setup-preload.sh
+
+# set up the oneshot script, and run it immediately
+# If --now is given, job is run immediately instead of postponing it later
+# If instant run fails the link is created for later run
+%{_bindir}/add-oneshot --now patchmanager-setup-preload.sh
+
 case "$1" in
 1)  # Installation
   echo "Installing %{name}: %%post section"
