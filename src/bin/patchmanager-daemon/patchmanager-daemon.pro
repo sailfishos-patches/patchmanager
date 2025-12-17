@@ -23,6 +23,9 @@ message("Version: $$BUILD_VERSION")
 
 DEFINES += BUILD_VERSION=\\\"$$BUILD_VERSION\\\"
 
+# build with legacy/unsupported features:
+# DEFINES+=PM_ENABLE_LEGACY=1
+
 HEADERS += \
     patchmanagerobject.h \
     patchmanager_include.h \
