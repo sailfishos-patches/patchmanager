@@ -1132,52 +1132,62 @@ QString PatchManagerObject::getRpmName(const QString &rpm) const
 */
 void PatchManagerObject::process()
 {
-    const QStringList args = QCoreApplication::arguments();
+    // FIXME: all of this is probably better handled using QCommandLineParser.
 
-    if (args.count() == 1) {
-        return;  // Prints help text.
-    } else if (args.count() == 2) {
-        if (args[1] == QStringLiteral("--help")) {
-            return;  // Also prints help text.
-        } else if (args[1] == QStringLiteral("--daemon")) {
-            initialize();
-        } else if (args[1] == QStringLiteral("--reset-system")) {
-            resetSystem();
-            QCoreApplication::exit(2);
-            return;
+    const QStringList args = QCoreApplication::arguments();
+    const int argc = args.count();
+
+    /* argc == 1 and "--help/--version" should already be handled in main.cpp
+     * Must be "> 1", not "> 2" for "--unapply-all" and other singular arguments.
+     */
+    if (argc > 1) {
+        const QString firstArg = args[1];
+        if (argc == 2) { // --daemonize and --reset-system
+            if (firstArg == QStringLiteral("--daemon")) {
+                initialize();
+                return;
+            } else if (firstArg == QStringLiteral("--reset-system")) {
+                // FIXME: see #204, #278
+                qWarning() << Q_FUNC_INFO << "This is very likely broken in this version of patchmanager.";
+                resetSystem();
+                QCoreApplication::exit(2);
+                return;
+            }
         }
-    } else if (args.count() > 1) {  // Must be "> 1", not "> 2" for "--unapply-all"
-        QDBusConnection connection = QDBusConnection::systemBus();
-        qDebug() << Q_FUNC_INFO << "Has arguments, sending D-Bus message and quit.";
+
+        /*
+         * "Client mode": from here on, handle options which send dbus messages
+         */
 
         QString method;
         QVariantList data;
-        if (args[1] == QStringLiteral("-a")) {
-            method = QStringLiteral("applyPatch");
+
+        if ((firstArg == QStringLiteral("-a")) || (firstArg == QStringLiteral("-u"))) {
             if (args.length() < 3) {
+                qCritical() << "Option" << firstArg << "requires an argument.";
                 QCoreApplication::exit(2);
                 return;
             } else {
                 data.append(args[2]);
             }
-        } else if (args[1] == QStringLiteral("-u")) {
-            method = QStringLiteral("unapplyPatch");
-            if (args.length() < 3) {
-                QCoreApplication::exit(2);
-                return;
-            } else {
-                data.append(args[2]);
-            }
-        } else if (args[1] == QStringLiteral("--unapply-all")) {
+            if (firstArg == QStringLiteral("-a"))
+              method = QStringLiteral("applyPatch");
+            if (firstArg == QStringLiteral("-u"))
+              method = QStringLiteral("unapplyPatch");
+        } else if (firstArg == QStringLiteral("--unapply-all")) {
             method = QStringLiteral("unapplyAllPatches");
-        } else if (args[1] == QStringLiteral("--backup-working")) {
+        } else if (firstArg == QStringLiteral("--backup-working")) {
             method = QStringLiteral("backupWorkingPatchList");
-        } else if (args[1] == QStringLiteral("--restore-working")) {
+        } else if (firstArg == QStringLiteral("--restore-working")) {
             method = QStringLiteral("restorePatchList");
         } else {
+            qCritical() << "Something went wrong handling the arguments.";
+            QCoreApplication::exit(2);
             return;
         }
 
+        qInfo() << "Called with arguments, will send a D-Bus message and quit.";
+        QDBusConnection connection = QDBusConnection::systemBus();
         QDBusMessage msg = QDBusMessage::createMethodCall(DBUS_SERVICE_NAME, DBUS_PATH_NAME, DBUS_SERVICE_NAME, method);
         if (!data.isEmpty()) {
             msg.setArguments(data);
@@ -1185,6 +1195,10 @@ void PatchManagerObject::process()
         connection.call(msg);
 
         QCoreApplication::exit(0);
+        return;
+    } else {
+        qCritical() << "Something went wrong handling the arguments.";
+        QCoreApplication::exit(2);
         return;
     }
 
