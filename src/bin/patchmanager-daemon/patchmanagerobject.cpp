@@ -573,7 +573,7 @@ void PatchManagerObject::doRegisterDBus()
 }
 
 /*!
-    \fn void PatchManagerObject::doApplyAllPatches()
+    \fn void PatchManagerObject::applyAllPatches()
 
     This is the main "auto-apply" function.
 
