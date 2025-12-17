@@ -460,7 +460,7 @@ void PatchManagerObject::lateInitialize()
     QDir cache(PATCHES_ADDITIONAL_DIR);
     if ((cache.exists() && cache.entryList(QDir::NoDotAndDotDot | QDir::Dirs).count() > 0)
             || getSettings(QStringLiteral("applyOnBoot"), false).toBool()) {
-        prepareCacheRoot();
+        applyAllPatches();
         startLocalServer();
     }
 
@@ -573,24 +573,23 @@ void PatchManagerObject::doRegisterDBus()
 }
 
 /*!
-    \fn void PatchManagerObject::prepareCacheRoot()
+    \fn void PatchManagerObject::doApplyAllPatches()
 
-    Despite its name, it does not actually prepare the cache root!
-    Instead, this is the main "auto-apply" function.
+    This is the main "auto-apply" function.
 
     \list
-    \li First, apply all enabled Patches which are listend in the \l{order}{inifile} settings key.
+    \li First, apply all enabled Patches which are listed in the \l{order}{inifile} settings key.
     \li Second, apply all enabled Patches which remain (if any).
     \li If applying any Patch fails, the local \c success variable will be set to \c false, but the applying run will continue.
     \li At the end of the process, if \c success is \c true, calls setWorkingPatches()
     \li At the end of the process, if \c success is \c false, calls refreshPatchList()
     \endlist
-()
+
     Emits signals \c autoApplyingStarted(), \c autoApplyingPatch(), \c autoApplyingFailed(), autoApplyingFinished(), depending on state.
 
     \sa PatchManagerObject::doPrepareCache(), {Patchmanager Configuration Files}, refreshPatchList(), setWorkingPatches()
 */
-void PatchManagerObject::doPrepareCacheRoot()
+void PatchManagerObject::doApplyAllPatches()
 {
     qDebug() << Q_FUNC_INFO;
     // TODO: think about security issues here
@@ -659,7 +658,7 @@ void PatchManagerObject::doPrepareCacheRoot()
 
     \a patchName: name of the patch to prepare the cache for.
 
-    \sa PatchManagerObject::prepareCacheRoot()
+    \sa PatchManagerObject::applyAllPatches()
 */
 void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 {
@@ -1692,7 +1691,7 @@ void PatchManagerObject::loadRequest(bool apply)
     }
 
     if (apply) {
-        prepareCacheRoot();
+        applyAllPatches();
     } else {
         unapplyAllPatches();
     }
@@ -1933,7 +1932,7 @@ void PatchManagerObject::onOriginalFileChanged(const QString &path)
 
     if (!success) {
         clearFakeroot();
-        doPrepareCacheRoot();
+        doApplyAllPatches();
     }
 }
 
@@ -2857,10 +2856,10 @@ void PatchManagerObject::refreshPatchList()
     QMetaObject::invokeMethod(this, NAME(doRefreshPatchList), Qt::QueuedConnection);
 }
 
-void PatchManagerObject::prepareCacheRoot()
+void PatchManagerObject::applyAllPatches()
 {
     qDebug() << Q_FUNC_INFO;
-    QMetaObject::invokeMethod(this, NAME(doPrepareCacheRoot), Qt::QueuedConnection);
+    QMetaObject::invokeMethod(this, NAME(doApplyAllPatches), Qt::QueuedConnection);
 }
 
 void PatchManagerObject::eraseRecursively(const QString &path)
