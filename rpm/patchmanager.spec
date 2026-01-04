@@ -54,6 +54,9 @@ BuildRequires:  qt5-qttools-linguist
 BuildRequires:  pkgconfig(rpm)
 BuildRequires:  pkgconfig(popt)
 
+%_oneshot_requires_post
+BuildRequires:  oneshot
+Requires:   oneshot
 
 %package testcases
 Summary:    Provides test cases for Patchmanager
@@ -180,9 +183,16 @@ exit 0
 
 %post
 export NO_PM_PRELOAD=1
+
 case "$1" in
 1)  # Installation
   echo "Installing %{name}: %%post section"
+
+  # set up the oneshot script, and run it immediately
+  # If --now is given, job is run immediately instead of postponing it later
+  # If instant run fails the link is created for later run
+  %{_bindir}/add-oneshot --now patchmanager-setup-preload.sh
+
   # See #507: https://github.com/sailfishos-patches/patchmanager/issues/507
   if [ $(getent group inet) ]
   then echo "O.K., this system has an 'inet' group."
@@ -198,13 +208,6 @@ case "$1" in
   echo "Case $1 is not handled in %%post section of %{name}!"
 ;;
 esac
-sed -i '/libpreload%{name}/ d' /etc/ld.so.preload
-echo '%{_libdir}/libpreload%{name}.so' >> /etc/ld.so.preload
-/sbin/ldconfig
-if ! grep -qsF 'include whitelist-common-%{name}.local' /etc/firejail/whitelist-common.local
-then
-  echo 'include whitelist-common-%{name}.local' >> /etc/firejail/whitelist-common.local
-fi
 dbus-send --system --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 systemctl daemon-reload
 systemctl-user daemon-reload
@@ -289,6 +292,8 @@ exit 0
 
 %attr(0755,root,root) %{_libexecdir}/pm_apply
 %attr(0755,root,root) %{_libexecdir}/pm_unapply
+
+%attr(0755,root,root) %{_oneshotdir}/patchmanager-setup-preload.sh
 
 %{_libdir}/qt5/qml/org/SfietKonstantin/%{name}
 %{_datadir}/%{name}/data
