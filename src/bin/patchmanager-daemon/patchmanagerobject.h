@@ -188,7 +188,9 @@ private slots:
 private:
     void restartService(const QString &serviceName);
 
+#ifdef PM_ENABLE_LEGACY
     void resetSystem();
+#endif
     void clearFakeroot();
 
     void registerDBus();

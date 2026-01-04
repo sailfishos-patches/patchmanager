@@ -94,11 +94,13 @@ static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("%1/%2").arg(PATCHE
 static const QString PATCH_METADATA_FILE    = QStringLiteral("patch.json");
 static const QString MANGLE_CONFIG_FILE     = QStringLiteral("/etc/patchmanager/manglelist.conf");
 
+#ifdef PM_ENABLE_LEGACY
 static const QString AUSMT_BACKUP_DIR          = QStringLiteral("/var/lib/patchmanager/ausmt/patches");
 static const QString AUSMT_INSTALLED_LIST_FILE = QStringLiteral("/var/lib/patchmanager/ausmt/packages");
 
-static const QString s_newConfigLocation = QStringLiteral("/etc/patchmanager2.conf");
 static const QString s_oldConfigLocation = QStringLiteral("/home/nemo/.config/patchmanager2.conf");
+#endif
+static const QString s_configLocation = QStringLiteral("/etc/patchmanager2.conf");
 
 static const QString s_patchmanagerSocket    = QStringLiteral("/tmp/patchmanager-socket");
 static const QString s_patchmanagerCacheRoot = QStringLiteral("/tmp/patchmanager");
@@ -416,6 +418,7 @@ void PatchManagerObject::lateInitialize()
 {
     qDebug() << Q_FUNC_INFO;
 
+#ifdef PM_ENABLE_LEGACY
     QFile file (AUSMT_INSTALLED_LIST_FILE);
     if (file.exists()) {
         qWarning() << Q_FUNC_INFO << "Found extant AUSMT package list, importing list as enabled Patches.";
@@ -455,6 +458,8 @@ void PatchManagerObject::lateInitialize()
     if (needClear) {
         clearFakeroot();
     }
+#endif
+
     refreshPatchList();
 
     QDir cache(PATCHES_ADDITIONAL_DIR);
@@ -789,7 +794,7 @@ void PatchManagerObject::initialize()
     qDebug() << Q_FUNC_INFO << "Translator installed" << success;
 
     m_nam = new QNetworkAccessManager(this);
-    m_settings = new QSettings(s_newConfigLocation, QSettings::IniFormat, this);
+    m_settings = new QSettings(s_configLocation, QSettings::IniFormat, this);
 
     qDebug() << Q_FUNC_INFO << "Environment:";
 
@@ -825,9 +830,11 @@ void PatchManagerObject::initialize()
         qWarning() << Q_FUNC_INFO << "Failed to access pm_unapply!";
     }
 
-    if (!QFileInfo::exists(s_newConfigLocation) && QFileInfo::exists(s_oldConfigLocation)) {
-        QFile::copy(s_oldConfigLocation, s_newConfigLocation);
+#ifdef PM_ENABLE_LEGACY
+    if (!QFileInfo::exists(s_configLocation) && QFileInfo::exists(s_oldConfigLocation)) {
+        QFile::copy(s_oldConfigLocation, s_configLocation);
     }
+#endif
 
     if (Q_UNLIKELY(qEnvironmentVariableIsSet("PM_DEBUG_EVENTFILTER"))) {
         installEventFilter(this);
@@ -990,6 +997,7 @@ void PatchManagerObject::restartService(const QString &serviceName)
     }
 }
 
+#ifdef PM_ENABLE_LEGACY
 void PatchManagerObject::resetSystem()
 {
     qDebug() << Q_FUNC_INFO;
@@ -1073,6 +1081,7 @@ void PatchManagerObject::resetSystem()
 
     QCoreApplication::exit(0);
 }
+#endif
 
 void PatchManagerObject::clearFakeroot()
 {
@@ -1140,10 +1149,12 @@ void PatchManagerObject::process()
             return;  // Also prints help text.
         } else if (args[1] == QStringLiteral("--daemon")) {
             initialize();
+#ifdef PM_ENABLE_LEGACY
         } else if (args[1] == QStringLiteral("--reset-system")) {
             resetSystem();
             QCoreApplication::exit(2);
             return;
+#endif
         }
     } else if (args.count() > 1) {  // Must be "> 1", not "> 2" for "--unapply-all"
         QDBusConnection connection = QDBusConnection::systemBus();
