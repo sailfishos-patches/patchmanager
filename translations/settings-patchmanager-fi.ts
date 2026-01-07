@@ -557,7 +557,7 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="149"/>
         <source>Show only updates in Web Catalog</source>
-        <translation>Näytä vain päivitykset Verkkokatalogissa</translation>
+        <translation>Näytä pelkät päivitykset Verkkokatalogissa</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="150"/>
