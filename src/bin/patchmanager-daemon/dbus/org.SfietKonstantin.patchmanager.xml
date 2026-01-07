@@ -1,6 +1,11 @@
 <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
     <interface name="org.SfietKonstantin.patchmanager">
+        <method name="statistics">
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantList"/>
+            <arg name="verbose" type="b" direction="in" />
+            <arg name="result" type="s" direction="out" />
+        </method>
         <method name="listPatches">
             <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantList"/>
             <arg name="result" type="a(v)" direction="out" />

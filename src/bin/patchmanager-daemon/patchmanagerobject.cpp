@@ -37,6 +37,7 @@
 
 #include "patchmanagerobject.h"
 #include "patchmanager_adaptor.h"
+#include "patchmanagerfilter.h"
 
 #include <QLocalSocket>
 #include <QLocalServer>
@@ -814,6 +815,9 @@ void PatchManagerObject::initialize()
         qWarning() << Q_FUNC_INFO << "Failed to find ld.so.preload!";
     }
 
+    // prepare the hotcache
+    setupFilter();
+
     qDebug() << Q_FUNC_INFO << PM_APPLY;
     QFileInfo pa(PM_APPLY);
     if (pa.exists()) {
@@ -1200,6 +1204,17 @@ void PatchManagerObject::process()
 
 }
 
+/*!  Retrieves some statistics via D-Bus.  */
+QString PatchManagerObject::statistics(bool verbose=false)
+{
+    DBUS_GUARD(QString())
+    qDebug() << Q_FUNC_INFO;
+    setDelayedReply(true);
+    QMetaObject::invokeMethod(this, NAME(doStatistics), Qt::QueuedConnection,
+                              Q_ARG(QVariantMap, QVariantMap({{QStringLiteral("verbose"), verbose}})),
+                              Q_ARG(QDBusMessage, message()));
+    return QString();
+}
 
 /*!  Retrieves a list of Patches via D-Bus.  */
 QVariantList PatchManagerObject::listPatches()
@@ -1844,6 +1859,7 @@ void PatchManagerObject::onTimerAction()
 {
     qDebug() << Q_FUNC_INFO;
     checkForUpdates();
+    statistics(false);
 }
 
 void PatchManagerObject::startReadingLocalServer()
@@ -1870,22 +1886,48 @@ void PatchManagerObject::startReadingLocalServer()
             return;
         }
         const QByteArray request = clientConnection->readAll();
-        QByteArray payload;
         const QString fakePath = QStringLiteral("%1%2").arg(s_patchmanagerCacheRoot, QString::fromLatin1(request));
-        if (!m_failed && QFileInfo::exists(fakePath)) {
-            payload = fakePath.toLatin1();
-            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
-                qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sending:" << payload;
-            }
+        bool passAsIs = true;
+        if (
+             (!m_failed) // return unaltered for failed
+             && (!m_filter.active() || !m_filter.contains(request)) // filter inactive or not in the list of unpatched files
+             && (Q_UNLIKELY(QFileInfo::exists(fakePath))) // file is patched
+           )
+        {
+            passAsIs = false;
         } else {
-            payload = request;
-            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
-                qDebug() << Q_FUNC_INFO << "Requested:" << request << "is sent unaltered.";
-            }
+            // failed state or file is unpatched
+            passAsIs = true;
         }
-        clientConnection->write(payload);
+        /* write the result back to the library as soon as possible */
+        if (passAsIs) {
+            clientConnection->write(request);
+        } else {
+            clientConnection->write(fakePath.toLatin1());
+        }
         clientConnection->flush();
 //        clientConnection->waitForBytesWritten();
+
+        /* print debug and manage the cache after writing the data:
+         * if the file didn't exist, we add it to the cache.
+         * otherwise, we so nothing, but check that it wasn't wrongly in the
+         * cache, which shouldn't happen.
+         * Note that we don't actually store anything in the cache, we're only
+         * interested in the key and the cost management.
+         */
+        if (passAsIs) { // file didn't exist
+            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
+                qDebug() << Q_FUNC_INFO << "Requested:" << request << "was sent unaltered.";
+            }
+            m_filter.insert(request);
+        } else {
+            if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
+                qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sent:" << fakePath;
+            }
+            if (m_filter.remove(request)) {
+                qWarning() << Q_FUNC_INFO << "Hot cache: contained a patched file:" << request << "/" << fakePath;
+            }
+        }
     }, Qt::DirectConnection);
 }
 
@@ -2145,6 +2187,38 @@ void PatchManagerObject::doRefreshPatchList()
     if (m_adaptor) {
         emit m_adaptor->listPatchesChanged();
     }
+}
+
+void PatchManagerObject::doStatistics(const QVariantMap &params, const QDBusMessage &message)
+{
+    qDebug() << Q_FUNC_INFO;
+
+    bool verbose = params.value(QStringLiteral("verbose")).toBool();
+
+    QStringList result;
+    result << QStringLiteral("Patchmanager version: %1").arg(getPatchmanagerVersion())
+           << QStringLiteral("Applied Patches: %1").arg(m_appliedPatches.count())
+           //<< QStringLiteral("Patched files: %1").arg(m_patchedFiles.count());
+           << QStringLiteral("Patched files: %1").arg(m_fileToPatch.values().count());
+
+    if (m_originalWatcher)
+      result << QStringLiteral("Watched files: %1").arg(m_originalWatcher->files().count());
+
+    if (m_filter.active()) {
+        result << m_filter.stats(verbose);
+    } else {
+        result << QStringLiteral("Advanced filtering is not active.");
+    }
+
+    qInfo() << "==================================";
+    qInfo() << "======== STATISTICS BEGIN ========";
+    qInfo() << "==================================";
+    qInfo() << qPrintable(result.join("\n"));
+    qInfo() << "==================================";
+    qInfo() << "======== STATISTICS END ==========";
+    qInfo() << "==================================";
+
+    sendMessageReply(message, result.join("\n"));
 }
 
 void PatchManagerObject::doListPatches(const QDBusMessage &message)
@@ -2979,3 +3053,19 @@ QString PatchManagerObject::pathToMangledPath(const QString &path, const QString
     qDebug() << Q_FUNC_INFO << "Path after mangle" << newpath;
     return newpath;
 }
+
+/*! Set up the filter parameters and fill it with some initial contents.
+ *
+ *  \sa PatchManagerFilter::setup()
+*/
+void PatchManagerObject::setupFilter()
+{
+    if (!getSettings(QStringLiteral("enableFSFilter"), false).toBool()) {
+        m_filter.setActive(false);
+        return;
+    } else {
+        m_filter.setup();
+        m_filter.setActive(true);
+    }
+}
+
