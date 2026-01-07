@@ -81,7 +81,7 @@
     <message>
         <location filename="../src/qml/AboutPage.qml" line="172"/>
         <source>If you appreciate our work, please consider a donation to help covering the hosting costs for OpenRepos. OpenRepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of Patches is hosted there.</source>
-        <translation>Jos arvostat työtämme, harkitsethan lahjoitusta auttaaksesi kattamaan OpenRepos-palvelun ylläpitokustannuksia. OpenRepos on kriittinen palvelu Muutostiedostojen hallinnalle, koska muutostiedostojen verkkokatalogia ylläpidetään siellä.</translation>
+        <translation>Jos arvostat työtämme, harkitsethan lahjoitusta auttaaksesi kattamaan OpenRepos-palvelun ylläpitokustannuksia. OpenRepos on kriittinen palvelu Muutostiedostojen hallinnan kannalta, sillä sen palvelimella ylläpidetään muutostiedostojen verkkokatalogia.</translation>
     </message>
     <message>
         <location filename="../src/qml/AboutPage.qml" line="193"/>
