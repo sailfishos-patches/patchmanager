@@ -188,9 +188,9 @@ case "$1" in
 1)  # Installation
   echo "Installing %{name}: %%post section"
 
-  # set up the oneshot script, and run it immediately
-  # If --now is given, job is run immediately instead of postponing it later
-  # If instant run fails the link is created for later run
+  # Set up an oneshot script, and run it immediately.
+  # If --now is given, the job is run immediately instead of postponing it.
+  # If running instantly fails the oneshot script's link is created for a later run.
   %{_bindir}/add-oneshot --now patchmanager-setup-preload.sh
 
   # See #507: https://github.com/sailfishos-patches/patchmanager/issues/507
