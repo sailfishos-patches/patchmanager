@@ -1,8 +1,8 @@
 TEMPLATE = aux
 
-# oneshot.d is Sailish OS specific. See https://github.com/sailfishos/oneshot
-# While the path could be configurable though the %{_oneshotdir} RPM macro,
-# this location seems stable enough.
+# oneshot.d is SailishOS specific, see https://github.com/sailfishos/oneshot
+# While its path is configurable via the %{_oneshotdir} RPM macro,
+# this location seems stable.
 oneshot.path = /usr/lib/oneshot.d/
 oneshot.files = patchmanager-setup-preload.sh
 
