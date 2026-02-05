@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# don't interfer with ourselves
+# Do not interfere with ourselves
 export NO_PM_PRELOAD=1
 
 qual=$(getconf LONG_BIT)
