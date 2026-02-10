@@ -17,12 +17,24 @@ fi
 
 if ! grep -qsF 'libpreloadpatchmanager.so' /etc/ld.so.preload
 then
-echo "${libdir}/libpreloadpatchmanager.so" >> /etc/ld.so.preload
+  echo "${libdir}/libpreloadpatchmanager.so" >> /etc/ld.so.preload
+  if [ $? -ne 0 ]; then
+    echo "patchmanager-setup-preload - setting up preload FAILed. Trying again next boot"
+    exit 1
+  fi
 fi
 
 /sbin/ldconfig
+
 if ! grep -qsF 'include whitelist-common-patchmanager.local' /etc/firejail/whitelist-common.local
 then
   echo 'include whitelist-common-patchmanager.local' >> /etc/firejail/whitelist-common.local
+  if [ $? -ne 0 ]; then
+    echo "patchmanager-setup-preload - setting up whitelist FAILed. Trying again next boot"
+    exit 1
+  fi
 fi
 
+echo "patchmanager-setup-preload - system setup SUCCESSFUL."
+
+exit 0
