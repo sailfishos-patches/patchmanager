@@ -9,7 +9,7 @@ oneshot.files = patchmanager-setup-preload.sh
 INSTALLS += oneshot
 
 # Systemd
-oneshot-systemd.files = src/oneshot/patchmanager-sailfish-upgrade-watcher.service
+oneshot-systemd.files = patchmanager-sailfish-upgrade-watcher.service
 oneshot-systemd.path = /usr/lib/systemd/system/
 INSTALLS += oneshot-systemd
 
