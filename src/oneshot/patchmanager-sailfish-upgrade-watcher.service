@@ -1,9 +1,14 @@
 [Unit]
 Description=Patchmanager OS upgrade watcher.
 
+DefaultDependencies=no
 Before=system-update.target
 After=system-update-pre.target
 After=sailfish-upgrade-ui.service
+
+# Make sure we're "executed" on reboot/shutdown:
+Conflicts=shutdown.target
+Before=shutdown.target
 
 [Service]
 Type=oneshot
