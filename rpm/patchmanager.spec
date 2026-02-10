@@ -282,6 +282,7 @@ exit 0
 %{_unitdir}/checkForUpdates-org.SfietKonstantin.patchmanager.service
 %{_unitdir}/checkForUpdates-org.SfietKonstantin.patchmanager.timer
 %{_unitdir}/timers.target.wants/checkForUpdates-org.SfietKonstantin.patchmanager.timer
+%{_unitdir}/patchmanager-sailfish-upgrade-watcher.service
 %{_sharedstatedir}/environment/patchmanager/10-dbus.conf
 %{_sharedstatedir}/environment/patchmanager/90-debug.conf
 %{_userunitdir}/dbus-org.SfietKonstantin.patchmanager.service
