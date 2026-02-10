@@ -188,11 +188,6 @@ case "$1" in
 1)  # Installation
   echo "Installing %{name}: %%post section"
 
-  # Set up an oneshot script, and run it immediately.
-  # If --now is given, the job is run immediately instead of postponing it.
-  # If running instantly fails the oneshot script's link is created for a later run.
-  %{_bindir}/add-oneshot --now patchmanager-setup-preload.sh
-
   # See #507: https://github.com/sailfishos-patches/patchmanager/issues/507
   if [ $(getent group inet) ]
   then echo "O.K., this system has an 'inet' group."
@@ -208,6 +203,12 @@ case "$1" in
   echo "Case $1 is not handled in %%post section of %{name}!"
 ;;
 esac
+
+# Set up an oneshot script, and run it immediately.
+# If --now is given, the job is run immediately instead of postponing it.
+# If running instantly fails the oneshot script's link is created for a later run.
+%{_bindir}/add-oneshot --now patchmanager-setup-preload.sh
+
 dbus-send --system --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 systemctl daemon-reload
 systemctl-user daemon-reload
