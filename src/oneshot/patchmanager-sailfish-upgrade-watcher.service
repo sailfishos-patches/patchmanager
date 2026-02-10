@@ -1,0 +1,17 @@
+[Unit]
+Description=Patchmanager OS upgrade watcher.
+
+Before=system-update.target
+After=system-update-pre.target
+After=sailfish-upgrade-ui.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=True
+
+ExecStart=/bin/true
+ExecStop=/usr/bin/add-oneshot patchmanager-setup-preload.sh
+
+# Recommendation would be to ship the symlink manually
+[Install]
+WantedBy=system-update.target
