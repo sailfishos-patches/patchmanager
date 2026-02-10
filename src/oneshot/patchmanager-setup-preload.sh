@@ -9,6 +9,14 @@ if [ "$MIC_RUN" != "" ]; then
   exit 1
 fi
 
+# While updating, return failure so we get run at next boot
+# See https://github.com/sailfishos-patches/patchmanager/issues/39#issuecomment-940607912
+if [ -e /tmp/os-update-running ]
+then
+  echo "patchmanager-setup-preload - returning FAIL to postpone oneshot to next boot"
+  exit 1
+fi
+
 qual=$(getconf LONG_BIT)
 libdir=/usr/lib
 if [ x"${qual}" = x"64" ]; then
