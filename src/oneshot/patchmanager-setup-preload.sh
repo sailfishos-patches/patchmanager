@@ -3,6 +3,12 @@
 # Do not interfere with ourselves
 export NO_PM_PRELOAD=1
 
+set +e
+if [ "$MIC_RUN" != "" ]; then
+  echo "patchmanager-setup-preload - returning FAIL to postpone oneshot to first boot"
+  exit 1
+fi
+
 qual=$(getconf LONG_BIT)
 libdir=/usr/lib
 if [ x"${qual}" = x"64" ]; then
