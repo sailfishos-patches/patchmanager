@@ -1,3 +1,8 @@
+# This Unit is supposed to *only* get activated in OS update mode, and then
+# started just before shutdown.
+#
+# Hence we Conflict with shutdown, and are WantedBy system-update.target.
+
 [Unit]
 Description=Patchmanager OS upgrade watcher.
 
