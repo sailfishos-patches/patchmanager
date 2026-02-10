@@ -149,6 +149,9 @@ ln -s ../checkForUpdates-org.SfietKonstantin.patchmanager.timer %{buildroot}%{_u
 mkdir -p %{buildroot}/%{_userunitdir}/lipstick.service.wants/
 ln -s ../lipstick-patchmanager.service %{buildroot}/%{_userunitdir}/lipstick.service.wants/
 
+mkdir -p %{buildroot}/%{_unitdir}/system-update.target.wants/
+ln -s ../patchmanager-sailfish-upgrade-watcher.service %{buildroot}%{_unitdir}/system-update.target.wants/
+
 mkdir -p %{buildroot}%{_datadir}/%{name}/patches
 
 
@@ -283,6 +286,7 @@ exit 0
 %{_unitdir}/checkForUpdates-org.SfietKonstantin.patchmanager.timer
 %{_unitdir}/timers.target.wants/checkForUpdates-org.SfietKonstantin.patchmanager.timer
 %{_unitdir}/patchmanager-sailfish-upgrade-watcher.service
+%{_unitdir}/system-update.target.wants/patchmanager-sailfish-upgrade-watcher.service
 %{_sharedstatedir}/environment/patchmanager/10-dbus.conf
 %{_sharedstatedir}/environment/patchmanager/90-debug.conf
 %{_userunitdir}/dbus-org.SfietKonstantin.patchmanager.service
