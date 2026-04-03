@@ -1,5 +1,5 @@
 <!DOCTYPE QPH>
-<QPH language="no_NB">
+<QPH language="nb_NO">
 <phrase>
     <source>Activate all enabled Patches</source>
     <target>Aktiver alle aktiverte patcher</target>
