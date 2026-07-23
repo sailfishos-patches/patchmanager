@@ -3,6 +3,7 @@ Description=Patchmanager service
 Requires=dbus.service
 After=dbus.service
 Before=systemd-user-sessions.service
+ConditionPathExists=!/tmp/os-update-running
 
 [Service]
 Type=dbus
