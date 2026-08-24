@@ -200,7 +200,7 @@
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="278"/>
         <source>Patch log</source>
-        <translation>Pleisterlogboek</translation>
+        <translation>Patchlogboek</translation>
     </message>
     <message>
         <location filename="../src/qml/UnifiedPatchPage.qml" line="287"/>
