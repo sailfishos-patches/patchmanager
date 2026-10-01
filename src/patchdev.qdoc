@@ -1,0 +1,215 @@
+/*!
+
+  \page patchdev.html overview
+  \indexpage Patchmanager Documentation
+
+  \title Patch Developer Documentation
+
+  \section1 Patch Installation
+  \target patchdevinstall
+
+  There are three ways a Patch can end up on the system:
+
+  \list
+  \li Web Catalog
+  \li RPM package
+  \li TAR package
+  \li manual installation
+  \endlist
+
+  \section2 Web Catalog
+
+  Installation via the Patchmanager Web Catalog is the most common and
+  recommended way of installing a patch.  This is done through the Patchmanager
+  UI, by selecting \uicontrol install on the \l {WebPatchPage}{Patch Page}.
+
+  PM will download metadata and a tarball from the Web Catalog, extract the
+  tarball into the patch storage location, and generate the necessary JSON file
+  from the metadata.
+
+  \sa {Patchmanager Web Catalog}{Web Catalog}
+
+  \section2 RPM package
+
+  Patches may be distributed as RPM files, which assure the placement of files
+  according to the structure explained above.  RPM also provides advanced
+  features like dependencies and scriptlets which may be necessary for correct
+  operation or installation of a Patch.
+
+  \section2 TAR package
+
+  Patch developers may sometimes distribute Patches in \c tar format. Usually
+  they also contain the necessary files, but the contents of the tarball may
+  differ, and recipients of them must assure the layout given above is set up
+  correctly.
+
+  \section2 manual installation
+
+  Patch developers or users may want to quickly place a Patch under PM's
+  supervision without going through the hassle of packaging and installing.
+  This can be done easily, as long as the formats given above are followed.
+
+  \section1 Patch format
+
+  \section2 Patch folder structure
+
+  All Patches managed by PM are installed under \c /usr/share/patchmanager/patches/$NAME,
+  where \c $NAME is a directory having a unique name.
+
+  That directory must contain at least two files: a \c JSON file called
+  \c patch.json containing metadata, and a \c diff file called \c{unified_diff.patch}.
+
+  For information about \c patch.json metadata, see \l{metadata}, and
+  \l{https://github.com/sailfishos-patches/patchmanager/blob/master/README.md#the-json-metadata-file}{README}
+
+  \c{unified_diff.patch} must be in unified diff format, and must apply against
+  the filesystem root when using patch with the options \c{ -d / -p 1 --no-backup-if-mismatch }
+
+  It may optionally also contain:
+    \list
+    \li Qt translation (.qm) files
+    \li icon files in PNG format
+    \li a QML file called \c main.qml (whose root element is a Sailfish Silica \c{Page}).
+    \li other QML-compatible files which are referenced/loaded from \c main.qml
+    \endlist
+
+  \note the directory \c $NAME is usually and by convention the same as the
+  patch metadata field \c name, but that is not a requirement. \c $NAME should
+  be reasonably unique though, to avoid name clashes with Patches from others.
+
+  \section2 Metadata
+
+  See \l {Patch Metadata}
+*/
+
+/****** Patch Metadata Documentation page *******/
+
+/*!
+  \title Patch Metadata
+
+  \page patchmeta.html overview
+  \indexpage Patchmanager Documentation
+  \previouspage Patch Developer Documentation
+
+  \target metadata
+
+  A JSON file.
+
+  The metadata file contains information about a Patch.  It is a simple JSON file, that must be named \c patch.json.
+
+  \warning This files is automatically generated and added to your Patch
+  distribution if you choose to upload your Patch to the Web Catalog.
+  You should NOT include one with your Patch if you do that.
+
+  If you distribute your Patch some other way, e.g. as an RPM package, you must
+  provide a valid \c patch.json file.
+
+  You may use either the \l{newjson}{modern format} or the much simpler \l{legacyjson}{legacy format}.
+  Both are supported, but the modern one provides more useful features and is recommended.
+
+  \section2 Example patch.json
+  \target newjson
+
+  This describes the preferred format of \c patch.json.
+
+      \badcode
+      {
+          "author": "Jim Example",
+          "name": "the-internal-patch-name",
+          "display_name": "Human-facing Patch Name",
+          "version": "1.0.0",
+          "category": "calendar",
+          "description": "This is a long description of what this Patch does.\nIt will be displayed in the Patch page.",
+          "discussion": "https://example.org/forum/thead?id=9999",
+          "sources": "https://git.example.org/patch.git",
+          "donations": "https://example.org/donate",
+          "compatible": [ "3.2.1.20", "3.3.0.14", "3.3.0.16" ],
+          "id": NNN,
+          "last_updated": "2020-04-28T06:56:21.931",
+      }
+      \endcode
+
+  \section2 Description of options:
+
+  Required / Recommended:
+
+   \list
+   \li \c name: An internal name for the Patch.  As this is used as a directory name, it should only contain alphanumeric characters, underscores and hyphens.  Notably NO spaces, dollar signs or other special characters should be used!
+   \li \c display_name: The name of the Patch, which will be shown on the patch list.
+   \li \c version: A version string.  It MUST be in the format X.Y.Z
+   \li \c author: The name of the principal Patch author or maintainer.  Either use your real name, as displayed on Github or Twitter, or your usual nickname.
+   \li \c compatible: A list of SailfishOS releases the Patch works on.  Versions MUST be given in full with all four fields populated, e.g. "3.3.0.16" (using just "3.3" is invalid).
+   \endlist
+
+  Optional:
+   \list
+   \li \c description: Explanation of what the Patch does.
+   \li \c category: This is used to structure the list of Patches in categories, but also certain categories will cause Patchmanager to restart affected system services or applications.  For example, Patches in the category "homescreen" will prompt the user to restart Lipstick after their activation.
+   \li \c discussion, sources, donations: Optional links to websites.
+   \li \c last_updated: An ISO date string, the Web Catalog sets this.  It is used for sorting and update detection.
+   \endlist
+
+  Reserved:
+   \list
+   \li id: A numeric ID used by Web Catalog.  This MUST NOT be included in Patches which are not distributed via Web Catalog.
+   \endlist
+
+  \section2 List of supported categories:
+  \target jsoncats
+
+  \warning Supplying no category, or a category not on this list will cause the
+  Patch to be shown in the category "other", and no affected applications will
+  be restarted after the patch is activated.
+
+   \list
+   \li "homescreen" - will restart Lipstick
+   \li "silica" - will restart Lipstick
+   \li "keyboard" - will restart the keyboard service
+   \endlist
+
+  These will stop or restart the corresponding system applications (e.g. the
+  jolla-browser) after activating the Patch.
+
+   \list
+   \li "browser"
+   \li "calendar"
+   \li "camera"
+   \li "clock"
+   \li "contacts"
+   \li "email"
+   \li "gallery"
+   \li "media"
+   \li "messages"
+   \li "phone"
+   \li "settings"
+   \endlist
+
+  \section2 Example patch.json in legacy format
+  \target legacyjson
+
+  This describes the format of the \c patch.json file in the \e legacy format.
+  While this is still supported in Patchmanager 3, if possible switch to \l{newjson}{the new format} as it supports more useful information.
+
+      \badcode
+      {
+          "name": "Example Patch Name",
+          "description": "This is a long description of what this Patch does.\nIt will be displayed on the Patch page.",
+          "category": "email",
+          "infos": {
+              "maintainer": "username"
+          },
+      }
+      \endcode
+
+  \section3 Description of options:
+
+   \list
+   \li name: The "display name" of the patch, which will be shown on the Patch list.
+   \li description: Explanation of what the Patch does.
+   \li maintainer: The name of the principal Patch author or maintainer.  Either use your real name, as displayed on Github or Twitter, or your usual nickname.
+   \li category: see \l{jsoncats}{above}
+   \endlist
+
+
+*/
+

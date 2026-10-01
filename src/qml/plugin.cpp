@@ -54,6 +54,8 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
     return PatchManagerTranslator::GetInstance(engine);
 }
 
+/*! \qmlmodule org.SfietKonstantin.patchmanager */
+
 /*****  PatchManager ******/
 /*! \qmltype PatchManager
     \instantiates PatchManager
@@ -67,7 +69,7 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
 */
 /*! \qmlproperty bool PatchManager::developerMode
     \deprecated
-    \sa {Patchmanager Configuration Files}, inifile
+    \sa {Patchmanager Configuration Files}, PatchManager::patchDevelMode
 */
 /*! \qmlproperty bool PatchManager::failure
     If \c true, PM is in Failure Mode.
@@ -76,13 +78,15 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
     This property holds the Operating System version. This is used for version checking.
 */
 /*! \qmlproperty bool PatchManager::patchDevelMode
-    \sa {Patchmanager Configuration Files}, inifile
+    \sa {Patchmanager Configuration Files}
 */
 /*! \qmlproperty string PatchManager::patchmanagerVersion
     This property holds our own version
 */
 /*! \qmlproperty string PatchManager::serverMediaUrl
-    This poperty holds the URL to download screenshots from.
+    This poperty holds the URL to download screenshots from. The Patchmanager
+    Web Catalog backend supports hosting assets separately from the web
+    application, and this points to the asset URL.
 */
 /*! \qmlproperty int PatchManager::sfosVersionCheck
     This property keeps the setting of VersionCheck
@@ -90,11 +94,11 @@ static QObject *patchmanagertransalator_singleton(QQmlEngine *engine, QJSEngine 
 */
 /*! \qmlproperty var PatchManager::updates
     Map of internal names and metadata of patches which can be updated.
-    \sa PatchManagerObject::getUpdates, dbus-sys
+    \sa PatchManagerObject::getUpdates, {dbus-sys}{D-Bus System Service}
 */
 /*! \qmlproperty var PatchManager::updatesNames
     List of display names of patches which can be updated.
-    \sa PatchManagerObject::getUpdates, dbus-sys
+    \sa PatchManagerObject::getUpdates, {dbus-sys}{D-Bus System Service}
 */
 
 /*****  PatchManagerTranslator ******/

@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
- * Copyright (c) 2021, Patchmanager for SailfishOS contributors:
+ * Copyright (c) 2021-2025, Patchmanager for SailfishOS contributors:
  *                  - olf "Olf0" <https://github.com/Olf0>
  *                  - Peter G. "nephros" <sailfish@nephros.org>
  *                  - Vlad G. "b100dian" <https://github.com/b100dian>
@@ -63,7 +63,7 @@ Page {
 
             Image {
                 anchors.horizontalCenter: parent.horizontalCenter
-                source: "/usr/share/patchmanager/data/patchmanager-big.png"
+                source: "/usr/share/patchmanager/data/patchmanager-icon.svg"
             }
 
             Column {
@@ -115,7 +115,7 @@ Page {
                 }
                 Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: qsTranslate("", "Sources and Issue Tracker<br /><a href=\"%1\">on GitHub</a>").arg(SOURCE_REPO)
+                        text: qsTranslate("", "Source code repository and issue<br />tracker for bug reports, feature<br />suggestions and help requests<br /><a href=\"%1\">on GitHub</a>").arg(SOURCE_REPO)
                         textFormat: Text.StyledText
                         horizontalAlignment: Text.AlignHCenter
                         font.pixelSize: Theme.fontSizeSmall
@@ -169,7 +169,7 @@ Page {
                     font.pixelSize: Theme.fontSizeSmall
                     wrapMode: Text.WordWrap
                     horizontalAlignment: Text.AlignJustify
-                    text: qsTranslate("", "If you appreciate our work, please consider a donation to help covering the hosting costs for Openrepos. Openrepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of Patches is hosted there.")
+                    text: qsTranslate("", "If you appreciate our work, please consider a donation to help covering the hosting costs for OpenRepos. OpenRepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of Patches is hosted there.")
                 }
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -190,7 +190,7 @@ Page {
                     font.pixelSize: Theme.fontSizeSmall
                     wrapMode: Text.WordWrap
                     horizontalAlignment: Text.AlignJustify
-                    text: qsTranslate("", "If for some reason you cannot donate to Openrepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).")
+                    text: qsTranslate("", "If for some reason you cannot donate to OpenRepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).")
                 }
 
                 Text {

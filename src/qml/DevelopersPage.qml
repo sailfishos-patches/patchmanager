@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
- * Copyright (c) 2021, Patchmanager for SailfishOS contributors:
+ * Copyright (c) 2021-2025, Patchmanager for SailfishOS contributors:
  *                  - olf "Olf0" <https://github.com/Olf0>
  *                  - Peter G. "nephros" <sailfish@nephros.org>
  *                  - Vlad G. "b100dian" <https://github.com/b100dian>
@@ -95,16 +95,16 @@ Page {
             name: "olf"
             nickname: "Olf0"
             description: "Maintainer"
-            socialmedia: "https://mastodon.social/@olf"
-            socialmedianame: "Mastodon"
-            website: "https://talk.maemo.org/member.php?u=72347"
+            socialmedia: "https://forum.sailfishos.org/u/olf/"
+            socialmedianame: "FSO"
+            website: "https://github.com/Olf0"
         }
         ListElement {
             icon: "/usr/share/patchmanager/data/morpog.jpeg"
             category: "Thanks to"
             name: "Stephan Beyerle"
             nickname: "Morpog"
-            description: "Icons master"
+            description: "Icon master"
             socialmedia: "https://twitter.com/Morpog"
             socialmedianame: "Twitter"
             website: ""
@@ -114,10 +114,20 @@ Page {
             category: "Thanks to"
             name: ""
             nickname: "Ancelad"
-            description: "Icons master"
+            description: "Icon master"
             socialmedia: "https://twitter.com/iAncelad"
             socialmedianame: "Twitter"
             website: ""
+        }
+        ListElement {
+            icon: "/usr/share/patchmanager/data/marbalf.png"
+            category: "Thanks to"
+            name: ""
+            nickname: "marbalf (MBF)"
+            description: "Icon master"
+            socialmedia: "https://forum.sailfishos.org/u/marbalf/"
+            socialmedianame: "FSO"
+            website: "https://codeberg.org/marbalf"
         }
         ListElement {
             icon: "/usr/share/patchmanager/data/jakibaki.jpeg"

@@ -58,17 +58,17 @@ PatchManagerModel::PatchManagerModel(QObject *parent)
         \li Qt Role
         \li QML Role Name
       \row
-        \li \l{https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum}{Qt::DisplayRole}
-        \li name
+        \li {Qt::DisplayRole}
+        \li \c name
       \row
-        \li \l{https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum}{Qt::DecorationRole}
-        \li section
+        \li {Qt::DecorationRole}
+        \li \c section
       \row
-        \li \l{https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum}{Qt::EditRole}
-        \li patchObject
+        \li {Qt::EditRole}
+        \li \c patchObject
     \endtable
 
-    \sa {https://doc.qt.io/qt-5/qabstractitemmodel.html}{Qt::QAbstractItemModel}
+    \sa QAbstractItemModel
 */
 PatchManagerModel::PatchManagerModel(const QList<PatchObject *> &data, QObject *parent)
     : QAbstractListModel(parent)

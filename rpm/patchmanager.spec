@@ -21,7 +21,7 @@
 Name:       patchmanager
 
 Summary:    Allows to manage Patches for SailfishOS
-Version:    3.2.12
+Version:    3.2.13
 Release:    1
 # The Group tag should comprise one of the groups listed here:
 # https://github.com/mer-tools/spectacle/blob/master/data/GROUPS
@@ -183,6 +183,13 @@ export NO_PM_PRELOAD=1
 case "$1" in
 1)  # Installation
   echo "Installing %{name}: %%post section"
+  # See #507: https://github.com/sailfishos-patches/patchmanager/issues/507
+  if [ $(getent group inet) ]
+  then echo "O.K., this system has an 'inet' group."
+  else
+    echo "O.K., this system does not have an 'inet' group: Let us hope it really does not need one."
+    sed -i 's/SupplementaryGroups=inet/#SupplementaryGroups=inet/' %{_unitdir}/dbus-org.SfietKonstantin.patchmanager.service
+  fi
 ;;
 [2-9])  # Update
   echo "Updating %{name}: %%post section"
@@ -272,6 +279,7 @@ exit 0
 %{_unitdir}/checkForUpdates-org.SfietKonstantin.patchmanager.timer
 %{_unitdir}/timers.target.wants/checkForUpdates-org.SfietKonstantin.patchmanager.timer
 %{_sharedstatedir}/environment/patchmanager/10-dbus.conf
+%{_sharedstatedir}/environment/patchmanager/90-debug.conf
 %{_userunitdir}/dbus-org.SfietKonstantin.patchmanager.service
 %{_userunitdir}/lipstick-patchmanager.service
 %{_userunitdir}/lipstick.service.wants/lipstick-patchmanager.service
@@ -287,15 +295,13 @@ exit 0
 %{_datadir}/translations
 %{_datadir}/jolla-settings/pages/%{name}
 %{_datadir}/jolla-settings/entries/%{name}.json
-%{_datadir}/%{name}/icons/icon-m-patchmanager.png
-
+%{_datadir}/icons/hicolor/scalable/apps/*.svg
 # On SailfishOS < 4.6:
 # /usr/share/themes/sailfish-default/meegotouch/zX.Y/icons/*.png
 # On SailfishOS >= 4.6:
 # /usr/share/themes/sailfish-default/silica/zX.Y/icons/*.png
 # /usr/share/themes/sailfish-default/silica/zX.Y/icons-monochrome/*.png
 %{_datadir}/themes/sailfish-default/*/z*/icons*/*.png
-%{_datadir}/icons/hicolor/scalable/apps/*.svg
 
 %changelog
 * Thu Sep  9 1999 SailfishOS Patches <sailfishos-patches@users.noreply.github.com> - 99.99.99

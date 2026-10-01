@@ -23,6 +23,9 @@ message("Version: $$BUILD_VERSION")
 
 DEFINES += BUILD_VERSION=\\\"$$BUILD_VERSION\\\"
 
+# build with legacy/unsupported features:
+# DEFINES+=PM_ENABLE_LEGACY=1
+
 HEADERS += \
     patchmanagerobject.h \
     patchmanager_include.h \
@@ -61,7 +64,8 @@ systemd.files = \
 systemd.path = /usr/lib/systemd/system/
 INSTALLS += systemd
 
-env.files = environment/10-dbus.conf
+env.files = environment/10-dbus.conf \
+            environment/90-debug.conf 
 env.path = /var/lib/environment/patchmanager/
 INSTALLS += env
 
