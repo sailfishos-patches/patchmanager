@@ -1,6 +1,8 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="no">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="no">
 <context>
-    <name/>
+    <name></name>
     <message>
         <source>Activate all enabled Patches</source>
         <translation>Aktiver alle aktiverte patcher</translation>
@@ -503,63 +505,126 @@
     </message>
     <message>
         <source>browser</source>
-        <translation>Nettleser</translation>
+        <translation type="vanished">Nettleser</translation>
     </message>
     <message>
         <source>camera</source>
-        <translation>Kamera</translation>
+        <translation type="vanished">Kamera</translation>
     </message>
     <message>
         <source>calendar</source>
-        <translation>Kalender</translation>
+        <translation type="vanished">Kalender</translation>
     </message>
     <message>
         <source>clock</source>
-        <translation>Klokke</translation>
+        <translation type="vanished">Klokke</translation>
     </message>
     <message>
         <source>contacts</source>
-        <translation>Kontakter</translation>
+        <translation type="vanished">Kontakter</translation>
     </message>
     <message>
         <source>email</source>
-        <translation>E-post</translation>
+        <translation type="vanished">E-post</translation>
     </message>
     <message>
         <source>gallery</source>
-        <translation>Galleri</translation>
+        <translation type="vanished">Galleri</translation>
     </message>
     <message>
         <source>homescreen</source>
-        <translation>Startskjerm</translation>
+        <translation type="vanished">Startskjerm</translation>
     </message>
     <message>
         <source>media</source>
-        <translation>Media</translation>
+        <translation type="vanished">Media</translation>
     </message>
     <message>
         <source>messages</source>
-        <translation>Meldinger</translation>
+        <translation type="vanished">Meldinger</translation>
     </message>
     <message>
         <source>phone</source>
-        <translation>Telefon</translation>
+        <translation type="vanished">Telefon</translation>
     </message>
     <message>
         <source>silica</source>
-        <translation>Silica</translation>
+        <translation type="vanished">Silica</translation>
     </message>
     <message>
         <source>settings</source>
-        <translation>Innstillinger</translation>
+        <translation type="vanished">Innstillinger</translation>
     </message>
     <message>
         <source>other</source>
-        <translation>Annet</translation>
+        <translation type="vanished">Annet</translation>
     </message>
     <message>
         <source>keyboard</source>
-        <translation>Tastatur</translation>
+        <translation type="vanished">Tastatur</translation>
+    </message>
+</context>
+<context>
+    <name>Sections</name>
+    <message>
+        <source>browser</source>
+        <translation type="unfinished">Nettleser</translation>
+    </message>
+    <message>
+        <source>camera</source>
+        <translation type="unfinished">Kamera</translation>
+    </message>
+    <message>
+        <source>calendar</source>
+        <translation type="unfinished">Kalender</translation>
+    </message>
+    <message>
+        <source>clock</source>
+        <translation type="unfinished">Klokke</translation>
+    </message>
+    <message>
+        <source>contacts</source>
+        <translation type="unfinished">Kontakter</translation>
+    </message>
+    <message>
+        <source>email</source>
+        <translation type="unfinished">E-post</translation>
+    </message>
+    <message>
+        <source>gallery</source>
+        <translation type="unfinished">Galleri</translation>
+    </message>
+    <message>
+        <source>homescreen</source>
+        <translation type="unfinished">Startskjerm</translation>
+    </message>
+    <message>
+        <source>media</source>
+        <translation type="unfinished">Media</translation>
+    </message>
+    <message>
+        <source>messages</source>
+        <translation type="unfinished">Meldinger</translation>
+    </message>
+    <message>
+        <source>phone</source>
+        <translation type="unfinished">Telefon</translation>
+    </message>
+    <message>
+        <source>silica</source>
+        <translation type="unfinished">Silica</translation>
+    </message>
+    <message>
+        <source>settings</source>
+        <translation type="unfinished">Innstillinger</translation>
+    </message>
+    <message>
+        <source>other</source>
+        <translation type="unfinished">Annet</translation>
+    </message>
+    <message>
+        <source>keyboard</source>
+        <translation type="unfinished">Tastatur</translation>
     </message>
 </context>
 </TS>
