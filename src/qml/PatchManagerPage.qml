@@ -310,7 +310,7 @@ Page {
             /* signals / handlers */
 
             Component.onCompleted: {
-                console.debug("Constructing delegate for:", patchObject.details.patch)
+                //console.debug("Constructing delegate for:", patchObject.details.patch)
                 const qmlFile = "/usr/share/patchmanager/patches/%1/main.qml".arg(patchObject.details.patch)
                 if (PatchManager.fileExists(qmlFile)) {
                     patchSettingsFile = qmlFile
@@ -441,6 +441,7 @@ Page {
 
             /* helper components */
 
+            /*
             Connections {
                 target: patchObject.details
                 onPatchedChanged: {
@@ -454,6 +455,7 @@ Page {
                     console.debug("onBusyChanged:", patchObject.details.patch, patchObject.busy)
                 }
             }
+            */
 
             Timer {
                 id: sctollTopTimer
