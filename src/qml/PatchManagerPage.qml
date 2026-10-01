@@ -340,14 +340,14 @@ Page {
                 var deltaX = pressPosition.x - mouse.x
                 if (drag.target) {
                     if (isAboveTop) {
-                        sctollTopTimer.start()
-                        sctollBottomTimer.stop()
+                        scrollToTopTimer.start()
+                        scrollToBottomTimer.stop()
                     } else if (isBelowBottom) {
-                        sctollBottomTimer.start()
-                        sctollTopTimer.stop()
+                        scrollToBottomTimer.start()
+                        scrollToTopTimer.stop()
                     } else {
-                        sctollBottomTimer.stop()
-                        sctollTopTimer.stop()
+                        scrollToBottomTimer.stop()
+                        scrollToTopTimer.stop()
                     }
                 } else {
                     if (deltaX > dragThreshold) {
@@ -388,8 +388,8 @@ Page {
                 } else {
                     view.model.saveLayout()
                 }
-                sctollTopTimer.stop()
-                sctollBottomTimer.stop()
+                scrollToTopTimer.stop()
+                scrollToBottomTimer.stop()
                 drag.target = null
                 var ctod = content.mapToItem(background, content.x, content.y)
                 ctod.x = ctod.x - content.x
@@ -458,7 +458,7 @@ Page {
             */
 
             Timer {
-                id: sctollTopTimer
+                id: scrollToTopTimer
                 repeat: true
                 interval: 1
                 onTriggered: {
@@ -473,7 +473,7 @@ Page {
             }
 
             Timer {
-                id: sctollBottomTimer
+                id: scrollToBottomTimer
                 repeat: true
                 interval: 1
                 onTriggered: {
