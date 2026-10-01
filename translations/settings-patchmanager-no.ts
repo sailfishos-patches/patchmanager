@@ -3,562 +3,562 @@
     <name/>
     <message>
         <source>Activate all enabled Patches</source>
-        <target>Aktiver alle aktiverte patcher</target>
+        <translation>Aktiver alle aktiverte patcher</translation>
     </message>
     <message>
         <source>Patchmanager will start to activate all enabled Patches in %1 seconds.</source>
-        <target>Patchmanager starter aktivering av alle valgte patcher om %1 sekunder.</target>
+        <translation>Patchmanager starter aktivering av alle valgte patcher om %1 sekunder.</translation>
     </message>
     <message>
         <source>Quit</source>
-        <target>Avslutt</target>
+        <translation>Avslutt</translation>
     </message>
     <message>
         <source>Activating all enabled Patches took %L1 seconds.</source>
-        <target>Aktivering av alle valgte patcher tok %L1 sekunder.</target>
+        <translation>Aktivering av alle valgte patcher tok %L1 sekunder.</translation>
     </message>
     <message>
         <source>Successfully activated all enabled Patches.</source>
-        <target>Alle valgte patcher ble aktivert.</target>
+        <translation>Alle valgte patcher ble aktivert.</translation>
     </message>
     <message>
         <source>Failed to activate all enabled Patches!</source>
-        <target>Kunne ikke aktivere alle valgte patcher!</target>
+        <translation>Kunne ikke aktivere alle valgte patcher!</translation>
     </message>
     <message>
         <source>About Patchmanager</source>
-        <target>Om Patchmanager</target>
+        <translation>Om Patchmanager</translation>
     </message>
     <message>
         <source>Patchmanager</source>
-        <target>Patchmanager</target>
+        <translation>Patchmanager</translation>
     </message>
     <message>
         <source>Version: %1</source>
-        <target>Versjon: %1</target>
+        <translation>Versjon: %1</translation>
     </message>
     <message>
         <source>Patchmanager allows to automatically modify system files via Patches. It provides a daemon which performs the activation of Patches, plus a GUI to configure these operations and to install or remove Patches.</source>
-        <target>Patchmanager gjør det mulig å endre systemfiler automatisk ved hjelp av patcher. Den inneholder en bakgrunnsprosess (daemon) som aktiverer patchene, i tillegg til et grafisk brukergrensesnitt (GUI) for å konfigurere disse operasjonene og for å installere eller fjerne patcher.</target>
+        <translation>Patchmanager gjør det mulig å endre systemfiler automatisk ved hjelp av patcher. Den inneholder en bakgrunnsprosess (daemon) som aktiverer patchene, i tillegg til et grafisk brukergrensesnitt (GUI) for å konfigurere disse operasjonene og for å installere eller fjerne patcher.</translation>
     </message>
     <message>
         <source>Licensed under the terms of the&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;BSD 3-Clause License&lt;/a&gt;</source>
-        <target>Lisensiert under vilkårene i&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;BSD 3-Clause-licensen&lt;/a&gt;</target>
+        <translation>Lisensiert under vilkårene i&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;BSD 3-Clause-licensen&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Source code repository and issue&lt;br /&gt;tracker for bug reports, feature&lt;br /&gt;suggestions and help requests&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;on GitHub&lt;/a&gt;</source>
-        <target>Kildekodelager og feilhåndteringssystem&lt;br /&gt;for feilrapporter, forslag til funksjoner&lt;br /&gt;og forespørsler om hjelp&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;på GitHub&lt;/a&gt;</target>
+        <translation>Kildekodelager og feilhåndteringssystem&lt;br /&gt;for feilrapporter, forslag til funksjoner&lt;br /&gt;og forespørsler om hjelp&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;på GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Credits and Acknowledgements&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;Developers&lt;/a&gt;</source>
-        <target>Takk og anerkjennelse&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;utviklere&lt;/a&gt;</target>
+        <translation>Takk og anerkjennelse&lt;br /&gt;&lt;a href=&quot;%1&quot;&gt;utviklere&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Donations</source>
-        <target>Donasjoner</target>
+        <translation>Donasjoner</translation>
     </message>
     <message>
         <source>If you appreciate our work, please consider a donation to help covering the hosting costs for OpenRepos. OpenRepos is critical infrastructure specifically for Patchmanager, because its Web Catalog of Patches is hosted there.</source>
-        <target>Hvis du setter pris på arbeidet vårt, kan du vurdere en donasjon for å hjelpe med å dekke driftskostnadene for OpenRepos. OpenRepos er kritisk infrastruktur for nettopp Patchmanager, ettersom nettkatalogen for patcher ligger der.</target>
+        <translation>Hvis du setter pris på arbeidet vårt, kan du vurdere en donasjon for å hjelpe med å dekke driftskostnadene for OpenRepos. OpenRepos er kritisk infrastruktur for nettopp Patchmanager, ettersom nettkatalogen for patcher ligger der.</translation>
     </message>
     <message>
         <source>If for some reason you cannot donate to OpenRepos, we also appreciate donating to the Free Software Foundation Europe (FSFE).</source>
-        <target>Hvis du av en eller annen grunn ikke kan donere til OpenRepos, setter vi også pris på donasjoner til Free Software Foundation Europe (FSFE).</target>
+        <translation>Hvis du av en eller annen grunn ikke kan donere til OpenRepos, setter vi også pris på donasjoner til Free Software Foundation Europe (FSFE).</translation>
     </message>
     <message>
         <source>Developers</source>
-        <target>Utviklere</target>
+        <translation>Utviklere</translation>
     </message>
     <message>
         <source>%1&apos;s webpage</source>
-        <target>%1s nettside</target>
+        <translation>%1s nettside</translation>
     </message>
     <message>
         <source>%1&apos;s %2 account</source>
-        <target>%1s %2-konto</target>
+        <translation>%1s %2-konto</translation>
     </message>
     <message>
         <source>Copied log to clipboard.</source>
-        <target>Kopierte logg til utklippstavle.</target>
+        <translation>Kopierte logg til utklippstavle.</translation>
     </message>
     <message>
         <source>Activating Patch</source>
-        <target>Aktiverer patch</target>
+        <translation>Aktiverer patch</translation>
     </message>
     <message>
         <source>Deactivate Patch</source>
-        <target>Deaktiver patch</target>
+        <translation>Deaktiver patch</translation>
     </message>
     <message>
         <source>Activate Patch</source>
-        <target>Aktiver patch</target>
+        <translation>Aktiver patch</translation>
     </message>
     <message>
         <source>Remove Patch</source>
-        <target>Fjern patch</target>
+        <translation>Fjern patch</translation>
     </message>
     <message>
         <source>Patch %1 removed.</source>
-        <target>Patch %1 fjernet.</target>
+        <translation>Patch %1 fjernet.</translation>
     </message>
     <message>
         <source>Start Patchmanager&apos;s daemon before activating Patches</source>
-        <target>tart Patchmanager-daemonen før aktivering av patcher</target>
+        <translation>tart Patchmanager-daemonen før aktivering av patcher</translation>
     </message>
     <message>
         <source>This Patch is not available anymore. You will not be able to reinstall it.</source>
-        <target>Denne patchen er ikke lenger tilgjengelig. Du vil ikke kunne installere den på nytt</target>
+        <translation>Denne patchen er ikke lenger tilgjengelig. Du vil ikke kunne installere den på nytt</translation>
     </message>
     <message>
         <source>Author</source>
-        <target>Utvikler</target>
+        <translation>Utvikler</translation>
     </message>
     <message>
         <source>Maintainer</source>
-        <target>Vedlikeholder</target>
+        <translation>Vedlikeholder</translation>
     </message>
     <message>
         <source>Version</source>
-        <target>Versjon</target>
+        <translation>Versjon</translation>
     </message>
     <message>
         <source>not available</source>
-        <target>ikke tilgjengelig</target>
+        <translation>ikke tilgjengelig</translation>
     </message>
     <message>
         <source>Compatible</source>
-        <target>Kompatibel</target>
+        <translation>Kompatibel</translation>
     </message>
     <message>
         <source>May conflict with these Patches:</source>
-        <target>Kan være i konflikt med følgende patcher:</target>
+        <translation>Kan være i konflikt med følgende patcher:</translation>
     </message>
     <message>
         <source>This Patch uses the legacy format for its patch.json file. If you are its maintainer, please do consider updating to the new format; if you are using the Web Catalog you shall not include a patch.json file in your upload!&lt;br /&gt;See the developer section in the &lt;a href=&quot;%1&quot;&gt;README&lt;/a&gt; for details.</source>
-        <target>Denne patchen bruker det gamle formatet for sin patch.json-fil. Hvis du er vedlikeholder, bør du vurdere å oppdatere til det nye formatet. Hvis du bruker Nettkatalog, skal du ikke inkludere en patch.json-fil i opplastingen din!&lt;br /&gt;Se utviklerdelen i &lt;a href=&quot;%1&quot;&gt;README-filen&lt;/a&gt; for detaljer.</target>
+        <translation>Denne patchen bruker det gamle formatet for sin patch.json-fil. Hvis du er vedlikeholder, bør du vurdere å oppdatere til det nye formatet. Hvis du bruker Nettkatalog, skal du ikke inkludere en patch.json-fil i opplastingen din!&lt;br /&gt;Se utviklerdelen i &lt;a href=&quot;%1&quot;&gt;README-filen&lt;/a&gt; for detaljer.</translation>
     </message>
     <message>
         <source>Description</source>
-        <target>Beskrivelse</target>
+        <translation>Beskrivelse</translation>
     </message>
     <message>
         <source>Discussion</source>
-        <target>Diskusjon</target>
+        <translation>Diskusjon</translation>
     </message>
     <message>
         <source>Source code repository</source>
-        <target>Repository for kildekode</target>
+        <translation>Repository for kildekode</translation>
     </message>
     <message>
         <source>Patch log</source>
-        <target>Patchlogg</target>
+        <translation>Patchlogg</translation>
     </message>
     <message>
         <source>Press and hold to copy log to the clipboard</source>
-        <target>Trykk og hold for å kopiere loggen til utklippstavlen</target>
+        <translation>Trykk og hold for å kopiere loggen til utklippstavlen</translation>
     </message>
     <message>
         <source>No log exists yet</source>
-        <target>Ingen logger enda</target>
+        <translation>Ingen logger enda</translation>
     </message>
     <message>
         <source>Disable and deactivate all Patches</source>
-        <target>Deaktiver og slå av alle patcher</target>
+        <translation>Deaktiver og slå av alle patcher</translation>
     </message>
     <message>
         <source>Start Patchmanager&apos;s daemon</source>
-        <target>Start Patchmanager-daemonen</target>
+        <translation>Start Patchmanager-daemonen</translation>
     </message>
     <message>
         <source>Updates available</source>
-        <target>Oppdateringer tilgjengelig</target>
+        <translation>Oppdateringer tilgjengelig</translation>
     </message>
     <message>
         <source>Web Catalog</source>
-        <target>Nettkatalkog</target>
+        <translation>Nettkatalkog</translation>
     </message>
     <message>
         <source>Restart preloaded services</source>
-        <target>Start forhåndslastede tjenester på nytt</target>
+        <translation>Start forhåndslastede tjenester på nytt</translation>
     </message>
     <message>
         <source>Restore prior enabled list</source>
-        <target>Gjenopprett forrige aktiverte liste</target>
+        <translation>Gjenopprett forrige aktiverte liste</translation>
     </message>
     <message>
         <source>Resolve failure</source>
-        <target>Løs feil</target>
+        <translation>Løs feil</translation>
     </message>
     <message>
         <source>Installed Patches</source>
-        <target>Installerte patcher</target>
+        <translation>Installerte patcher</translation>
     </message>
     <message>
         <source>This Patch is incompatible with the installed SailfishOS version.</source>
-        <target>Denne patchen er ikke kompatibel med den installerte versjonen av SailfishOS.</target>
+        <translation>Denne patchen er ikke kompatibel med den installerte versjonen av SailfishOS.</translation>
     </message>
     <message>
         <source>Removing Patch %1</source>
-        <target>Fjerner patch %1</target>
+        <translation>Fjerner patch %1</translation>
     </message>
     <message>
         <source>Tap to configure</source>
-        <target>Trykk for å konfigurere</target>
+        <translation>Trykk for å konfigurere</translation>
     </message>
     <message>
         <source>Tap to show configuration</source>
-        <target>Trykk for å vise konfigurasjon</target>
+        <translation>Trykk for å vise konfigurasjon</translation>
     </message>
     <message>
         <source>Compatible with:</source>
-        <target>Kompatibelt med:</target>
+        <translation>Kompatibelt med:</translation>
     </message>
     <message>
         <source>May conflict with another Patch, see %1</source>
-        <target>Kan være i konflikt med en annen patch, se %1</target>
+        <translation>Kan være i konflikt med en annen patch, se %1</translation>
     </message>
     <message>
         <source>May conflict with %2 other Patches, see %1</source>
-        <target>Kan være i konflikt med %2 andre patcher, se %1</target>
+        <translation>Kan være i konflikt med %2 andre patcher, se %1</translation>
     </message>
     <message>
         <source>Details</source>
-        <target>Detaljer</target>
+        <translation>Detaljer</translation>
     </message>
     <message>
         <source>Deactivate</source>
-        <target>Deaktiver</target>
+        <translation>Deaktiver</translation>
     </message>
     <message>
         <source>Activate</source>
-        <target>Aktiver</target>
+        <translation>Aktiver</translation>
     </message>
     <message>
         <source>Remove</source>
-        <target>Fjern</target>
+        <translation>Fjern</translation>
     </message>
     <message>
         <source>No Patches available</source>
-        <target>Ingen patcher tilgjengelig</target>
+        <translation>Ingen patcher tilgjengelig</translation>
     </message>
     <message>
         <source>Restart</source>
-        <target>Start på nytt</target>
+        <translation>Start på nytt</translation>
     </message>
     <message>
         <source>Some services will be restarted now. Reloading the homescreen of the device might take a little time.</source>
-        <target>Enkelte tjenester vil nå bli startet på nytt. Det kan ta litt tid å laste inn startskjermen på enheten på nytt.</target>
+        <translation>Enkelte tjenester vil nå bli startet på nytt. Det kan ta litt tid å laste inn startskjermen på enheten på nytt.</translation>
     </message>
     <message>
         <source>List of services:</source>
-        <target>Oversikt over tjenester:</target>
+        <translation>Oversikt over tjenester:</translation>
     </message>
     <message>
         <source>Note that this will close all apps.</source>
-        <target>Merk at dette vil lukke alle apper.</target>
+        <translation>Merk at dette vil lukke alle apper.</translation>
     </message>
     <message>
         <source>Note that this will close %1.</source>
-        <target>Merk at dette vil lukke %1.</target>
+        <translation>Merk at dette vil lukke %1.</translation>
     </message>
     <message>
         <source>Note that this will close the %1 app.</source>
-        <target>Merk at dette vil lukke appen %1</target>
+        <translation>Merk at dette vil lukke appen %1</translation>
     </message>
     <message>
         <source>Screenshots</source>
-        <target>Skjermbilder</target>
+        <translation>Skjermbilder</translation>
     </message>
     <message>
         <source>Hide search field</source>
-        <target>Skjul søkefelt</target>
+        <translation>Skjul søkefelt</translation>
     </message>
     <message>
         <source>Show search field</source>
-        <target>Vis søkefelt</target>
+        <translation>Vis søkefelt</translation>
     </message>
     <message>
         <source>Sort by category</source>
-        <target>Sorter etter kategori</target>
+        <translation>Sorter etter kategori</translation>
     </message>
     <message>
         <source>Sort by date updated</source>
-        <target>Sorter etter dato oppdatert</target>
+        <translation>Sorter etter dato oppdatert</translation>
     </message>
     <message>
         <source>%1 Patches</source>
-        <target>%1 patcher</target>
+        <translation>%1 patcher</translation>
     </message>
     <message>
         <source>(by date updated)</source>
-        <target>(etter dato oppdatert)</target>
+        <translation>(etter dato oppdatert)</translation>
     </message>
     <message>
         <source>(by category)</source>
-        <target>(etter kategori)</target>
+        <translation>(etter kategori)</translation>
     </message>
     <message>
         <source>Tap to enter search query</source>
-        <target>Trykk for å søke</target>
+        <translation>Trykk for å søke</translation>
     </message>
     <message>
         <source>Update available: %1</source>
-        <target>Oppdatering tilgjengelig: %1</target>
+        <translation>Oppdatering tilgjengelig: %1</translation>
     </message>
     <message>
         <source>The Web Catalog website may be experiencing issues, or there is a problem connecting to the Internet.</source>
-        <target>Web Catalog-nettstedet kan oppleve problemer, eller det er problemer med tilkoblingen til internett.</target>
+        <translation>Web Catalog-nettstedet kan oppleve problemer, eller det er problemer med tilkoblingen til internett.</translation>
     </message>
     <message>
         <source>Failed to fetch Patch data</source>
-        <target>Kunne ikke hente data for patch</target>
+        <translation>Kunne ikke hente data for patch</translation>
     </message>
     <message>
         <source>Fetching patch data</source>
-        <target>Henter data for patch</target>
+        <translation>Henter data for patch</translation>
     </message>
     <message>
         <source>Open Project Page</source>
-        <target>Åpne prosjektside</target>
+        <translation>Åpne prosjektside</translation>
     </message>
     <message>
         <source>Author: %1</source>
-        <target>Utvikler: %1</target>
+        <translation>Utvikler: %1</translation>
     </message>
     <message>
         <source>Links</source>
-        <target>Lenker</target>
+        <translation>Lenker</translation>
     </message>
     <message>
         <source>Files</source>
-        <target>Filer</target>
+        <translation>Filer</translation>
     </message>
     <message>
         <source>Install Patch %1</source>
-        <target>Installer patch %1</target>
+        <translation>Installer patch %1</translation>
     </message>
     <message>
         <source>Re-Install Patch %1</source>
-        <target>Reinstaller patch %1</target>
+        <translation>Reinstaller patch %1</translation>
     </message>
     <message>
         <source>Patch details</source>
-        <target>Detaljer om patch</target>
+        <translation>Detaljer om patch</translation>
     </message>
     <message>
         <source>[tap to re-install]</source>
-        <target>[trykk for å reinstallere]</target>
+        <translation>[trykk for å reinstallere]</translation>
     </message>
     <message>
         <source>[installed]</source>
-        <target>[installert]</target>
+        <translation>[installert]</translation>
     </message>
     <message>
         <source>[tap to install]</source>
-        <target>[trykk for å installere]</target>
+        <translation>[trykk for å installere]</translation>
     </message>
     <message>
         <source>Compatible: %1</source>
-        <target>Kompatibel: %1</target>
+        <translation>Kompatibel: %1</translation>
     </message>
     <message>
         <source>Patch activated</source>
-        <target>Patch aktivert</target>
+        <translation>Patch aktivert</translation>
     </message>
     <message>
         <source>Patch %1 activated</source>
-        <target>Patch %1 aktivert</target>
+        <translation>Patch %1 aktivert</translation>
     </message>
     <message>
         <source>some service(s) should be restarted.</source>
-        <target>noen tjenester bør startes på nytt.</target>
+        <translation>noen tjenester bør startes på nytt.</translation>
     </message>
     <message>
         <source>Patch deactivated</source>
-        <target>Patch deaktivert</target>
+        <translation>Patch deaktivert</translation>
     </message>
     <message>
         <source>Patch %1 is now inactive.</source>
-        <target>Patch %1 er nå inaktiv.(</target>
+        <translation>Patch %1 er nå inaktiv.(</translation>
     </message>
     <message>
         <source>Failed to activate Patch</source>
-        <target>Kunne ikke aktivere patch</target>
+        <translation>Kunne ikke aktivere patch</translation>
     </message>
     <message>
         <source>Activating Patch %1 failed!</source>
-        <target>Aktivering av patch %1 mislyktes!</target>
+        <translation>Aktivering av patch %1 mislyktes!</translation>
     </message>
     <message>
         <source>Failed to deactivate Patch</source>
-        <target>Kunne ikke deaktivere patch</target>
+        <translation>Kunne ikke deaktivere patch</translation>
     </message>
     <message>
         <source>Deactivating Patch %1 failed!</source>
-        <target>Deaktivering av patch %1 mislyktes!</target>
+        <translation>Deaktivering av patch %1 mislyktes!</translation>
     </message>
     <message>
         <source>Update available</source>
-        <target>Oppdatering tilgjengelig</target>
+        <translation>Oppdatering tilgjengelig</translation>
     </message>
     <message>
         <source>An update for Patch %1 is available.</source>
-        <target>En oppdatering for patch %1 er tilgjengelig.</target>
+        <translation>En oppdatering for patch %1 er tilgjengelig.</translation>
     </message>
     <message>
         <source>Settings</source>
-        <target>Innstillinger</target>
+        <translation>Innstillinger</translation>
     </message>
     <message>
         <source>General</source>
-        <target>Generelt</target>
+        <translation>Generelt</translation>
     </message>
     <message>
         <source>Show notification on success</source>
-        <target>Vis varsling ved suksess</target>
+        <translation>Vis varsling ved suksess</translation>
     </message>
     <message>
         <source>If this is off, notifications will only be shown when something went wrong.</source>
-        <target>Hvis deaktivert, vises varslinger bare ved feil.</target>
+        <translation>Hvis deaktivert, vises varslinger bare ved feil.</translation>
     </message>
     <message>
         <source>Show &apos;Disable and deactivate all Patches&apos; pulley menu entry</source>
-        <target>Vis &apos;Deaktiver alle patcher&apos; i menyen</target>
+        <translation>Vis &apos;Deaktiver alle patcher&apos; i menyen</translation>
     </message>
     <message>
         <source>Enable an additional pulley menu entry for Patchmanager&apos;s main page to disable and deactivate all Patches.</source>
-        <target>Aktiver et ekstra valg i menyen på Patchmanagers hovedside for å deaktivere alle patcher.</target>
+        <translation>Aktiver et ekstra valg i menyen på Patchmanagers hovedside for å deaktivere alle patcher.</translation>
     </message>
     <message>
         <source>Show only updates in Web Catalog</source>
-        <target>Vis kun oppdateringer i nettkatalogen</target>
+        <translation>Vis kun oppdateringer i nettkatalogen</translation>
     </message>
     <message>
         <source>When updates are available, hide all other Patches in Web Catalog.</source>
-        <target>Skjul alle andre patcher i nettkatalogen når oppdateringer er tilgjengelige.</target>
+        <translation>Skjul alle andre patcher i nettkatalogen når oppdateringer er tilgjengelige.</translation>
     </message>
     <message>
         <source>Startup Activation</source>
-        <target>Aktivering ved oppstart</target>
+        <translation>Aktivering ved oppstart</translation>
     </message>
     <message>
         <source>Activate Patches on first login</source>
-        <target>Aktiver patcher ved første pålogging</target>
+        <translation>Aktiver patcher ved første pålogging</translation>
     </message>
     <message>
         <source>Automatically activate all enabled Patches after Home Screen has been started for the first time.</source>
-        <target>Aktiver alle valgte patcher automatisk første gang startskjermen har startet.</target>
+        <translation>Aktiver alle valgte patcher automatisk første gang startskjermen har startet.</translation>
     </message>
     <message>
         <source>Activation Delay</source>
-        <target>Aktiveringsforsinkelse</target>
+        <translation>Aktiveringsforsinkelse</translation>
     </message>
     <message>
         <source>%1 seconds</source>
-        <target>%1 sekunder</target>
+        <translation>%1 sekunder</translation>
     </message>
     <message>
         <source>Activate Patches when booting</source>
-        <target>Aktiver patcher ved oppstart</target>
+        <translation>Aktiver patcher ved oppstart</translation>
     </message>
     <message>
         <source>Version Check</source>
-        <target>Versjonssjekk</target>
+        <translation>Versjonssjekk</translation>
     </message>
     <message>
         <source>Strict</source>
-        <target>Streng</target>
+        <translation>Streng</translation>
     </message>
     <message>
         <source>No check</source>
-        <target>Ingen sjekk</target>
+        <translation>Ingen sjekk</translation>
     </message>
     <message>
         <source>Mode for Patch developers</source>
-        <target>Modus for patch-utviklere</target>
+        <translation>Modus for patch-utviklere</translation>
     </message>
     <message>
         <source>Enable various functions to be used by Patch developers. Among other things, it shows debug log files for applying the patch file when a Patch is activated on its details page.</source>
-        <target>Aktiver ulike funksjoner for patch-utviklere. Dette viser blant annet loggfiler for feilsøking (debug) ved påføring av patch-filen når en patch aktiveres på sin detaljside.</target>
+        <translation>Aktiver ulike funksjoner for patch-utviklere. Dette viser blant annet loggfiler for feilsøking (debug) ved påføring av patch-filen når en patch aktiveres på sin detaljside.</translation>
     </message>
     <message>
         <source>Advanced</source>
-        <target>Avansert</target>
+        <translation>Avansert</translation>
     </message>
     <message>
         <source>Automatically activate all enabled Patches when SailfishOS starts.</source>
-        <target>Aktiver alle valgte patcher automatisk når SailfishOS starter.</target>
+        <translation>Aktiver alle valgte patcher automatisk når SailfishOS starter.</translation>
     </message>
     <message>
         <source>Allow to enable Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.</source>
-        <target>Tillat aktivering av patcher som ikke er merket som kompatible med den installerte SailfishOS-versjonen. Merk at patcher som faktisk er inkompatible, ikke vil fungere.</target>
+        <translation>Tillat aktivering av patcher som ikke er merket som kompatible med den installerte SailfishOS-versjonen. Merk at patcher som faktisk er inkompatible, ikke vil fungere.</translation>
     </message>
     <message>
         <source>Convert Patches between 32-bit and 64-bit</source>
-        <target>Konverter patcher mellom 32-bit og 64-bit</target>
+        <translation>Konverter patcher mellom 32-bit og 64-bit</translation>
     </message>
     <message>
         <source>Automatically convert lib or lib64 for select paths shown below.</source>
-        <target>Konverter lib eller lib64 automatisk for de valgte banene nedenfor.</target>
+        <translation>Konverter lib eller lib64 automatisk for de valgte banene nedenfor.</translation>
     </message>
     <message>
         <source>browser</source>
-        <target>Nettleser</target>
+        <translation>Nettleser</translation>
     </message>
     <message>
         <source>camera</source>
-        <target>Kamera</target>
+        <translation>Kamera</translation>
     </message>
     <message>
         <source>calendar</source>
-        <target>Kalender</target>
+        <translation>Kalender</translation>
     </message>
     <message>
         <source>clock</source>
-        <target>Klokke</target>
+        <translation>Klokke</translation>
     </message>
     <message>
         <source>contacts</source>
-        <target>Kontakter</target>
+        <translation>Kontakter</translation>
     </message>
     <message>
         <source>email</source>
-        <target>E-post</target>
+        <translation>E-post</translation>
     </message>
     <message>
         <source>gallery</source>
-        <target>Galleri</target>
+        <translation>Galleri</translation>
     </message>
     <message>
         <source>homescreen</source>
-        <target>Startskjerm</target>
+        <translation>Startskjerm</translation>
     </message>
     <message>
         <source>media</source>
-        <target>Media</target>
+        <translation>Media</translation>
     </message>
     <message>
         <source>messages</source>
-        <target>Meldinger</target>
+        <translation>Meldinger</translation>
     </message>
     <message>
         <source>phone</source>
-        <target>Telefon</target>
+        <translation>Telefon</translation>
     </message>
     <message>
         <source>silica</source>
-        <target>Silica</target>
+        <translation>Silica</translation>
     </message>
     <message>
         <source>settings</source>
-        <target>Innstillinger</target>
+        <translation>Innstillinger</translation>
     </message>
     <message>
         <source>other</source>
-        <target>Annet</target>
+        <translation>Annet</translation>
     </message>
     <message>
         <source>keyboard</source>
-        <target>Tastatur</target>
+        <translation>Tastatur</translation>
     </message>
 </context>
