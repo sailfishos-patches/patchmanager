@@ -568,63 +568,63 @@
     <name>Sections</name>
     <message>
         <source>browser</source>
-        <translation type="unfinished">Nettleser</translation>
+        <translation>Nettleser</translation>
     </message>
     <message>
         <source>camera</source>
-        <translation type="unfinished">Kamera</translation>
+        <translation>Kamera</translation>
     </message>
     <message>
         <source>calendar</source>
-        <translation type="unfinished">Kalender</translation>
+        <translation>Kalender</translation>
     </message>
     <message>
         <source>clock</source>
-        <translation type="unfinished">Klokke</translation>
+        <translation>Klokke</translation>
     </message>
     <message>
         <source>contacts</source>
-        <translation type="unfinished">Kontakter</translation>
+        <translation>Kontakter</translation>
     </message>
     <message>
         <source>email</source>
-        <translation type="unfinished">E-post</translation>
+        <translation>E-post</translation>
     </message>
     <message>
         <source>gallery</source>
-        <translation type="unfinished">Galleri</translation>
+        <translation>Galleri</translation>
     </message>
     <message>
         <source>homescreen</source>
-        <translation type="unfinished">Startskjerm</translation>
+        <translation>Startskjerm</translation>
     </message>
     <message>
         <source>media</source>
-        <translation type="unfinished">Media</translation>
+        <translation>Media</translation>
     </message>
     <message>
         <source>messages</source>
-        <translation type="unfinished">Meldinger</translation>
+        <translation>Meldinger</translation>
     </message>
     <message>
         <source>phone</source>
-        <translation type="unfinished">Telefon</translation>
+        <translation>Telefon</translation>
     </message>
     <message>
         <source>silica</source>
-        <translation type="unfinished">Silica</translation>
+        <translation>Silica</translation>
     </message>
     <message>
         <source>settings</source>
-        <translation type="unfinished">Innstillinger</translation>
+        <translation>Innstillinger</translation>
     </message>
     <message>
         <source>other</source>
-        <translation type="unfinished">Annet</translation>
+        <translation>Annet</translation>
     </message>
     <message>
         <source>keyboard</source>
-        <translation type="unfinished">Tastatur</translation>
+        <translation>Tastatur</translation>
     </message>
 </context>
 </TS>
