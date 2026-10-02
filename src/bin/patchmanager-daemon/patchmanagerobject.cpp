@@ -2186,12 +2186,14 @@ bool PatchManagerObject::doPatch(const QString &patchName, bool apply, QString *
     QStringList arguments;
     arguments.append(patchName);
 
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    env.insert("OS_VERSION", m_osRelease);
+    env.insert("PM_VERSION", BUILD_VERSION);
     if (false == getSettings(QStringLiteral("bitnessMangle"), false).toBool()) {
-        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
         qDebug() << Q_FUNC_INFO << "DISABLE_MANGLING=true";
         env.insert("DISABLE_MANGLING", "true");
-        process.setProcessEnvironment(env);
     }
+    process.setProcessEnvironment(env);
 
     process.setArguments(arguments);
     qDebug() << Q_FUNC_INFO << "Starting" << process.program() << process.arguments();
