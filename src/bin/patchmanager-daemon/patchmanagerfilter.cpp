@@ -144,7 +144,7 @@ QString PatchManagerFilter::stats(bool verbose) const
           << QStringLiteral("  Hotcache entries:: ..............%1").arg(size())
           << QStringLiteral("  Hotcache cost: ..................%1/%2").arg(totalCost()).arg(maxCost());
     if (verbose) {
-          unsigned int sum = m_hits + m_misses;
+          quint64 sum = m_hits + m_misses;
           if (sum > 0) {
               QString ratio;
               float ratf = (static_cast<float>(m_hits) / sum)*100.0;

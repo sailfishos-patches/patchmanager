@@ -71,15 +71,12 @@ static const int HOTCACHE_LOG_MAX = 4096;
 // quint8 should be one byte or so
 class PatchManagerFilter : public QObject, public QCache<QString, quint8>
 {
-    Q_OBJECT
-    Q_PROPERTY(bool active READ active WRITE setActive NOTIFY activeChanged)
+    Q_GADGET
     Q_PROPERTY(unsigned int hits READ hits)
     Q_PROPERTY(unsigned int misses READ misses)
 public:
     PatchManagerFilter(QObject *parent = nullptr, int maxCost = HOTCACHE_COST_MAX);
     //~PatchManagerFilter();
-
-    void setup();
 
     // override QCache::insert()
     bool insert(const QString &key, int cost = HOTCACHE_COST_DEFAULT);
@@ -87,29 +84,23 @@ public:
     // override QCache::contains()
     bool contains(const QString &key) const;
 
-    void setActive(bool active) {
-        if (m_active != active) {
-            m_active = active;
-            emit activeChanged(active);
-        }
-    };
-    bool active() const { return m_active; };
+    void enable() { m_active = true; setup(); };
+    void disable() { m_active = false; clear(); };
+    bool enabled() const { return m_active; };
 
-    unsigned int hits()   const { return m_hits; };
-    unsigned int misses() const { return m_misses; };
+    quint64 hits()   const { return m_hits; };
+    quint64 misses() const { return m_misses; };
 
-    //QList<QPair<QString, QVariant>> stats() const;
     QString stats(bool verbose) const;
 
-signals:
-    void activeChanged(bool);
-
 private:
+    void setup();
+
     bool m_active;
 
     // need to be mutable so we can count from const method.
-    mutable unsigned int m_hits = 0;
-    mutable unsigned int m_misses = 0;
+    mutable quint64 m_hits = 0;
+    mutable quint64 m_misses = 0;
 };
 
 #endif // PATCHMANAGERFILTER_H

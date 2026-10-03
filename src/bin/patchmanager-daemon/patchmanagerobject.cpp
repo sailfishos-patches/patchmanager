@@ -513,6 +513,7 @@ QList<QVariantMap> PatchManagerObject::listPatchesFromDir(const QString &dir, QS
 PatchManagerObject::PatchManagerObject(QObject *parent)
     : QObject(parent)
     , m_sbus(s_sessionBusConnection)
+    , m_filter(new PatchManagerFilter(this))
 {
 }
 
@@ -1890,7 +1891,7 @@ void PatchManagerObject::startReadingLocalServer()
         bool passAsIs = true;
         if (
              (!m_failed) // return unaltered for failed
-             && (!m_filter.active() || !m_filter.contains(request)) // filter inactive or not in the list of unpatched files
+             && (!m_filter->enabled() || !m_filter->contains(request)) // filter inactive or not in the list of unpatched files
              && (Q_UNLIKELY(QFileInfo::exists(fakePath))) // file is patched
            )
         {
@@ -1919,12 +1920,12 @@ void PatchManagerObject::startReadingLocalServer()
             if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
                 qDebug() << Q_FUNC_INFO << "Requested:" << request << "was sent unaltered.";
             }
-            m_filter.insert(request);
+            m_filter->insert(request);
         } else {
             if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
                 qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sent:" << fakePath;
             }
-            if (m_filter.remove(request)) {
+            if (m_filter->remove(request)) {
                 qWarning() << Q_FUNC_INFO << "Hot cache: contained a patched file:" << request << "/" << fakePath;
             }
         }
@@ -2204,8 +2205,8 @@ void PatchManagerObject::doStatistics(const QVariantMap &params, const QDBusMess
     if (m_originalWatcher)
       result << QStringLiteral("Watched files: %1").arg(m_originalWatcher->files().count());
 
-    if (m_filter.active()) {
-        result << m_filter.stats(verbose);
+    if (m_filter->enabled()) {
+        result << m_filter->stats(verbose);
     } else {
         result << QStringLiteral("Advanced filtering is not active.");
     }
@@ -3063,11 +3064,10 @@ QString PatchManagerObject::pathToMangledPath(const QString &path, const QString
 void PatchManagerObject::setupFilter()
 {
     if (!getSettings(QStringLiteral("enableFSFilter"), false).toBool()) {
-        m_filter.setActive(false);
+        m_filter->disable();
         return;
     } else {
-        m_filter.setup();
-        m_filter.setActive(true);
+        m_filter->enable();
     }
 }
 
