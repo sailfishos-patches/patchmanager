@@ -1,0 +1,7 @@
+diff --git a/usr/lib/qt5/qml/org/SfietKonstantin/patchmanagertests/post-existing-file b/usr/lib/qt5/qml/org/SfietKonstantin/patchmanagertests/post-existing-file
+new file mode 100644
+index 0000000..1848ba0
+--- /dev/null
++++ b/usr/lib/qt5/qml/org/SfietKonstantin/patchmanagertests/post-existing-file
+@@ -0,0 +1 @@
++this file is new
