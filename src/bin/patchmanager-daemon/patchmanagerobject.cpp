@@ -133,6 +133,7 @@ static const QString PATCHED_KEY      = QStringLiteral("patched");
 static const QString VERSION_KEY      = QStringLiteral("version");
 static const QString COMPATIBLE_KEY   = QStringLiteral("compatible");
 static const QString ISCOMPATIBLE_KEY = QStringLiteral("isCompatible");
+static const QString MAYBECOMPATIBLE_KEY = QStringLiteral("maybeCompatible");
 static const QString CONFLICTS_KEY    = QStringLiteral("conflicts");
 
 // map key constants: Patch categories
@@ -256,6 +257,19 @@ bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, Q
         json[ISCOMPATIBLE_KEY] = true;
     } else {
         json[ISCOMPATIBLE_KEY] = json[COMPATIBLE_KEY].toStringList().contains(m_osRelease);
+        // prepare indicator for relaxed checking:
+        const auto osReleaseRelaxed = QVersionNumber::fromString(m_osRelease);
+        json[MAYBECOMPATIBLE_KEY] = false;
+        for ( const QString& candidate : json[COMPATIBLE_KEY].toStringList()) {
+            const auto candver = QVersionNumber::fromString(candidate);
+            if ( osReleaseRelaxed.majorVersion() == candver.majorVersion()
+              && osReleaseRelaxed.minorVersion() == candver.minorVersion()
+              && osReleaseRelaxed.microVersion() == candver.microVersion()) {
+                json[MAYBECOMPATIBLE_KEY] = true;
+                break;
+            }
+        }
+
     }
     json[CONFLICTS_KEY] = QStringList();
     patch = json;
