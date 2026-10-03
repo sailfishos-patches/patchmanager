@@ -11,8 +11,7 @@
 #include <QDBusReply>
 #include <QTimer>
 
-#include <QLoggingCategory>
-Q_DECLARE_LOGGING_CATEGORY(patchmanagerDialog)
+#include "logging.h"
 Q_LOGGING_CATEGORY(patchmanagerDialog, "patchmanager.dialog")
 
 int main(int argc, char *argv[])
@@ -21,7 +20,7 @@ int main(int argc, char *argv[])
 
     QSettings pm(QStringLiteral("/etc/patchmanager2.conf"), QSettings::IniFormat);
     if (pm.value(QStringLiteral("settings/applyOnBoot"), false).toBool()) {
-        qInfo() << "Patchmanager UI: Setting applyOnBoot is active, exiting!";
+        qCInfo(patchmanagerDialog) << "Patchmanager UI: Setting applyOnBoot is active, exiting!";
         return 0;
     }
 
@@ -33,10 +32,10 @@ int main(int argc, char *argv[])
                                    QStringLiteral("-"),
                                    QStringLiteral("/usr/share/translations/"),
                                    QStringLiteral(".qm"));
-    qDebug() << Q_FUNC_INFO << "Translator loaded:" << success;
+    qCDebug(patchmanagerDialog) << Q_FUNC_INFO << "Translator loaded:" << success;
 
     success = app->installTranslator(&translator);
-    qDebug() << Q_FUNC_INFO << "Translator installed:" << success;
+    qCDebug(patchmanagerDialog) << Q_FUNC_INFO << "Translator installed:" << success;
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
     QQuickView *v = view.data();
@@ -48,11 +47,11 @@ int main(int argc, char *argv[])
                                                           QStringLiteral("getLoaded"));
         QDBusReply<bool> reply = QDBusConnection::systemBus().call(msg);
         if (reply.isValid() && !reply.value()) {
-            qInfo() << "Patchmanager UI: Showing dialog window";
+            qCInfo(patchmanagerDialog) << "Patchmanager UI: Showing dialog window";
             v->setSource(QUrl::fromLocalFile(QStringLiteral("/usr/share/patchmanager/data/dialog.qml")));
             v->showFullScreen();
         } else {
-            qInfo() << "Patchmanager UI: Exiting!";
+            qCInfo(patchmanagerDialog) << "Patchmanager UI: Exiting!";
             qGuiApp->quit();
         }
     });
