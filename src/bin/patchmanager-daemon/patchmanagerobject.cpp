@@ -53,6 +53,8 @@
 #include <QtCore/QTimer>
 #include <QtCore/QUrlQuery>
 #include <QtCore/QVector>
+#include <QtCore/QVersionNumber>
+
 
 #include <QProcessEnvironment>
 
@@ -1513,36 +1515,9 @@ QVariant PatchManagerObject::getSettings(const QString &name, const QVariant &de
 */
 QString PatchManagerObject::maxVersion(const QString &version1, const QString &version2)
 {
-    const QStringList vnums1 = version1.split(QChar('.'));
-    const QStringList vnums2 = version2.split(QChar('.'));
-
-    if (vnums1.count() < 3 || vnums2.count() < 3) {
-        return version1;
-    }
-
-    for (int i = 0; i < 3; i++) {
-        const QString vnum1 = vnums1.at(i);
-        const QString vnum2 = vnums2.at(i);
-
-        bool ok = false;
-        const int num1 = vnum1.toInt(&ok);
-        if (!ok) {
-            continue;
-        }
-        const int num2 = vnum2.toInt(&ok);
-        if (!ok) {
-            continue;
-        }
-        if (num1 == num2) {
-            continue;
-        }
-        if (num1 > num2) {
-            return version1;
-        }
-        return version2;
-    }
-
-    return version1;
+    const auto v1 = QVersionNumber::fromString(version1);
+    const auto v2 = QVersionNumber::fromString(version2);
+    return (v2 > v1) ? version2 : version1;
 }
 
 /*!
