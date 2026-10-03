@@ -37,3 +37,5 @@
 #include <QLoggingCategory>
 
 Q_DECLARE_LOGGING_CATEGORY(patchmanagerDaemon)
+Q_DECLARE_LOGGING_CATEGORY(patchmanagerWatcher)
+Q_DECLARE_LOGGING_CATEGORY(patchmanagerJournal)
