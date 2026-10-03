@@ -156,7 +156,7 @@ private slots:
     void onFailureOccured();
 
     void doRegisterDBus();
-    void doPrepareCacheRoot();
+    void doApplyAllPatches();
     void doPrepareCache(const QString &patchName, bool apply = true);
     void doStartLocalServer();
 
@@ -193,7 +193,9 @@ private slots:
 private:
     void restartService(const QString &serviceName);
 
+#ifdef PM_ENABLE_LEGACY
     void resetSystem();
+#endif
     void clearFakeroot();
 
     void registerDBus();
@@ -230,7 +232,7 @@ private:
 
     void lateInitialize();
     void refreshPatchList();
-    void prepareCacheRoot();
+    void applyAllPatches();
 
     void eraseRecursively(const QString &path);
 

@@ -138,7 +138,6 @@ PatchObject::PatchObject(const QVariantMap &data, QObject *parent)
 */
 PatchObject::~PatchObject()
 {
-    qDebug() << Q_FUNC_INFO;
     emit toBeDestroyed(this);
 }
 

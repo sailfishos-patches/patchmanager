@@ -102,23 +102,9 @@ Page {
                     console.warn(error)
                 }
             )
-//            patchmanagerDbusInterface.listVersions()
             PatchManager.checkForUpdates()
         }
     }
-
-//    DBusInterface {
-//        id: patchmanagerDbusInterface
-//        service: "org.SfietKonstantin.patchmanager"
-//        path: "/org/SfietKonstantin/patchmanager"
-//        iface: "org.SfietKonstantin.patchmanager"
-//        bus: DBus.SystemBus
-//        function listVersions() {
-//            typedCall("listVersions", [], function (patches) {
-//                container.versions = patches
-//            })
-//        }
-//    }
 
     ConfigurationGroup {
         id: uisettings
@@ -312,6 +298,7 @@ Page {
         ViewPlaceholder {
             enabled: patchModel.count == 0
             text: qsTranslate("", "No Patches available")
+            hintText: qsTranslate("", "The Web Catalog website may be experiencing issues, or there is a problem connecting to the Internet.")
         }
 
         VerticalScrollDecorator {}

@@ -42,7 +42,7 @@
         <location filename="../src/bin/dialog/dialog.qml" line="217"/>
         <location filename="../src/qml/AboutPage.qml" line="75"/>
         <location filename="../src/qml/RestartServicesDialog.qml" line="116"/>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="326"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="327"/>
         <source>Patchmanager</source>
         <translation>Patchmanager</translation>
     </message>
@@ -397,6 +397,11 @@
         <translation>Uppdatering tillgänglig: %1</translation>
     </message>
     <message>
+        <location filename="../src/qml/WebCatalogPage.qml" line="315"/>
+        <source>The Web Catalog website may be experiencing issues, or there is a problem connecting to the Internet.</source>
+        <translation>Webbkatalogens webbsida ha problem, eller också har du problem med internetanslutningen.</translation>
+    </message>
+    <message>
         <location filename="../src/qml/WebPatchPage.qml" line="165"/>
         <source>Failed to fetch Patch data</source>
         <translation>Kunde inte hämta korrigeringsdata</translation>
@@ -463,179 +468,179 @@
         <translation>Kompatibel: %1</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="277"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="278"/>
         <source>Patch activated</source>
         <translation>Korrigering aktiverad</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="278"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="279"/>
         <source>Patch %1 activated</source>
         <translation>Korrigering %1 aktiverad</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="281"/>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="292"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="282"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="293"/>
         <source>some service(s) should be restarted.</source>
         <translation>Några tjänster behöver startas om.</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="288"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="289"/>
         <source>Patch deactivated</source>
         <translation>Korrigering avaktiverad</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="289"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="290"/>
         <source>Patch %1 is now inactive.</source>
         <translation>Korrigering %1 är nu inaktiv.</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="299"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="300"/>
         <source>Failed to activate Patch</source>
         <translation>Kunde inte aktivera korrigering</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="300"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="301"/>
         <source>Activating Patch %1 failed!</source>
         <translation>Kunde inte aktivera korrigering %1!</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="303"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="304"/>
         <source>Failed to deactivate Patch</source>
         <translation>Kunde inte avaktivera korrigering</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="304"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="305"/>
         <source>Deactivating Patch %1 failed!</source>
         <translation>Kunde inte avaktivera korrigering %1!</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="307"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="308"/>
         <source>Update available</source>
         <translation>Uppdatering tillgänglig</translation>
     </message>
     <message>
-        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="308"/>
+        <location filename="../src/bin/patchmanager-daemon/patchmanagerobject.cpp" line="309"/>
         <source>An update for Patch %1 is available.</source>
         <translation>Det finns en uppdatering för korrigering %1.</translation>
     </message>
     <message>
         <location filename="../src/qml/PatchManagerPage.qml" line="220"/>
-        <location filename="../src/qml/SettingsPage.qml" line="91"/>
+        <location filename="../src/qml/SettingsPage.qml" line="127"/>
         <source>Settings</source>
         <translation>Inställningar</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="94"/>
+        <location filename="../src/qml/SettingsPage.qml" line="130"/>
         <source>General</source>
         <translation>Allmänt</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="97"/>
+        <location filename="../src/qml/SettingsPage.qml" line="133"/>
         <source>Show notification on success</source>
         <translation>Visa avisering vid korrekt slutfört</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="98"/>
+        <location filename="../src/qml/SettingsPage.qml" line="134"/>
         <source>If this is off, notifications will only be shown when something went wrong.</source>
         <translation>Om detta avaktiveras, visas aviseringar endast om något gått fel.</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="105"/>
+        <location filename="../src/qml/SettingsPage.qml" line="141"/>
         <source>Show &apos;Disable and deactivate all Patches&apos; pulley menu entry</source>
         <translation>Visa &quot;Stäng av och avaktivera alla korrigeringar&quot; i toppmenyn</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="106"/>
+        <location filename="../src/qml/SettingsPage.qml" line="142"/>
         <source>Enable an additional pulley menu entry for Patchmanager&apos;s main page to disable and deactivate all Patches.</source>
         <translation>Visa en extra menypost i dragspelsmenyn på Patchmanagers huvudsida, för att stänga av och avaktivera alla korrigeringar.</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="113"/>
+        <location filename="../src/qml/SettingsPage.qml" line="149"/>
         <source>Show only updates in Web Catalog</source>
         <translation>Visa endast uppdateringar i webbkatalogen</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="114"/>
+        <location filename="../src/qml/SettingsPage.qml" line="150"/>
         <source>When updates are available, hide all other Patches in Web Catalog.</source>
         <translation>Dölj alla andra korrigeringar i webbkatalogen, när uppdateringar finns tillgängliga.</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="120"/>
+        <location filename="../src/qml/SettingsPage.qml" line="156"/>
         <source>Startup Activation</source>
         <translation>Uppstartsaktivering</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="123"/>
+        <location filename="../src/qml/SettingsPage.qml" line="159"/>
         <source>Activate Patches on first login</source>
         <translation>Aktivera korrigeringar vid första inloggningen</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="124"/>
+        <location filename="../src/qml/SettingsPage.qml" line="160"/>
         <source>Automatically activate all enabled Patches after Home Screen has been started for the first time.</source>
         <translation>Aktivera automatiskt alla påslagna korrigeringar när hemskärmen startas första gången.</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="139"/>
+        <location filename="../src/qml/SettingsPage.qml" line="175"/>
         <source>Activation Delay</source>
         <translation>Aktiveringsfördröjning</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="140"/>
+        <location filename="../src/qml/SettingsPage.qml" line="176"/>
         <source>%1 seconds</source>
         <translation>%1 sekunder</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="149"/>
+        <location filename="../src/qml/SettingsPage.qml" line="185"/>
         <source>Activate Patches when booting</source>
         <translation>Aktivera korrigeringar vid systemstart</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="164"/>
+        <location filename="../src/qml/SettingsPage.qml" line="200"/>
         <source>Version Check</source>
         <translation>Versionskontroll</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="170"/>
+        <location filename="../src/qml/SettingsPage.qml" line="206"/>
         <source>Strict</source>
         <translation>Strikt</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="171"/>
+        <location filename="../src/qml/SettingsPage.qml" line="207"/>
         <source>No check</source>
         <translation>Ingen kontroll</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="177"/>
+        <location filename="../src/qml/SettingsPage.qml" line="213"/>
         <source>Mode for Patch developers</source>
         <translation>Läge för patch-utvecklare</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="178"/>
+        <location filename="../src/qml/SettingsPage.qml" line="214"/>
         <source>Enable various functions to be used by Patch developers. Among other things, it shows debug log files for applying the patch file when a Patch is activated on its details page.</source>
         <translation>Aktiverar olika funktioner som patch-utvecklare kan använda. Den visar bland annat felsökningslogg för tillämpning av korrigeringsfilen när en korrigering aktiveras på dess informationssida.</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="156"/>
+        <location filename="../src/qml/SettingsPage.qml" line="192"/>
         <source>Advanced</source>
         <translation>Avancerat</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="150"/>
+        <location filename="../src/qml/SettingsPage.qml" line="186"/>
         <source>Automatically activate all enabled Patches when SailfishOS starts.</source>
         <translation>Aktivera automatiskt alla påslagna korrigeringar när SailfishOS startas.</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="165"/>
+        <location filename="../src/qml/SettingsPage.qml" line="201"/>
         <source>Allow to enable Patches, which are not marked as compatible with the installed SailfishOS version. Note that Patches, which are actually incompatible, will not work.</source>
         <translation>Tillåt användning av korrigeringar som inte är märkta som kompatibla med den installerade versionen av Sailfish OS. Notera att korrigeringar som faktiskt är inkompatibla, inte kommer att fungera.</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="197"/>
+        <location filename="../src/qml/SettingsPage.qml" line="233"/>
         <source>Convert Patches between 32-bit and 64-bit</source>
         <translation>Konvertera korrigeringar mellan 32- och 64-bit</translation>
     </message>
     <message>
-        <location filename="../src/qml/SettingsPage.qml" line="198"/>
+        <location filename="../src/qml/SettingsPage.qml" line="234"/>
         <source>Automatically convert lib or lib64 for select paths shown below.</source>
         <translation>Konvertera automatiskt lib eller lib64 för valda sökvägar som visas nedan.</translation>
     </message>
@@ -709,7 +714,7 @@
     </message>
     <message>
         <location filename="../src/qml/patchmanager.cpp" line="68"/>
-        <location filename="../src/qml/patchmanager.cpp" line="327"/>
+        <location filename="../src/qml/patchmanager.cpp" line="329"/>
         <source>other</source>
         <translation>Annat</translation>
     </message>

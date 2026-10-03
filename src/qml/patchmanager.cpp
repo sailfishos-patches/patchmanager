@@ -303,7 +303,7 @@ void PatchManager::setNotifyOnSuccess(bool notifyOnSuccess)
 */
 bool PatchManager::bitnessMangle() const
 {
-    return getSettingsSync(QStringLiteral("bitnessMangle"), false).toBool();
+    return getSettingsSync(QStringLiteral("bitnessMangle"), true).toBool();
 }
 
 void PatchManager::setBitnessMangle(bool bitnessMangle)
