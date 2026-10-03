@@ -51,9 +51,7 @@
 
 #include <systemd/sd-journal.h>
 
-#include <QLoggingCategory>
-
-Q_DECLARE_LOGGING_CATEGORY(patchmanagerDaemon)
+#include "logging.h"
 
 #ifndef SERVER_URL
 #define SERVER_URL          "https://coderus.openrepos.net"

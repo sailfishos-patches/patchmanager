@@ -30,7 +30,8 @@ HEADERS += \
     patchmanagerobject.h \
     patchmanager_include.h \
     inotifywatcher.h \
-    journal.h
+    journal.h \
+    logging.h
 
 SOURCES += \
     main.cpp \
