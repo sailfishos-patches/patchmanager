@@ -563,7 +563,7 @@ void PatchManagerObject::doRegisterDBus()
         return;
     }
 
-    qCInfo(patchmanagerDaemon) << "Patchmanager: Successfully registered D-Bus object" << DBUS_PATH_NAME;
+    qCInfo(patchmanagerDaemon) << "Successfully registered D-Bus object" << DBUS_PATH_NAME;
 
     if (!connection.registerService(DBUS_SERVICE_NAME)) {
         qCCritical(patchmanagerDaemon) << Q_FUNC_INFO << "Cannot register D-Bus service" << DBUS_SERVICE_NAME;
@@ -575,7 +575,7 @@ void PatchManagerObject::doRegisterDBus()
     if (qEnvironmentVariableIsSet("PM_DEBUG_EVENTFILTER")) {
         m_adaptor->installEventFilter(this);
     }
-    qCInfo(patchmanagerDaemon) << "Patchmanager: Successfully registered D-Bus service" << DBUS_SERVICE_NAME;
+    qCInfo(patchmanagerDaemon) << "Successfully registered D-Bus service" << DBUS_SERVICE_NAME;
     m_dbusRegistered = true;
 }
 
@@ -1818,10 +1818,10 @@ void PatchManagerObject::onLipstickChanged(const QString &, const QVariantMap &c
     const QString activeState = changedProperties.value(QStringLiteral("ActiveState"), QStringLiteral("unknown")).toString();
     qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << activeState;
     if (activeState == QStringLiteral("failed")) {
-        qCCritical(patchmanagerDaemon) << "Patchmanager: Detected lipstick crash, hence deactivating and disabling all Patches.";
+        qCCritical(patchmanagerDaemon) << "Detected lipstick crash, hence deactivating and disabling all Patches.";
         unapplyAllPatches();
     } else if (activeState == QStringLiteral("active") && !getLoaded() && !m_failed && !getSettings(QStringLiteral("applyOnBoot"), false).toBool()) {
-        qCInfo(patchmanagerDaemon) << "Patchmanager: Automatically activating all enabled Patches.";
+        qCInfo(patchmanagerDaemon) << "Automatically activating all enabled Patches.";
         QTimer::singleShot(5000, this, [this](){
             QDBusMessage showPatcher = QDBusMessage::createMethodCall(QStringLiteral("org.SfietKonstantin.patchmanager"),
                                                                       QStringLiteral("/"),
@@ -1838,7 +1838,7 @@ void PatchManagerObject::onOsUpdateProgress(int progress)
         return;
     }
 
-    qCCritical(patchmanagerDaemon) << "Patchmanager: Detected SailfishOS update in progress, hence deactivating and disabling all Patches.";
+    qCCritical(patchmanagerDaemon) << "Detected SailfishOS update in progress, hence deactivating and disabling all Patches.";
     unapplyAllPatches();
 }
 
@@ -2227,12 +2227,12 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
     QVariantMap patchData = m_metadata[patch];
     QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
 
-    qCInfo(patchmanagerDaemon) << "Patchmanager: Applying patch " << displayName;
+    qCInfo(patchmanagerDaemon) << "Applying patch " << displayName;
 
     QString log;
     bool ok = doPatch(patch, apply, &log);
     if (ok) {
-        qCInfo(patchmanagerDaemon) << "Patchmanager: Applying patch successful";
+        qCInfo(patchmanagerDaemon) << "Applying patch successful";
         if (apply) {
             m_appliedPatches.insert(patch);
             const QString rpmPatch = m_metadata[patch][RPM_KEY].toString();
@@ -2248,7 +2248,7 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
             patchToggleService(patch);
         }
     } else {
-        qCInfo(patchmanagerDaemon) << "Patchmanager: Applying patch failed" ;
+        qCInfo(patchmanagerDaemon) << "Applying patch failed" ;
     }
 
     // Is this parameter used anywhere??
@@ -2294,7 +2294,7 @@ void PatchManagerObject::doInstallPatch(const QVariantMap &params, const QDBusMe
     const QString &version = params.value(QStringLiteral("version")).toString();
     const QString &jsonUrl = QStringLiteral("%1/%2").arg(CATALOG_URL, PROJECT_PATH);
 
-    qCInfo(patchmanagerDaemon) << "Patchmanager: Installing " << patch << " Version " << version;
+    qCInfo(patchmanagerDaemon) << "Installing " << patch << " Version " << version;
 
     QUrl url(jsonUrl);
     QUrlQuery query;
@@ -2778,7 +2778,7 @@ void PatchManagerObject::requestCheckForUpdates()
         for (const QVariant &projectVar : projects) {
             const QVariantMap project = projectVar.toMap();
             const QString projectName = project.value("name").toString();
-            qCInfo(patchmanagerDaemon) << "Patchmanager: Processing" << projectName;
+            qCInfo(patchmanagerDaemon) << "Processing" << projectName;
             if (!m_metadata.contains(projectName)) {
                 qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << projectName << "Patch is not installed.";
                 continue;
@@ -2836,7 +2836,7 @@ void PatchManagerObject::requestCheckForUpdates()
                     qCInfo(patchmanagerDaemon) << patchVersion << " is the current version for " << projectName << ".";
                     return;
                 }
-                qCInfo(patchmanagerDaemon) << "Patchmanager: Version " << latestVersion << " is available for patch" << projectName << ".";
+                qCInfo(patchmanagerDaemon) << "Version " << latestVersion << " is available for patch" << projectName << ".";
 
                 if (!m_updates.contains(projectName) || m_updates.value(projectName) != latestVersion) {
                     notify(projectName, NotifyActionUpdateAvailable);
