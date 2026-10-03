@@ -313,6 +313,22 @@ void PatchManager::setBitnessMangle(bool bitnessMangle)
     }
 }
 
+/*! \property PatchManager::enableFSFilter
+*/
+/*! \qmlproperty bool PatchManager::enableFSFilter
+*/
+bool PatchManager::enableFSFilter() const
+{
+    return getSettingsSync(QStringLiteral("enableFSFilter"), false).toBool();
+}
+
+void PatchManager::setEnableFSFilter(bool enableFSFilter)
+{
+    if (putSettingsSync(QStringLiteral("enableFSFilter"), enableFSFilter)) {
+        emit enableFSFilterChanged(enableFSFilter);
+    }
+}
+
 PatchManagerModel *PatchManager::installedModel()
 {
     return m_installedModel;
