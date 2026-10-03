@@ -82,7 +82,7 @@
 
 #define DBUS_GUARD(x) \
 if (!calledFromDBus()) {\
-    qWarning() << Q_FUNC_INFO << "This function should be only called from D-Bus!";\
+    qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "This function should be only called from D-Bus!";\
     return x;\
 }
 
@@ -210,7 +210,7 @@ QString getLang()
         }
     }
 
-    qDebug() << Q_FUNC_INFO << lang;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << lang;
 
     return lang;
 }
@@ -232,7 +232,7 @@ bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, Q
     file.close();
 
     if (error.error != QJsonParseError::NoError) {
-        qWarning() << Q_FUNC_INFO << error.errorString();
+        qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << error.errorString();
         return false;
     }
 
@@ -269,7 +269,7 @@ bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, Q
 */
 void PatchManagerObject::notify(const QString &patch, NotifyAction action)
 {
-    qDebug() << Q_FUNC_INFO << patch << action;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << patch << action;
 
     Notification notification;
 
@@ -323,17 +323,17 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
         );
         break;
     default:
-        qWarning() << Q_FUNC_INFO << "Unknown, hence unhandled action" << action;
+        qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Unknown, hence unhandled action" << action;
     }
 
-    qDebug() << Q_FUNC_INFO << summary << body;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << summary << body;
 
     notification.setAppName(qApp->translate("", "Patchmanager"));
     notification.setHintValue("app_icon", "icon-m-patchmanager2");
     notification.setTimestamp(QDateTime::currentDateTime());
 
     if (!remoteActions.isEmpty()) {
-        qDebug() << Q_FUNC_INFO << remoteActions;
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << remoteActions;
         notification.setRemoteActions(remoteActions);
     }
 
@@ -343,7 +343,7 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
     notification.setPreviewBody(body);
     notification.publish();
 
-    qDebug() << Q_FUNC_INFO << notification.replacesId();
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << notification.replacesId();
 }
 
 /*!
@@ -394,10 +394,10 @@ void PatchManagerObject::setWorking()
 QStringList PatchManagerObject::getMangleCandidates()
 {
     if (m_mangleCandidates.empty()) {
-        qDebug() << Q_FUNC_INFO;
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
         auto mangleCandidates = QSettings(MANGLE_CONFIG_FILE, QSettings::IniFormat).value("MANGLE_CANDIDATES", "").toString();
         m_mangleCandidates = mangleCandidates.split(' ', QString::SplitBehavior::SkipEmptyParts);
-        qDebug() << "Loaded mangle candidates:" << m_mangleCandidates;
+        qCDebug(patchmanagerDaemon) << "Loaded mangle candidates:" << m_mangleCandidates;
     }
     return m_mangleCandidates;
 }
@@ -410,32 +410,32 @@ QStringList PatchManagerObject::getMangleCandidates()
 */
 void PatchManagerObject::getVersion()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
     m_osRelease = QSettings("/etc/os-release", QSettings::IniFormat).value("VERSION_ID").toString();
-    qDebug() << "Installed SailfishOS release is" << m_osRelease;
+    qCDebug(patchmanagerDaemon) << "Installed SailfishOS release is" << m_osRelease;
     lateInitialize();
 }
 
 void PatchManagerObject::lateInitialize()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
 
 #ifdef PM_ENABLE_LEGACY
     QFile file (AUSMT_INSTALLED_LIST_FILE);
     if (file.exists()) {
-        qWarning() << Q_FUNC_INFO << "Found extant AUSMT package list, importing list as enabled Patches.";
+        qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Found extant AUSMT package list, importing list as enabled Patches.";
         if (file.open(QFile::ReadOnly)) {
             while (!file.atEnd()) {
                 const QString line = QString::fromLatin1(file.readLine());
                 const QStringList splitted = line.split(QChar(' '));
                 if (splitted.count() == 2) {
                     m_appliedPatches.insert(splitted.first());
-                    qDebug() << Q_FUNC_INFO << splitted.first();
+                    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << splitted.first();
                 }
             }
             file.close();
         }
-        qWarning() << Q_FUNC_INFO << "Removing AUSMT package list." <<
+        qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Removing AUSMT package list." <<
         file.remove();
         setAppliedPatches(m_appliedPatches);
     }
@@ -444,14 +444,14 @@ void PatchManagerObject::lateInitialize()
     QDir ausmtBackup(AUSMT_BACKUP_DIR);
     QDir oldpm3cache(QStringLiteral("/var/lib/patchmanager3/patches"));
     if (ausmtBackup.exists()) {
-        qWarning() << Q_FUNC_INFO << "Found AUSMT backup directory, hence cleansing fakeroot.";
+        qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Found AUSMT backup directory, hence cleansing fakeroot.";
 
         ausmtBackup.removeRecursively();
         needClear = true;
     }
 
     if (oldpm3cache.exists()) {
-        qWarning() << Q_FUNC_INFO << "Found old backup directory, hence cleansing fakeroot.";
+        qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Found old backup directory, hence cleansing fakeroot.";
 
         oldpm3cache.removeRecursively();
         needClear = true;
@@ -474,7 +474,7 @@ void PatchManagerObject::lateInitialize()
     INotifyWatcher *mainWatcher = new INotifyWatcher(this);
     mainWatcher->addPaths({ PATCHES_DIR });
     connect(mainWatcher, &INotifyWatcher::contentChanged, [this](const QString &path, bool created) {
-        qDebug() << Q_FUNC_INFO << "Content in" << path << "changed; is newly created (bool):" << created;
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Content in" << path << "changed; is newly created (bool):" << created;
         refreshPatchList();
         if (m_adaptor) {
             emit m_adaptor->patchAltered(path, created);
@@ -484,7 +484,7 @@ void PatchManagerObject::lateInitialize()
 //    INotifyWatcher *additionalWatcher = new INotifyWatcher(this);
 //    additionalWatcher->addPaths({ PATCHES_ADDITIONAL_DIR });
 //    connect(additionalWatcher, &INotifyWatcher::contentChanged, [this](const QString &path, bool created) {
-//        qDebug() << Q_FUNC_INFO << "Content in" << path << "changed; is newly created (bool):" << created;
+//        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Content in" << path << "changed; is newly created (bool):" << created;
 //        refreshPatchList();
 //        });
 
@@ -528,24 +528,24 @@ PatchManagerObject::~PatchManagerObject()
 
 void PatchManagerObject::registerDBus()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
     QMetaObject::invokeMethod(this, NAME(doRegisterDBus), Qt::QueuedConnection);
 }
 
 void PatchManagerObject::waitForLipstick()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
 }
 
 void PatchManagerObject::startLocalServer()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
     QMetaObject::invokeMethod(this, NAME(doStartLocalServer), Qt::QueuedConnection);
 }
 
 void PatchManagerObject::doRegisterDBus()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
     if (m_dbusRegistered) {
         return;
     }
@@ -553,20 +553,20 @@ void PatchManagerObject::doRegisterDBus()
     QDBusConnection connection = QDBusConnection::systemBus();
 
     if (connection.interface()->isServiceRegistered(DBUS_SERVICE_NAME)) {
-        qWarning() << Q_FUNC_INFO << "D-Bus service was already registered" << DBUS_SERVICE_NAME;
+        qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "D-Bus service was already registered" << DBUS_SERVICE_NAME;
         return;
     }
 
     if (!connection.registerObject(DBUS_PATH_NAME, this)) {
-        qCritical() << Q_FUNC_INFO << "Cannot register D-Bus object" << DBUS_PATH_NAME;
+        qCCritical(patchmanagerDaemon) << Q_FUNC_INFO << "Cannot register D-Bus object" << DBUS_PATH_NAME;
         QCoreApplication::quit();
         return;
     }
 
-    qInfo() << "Patchmanager: Successfully registered D-Bus object" << DBUS_PATH_NAME;
+    qCInfo(patchmanagerDaemon) << "Patchmanager: Successfully registered D-Bus object" << DBUS_PATH_NAME;
 
     if (!connection.registerService(DBUS_SERVICE_NAME)) {
-        qCritical() << Q_FUNC_INFO << "Cannot register D-Bus service" << DBUS_SERVICE_NAME;
+        qCCritical(patchmanagerDaemon) << Q_FUNC_INFO << "Cannot register D-Bus service" << DBUS_SERVICE_NAME;
         QCoreApplication::quit();
         return;
     }
@@ -575,7 +575,7 @@ void PatchManagerObject::doRegisterDBus()
     if (qEnvironmentVariableIsSet("PM_DEBUG_EVENTFILTER")) {
         m_adaptor->installEventFilter(this);
     }
-    qInfo() << "Patchmanager: Successfully registered D-Bus service" << DBUS_SERVICE_NAME;
+    qCInfo(patchmanagerDaemon) << "Patchmanager: Successfully registered D-Bus service" << DBUS_SERVICE_NAME;
     m_dbusRegistered = true;
 }
 
@@ -598,7 +598,7 @@ void PatchManagerObject::doRegisterDBus()
 */
 void PatchManagerObject::doApplyAllPatches()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
     // TODO: think about security issues here
 
 
@@ -669,21 +669,21 @@ void PatchManagerObject::doApplyAllPatches()
 */
 void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 {
-    qDebug() << Q_FUNC_INFO << patchName << apply;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << patchName << apply;
 
     if (!m_patchFiles.contains(patchName)) {
-        qWarning() << Q_FUNC_INFO << "Patch is not installed" << patchName;
+        qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Patch is not installed" << patchName;
         return;
     }
 
-    qDebug() << Q_FUNC_INFO << "Patch changes the following files:\n\t" << m_patchFiles.value(patchName).join("\n\t");
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Patch changes the following files:\n\t" << m_patchFiles.value(patchName).join("\n\t");
     for (const QString &fileName : m_patchFiles.value(patchName)) {
-        qDebug() << Q_FUNC_INFO << "Processing file" << fileName;
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Processing file" << fileName;
         QFileInfo fi(fileName);
 
         QDir fakeDir(QStringLiteral("%1%2").arg(s_patchmanagerCacheRoot, fi.absoluteDir().absolutePath()));
         if (apply && !fakeDir.exists()) {
-            qDebug() << Q_FUNC_INFO << "Creating faking directory" << fakeDir.absolutePath();
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Creating faking directory" << fakeDir.absolutePath();
             QDir::root().mkpath(fakeDir.absolutePath());
         }
 
@@ -701,13 +701,13 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 
         if (apply && !fi.exists()) {
             bool link_ret = QFile::link(fakeFileName, fi.absoluteFilePath());
-            qDebug() << Q_FUNC_INFO << "Symlinking" << fileName << "to" << fakeFileName << link_ret;
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Symlinking" << fileName << "to" << fakeFileName << link_ret;
             continue;
         }
 
         if (!apply && fi.isSymLink()) {
             bool remove_ret = QFile::remove(fi.absoluteFilePath());
-            qDebug() << Q_FUNC_INFO << "Removing symlink" << fileName << "to" << fakeFileName << remove_ret;
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Removing symlink" << fileName << "to" << fakeFileName << remove_ret;
         }
 
         if (QFileInfo::exists(fakeFileName)) {
@@ -722,7 +722,7 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 
             m_originalWatcher->removePath(fileName);
             bool remove_ret = QFile::remove(fakeFileName);
-            qDebug() << Q_FUNC_INFO << "Removing" << fakeFileName << remove_ret;
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Removing" << fakeFileName << remove_ret;
         } else {
             if (!apply) {
                 tryToUnlinkFakeParent(fi.absoluteDir().absolutePath());
@@ -731,12 +731,12 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 
             struct stat fileStat;
             if (stat(fileName.toLatin1().constData(), &fileStat) < 0) {
-                qWarning() << Q_FUNC_INFO << "Failed to stat" << fileName;
+                qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Failed to stat" << fileName;
                 continue;
             }
 
             bool copy_ret = QFile::copy(fileName, fakeFileName);
-            qDebug() << Q_FUNC_INFO << "Copying" << fileName << "to" << fakeFileName << copy_ret;
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Copying" << fileName << "to" << fakeFileName << copy_ret;
             m_originalWatcher->addPath(fileName);
 
             chmod(fakeFileName.toLatin1().constData(), fileStat.st_mode);
@@ -757,7 +757,7 @@ void PatchManagerObject::doPrepareCache(const QString &patchName, bool apply)
 */
 void PatchManagerObject::doStartLocalServer()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
 
     if (!getLoaded()) {
         m_serverThread->start();
@@ -782,7 +782,7 @@ void PatchManagerObject::doStartLocalServer()
 */
 void PatchManagerObject::initialize()
 {
-    qInfo() << "Patchmanager: Initialized version " << qApp->applicationVersion();
+    qCInfo(patchmanagerDaemon) << "Patchmanager: Initialized version " << qApp->applicationVersion();
 
     QTranslator *translator = new QTranslator(this);
     bool success = translator->load(QLocale(getLang()),
@@ -790,46 +790,46 @@ void PatchManagerObject::initialize()
                                    QStringLiteral("-"),
                                    QStringLiteral("/usr/share/translations/"),
                                    QStringLiteral(".qm"));
-    qDebug() << Q_FUNC_INFO << "Translator loaded" << success;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Translator loaded" << success;
 
     success = qApp->installTranslator(translator);
-    qDebug() << Q_FUNC_INFO << "Translator installed" << success;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Translator installed" << success;
 
     m_nam = new QNetworkAccessManager(this);
     m_settings = new QSettings(s_configLocation, QSettings::IniFormat, this);
 
-    qDebug() << Q_FUNC_INFO << "Environment:";
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Environment:";
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     for (const QString &key : env.keys()) {
-        qDebug() << Q_FUNC_INFO << key << "=" << env.value(key);
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << key << "=" << env.value(key);
     }
 
     QFile preload(QStringLiteral("/etc/ld.so.preload"));
     if (preload.exists()) {
-        qDebug() << Q_FUNC_INFO << "ld.so.preload";
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "ld.so.preload";
         if (!preload.open(QFile::ReadOnly)) {
-            qCritical() << Q_FUNC_INFO << "Failed to access ld.so.preload!";
+            qCCritical(patchmanagerDaemon) << Q_FUNC_INFO << "Failed to access ld.so.preload!";
         }
-        qDebug().noquote() << Q_FUNC_INFO << preload.readAll();
+        qCDebug(patchmanagerDaemon).noquote() << Q_FUNC_INFO << preload.readAll();
     } else {
-        qWarning() << Q_FUNC_INFO << "Failed to find ld.so.preload!";
+        qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Failed to find ld.so.preload!";
     }
 
-    qDebug() << Q_FUNC_INFO << PM_APPLY;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << PM_APPLY;
     QFileInfo pa(PM_APPLY);
     if (pa.exists()) {
-        qDebug() << Q_FUNC_INFO << pa.permissions();
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << pa.permissions();
     } else {
-        qWarning() << Q_FUNC_INFO << "Failed to access pm_apply!";
+        qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Failed to access pm_apply!";
     }
 
-    qDebug() << Q_FUNC_INFO << PM_UNAPPLY;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << PM_UNAPPLY;
     QFileInfo pu(PM_UNAPPLY);
     if (pu.exists()) {
-        qDebug() << Q_FUNC_INFO << pu.permissions();
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << pu.permissions();
     } else {
-        qWarning() << Q_FUNC_INFO << "Failed to access pm_unapply!";
+        qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Failed to access pm_unapply!";
     }
 
 #ifdef PM_ENABLE_LEGACY
@@ -843,8 +843,8 @@ void PatchManagerObject::initialize()
     }
 
     if (Q_UNLIKELY(qEnvironmentVariableIsEmpty("DBUS_SESSION_BUS_ADDRESS"))) {
-        qCritical() << Q_FUNC_INFO << "D-Bus session address is not set!  Please check the environment configuration.";
-        qDebug() << Q_FUNC_INFO << "Injecting DBUS_SESSION_BUS_ADDRESS...";
+        qCCritical(patchmanagerDaemon) << Q_FUNC_INFO << "D-Bus session address is not set!  Please check the environment configuration.";
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Injecting DBUS_SESSION_BUS_ADDRESS...";
         qputenv("DBUS_SESSION_BUS_ADDRESS", QByteArrayLiteral("unix:path=/run/user/100000/dbus/user_bus_socket"));
     }
 
@@ -863,7 +863,7 @@ void PatchManagerObject::initialize()
         } else {
             m_sbus = test;
             m_sessionBusConnector->stop();
-            qDebug() << Q_FUNC_INFO << "Successfully connected to D-Bus session bus.";
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Successfully connected to D-Bus session bus.";
 
             m_sbus.connect(QString(),
                            QStringLiteral("/org/freedesktop/systemd1/unit/lipstick_2eservice"),
@@ -899,12 +899,12 @@ void PatchManagerObject::initialize()
                 && m_localServer->serverError() == QAbstractSocket::AddressInUseError // because of AddressInUseError
                 && QFileInfo::exists(s_patchmanagerSocket) // socket file already exists
                 && QFile::remove(s_patchmanagerSocket)) { // and successfully removed it
-            qWarning() << Q_FUNC_INFO << "Successfully removed old, stale socket.";
+            qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Successfully removed old, stale socket.";
             listening = m_localServer->listen(s_patchmanagerSocket); // try to start listening again
         }
-        qDebug() << Q_FUNC_INFO << "Local server listening (bool):" << listening;
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Local server listening (bool):" << listening;
         if (!listening) {
-            qCritical() << Q_FUNC_INFO << "Local server error:" << m_localServer->serverError() << m_localServer->errorString();
+            qCCritical(patchmanagerDaemon) << Q_FUNC_INFO << "Local server error:" << m_localServer->serverError() << m_localServer->errorString();
         }
     }, Qt::DirectConnection);
     m_localServer->moveToThread(m_serverThread);
@@ -943,14 +943,14 @@ QString PatchManagerObject::getPatchName(const QString patch) const
 */
 void PatchManagerObject::restartLipstick()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
 
     QMetaObject::invokeMethod(this, NAME(doRestartLipstick), Qt::QueuedConnection);
 }
 
 void PatchManagerObject::doRestartLipstick()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
 
     restartService(QStringLiteral("lipstick.service"));
 }
@@ -962,14 +962,14 @@ void PatchManagerObject::doRestartLipstick()
 */
 void PatchManagerObject::restartKeyboard()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
 
     QMetaObject::invokeMethod(this, NAME(doRestartKeyboard), Qt::QueuedConnection);
 }
 
 void PatchManagerObject::doRestartKeyboard()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
 
     restartService(QStringLiteral("maliit-server.service"));
 }
@@ -985,7 +985,7 @@ void PatchManagerObject::doRestartKeyboard()
 */
 void PatchManagerObject::restartService(const QString &serviceName)
 {
-    qDebug() << Q_FUNC_INFO << serviceName;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << serviceName;
 
     QDBusMessage m = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
                                                     QStringLiteral("/org/freedesktop/systemd1"),
@@ -993,8 +993,8 @@ void PatchManagerObject::restartService(const QString &serviceName)
                                                     QStringLiteral("RestartUnit"));
     m.setArguments({ serviceName, QStringLiteral("replace") });
     if (!m_sbus.send(m)) {
-        qWarning() << Q_FUNC_INFO << "Error sending message";
-        qDebug() << Q_FUNC_INFO << "Invoking systemctl:" <<
+        qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Error sending message";
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Invoking systemctl:" <<
                     QProcess::execute(BIN_SYSTEMCTL_U, { QStringLiteral("--no-block"), QStringLiteral("restart"), serviceName });
     }
 }
@@ -1002,14 +1002,14 @@ void PatchManagerObject::restartService(const QString &serviceName)
 #ifdef PM_ENABLE_LEGACY
 void PatchManagerObject::resetSystem()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
 
     unapplyAllPatches();
 
     QStringList patchedFiles;
     QDir patchesDir(PATCHES_DIR);
     for (const QString &patchFolder : patchesDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
-        qDebug() << Q_FUNC_INFO << "Processing Patch" << patchFolder;
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Processing Patch" << patchFolder;
         QFile patchFile(QStringLiteral("%1/%2/unified_diff.patch").arg(PATCHES_DIR, patchFolder));
         if (!patchFile.exists() || !patchFile.open(QFile::ReadOnly)) {
             continue;
@@ -1032,7 +1032,7 @@ void PatchManagerObject::resetSystem()
                 }
             }
             if (!patchedFiles.contains(path)) {
-                qDebug() << Q_FUNC_INFO << "Found patched file" << path;
+                qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Found patched file" << path;
                 patchedFiles.append(path);
             }
         }
@@ -1040,7 +1040,7 @@ void PatchManagerObject::resetSystem()
 
     QStringList packages;
     for (const QString &file : patchedFiles) {
-        qDebug() << Q_FUNC_INFO << "Processing file" << file;
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Processing file" << file;
 
         QProcess rpmProc;
         rpmProc.start(BIN_RPM, { QStringLiteral("-qf"), QStringLiteral("--qf"), QStringLiteral("%{NAME}"), file });
@@ -1051,33 +1051,33 @@ void PatchManagerObject::resetSystem()
         if (package.isEmpty()) {
             continue;
         } else if (!packages.contains(package)) {
-            qDebug() << Q_FUNC_INFO << "Found RPM package to reinstall:" << package;
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Found RPM package to reinstall:" << package;
             packages.append(package);
         }
     }
 
     if (packages.isEmpty()) {
-        qDebug() << Q_FUNC_INFO << "Empty RPM package, hence nothing to reinstall.";
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Empty RPM package, hence nothing to reinstall.";
         QCoreApplication::exit(0);
         return;
     }
 
-    qDebug() << Q_FUNC_INFO << "Refreshing repositories.";
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Refreshing repositories.";
     QProcess refreshProc;
     refreshProc.start(BIN_PKCON, { QStringLiteral("refresh") });
     refreshProc.waitForFinished(-1);
 
     for (const QString &package : packages) {
-        qDebug() << Q_FUNC_INFO << "Reinstalling RPM package" << package;
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Reinstalling RPM package" << package;
 
         QProcess pkconProc;
         pkconProc.start(BIN_PKCON, { QStringLiteral("install"), QStringLiteral("-y"), package });
         pkconProc.waitForFinished(-1);
 
         if (pkconProc.exitCode() == 0) {
-            qDebug() << Q_FUNC_INFO << "Successfully reinstalled RPM package.";
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Successfully reinstalled RPM package.";
         } else {
-            qDebug() << Q_FUNC_INFO << "Failed to reinstall RPM package!";
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Failed to reinstall RPM package!";
         }
     }
 
@@ -1087,16 +1087,16 @@ void PatchManagerObject::resetSystem()
 
 void PatchManagerObject::clearFakeroot()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
 
     eraseRecursively(s_patchmanagerCacheRoot);
-    qDebug() << Q_FUNC_INFO << "Directory" << s_patchmanagerCacheRoot << "is cleansed (bool):" <<
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Directory" << s_patchmanagerCacheRoot << "is cleansed (bool):" <<
     QDir::root().rmpath(s_patchmanagerCacheRoot);
 
-    qDebug() << Q_FUNC_INFO << "Directory" << PATCHES_ADDITIONAL_DIR << "is cleansed (bool):" <<
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Directory" << PATCHES_ADDITIONAL_DIR << "is cleansed (bool):" <<
     QDir(PATCHES_ADDITIONAL_DIR).removeRecursively();
 
-    qDebug() << Q_FUNC_INFO << "Creating a clean cache directory (bool):" <<
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Creating a clean cache directory (bool):" <<
     QDir::root().mkpath(s_patchmanagerCacheRoot);
 }
 
@@ -1160,7 +1160,7 @@ void PatchManagerObject::process()
         }
     } else if (args.count() > 1) {  // Must be "> 1", not "> 2" for "--unapply-all"
         QDBusConnection connection = QDBusConnection::systemBus();
-        qDebug() << Q_FUNC_INFO << "Has arguments, sending D-Bus message and quit.";
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Has arguments, sending D-Bus message and quit.";
 
         QString method;
         QVariantList data;
@@ -1207,7 +1207,7 @@ void PatchManagerObject::process()
 QVariantList PatchManagerObject::listPatches()
 {
     DBUS_GUARD(QVariantList())
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
     setDelayedReply(true);
     QMetaObject::invokeMethod(this, NAME(doListPatches), Qt::QueuedConnection, Q_ARG(QDBusMessage, message()));
     return QVariantList();
@@ -1216,7 +1216,7 @@ QVariantList PatchManagerObject::listPatches()
 /*! Returns all versions contained in the metadata of all Patches, indexed by Patch name. */
 QVariantMap PatchManagerObject::listVersions()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
     QVariantMap versionsList;
     for (const QString &patch : m_metadata.keys()) {
         versionsList[patch] = m_metadata[patch][VERSION_KEY];
@@ -1228,7 +1228,7 @@ QVariantMap PatchManagerObject::listVersions()
 /*!  Returns whether \a patch is in the list of currently active (applied) Patches. */
 bool PatchManagerObject::isPatchApplied(const QString &patch)
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
     return m_appliedPatches.contains(patch);
 }
 
@@ -1238,7 +1238,7 @@ bool PatchManagerObject::isPatchApplied(const QString &patch)
 */
 QVariantMap PatchManagerObject::applyPatch(const QString &patch)
 {
-    qDebug() << Q_FUNC_INFO << patch;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << patch;
     QDBusMessage msg;
     if (calledFromDBus()) {
         setDelayedReply(true);
@@ -1259,7 +1259,7 @@ QVariantMap PatchManagerObject::applyPatch(const QString &patch)
 */
 QVariantMap PatchManagerObject::unapplyPatch(const QString &patch)
 {
-    qDebug() << Q_FUNC_INFO << patch;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << patch;
     QDBusMessage msg;
     if (calledFromDBus()) {
         if (!m_appliedPatches.contains(patch)) {
@@ -1285,16 +1285,16 @@ QVariantMap PatchManagerObject::unapplyPatch(const QString &patch)
 */
 bool PatchManagerObject::unapplyAllPatches()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
 
     clearFakeroot();
 
-    qDebug() << Q_FUNC_INFO << "Triggering service restart.";
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Triggering service restart.";
     for (const QString &appliedPatch : m_appliedPatches) {
         patchToggleService(appliedPatch);
     }
 
-    qDebug() << Q_FUNC_INFO << "Resetting variables.";
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Resetting variables.";
     m_appliedPatches.clear();
     setAppliedPatches(m_appliedPatches);
 
@@ -1310,7 +1310,7 @@ bool PatchManagerObject::unapplyAllPatches()
 */
 bool PatchManagerObject::installPatch(const QString &patch, const QString &version, const QString &url)
 {
-    qDebug() << Q_FUNC_INFO << patch;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << patch;
     if (calledFromDBus()) {
         setDelayedReply(true);
     }
@@ -1327,7 +1327,7 @@ bool PatchManagerObject::installPatch(const QString &patch, const QString &versi
 */
 bool PatchManagerObject::uninstallPatch(const QString &patch)
 {
-    qDebug() << Q_FUNC_INFO << patch;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << patch;
     if (calledFromDBus()) {
         setDelayedReply(true);
     }
@@ -1350,7 +1350,7 @@ bool PatchManagerObject::uninstallPatch(const QString &patch)
 */
 bool PatchManagerObject::resetPatchState(const QString &patch)
 {
-    qDebug() << Q_FUNC_INFO << patch;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << patch;
     if (calledFromDBus()) {
         setDelayedReply(true);
     }
@@ -1372,7 +1372,7 @@ bool PatchManagerObject::resetPatchState(const QString &patch)
 int PatchManagerObject::checkVote(const QString &patch)
 {
     DBUS_GUARD(0)
-    qDebug() << Q_FUNC_INFO << patch;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << patch;
     setDelayedReply(true);
     QMetaObject::invokeMethod(this, NAME(doCheckVote), Qt::QueuedConnection,
                               Q_ARG(QString, patch),
@@ -1387,7 +1387,7 @@ int PatchManagerObject::checkVote(const QString &patch)
 */
 void PatchManagerObject::votePatch(const QString &patch, int action)
 {
-    qDebug() << Q_FUNC_INFO << patch << action;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << patch << action;
     QMetaObject::invokeMethod(this, NAME(sendVote), Qt::QueuedConnection,
                               Q_ARG(QString, patch),
                               Q_ARG(int, action));
@@ -1399,7 +1399,7 @@ void PatchManagerObject::votePatch(const QString &patch, int action)
 QString PatchManagerObject::checkEaster()
 {
     DBUS_GUARD(QString())
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
     QMetaObject::invokeMethod(this, NAME(doCheckEaster), Qt::QueuedConnection,
                               Q_ARG(QDBusMessage, message()));
     return QString();
@@ -1413,7 +1413,7 @@ QString PatchManagerObject::checkEaster()
 QVariantList PatchManagerObject::downloadCatalog(const QVariantMap &params)
 {
     DBUS_GUARD(QVariantList())
-    qDebug() << Q_FUNC_INFO << params;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << params;
     setDelayedReply(true);
     QMetaObject::invokeMethod(this, NAME(requestDownloadCatalog), Qt::QueuedConnection,
                               Q_ARG(QVariantMap, params),
@@ -1429,7 +1429,7 @@ QVariantList PatchManagerObject::downloadCatalog(const QVariantMap &params)
 QVariantMap PatchManagerObject::downloadPatchInfo(const QString &name)
 {
     DBUS_GUARD(QVariantMap())
-    qDebug() << Q_FUNC_INFO << name;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << name;
     setDelayedReply(true);
     QMetaObject::invokeMethod(this, NAME(requestDownloadPatchInfo), Qt::QueuedConnection,
                               Q_ARG(QString, name),
@@ -1445,7 +1445,7 @@ QVariantMap PatchManagerObject::downloadPatchInfo(const QString &name)
 */
 void PatchManagerObject::checkForUpdates()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
     QMetaObject::invokeMethod(this, NAME(requestCheckForUpdates), Qt::QueuedConnection);
 }
 
@@ -1472,13 +1472,13 @@ bool PatchManagerObject::putSettings(const QString &name, const QDBusVariant &va
 
 bool PatchManagerObject::putSettings(const QString &name, const QVariant &value)
 {
-    qDebug() << Q_FUNC_INFO << name << value;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << name << value;
     QString key = QStringLiteral("settings/%1").arg(name);
     QVariant old = m_settings->value(key);
     if (old != value) {
         m_settings->setValue(key ,value);
         if (name == QStringLiteral("bitnessMangle")) {
-            qDebug() << Q_FUNC_INFO << "Changing bitness mangle refreshes Patch list";
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Changing bitness mangle refreshes Patch list";
             refreshPatchList();
         }
         return true;
@@ -1505,7 +1505,7 @@ QVariant PatchManagerObject::getSettings(const QString &name, const QVariant &de
 {
     QString key = QStringLiteral("settings/%1").arg(name);
     const QVariant value = m_settings->value(key, def);
-    qDebug() << Q_FUNC_INFO << name << def << value;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << name << def << value;
     return value;
 }
 
@@ -1558,14 +1558,14 @@ QString PatchManagerObject::maxVersion(const QString &version1, const QString &v
 */
 void PatchManagerObject::restartServices()
 {
-    qDebug() << Q_FUNC_INFO << m_toggleServices;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << m_toggleServices;
 
     if (m_toggleServices.isEmpty()) {
         return;
     }
 
     for (const QString &category : m_toggleServices.keys()) {
-        qDebug() << Q_FUNC_INFO << category;
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << category;
         if (category == HOMESCREEN_CODE || category == SILICA_CODE) {
             restartLipstick();
         } else if (category == KEYBOARD_CODE) {
@@ -1586,7 +1586,7 @@ void PatchManagerObject::restartServices()
             };
 
             if (!categoryToProcess.contains(category)) {
-                qWarning() << Q_FUNC_INFO << "Invalid category:" << category;
+                qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Invalid category:" << category;
                 continue;
             }
 
@@ -1609,7 +1609,7 @@ void PatchManagerObject::restartServices()
 */
 void PatchManagerObject::patchToggleService(const QString &patch)
 {
-    qDebug() << Q_FUNC_INFO << patch;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << patch;
 
     if (!m_metadata.contains(patch)) {
         return;
@@ -1674,7 +1674,7 @@ void PatchManagerObject::restorePatchList()
 */
 void PatchManagerObject::resolveFailure()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
 
     if (!m_failed) {
         return;
@@ -1696,10 +1696,10 @@ void PatchManagerObject::resolveFailure()
 */
 void PatchManagerObject::loadRequest(bool apply)
 {
-    qDebug() << Q_FUNC_INFO << apply;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << apply;
 
     if (getLoaded()) {
-        qWarning() << Q_FUNC_INFO << "Server thread is already running.";
+        qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Server thread is already running.";
         return;
     }
 
@@ -1731,16 +1731,16 @@ void PatchManagerObject::loadRequest(bool apply)
 */
 void PatchManagerObject::lipstickChanged(const QString &state)
 {
-    qDebug() << Q_FUNC_INFO << state;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << state;
 
     if (!getLoaded() && !m_failed && !getSettings(QStringLiteral("applyOnBoot"), false).toBool()) {
-        qDebug() << Q_FUNC_INFO << "Automatically activate all enabled Patches when SailfishOS starts.";
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Automatically activate all enabled Patches when SailfishOS starts.";
         QTimer::singleShot(20000, this, [this](){
             QDBusMessage showPatcher = QDBusMessage::createMethodCall(QStringLiteral("org.SfietKonstantin.patchmanager"),
                                                                       QStringLiteral("/"),
                                                                       QStringLiteral("org.SfietKonstantin.patchmanager"),
                                                                       QStringLiteral("show"));
-            qDebug() << Q_FUNC_INFO << m_sbus.send(showPatcher);
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << m_sbus.send(showPatcher);
         });
     }
 }
@@ -1786,7 +1786,7 @@ QString PatchManagerObject::getOsVersion() const
 //                m_appliedPatches.insert(patch.patch);
 //            }
 //        } else {
-//            qDebug() << "Issue with Patch" << patch.patch << "Can apply:" << canApply
+//            qCDebug(patchmanagerDaemon) << "Issue with Patch" << patch.patch << "Can apply:" << canApply
 //                     << "Can unapply:" << canUnapply;
 //        }
 //    }
@@ -1798,7 +1798,7 @@ QString PatchManagerObject::getOsVersion() const
 bool PatchManagerObject::eventFilter(QObject *watched, QEvent *event)
 {
     if (qEnvironmentVariableIsSet("PM_DEBUG_EVENTFILTER")) {
-        qDebug() << Q_FUNC_INFO << watched << event->type();
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << watched << event->type();
     }
     return QObject::eventFilter(watched, event);
 }
@@ -1810,24 +1810,24 @@ bool PatchManagerObject::eventFilter(QObject *watched, QEvent *event)
 */
 void PatchManagerObject::onLipstickChanged(const QString &, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {
-    qDebug() << Q_FUNC_INFO << changedProperties << invalidatedProperties;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << changedProperties << invalidatedProperties;
     if (invalidatedProperties.contains(QStringLiteral("ActiveState"))) {
         return;
     }
 
     const QString activeState = changedProperties.value(QStringLiteral("ActiveState"), QStringLiteral("unknown")).toString();
-    qDebug() << Q_FUNC_INFO << activeState;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << activeState;
     if (activeState == QStringLiteral("failed")) {
-        qCritical() << "Patchmanager: Detected lipstick crash, hence deactivating and disabling all Patches.";
+        qCCritical(patchmanagerDaemon) << "Patchmanager: Detected lipstick crash, hence deactivating and disabling all Patches.";
         unapplyAllPatches();
     } else if (activeState == QStringLiteral("active") && !getLoaded() && !m_failed && !getSettings(QStringLiteral("applyOnBoot"), false).toBool()) {
-        qInfo() << "Patchmanager: Automatically activating all enabled Patches.";
+        qCInfo(patchmanagerDaemon) << "Patchmanager: Automatically activating all enabled Patches.";
         QTimer::singleShot(5000, this, [this](){
             QDBusMessage showPatcher = QDBusMessage::createMethodCall(QStringLiteral("org.SfietKonstantin.patchmanager"),
                                                                       QStringLiteral("/"),
                                                                       QStringLiteral("org.SfietKonstantin.patchmanager"),
                                                                       QStringLiteral("show"));
-            qDebug() << Q_FUNC_INFO << m_sbus.send(showPatcher);
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << m_sbus.send(showPatcher);
         });
     }
 }
@@ -1838,13 +1838,13 @@ void PatchManagerObject::onOsUpdateProgress(int progress)
         return;
     }
 
-    qCritical() << "Patchmanager: Detected SailfishOS update in progress, hence deactivating and disabling all Patches.";
+    qCCritical(patchmanagerDaemon) << "Patchmanager: Detected SailfishOS update in progress, hence deactivating and disabling all Patches.";
     unapplyAllPatches();
 }
 
 void PatchManagerObject::onTimerAction()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
     checkForUpdates();
 }
 
@@ -1852,7 +1852,7 @@ void PatchManagerObject::startReadingLocalServer()
 {
     QLocalSocket *clientConnection = m_localServer->nextPendingConnection();
     if (!clientConnection) {
-        qWarning() << Q_FUNC_INFO << "Obtained empty connection.";
+        qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Obtained empty connection.";
         return;
     }
     if (clientConnection->state() != QLocalSocket::ConnectedState) {
@@ -1863,7 +1863,7 @@ void PatchManagerObject::startReadingLocalServer()
     }, Qt::DirectConnection);
     connect(clientConnection, &QLocalSocket::readyRead, this, [this, clientConnection](){
         if (!clientConnection) {
-            qWarning() << Q_FUNC_INFO << "Failed to obtain socket for connection.";
+            qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Failed to obtain socket for connection.";
             return;
         }
         const qint64 bytes = clientConnection->bytesAvailable();
@@ -1877,12 +1877,12 @@ void PatchManagerObject::startReadingLocalServer()
         if (!m_failed && QFileInfo::exists(fakePath)) {
             payload = fakePath.toLatin1();
             if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
-                qDebug() << Q_FUNC_INFO << "Requested:" << request << "Sending:" << payload;
+                qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Requested:" << request << "Sending:" << payload;
             }
         } else {
             payload = request;
             if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
-                qDebug() << Q_FUNC_INFO << "Requested:" << request << "is sent unaltered.";
+                qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Requested:" << request << "is sent unaltered.";
             }
         }
         clientConnection->write(payload);
@@ -1893,7 +1893,7 @@ void PatchManagerObject::startReadingLocalServer()
 
 void PatchManagerObject::onOriginalFileChanged(const QString &path)
 {
-    qDebug() << Q_FUNC_INFO << path;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << path;
 
     if (m_failed || !getLoaded()) {
         return;
@@ -1910,7 +1910,7 @@ void PatchManagerObject::onOriginalFileChanged(const QString &path)
         }
     }
 
-    qDebug() << Q_FUNC_INFO << patches;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << patches;
 
     QStringList order = getSettings(QStringLiteral("order"), QStringList()).toStringList();
     std::reverse(std::begin(order), std::end(order));
@@ -1951,7 +1951,7 @@ void PatchManagerObject::onOriginalFileChanged(const QString &path)
 
 void PatchManagerObject::onFailureOccured()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
 
     if (getLoaded()) {
         m_serverThread->quit();
@@ -1974,7 +1974,7 @@ void PatchManagerObject::onFailureOccured()
 
 void PatchManagerObject::doRefreshPatchList()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
 
     // load applied patches
 
@@ -1991,10 +1991,10 @@ void PatchManagerObject::doRefreshPatchList()
     for (const QString &patchFolder : patchesDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
         QFile patchFile(QStringLiteral("%1/%2/unified_diff.patch").arg(PATCHES_DIR, patchFolder));
         if (!patchFile.exists() || !patchFile.open(QFile::ReadOnly)) {
-            qWarning() << Q_FUNC_INFO << "Could not read diff file for: " << patchFolder;
+            qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Could not read diff file for: " << patchFolder;
             continue;
         }
-        qDebug() << Q_FUNC_INFO << "Collecting info for: " << patchFolder;
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Collecting info for: " << patchFolder;
         while (!patchFile.atEnd()) {
             const QByteArray line = patchFile.readLine();
             if (line.startsWith(QByteArrayLiteral("+++ "))) {
@@ -2021,7 +2021,7 @@ void PatchManagerObject::doRefreshPatchList()
 
                 // record a list of possible conflicting paths
                 if (!filesConflicts[path].contains(patchFolder)) {
-                    qDebug() << Q_FUNC_INFO << "Possible conflict in: " << path;
+                    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Possible conflict in: " << path;
                     filesConflicts[path].append(patchFolder);
                 }
 
@@ -2041,8 +2041,8 @@ void PatchManagerObject::doRefreshPatchList()
 
         patchFile.close();
     }
-    qDebug() << Q_FUNC_INFO << "patchFiles:" << m_patchFiles.keys();
-    qDebug() << Q_FUNC_INFO << "fileToPatch:" << m_fileToPatch.keys();
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "patchFiles:" << m_patchFiles.keys();
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "fileToPatch:" << m_fileToPatch.keys();
 
     // collect conflicts per Patch
 
@@ -2060,14 +2060,14 @@ void PatchManagerObject::doRefreshPatchList()
             patchConflicts[conflict] = existingConflicts;
         }
     }
-    qDebug() << Q_FUNC_INFO << "patchConflicts:" << patchConflicts.keys();
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "patchConflicts:" << patchConflicts.keys();
 
     // get Patches
 
     QSet<QString> existingPatches;
     QList<QVariantMap> patches = listPatchesFromDir(PATCHES_DIR, existingPatches);
     patches.append(listPatchesFromDir(PATCHES_ADDITIONAL_DIR, existingPatches, false));
-    qDebug() << Q_FUNC_INFO << "patches:" << patches.count();
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "patches:" << patches.count();
 //  std::sort(patches.begin(), patches.end(), patchSort);
 
     // fill Patch conflicts and rpm names
@@ -2135,14 +2135,14 @@ void PatchManagerObject::doRefreshPatchList()
         m_metadata[patchName] = patch;
     }
 
-    qDebug() << Q_FUNC_INFO << "metadata:" << m_metadata.keys();
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "metadata:" << m_metadata.keys();
 
     QVariantMap debug;
     for (const QString &debugKey : m_metadata.keys()) {
         debug[debugKey] = m_metadata[debugKey];
     }
 
-    qDebug().noquote() << QJsonDocument::fromVariant(debug).toJson(QJsonDocument::Indented);
+    qCDebug(patchmanagerDaemon).noquote() << QJsonDocument::fromVariant(debug).toJson(QJsonDocument::Indented);
 
     if (m_adaptor) {
         emit m_adaptor->listPatchesChanged();
@@ -2151,10 +2151,10 @@ void PatchManagerObject::doRefreshPatchList()
 
 void PatchManagerObject::doListPatches(const QDBusMessage &message)
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
     QVariantList result;
     QStringList order = getSettings(QStringLiteral("order"), QStringList()).toStringList();
-    qDebug() << Q_FUNC_INFO << "order:" << order;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "order:" << order;
 
     for (const QString &patchName : order) {
         if (m_metadata.contains(patchName)) {
@@ -2176,7 +2176,7 @@ void PatchManagerObject::doListPatches(const QDBusMessage &message)
 
 bool PatchManagerObject::doPatch(const QString &patchName, bool apply, QString *patchLog)
 {
-    qDebug() << Q_FUNC_INFO << patchName << apply;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << patchName << apply;
 
     if (apply) {
         doPrepareCache(patchName, apply);
@@ -2192,19 +2192,19 @@ bool PatchManagerObject::doPatch(const QString &patchName, bool apply, QString *
     env.insert("OS_VERSION", m_osRelease);
     env.insert("PM_VERSION", BUILD_VERSION);
     if (false == getSettings(QStringLiteral("bitnessMangle"), false).toBool()) {
-        qDebug() << Q_FUNC_INFO << "DISABLE_MANGLING=true";
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "DISABLE_MANGLING=true";
         env.insert("DISABLE_MANGLING", "true");
     }
     process.setProcessEnvironment(env);
 
     process.setArguments(arguments);
-    qDebug() << Q_FUNC_INFO << "Starting" << process.program() << process.arguments();
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Starting" << process.program() << process.arguments();
     process.start();
     process.waitForFinished(-1);
     const bool ret = process.exitCode() == 0;
-    qDebug() << Q_FUNC_INFO << "Successfully started process (bool):" << ret;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Successfully started process (bool):" << ret;
     const QString log = QString::fromUtf8(process.readAllStandardOutput());
-    qDebug().noquote() << Q_FUNC_INFO << log;
+    qCDebug(patchmanagerDaemon).noquote() << Q_FUNC_INFO << log;
     if (patchLog) {
         *patchLog = log;
     }
@@ -2218,7 +2218,7 @@ bool PatchManagerObject::doPatch(const QString &patchName, bool apply, QString *
 
 void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &message, bool apply)
 {
-    qDebug() << Q_FUNC_INFO << params << apply;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << params << apply;
     const QString &patch = params.value(QStringLiteral("name")).toString();
     const bool user_request = params.value(QStringLiteral("user_request"), false).toBool();
     const bool at_init = params.value(QStringLiteral("at_init"), false).toBool();
@@ -2227,12 +2227,12 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
     QVariantMap patchData = m_metadata[patch];
     QVariant displayName = patchData.contains("display_name") ? patchData["display_name"] : patchData[NAME_KEY];
 
-    qInfo() << "Patchmanager: Applying patch " << displayName;
+    qCInfo(patchmanagerDaemon) << "Patchmanager: Applying patch " << displayName;
 
     QString log;
     bool ok = doPatch(patch, apply, &log);
     if (ok) {
-        qInfo() << "Patchmanager: Applying patch successful";
+        qCInfo(patchmanagerDaemon) << "Patchmanager: Applying patch successful";
         if (apply) {
             m_appliedPatches.insert(patch);
             const QString rpmPatch = m_metadata[patch][RPM_KEY].toString();
@@ -2248,7 +2248,7 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
             patchToggleService(patch);
         }
     } else {
-        qInfo() << "Patchmanager: Applying patch failed" ;
+        qCInfo(patchmanagerDaemon) << "Patchmanager: Applying patch failed" ;
     }
 
     // Is this parameter used anywhere??
@@ -2265,10 +2265,10 @@ void PatchManagerObject::doPatch(const QVariantMap &params, const QDBusMessage &
 
     if (message.isDelayedReply()) {
         QVariantMap reply = {{ QStringLiteral("ok"), ok }, { QStringLiteral("log"), log }};
-        qDebug() << Q_FUNC_INFO << "Sending reply.";
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Sending reply.";
         sendMessageReply(message, reply);
     } else {
-        qDebug() << Q_FUNC_INFO << "Message is not a delayed reply.";
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Message is not a delayed reply.";
     }
 }
 
@@ -2288,13 +2288,13 @@ void PatchManagerObject::doResetPatchState(const QString &patch, const QDBusMess
 
 void PatchManagerObject::doInstallPatch(const QVariantMap &params, const QDBusMessage &message)
 {
-    qWarning() << Q_FUNC_INFO << params;
+    qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << params;
 
     const QString &patch = params.value(QStringLiteral("patch")).toString();
     const QString &version = params.value(QStringLiteral("version")).toString();
     const QString &jsonUrl = QStringLiteral("%1/%2").arg(CATALOG_URL, PROJECT_PATH);
 
-    qInfo() << "Patchmanager: Installing " << patch << " Version " << version;
+    qCInfo(patchmanagerDaemon) << "Patchmanager: Installing " << patch << " Version " << version;
 
     QUrl url(jsonUrl);
     QUrlQuery query;
@@ -2307,12 +2307,12 @@ void PatchManagerObject::doInstallPatch(const QVariantMap &params, const QDBusMe
     QObject::connect(reply, &QNetworkReply::finished, [reply, message, params, this](){
         reply->deleteLater();
         if (reply->error() != QNetworkReply::NoError) {
-            qDebug() << Q_FUNC_INFO << "Reply error:" << reply->error();
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Reply error:" << reply->error();
             sendMessageError(message, reply->errorString());
             return;
         }
         if (reply->bytesAvailable() <= 0) {
-            qDebug() << Q_FUNC_INFO << "Cannot get JSON.";
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Cannot get JSON.";
             sendMessageError(message, QStringLiteral("Cannot get JSON."));
             return;
         }
@@ -2329,11 +2329,11 @@ void PatchManagerObject::doInstallPatch(const QVariantMap &params, const QDBusMe
         downloadPatchArchive(newParams, message);
     });
     QObject::connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), [reply](QNetworkReply::NetworkError networkError){
-        qWarning() << Q_FUNC_INFO << "Download file error:" << networkError << reply->errorString();
+        qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Download file error:" << networkError << reply->errorString();
     });
     QObject::connect(reply, &QNetworkReply::sslErrors, [reply](const QList<QSslError> &errors){
         for (const QSslError &sslError : errors) {
-            qWarning() << Q_FUNC_INFO << "Ignoring SSL error:" << sslError.errorString();
+            qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Ignoring SSL error:" << sslError.errorString();
         }
         reply->ignoreSslErrors(errors);
     });
@@ -2341,7 +2341,7 @@ void PatchManagerObject::doInstallPatch(const QVariantMap &params, const QDBusMe
 
 void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const QDBusMessage &message)
 {
-    qDebug() << Q_FUNC_INFO << params;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << params;
 
     const QString &url = params.value(QStringLiteral("url")).toString();
     const QString &patch = params.value(QStringLiteral("patch")).toString();
@@ -2349,10 +2349,10 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
     const QString &archive = QStringLiteral("%1/%2").arg(PATCHES_WORK_DIR, url.section(QChar('/'), -1));
     const QString &version = params.value(QStringLiteral("version")).toString();
 
-    qDebug() << Q_FUNC_INFO << "Saving archive to" << archive;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Saving archive to" << archive;
     QDir workDir(PATCHES_WORK_DIR);
     if (!workDir.mkpath(PATCHES_WORK_DIR)) {
-            qDebug() << Q_FUNC_INFO << QStringLiteral("Error: Failed to create working directory") << workDir;
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << QStringLiteral("Error: Failed to create working directory") << workDir;
             return;
     };
     QFile *archiveFile = new QFile(archive, this);
@@ -2366,11 +2366,11 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
     QObject::connect(reply, &QNetworkReply::finished, [reply, message, patch, archiveFile, archive, json, version, this](){
         reply->deleteLater();
         archiveFile->deleteLater();
-        qDebug() << Q_FUNC_INFO << "Storing archive file locally" << archiveFile->flush();
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Storing archive file locally" << archiveFile->flush();
         archiveFile->close();
 
         if (reply->error() != QNetworkReply::NoError) {
-            qDebug() << Q_FUNC_INFO << "Reply error" << reply->error();
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Reply error" << reply->error();
             sendMessageError(message, reply->errorString());
             return;
         }
@@ -2410,7 +2410,7 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
              // careful: GNU tar has J for everything xz/lz*, and a for automatic, BusyBox has J for .xz and a for .lzma
             else if (archive.endsWith(QStringLiteral("xz"))) { uncompressOpt = QStringLiteral("-J"); }
             else {
-                qWarning() << Q_FUNC_INFO << QStringLiteral("Unsupported archive format.");
+                qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << QStringLiteral("Unsupported archive format.");
                 uncompressOpt = QStringLiteral("");
             }
             ret = proc.execute(BIN_TAR, {QStringLiteral("x"), uncompressOpt, QStringLiteral("-f"), archive, QStringLiteral("-C"), patchPath});
@@ -2434,7 +2434,7 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
             } else if ( ret == -1 ) {
                 retMsg = QStringLiteral("Process crashed (%1)").arg(ret);
             }
-            qDebug() << Q_FUNC_INFO << QStringLiteral("Failed to extract archive:") << proc.error() << retMsg;
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << QStringLiteral("Failed to extract archive:") << proc.error() << retMsg;
             patchDir.removeRecursively();
         }
 
@@ -2446,19 +2446,19 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
     });
     QObject::connect(reply, &QNetworkReply::readyRead, [archiveFile, reply](){
         if (!archiveFile || !archiveFile->isOpen()) {
-            qWarning() << Q_FUNC_INFO << "Problem with archive file.";
+            qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Problem with archive file.";
             return;
         }
         const qint64 ba = reply->bytesAvailable();
-        qDebug() << Q_FUNC_INFO << "Writing" << ba << "bytes to file" <<
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Writing" << ba << "bytes to file" <<
         archiveFile->write(reply->read(ba));
     });
     QObject::connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), [reply](QNetworkReply::NetworkError networkError){
-        qWarning() << Q_FUNC_INFO << "File downloading error" << networkError << reply->errorString();
+        qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "File downloading error" << networkError << reply->errorString();
     });
     QObject::connect(reply, &QNetworkReply::sslErrors, [reply](const QList<QSslError> &errors){
         for (const QSslError &sslError : errors) {
-            qWarning() << Q_FUNC_INFO << "Ignoring SSL error" << sslError.errorString();
+            qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Ignoring SSL error" << sslError.errorString();
         }
         reply->ignoreSslErrors(errors);
     });
@@ -2466,24 +2466,24 @@ void PatchManagerObject::downloadPatchArchive(const QVariantMap &params, const Q
 
 void PatchManagerObject::doUninstallPatch(const QString &patch, const QDBusMessage &message)
 {
-    qDebug() << Q_FUNC_INFO << patch;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << patch;
 
     bool removeSuccess = false;
     const QString rpmPatch = m_metadata[patch][RPM_KEY].toString();
     if (rpmPatch.isEmpty()) {
         QDir patchDir(QStringLiteral("%1/%2").arg(PATCHES_DIR, patch));
-        qDebug() << Q_FUNC_INFO << "Removing Patch files" << patchDir.absolutePath();
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Removing Patch files" << patchDir.absolutePath();
         if (patchDir.exists()) {
             removeSuccess = patchDir.removeRecursively();
         }
     } else {
-        qDebug() << Q_FUNC_INFO << "Removing RPM Patch package" << rpmPatch;
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Removing RPM Patch package" << rpmPatch;
 
         const int ret = QProcess::execute(BIN_PKCON, {QStringLiteral("remove"), QStringLiteral("-y"), getRpmName(rpmPatch)});
         removeSuccess = ret == 0;
     }
 
-    qDebug() << Q_FUNC_INFO << "Success:" << removeSuccess;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Success:" << removeSuccess;
 
 //    if (removeSuccess) {
 //        // TODO: gracefully update models
@@ -2506,7 +2506,7 @@ int PatchManagerObject::getVote(const QString &patch)
 */
 void PatchManagerObject::doCheckVote(const QString &patch, const QDBusMessage &message)
 {
-    qDebug() << Q_FUNC_INFO << patch;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << patch;
 
     sendMessageReply(message, getVote(patch));
 }
@@ -2519,7 +2519,7 @@ void PatchManagerObject::doCheckVote(const QString &patch, const QDBusMessage &m
 */
 void PatchManagerObject::sendVote(const QString &patch, int action)
 {
-    qDebug() << Q_FUNC_INFO << patch << action;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << patch << action;
 
     if (getVote(patch) == action) {
         return;
@@ -2543,7 +2543,7 @@ void PatchManagerObject::sendVote(const QString &patch, int action)
     QObject::connect(reply, &QNetworkReply::finished, [reply]() {
         reply->deleteLater();
         if (reply->error() != QNetworkReply::NoError) {
-            qDebug() << Q_FUNC_INFO << "Network reply error" << reply->error();
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Network reply error" << reply->error();
         }
     });
 
@@ -2554,7 +2554,7 @@ void PatchManagerObject::sendVote(const QString &patch, int action)
 
 void PatchManagerObject::doCheckEaster(const QDBusMessage &message)
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
 
     QUrl url(CATALOG_URL"/easter");
     QNetworkRequest request(url);
@@ -2562,12 +2562,12 @@ void PatchManagerObject::doCheckEaster(const QDBusMessage &message)
     QObject::connect(reply, &QNetworkReply::finished, [this, reply, message](){
         reply->deleteLater();
         if (reply->error() != QNetworkReply::NoError) {
-            qDebug() << Q_FUNC_INFO << "Network reply error" << reply->error();
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Network reply error" << reply->error();
             sendMessageError(message, reply->errorString());
             return;
         }
         if (!reply->bytesAvailable()) {
-            qWarning() << Q_FUNC_INFO << "Received empty reply.";
+            qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Received empty reply.";
             sendMessageError(message, QStringLiteral("Received empty reply."));
             return;
         }
@@ -2595,7 +2595,7 @@ void PatchManagerObject::doCheckEaster(const QDBusMessage &message)
 
 void PatchManagerObject::sendActivation(const QString &patch, const QString &version)
 {
-    qDebug() << Q_FUNC_INFO << patch << version;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << patch << version;
 
     QUrl url(QStringLiteral(CATALOG_URL "/" PROJECT_PATH));
     QUrlQuery query;
@@ -2609,7 +2609,7 @@ void PatchManagerObject::sendActivation(const QString &patch, const QString &ver
     QObject::connect(reply, &QNetworkReply::finished, [reply]() {
         reply->deleteLater();
         if (reply->error() != QNetworkReply::NoError) {
-            qDebug() << Q_FUNC_INFO << "Error:" << reply->error();
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Error:" << reply->error();
         }
     });
 }
@@ -2629,7 +2629,7 @@ void PatchManagerObject::downloadPatch(const QString &patch, const QUrl &url, co
             return;
         }
         if (reply->error() != QNetworkReply::NoError) {
-            qDebug() << Q_FUNC_INFO << "Network reply error" << reply->error();
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Network reply error" << reply->error();
             return;
         }
         // TODO emit download complete
@@ -2641,11 +2641,11 @@ void PatchManagerObject::downloadPatch(const QString &patch, const QUrl &url, co
         f->write(reply->read(reply->bytesAvailable()));
     });
     QObject::connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), [reply](QNetworkReply::NetworkError networkError){
-        qWarning() << Q_FUNC_INFO << "Download file error" << networkError << reply->errorString();
+        qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Download file error" << networkError << reply->errorString();
     });
     QObject::connect(reply, &QNetworkReply::sslErrors, [reply](const QList<QSslError> &errors){
         for (const QSslError &sslError : errors) {
-            qWarning() << Q_FUNC_INFO << "Ignoring SSL error" << sslError.errorString();
+            qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Ignoring SSL error" << sslError.errorString();
         }
         reply->ignoreSslErrors(errors);
     });
@@ -2656,7 +2656,7 @@ void PatchManagerObject::downloadPatch(const QString &patch, const QUrl &url, co
  */
 void PatchManagerObject::requestDownloadCatalog(const QVariantMap &params, const QDBusMessage &message)
 {
-    qDebug() << Q_FUNC_INFO << params;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << params;
     QUrl url(QStringLiteral(CATALOG_URL "/" PROJECTS_PATH));
     QUrlQuery query;
     for (const QString &key : params.keys()) {
@@ -2668,12 +2668,12 @@ void PatchManagerObject::requestDownloadCatalog(const QVariantMap &params, const
     QObject::connect(reply, &QNetworkReply::finished, [this, message, reply]() {
         reply->deleteLater();
         if (reply->error() != QNetworkReply::NoError) {
-            qDebug() << Q_FUNC_INFO << "Network reply error" << reply->error();
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Network reply error" << reply->error();
             sendMessageError(message, reply->errorString());
             return;
         }
         if (!reply->bytesAvailable()) {
-            qWarning() << Q_FUNC_INFO << "Received empty reply.";
+            qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Received empty reply.";
             sendMessageError(message, QStringLiteral("Received empty reply."));
             return;
         }
@@ -2700,7 +2700,7 @@ void PatchManagerObject::requestDownloadCatalog(const QVariantMap &params, const
  */
 void PatchManagerObject::requestDownloadPatchInfo(const QString &name, const QDBusMessage &message)
 {
-    qDebug() << Q_FUNC_INFO << name;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << name;
     QUrl url(QStringLiteral(CATALOG_URL "/" PROJECT_PATH));
     QUrlQuery query;
     query.addQueryItem(QStringLiteral("name"), name);
@@ -2710,12 +2710,12 @@ void PatchManagerObject::requestDownloadPatchInfo(const QString &name, const QDB
     QObject::connect(reply, &QNetworkReply::finished, [this, message, reply]() {
         reply->deleteLater();
         if (reply->error() != QNetworkReply::NoError) {
-            qDebug() << Q_FUNC_INFO << "Network reply error" << reply->error();
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Network reply error" << reply->error();
             sendMessageError(message, reply->errorString());
             return;
         }
         if (!reply->bytesAvailable()) {
-            qWarning() << Q_FUNC_INFO << "Received empty reply.";
+            qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Received empty reply.";
             sendMessageError(message, QStringLiteral("Received empty reply."));
             return;
         }
@@ -2745,7 +2745,7 @@ void PatchManagerObject::requestDownloadPatchInfo(const QString &name, const QDB
 */
 void PatchManagerObject::requestCheckForUpdates()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
 
     QUrl url(QStringLiteral(CATALOG_URL "/" PROJECTS_PATH));
     QUrlQuery query;
@@ -2756,11 +2756,11 @@ void PatchManagerObject::requestCheckForUpdates()
     QObject::connect(reply, &QNetworkReply::finished, [this, reply]() {
         reply->deleteLater();
         if (reply->error() != QNetworkReply::NoError) {
-            qDebug() << Q_FUNC_INFO << "Network reply error" << reply->error();
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Network reply error" << reply->error();
             return;
         }
         if (!reply->bytesAvailable()) {
-            qWarning() << Q_FUNC_INFO << "Received empty reply.";
+            qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Received empty reply.";
             return;
         }
         const QByteArray json = reply->readAll();
@@ -2769,27 +2769,27 @@ void PatchManagerObject::requestCheckForUpdates()
         const QJsonDocument document = QJsonDocument::fromJson(json, &error);
 
         if (error.error != QJsonParseError::NoError) {
-            qWarning() << Q_FUNC_INFO << "Failed to parse JSON.";
+            qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Failed to parse JSON.";
             return;
         }
 
         const QVariantList projects = document.toVariant().toList();
-        qDebug() << Q_FUNC_INFO << "Projects count:" << projects.count();
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Projects count:" << projects.count();
         for (const QVariant &projectVar : projects) {
             const QVariantMap project = projectVar.toMap();
             const QString projectName = project.value("name").toString();
-            qInfo() << "Patchmanager: Processing" << projectName;
+            qCInfo(patchmanagerDaemon) << "Patchmanager: Processing" << projectName;
             if (!m_metadata.contains(projectName)) {
-                qDebug() << Q_FUNC_INFO << projectName << "Patch is not installed.";
+                qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << projectName << "Patch is not installed.";
                 continue;
             }
             if (!m_metadata.value(projectName).value("rpm").toString().isEmpty()) {
-                qDebug() << Q_FUNC_INFO << projectName << "Patch installed from RPM.";
+                qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << projectName << "Patch installed from RPM.";
                 continue;
             }
 
             const QString patchVersion = m_metadata.value(projectName).value("version").toString();
-            qDebug() << Q_FUNC_INFO << projectName << "Patch version" << patchVersion << "installed from Web Catalog.";
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << projectName << "Patch version" << patchVersion << "installed from Web Catalog.";
 
             QUrl purl(QStringLiteral(CATALOG_URL "/" PROJECT_PATH));
             QUrlQuery pquery;
@@ -2800,11 +2800,11 @@ void PatchManagerObject::requestCheckForUpdates()
             QObject::connect(preply, &QNetworkReply::finished, [this, preply, projectName, patchVersion]() {
                 preply->deleteLater();
                 if (preply->error() != QNetworkReply::NoError) {
-                    qDebug() << Q_FUNC_INFO << "Network reply error" << preply->error();
+                    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Network reply error" << preply->error();
                     return;
                 }
                 if (!preply->bytesAvailable()) {
-                    qWarning() << Q_FUNC_INFO << "Received empty reply.";
+                    qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Received empty reply.";
                     return;
                 }
                 const QByteArray json = preply->readAll();
@@ -2813,7 +2813,7 @@ void PatchManagerObject::requestCheckForUpdates()
                 const QJsonDocument document = QJsonDocument::fromJson(json, &error);
 
                 if (error.error != QJsonParseError::NoError) {
-                    qWarning() << Q_FUNC_INFO << "Failed to parse JSON reply for" << projectName;
+                    qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Failed to parse JSON reply for" << projectName;
                     return;
                 }
 
@@ -2833,10 +2833,10 @@ void PatchManagerObject::requestCheckForUpdates()
                 }
 
                 if (latestVersion == patchVersion) {
-                    qInfo() << patchVersion << " is the current version for " << projectName << ".";
+                    qCInfo(patchmanagerDaemon) << patchVersion << " is the current version for " << projectName << ".";
                     return;
                 }
-                qInfo() << "Patchmanager: Version " << latestVersion << " is available for patch" << projectName << ".";
+                qCInfo(patchmanagerDaemon) << "Patchmanager: Version " << latestVersion << " is available for patch" << projectName << ".";
 
                 if (!m_updates.contains(projectName) || m_updates.value(projectName) != latestVersion) {
                     notify(projectName, NotifyActionUpdateAvailable);
@@ -2867,25 +2867,25 @@ void PatchManagerObject::sendMessageError(const QDBusMessage &message, const QSt
 
 void PatchManagerObject::refreshPatchList()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
     QMetaObject::invokeMethod(this, NAME(doRefreshPatchList), Qt::QueuedConnection);
 }
 
 void PatchManagerObject::applyAllPatches()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO;
     QMetaObject::invokeMethod(this, NAME(doApplyAllPatches), Qt::QueuedConnection);
 }
 
 void PatchManagerObject::eraseRecursively(const QString &path)
 {
-    qDebug() << Q_FUNC_INFO << path;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << path;
 
     QDir cacheDir(path);
     for (const QFileInfo &info : cacheDir.entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot, QDir::DirsLast)) {
         if (info.isDir() && !info.isSymLink()) {
             eraseRecursively(info.absoluteFilePath());
-            qDebug() << Q_FUNC_INFO << "Directory" << info.absoluteFilePath() << "is empty" <<
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Directory" << info.absoluteFilePath() << "is empty" <<
             QDir::root().rmpath(info.absoluteFilePath());
         } else if (info.isFile() || info.isSymLink()) {
             QFile::remove(info.absoluteFilePath());
@@ -2896,14 +2896,14 @@ void PatchManagerObject::eraseRecursively(const QString &path)
 
 bool PatchManagerObject::checkIsFakeLinked(const QString &path)
 {
-    qDebug() << Q_FUNC_INFO << path;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << path;
     const QStringList parts = path.split(QDir::separator(), QString::SkipEmptyParts);
     QDir trial = QDir::root();
     for (const QString &part : parts) {
         if (trial.cd(part)) {
             const QFileInfo fi(trial.absolutePath());
             if (fi.isSymLink() && fi.symLinkTarget().startsWith(s_patchmanagerCacheRoot)) {
-                qDebug() << Q_FUNC_INFO << path << "already has a faking symlink" << trial.absolutePath();
+                qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << path << "already has a faking symlink" << trial.absolutePath();
                 return true;
             }
             continue;
@@ -2914,14 +2914,14 @@ bool PatchManagerObject::checkIsFakeLinked(const QString &path)
 
 bool PatchManagerObject::tryToLinkFakeParent(const QString &path)
 {
-    qDebug() << Q_FUNC_INFO << path;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << path;
     const QStringList parts = path.split(QDir::separator(), QString::SkipEmptyParts);
     QDir trial = QDir::root();
     for (const QString &part : parts) {
         if (trial.cd(part)) {
             const QFileInfo fi(trial.absolutePath());
             if (fi.isSymLink() && fi.symLinkTarget().startsWith(s_patchmanagerCacheRoot)) {
-                qDebug() << Q_FUNC_INFO << path << "already has a faking symlink" << trial.absolutePath();
+                qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << path << "already has a faking symlink" << trial.absolutePath();
                 return true;
             }
             continue;
@@ -2929,7 +2929,7 @@ bool PatchManagerObject::tryToLinkFakeParent(const QString &path)
         const QString realPath = QStringLiteral("%1/%2").arg(trial.absolutePath(), part);
         const QString fakePath = QStringLiteral("%1%2").arg(s_patchmanagerCacheRoot, realPath);
         bool link_ret = QFile::link(fakePath, realPath);
-        qDebug() << Q_FUNC_INFO << "Symlinking" << realPath << "to" << fakePath << link_ret;
+        qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Symlinking" << realPath << "to" << fakePath << link_ret;
         return true;
     }
     return false;
@@ -2937,18 +2937,18 @@ bool PatchManagerObject::tryToLinkFakeParent(const QString &path)
 
 bool PatchManagerObject::tryToUnlinkFakeParent(const QString &path)
 {
-    qDebug() << Q_FUNC_INFO << path;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << path;
     const QStringList parts = path.split(QDir::separator(), QString::SkipEmptyParts);
     QDir trial = QDir::root();
     for (const QString &part : parts) {
         if (!trial.cd(part)) {
-            qWarning() << Q_FUNC_INFO << "Failed when trying to change (cd) from directory" << trial.absolutePath() << "to" << part;
+            qCWarning(patchmanagerDaemon) << Q_FUNC_INFO << "Failed when trying to change (cd) from directory" << trial.absolutePath() << "to" << part;
             return false;
         }
         const QFileInfo fi(trial.absolutePath());
         if (fi.isSymLink() && fi.symLinkTarget().startsWith(s_patchmanagerCacheRoot)) {
             bool remove_ret = QFile::remove(trial.absolutePath());
-            qDebug() << Q_FUNC_INFO << "Removing" << trial.absolutePath() << remove_ret;
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Removing" << trial.absolutePath() << remove_ret;
             return true;
         }
     }
@@ -2966,8 +2966,8 @@ QString PatchManagerObject::pathToMangledPath(const QString &path, const QString
     if (Q_PROCESSOR_WORDSIZE == 4) { // 32 bit
         std::swap(toManglePaths, mangledPaths);
     }
-    qDebug() << Q_FUNC_INFO << "toManglePaths" << toManglePaths;
-    qDebug() << Q_FUNC_INFO << "mangledPaths" << mangledPaths;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "toManglePaths" << toManglePaths;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "mangledPaths" << mangledPaths;
 
     QString newpath = path;
 
@@ -2975,11 +2975,11 @@ QString PatchManagerObject::pathToMangledPath(const QString &path, const QString
         // we need to deal with either absolute, or "git-style" beginnings, see #426:
         QString checkpath = path.mid(path.indexOf('/', 0));
         if (checkpath.startsWith(toManglePaths[i])) {
-            qDebug() << Q_FUNC_INFO << "Mangle: Editing path: " << path;
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Mangle: Editing path: " << path;
             newpath.replace(toManglePaths[i], mangledPaths[i]);
-            qDebug() << Q_FUNC_INFO << "Mangle: Edited path: " << path;
+            qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Mangle: Edited path: " << path;
         }
     }
-    qDebug() << Q_FUNC_INFO << "Path after mangle" << newpath;
+    qCDebug(patchmanagerDaemon) << Q_FUNC_INFO << "Path after mangle" << newpath;
     return newpath;
 }
