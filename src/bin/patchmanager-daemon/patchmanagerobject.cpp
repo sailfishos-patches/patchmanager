@@ -154,6 +154,31 @@ static const QString SILICA_CODE      = QStringLiteral("silica");
 static const QString SETTINGS_CODE    = QStringLiteral("settings");
 static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
 
+static const QHash<QString, QString> CATEGORY_EXE_MAP = {
+    { BROWSER_CODE,     QStringLiteral("sailfish-browser") },
+    { CAMERA_CODE,      QStringLiteral("jolla-camera") },
+    { CALENDAR_CODE,    QStringLiteral("jolla-calendar") },
+    { CLOCK_CODE,       QStringLiteral("jolla-clock") },
+    { CONTACTS_CODE,    QStringLiteral("jolla-contacts") },
+    { EMAIL_CODE,       QStringLiteral("jolla-email") },
+    { GALLERY_CODE,     QStringLiteral("jolla-gallery") },
+    { MEDIA_CODE,       QStringLiteral("jolla-mediaplayer") },
+    { MESSAGES_CODE,    QStringLiteral("jolla-messages") },
+    { PHONE_CODE,       QStringLiteral("voicecall-ui") },
+    { SETTINGS_CODE,    QStringLiteral("jolla-settings") },
+};
+
+
+static const QHash<QString, QString> CATEGORY_BOOSTER_MAP = {
+    { EMAIL_CODE,       QStringLiteral("booster-browser@jolla-email.service") }
+  , { BROWSER_CODE,     QStringLiteral("booster-browser@sailfish-browser.service") }
+  , { CAMERA_CODE,      QStringLiteral("booster-silica-media@jolla-camera.service") }
+//  , { CAMERA_CODE,    QStringLiteral("booster-silica-media@jolla-camera-lockscreen.service") }
+//  , { SILICA_CODE,      QStringLiteral("booster-silica-qt5.service") }
+//  , { HOMESCREEN_CODE,  QStringLiteral("booster-silica-qt5.service") }
+//  , { MEDIA_CODE,       QStringLiteral("booster-silica-media.service") }
+};
+
 /*!
   \class PatchManagerObject
   \inmodule PatchManagerDaemon
@@ -1296,7 +1321,7 @@ QVariantMap PatchManagerObject::unapplyPatch(const QString &patch)
 
 /*!
     Calls the corresponding method over D-Bus to deactivate (unapply) all active Patches.
-    
+
     Returns \c true if successful.
 */
 bool PatchManagerObject::unapplyAllPatches()
@@ -1560,28 +1585,17 @@ void PatchManagerObject::restartServices()
         } else if (category == KEYBOARD_CODE) {
             restartKeyboard();
         } else {
-            QHash<QString, QString> categoryToProcess = {
-                { BROWSER_CODE, QStringLiteral("sailfish-browser") },
-                { CAMERA_CODE, QStringLiteral("jolla-camera") },
-                { CALENDAR_CODE, QStringLiteral("jolla-calendar") },
-                { CLOCK_CODE, QStringLiteral("jolla-clock") },
-                { CONTACTS_CODE, QStringLiteral("jolla-contacts") },
-                { EMAIL_CODE, QStringLiteral("jolla-email") },
-                { GALLERY_CODE, QStringLiteral("jolla-gallery") },
-                { MEDIA_CODE, QStringLiteral("jolla-mediaplayer") },
-                { MESSAGES_CODE, QStringLiteral("jolla-messages") },
-                { PHONE_CODE, QStringLiteral("voicecall-ui") },
-                { SETTINGS_CODE, QStringLiteral("jolla-settings") },
-            };
-
-            if (!categoryToProcess.contains(category)) {
+            if (!CATEGORY_EXE_MAP.contains(category)) {
                 qCWarning(patchmanagerDaemonLog) << Q_FUNC_INFO << "Invalid category:" << category;
                 continue;
             }
 
             QStringList arguments;
-            arguments << categoryToProcess[category];
+            arguments << CATEGORY_EXE_MAP[category];
             QProcess::execute(QStringLiteral("killall"), arguments);
+        }
+        if (CATEGORY_BOOSTER_MAP.contains(category)) {
+            restartService(CATEGORY_BOOSTER_MAP.value(category));
         }
     }
 
