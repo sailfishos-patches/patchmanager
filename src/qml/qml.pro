@@ -12,6 +12,7 @@ HEADERS += \
     webpatchesmodel.h \
     webdownloader.h \
     patchmanagermodel.h \
+    logging.h \
     PatchObject.hpp
 
 SOURCES += \

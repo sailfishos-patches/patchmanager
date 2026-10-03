@@ -37,6 +37,9 @@
 #include <QDBusPendingReply>
 #include <QDebug>
 
+#include "logging.h"
+Q_LOGGING_CATEGORY(patchmanagerModel, "patchmanager.model")
+
 /*! \qmltype PatchManagerModel
     \instantiates PatchManagerModel
     \inqmlmodule org.SfietKonstantin.patchmanager
@@ -118,7 +121,7 @@ QList<PatchObject *> PatchManagerModel::patches() const
 /*!  clears the model data and sets \a patches as new model data.  */
 void PatchManagerModel::setPatches(const QList<PatchObject *> &patches)
 {
-    qDebug() << Q_FUNC_INFO << patches.length();
+    qCDebug(patchmanagerModel) << Q_FUNC_INFO << patches.length();
     beginResetModel();
 
     for (PatchObject *o : m_modelData) {
@@ -153,8 +156,8 @@ void PatchManagerModel::setPatches(const QList<PatchObject *> &patches)
 */
 void PatchManagerModel::populateData(const QVariantList &data, const QString &patch, bool installed)
 {
-    qDebug() << Q_FUNC_INFO << data.length();
-    qDebug() << Q_FUNC_INFO << "Altered:" << patch << "installed:" << installed;
+    qCDebug(patchmanagerModel) << Q_FUNC_INFO << data.length();
+    qCDebug(patchmanagerModel) << Q_FUNC_INFO << "Altered:" << patch << "installed:" << installed;
 
     if (data.isEmpty() && patch.isEmpty()) {
         return;
@@ -242,15 +245,15 @@ void PatchManagerModel::populateData(const QVariantList &data, const QString &pa
 /*!  removes the patch with the name \a patch from the model. */
 void PatchManagerModel::removePatch(const QString &patch)
 {
-    qDebug() << Q_FUNC_INFO << patch;
+    qCDebug(patchmanagerModel) << Q_FUNC_INFO << patch;
     if (!m_patchMap.contains(patch)) {
         return;
     }
 
     PatchObject *p = m_patchMap[patch];
-    qDebug() << p;
+    qCDebug(patchmanagerModel) << p;
     int index = m_modelData.indexOf(p);
-    qDebug() << index;
+    qCDebug(patchmanagerModel) << index;
     p->deleteLater();
     beginRemoveRows(QModelIndex(), index, index);
     m_modelData.removeAt(index);
@@ -306,7 +309,7 @@ bool PatchManagerModel::isApplied(const QString &name) const
 
 void PatchManagerModel::itemRemoved(PatchObject *object)
 {
-    qDebug() << Q_FUNC_INFO << object;
+    qCDebug(patchmanagerModel) << Q_FUNC_INFO << object;
 
     if (!object) {
         return;
