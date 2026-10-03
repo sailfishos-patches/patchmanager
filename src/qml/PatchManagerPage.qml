@@ -408,9 +408,9 @@ Page {
             function doPatch() {
                 view.model.saveLayout()
                 if (!patchObject.details.patched) {
-                    if (patchObject.details.isCompatible) || (PatchManager.sfosVersionCheck == VersionCheck.NoCheck) {
+                    if (patchObject.details.isCompatible || (PatchManager.sfosVersionCheck == VersionCheck.NoCheck)) {
                         patchObject.apply()
-                    } else if (patchObject.details.maybeCompatible && (PatchManager.sfosVersionCheck == VersionCheck.Relaxed) {
+                    } else if (patchObject.details.maybeCompatible && (PatchManager.sfosVersionCheck == VersionCheck.Relaxed)) {
                         patchObject.apply()
                     } else {
                         errorMessageComponent.createObject(background, {text: qsTranslate("", "This Patch is incompatible with the installed SailfishOS version.")})
@@ -603,8 +603,14 @@ Page {
                     Label {
                         width: parent.width
                         text: name
-                        color: patchObject.details.isCompatible ? background.down ? Theme.highlightColor : ( patchObject.details.patched ? Theme.primaryColor : Theme.secondaryColor )
-                                                                : background.down ? Theme.highlightBackgroundFromColor(Theme.errorColor, Theme.colorScheme) : ( patchObject.details.patched ? Theme.errorColor : Theme.secondaryHighlightFromColor(Theme.errorColor, Theme.colorScheme) )
+                        color: { if (background.down)  { return Theme.highlightColor
+                               } else if (patchObject.details.isCompatible) {
+                                    return patchObject.details.patched ? Theme.primaryColor : Theme.secondaryColor
+                               } else if (patchObject.details.maybeCompatible && (PatchManager.sfosVersionCheck == VersionCheck.Relaxed) ) {
+                                    return patchObject.details.patched ? Theme.highlightFromColor("orange", Theme.colorScheme) : Theme.highlightBackgroundFromColor("orange", Theme.colorScheme)
+                               }
+                               return patchObject.details.patched ? Theme.errorColor : Theme.secondaryHighlightFromColor(Theme.errorColor, Theme.colorScheme)
+                        }
                         truncationMode: TruncationMode.Fade
                     }
                     Row {
