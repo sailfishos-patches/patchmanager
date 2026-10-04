@@ -47,7 +47,7 @@
 #include <sys/inotify.h>
 
 #include "common/loggingcategory.h"
-Q_LOGGING_CATEGORY(patchmanagerWatcher, "patchmanager.watcher")
+Q_LOGGING_CATEGORY(patchmanagerWatcherLog, "patchmanager.watcher")
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
 // this adds const to non-const objects (like std::as_const)
@@ -130,7 +130,7 @@ QStringList INotifyWatcher::addPaths(const QStringList &paths)
                                        | IN_DELETE_SELF
                                        )));
         if (wd < 0) {
-            qCWarning(patchmanagerWatcher).nospace() << "inotify_add_watch(" << path << ") failed: " << errno;
+            qCWarning(patchmanagerWatcherLog).nospace() << "inotify_add_watch(" << path << ") failed: " << errno;
             continue;
         }
         it.remove();
@@ -158,7 +158,7 @@ QStringList INotifyWatcher::removePaths(const QStringList &paths)
         if (x.isEmpty() || x != path)
             continue;
         int wd = id < 0 ? -id : id;
-        // qCDebug(patchmanagerWatcher) << "removing watch for path" << path << "wd" << wd;
+        // qCDebug(patchmanagerWatcherLog) << "removing watch for path" << path << "wd" << wd;
         inotify_rm_watch(inotifyFd, wd);
         it.remove();
         if (id < 0) {
@@ -192,7 +192,7 @@ void INotifyWatcher::readFromInotify()
     while (it != eventForId.constEnd()) {
         const inotify_event &event = **it;
         ++it;
-        // qCDebug(patchmanagerWatcher) << "inotify event, wd" << event.wd << "mask" << hex << event.mask;
+        // qCDebug(patchmanagerWatcherLog) << "inotify event, wd" << event.wd << "mask" << hex << event.mask;
         int id = event.wd;
         QString path = getPathFromID(id);
         if (path.isEmpty()) {
@@ -202,7 +202,7 @@ void INotifyWatcher::readFromInotify()
             if (path.isEmpty())
                 continue;
         }
-        // qCDebug(patchmanagerWatcher) << "event for path" << path;
+        // qCDebug(patchmanagerWatcherLog) << "event for path" << path;
 
         if ((event.mask & (IN_CREATE | IN_DELETE)) != 0) {
             emit contentChanged(QString::fromUtf8(event.name), (event.mask & (IN_CREATE)) != 0);

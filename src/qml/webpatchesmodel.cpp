@@ -39,7 +39,7 @@
 #include <algorithm>
 
 #include "common/loggingcategory.h"
-Q_LOGGING_CATEGORY(patchmanagerWebPatch, "patchmanager.webpatch")
+Q_LOGGING_CATEGORY(patchmanagerWebPatchLog, "patchmanager.webpatch")
 
 /*! \class WebPatchesModel
     \inmodule org.SfietKonstantin.patchmanager
@@ -190,7 +190,7 @@ void WebPatchesModel::componentComplete()
         QDBusPendingReply<QVariantList> reply = *watcher;
         if (!reply.isError()) {
             QVariantList catalog = PatchManager::unwind(reply.value()).toList();
-            qCDebug(patchmanagerWebPatch) << Q_FUNC_INFO << catalog.count();
+            qCDebug(patchmanagerWebPatchLog) << Q_FUNC_INFO << catalog.count();
 
             if (_sorted) {
                 const QLatin1String category("category");

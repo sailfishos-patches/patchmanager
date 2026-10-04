@@ -38,7 +38,7 @@
 #include <QDebug>
 
 #include "common/loggingcategory.h"
-Q_LOGGING_CATEGORY(patchmanagerModel, "patchmanager.model")
+Q_LOGGING_CATEGORY(patchmanagerModelLog, "patchmanager.model")
 
 /*! \qmltype PatchManagerModel
     \instantiates PatchManagerModel
@@ -121,7 +121,7 @@ QList<PatchObject *> PatchManagerModel::patches() const
 /*!  clears the model data and sets \a patches as new model data.  */
 void PatchManagerModel::setPatches(const QList<PatchObject *> &patches)
 {
-    qCDebug(patchmanagerModel) << Q_FUNC_INFO << patches.length();
+    qCDebug(patchmanagerModelLog) << Q_FUNC_INFO << patches.length();
     beginResetModel();
 
     for (PatchObject *o : m_modelData) {
@@ -156,8 +156,8 @@ void PatchManagerModel::setPatches(const QList<PatchObject *> &patches)
 */
 void PatchManagerModel::populateData(const QVariantList &data, const QString &patch, bool installed)
 {
-    qCDebug(patchmanagerModel) << Q_FUNC_INFO << data.length();
-    qCDebug(patchmanagerModel) << Q_FUNC_INFO << "Altered:" << patch << "installed:" << installed;
+    qCDebug(patchmanagerModelLog) << Q_FUNC_INFO << data.length();
+    qCDebug(patchmanagerModelLog) << Q_FUNC_INFO << "Altered:" << patch << "installed:" << installed;
 
     if (data.isEmpty() && patch.isEmpty()) {
         return;
@@ -245,15 +245,15 @@ void PatchManagerModel::populateData(const QVariantList &data, const QString &pa
 /*!  removes the patch with the name \a patch from the model. */
 void PatchManagerModel::removePatch(const QString &patch)
 {
-    qCDebug(patchmanagerModel) << Q_FUNC_INFO << patch;
+    qCDebug(patchmanagerModelLog) << Q_FUNC_INFO << patch;
     if (!m_patchMap.contains(patch)) {
         return;
     }
 
     PatchObject *p = m_patchMap[patch];
-    qCDebug(patchmanagerModel) << p;
+    qCDebug(patchmanagerModelLog) << p;
     int index = m_modelData.indexOf(p);
-    qCDebug(patchmanagerModel) << index;
+    qCDebug(patchmanagerModelLog) << index;
     p->deleteLater();
     beginRemoveRows(QModelIndex(), index, index);
     m_modelData.removeAt(index);
@@ -309,7 +309,7 @@ bool PatchManagerModel::isApplied(const QString &name) const
 
 void PatchManagerModel::itemRemoved(PatchObject *object)
 {
-    qCDebug(patchmanagerModel) << Q_FUNC_INFO << object;
+    qCDebug(patchmanagerModelLog) << Q_FUNC_INFO << object;
 
     if (!object) {
         return;

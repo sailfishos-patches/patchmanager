@@ -43,7 +43,7 @@
 #include <QJSEngine>
 
 #include "common/loggingcategory.h"
-Q_LOGGING_CATEGORY(patchmanagerPatch, "patchmanager.patch")
+Q_LOGGING_CATEGORY(patchmanagerPatchLog, "patchmanager.patch")
 
 /*! \qmltype PatchObject
     \instantiates PatchObject
@@ -199,7 +199,7 @@ void PatchObject::setData(const QVariantMap &data)
 */
 void PatchObject::apply(QJSValue callback)
 {
-    qCDebug(patchmanagerPatch) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPatchLog) << Q_FUNC_INFO;
     if (m_busy) {
         return;
     }
@@ -215,7 +215,7 @@ void PatchObject::apply(QJSValue callback)
         QDBusPendingReply<QVariantMap> reply = *watcher;
         QVariantMap result;
         if (reply.isError()) {
-            qCWarning(patchmanagerPatch) << reply.error().type() << reply.error().name() << reply.error().message();
+            qCWarning(patchmanagerPatchLog) << reply.error().type() << reply.error().name() << reply.error().message();
             result[QStringLiteral("ok")] = false;
             result[QStringLiteral("log")] = reply.error().message();
         } else {
@@ -241,7 +241,7 @@ void PatchObject::apply(QJSValue callback)
 */
 void PatchObject::unapply(QJSValue callback)
 {
-    qCDebug(patchmanagerPatch) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPatchLog) << Q_FUNC_INFO;
     if (m_busy) {
         return;
     }
@@ -257,7 +257,7 @@ void PatchObject::unapply(QJSValue callback)
         QDBusPendingReply<QVariantMap> reply = *watcher;
         QVariantMap result;
         if (reply.isError()) {
-            qCWarning(patchmanagerPatch) << reply.error().type() << reply.error().name() << reply.error().message();
+            qCWarning(patchmanagerPatchLog) << reply.error().type() << reply.error().name() << reply.error().message();
             result[QStringLiteral("ok")] = false;
             result[QStringLiteral("log")] = reply.error().message();
         } else {
@@ -279,7 +279,7 @@ void PatchObject::unapply(QJSValue callback)
 /*! Calls PatchManager::uninstallPatch with the patch name. */
 void PatchObject::uninstall()
 {
-    qCDebug(patchmanagerPatch) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPatchLog) << Q_FUNC_INFO;
     if (m_busy) {
         return;
     }
@@ -289,7 +289,7 @@ void PatchObject::uninstall()
             [this](QDBusPendingCallWatcher *watcher){
         QDBusPendingReply<bool> reply = *watcher;
         if (reply.isError()) {
-            qCWarning(patchmanagerPatch) << reply.error().type() << reply.error().name() << reply.error().message();
+            qCWarning(patchmanagerPatchLog) << reply.error().type() << reply.error().name() << reply.error().message();
         } else if (reply.value()) {
 //            this->deleteLater();
         }
@@ -301,7 +301,7 @@ void PatchObject::uninstall()
 /*!  Calls PatchManager::resetState with the patch name. */
 void PatchObject::resetState()
 {
-    qCDebug(patchmanagerPatch) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPatchLog) << Q_FUNC_INFO;
     if (m_busy) {
         return;
     }
@@ -311,7 +311,7 @@ void PatchObject::resetState()
             [this](QDBusPendingCallWatcher *watcher){
         QDBusPendingReply<bool> reply = *watcher;
         if (reply.isError()) {
-            qCWarning(patchmanagerPatch) << reply.error().type() << reply.error().name() << reply.error().message();
+            qCWarning(patchmanagerPatchLog) << reply.error().type() << reply.error().name() << reply.error().message();
         } else if (reply.value()) {
             m_details->setProperty("patched", false);
         }
@@ -322,7 +322,7 @@ void PatchObject::resetState()
 
 void PatchObject::setBusy(bool busy)
 {
-    qCDebug(patchmanagerPatch) << Q_FUNC_INFO << busy;
+    qCDebug(patchmanagerPatchLog) << Q_FUNC_INFO << busy;
     if (m_busy == busy) {
         return;
     }

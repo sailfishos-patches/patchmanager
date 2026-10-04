@@ -51,7 +51,7 @@
 #include "patchmanager_interface.h"
 
 #include "common/loggingcategory.h"
-Q_LOGGING_CATEGORY(patchmanagerPlugin, "patchmanager.plugin")
+Q_LOGGING_CATEGORY(patchmanagerPluginLog, "patchmanager.plugin")
 
 Q_DECL_UNUSED
 static const char *noop_strings[] = {
@@ -89,7 +89,7 @@ PatchManager::PatchManager(QObject *parent)
     , m_interface(new PatchManagerInterface(DBUS_SERVICE_NAME, DBUS_PATH_NAME, QDBusConnection::systemBus(), this))
     , m_translator(new PatchManagerTranslator(this))
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO;
 
     requestListPatches(QString(), false);
     connect(m_interface, &PatchManagerInterface::patchAltered, this, &PatchManager::requestListPatches);
@@ -106,11 +106,11 @@ PatchManager::PatchManager(QObject *parent)
         watcher->deleteLater();
         QDBusPendingReply<QVariantMap> reply = *watcher;
         if (reply.isError()) {
-            qCWarning(patchmanagerPlugin) << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
+            qCWarning(patchmanagerPluginLog) << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
 
-        qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << reply.value();
+        qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << reply.value();
 
         const QVariantMap data = PatchManager::unwind(reply.value()).toMap();
         onUpdatesAvailable(data);
@@ -122,11 +122,11 @@ PatchManager::PatchManager(QObject *parent)
         watcher->deleteLater();
         QDBusPendingReply<bool> reply = *watcher;
         if (reply.isError()) {
-            qCWarning(patchmanagerPlugin) << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
+            qCWarning(patchmanagerPluginLog) << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
 
-        qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << reply.value();
+        qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << reply.value();
 
         const bool toggleServices = reply.value();
         onToggleServicesChanged(toggleServices);
@@ -138,11 +138,11 @@ PatchManager::PatchManager(QObject *parent)
         watcher->deleteLater();
         QDBusPendingReply<bool> reply = *watcher;
         if (reply.isError()) {
-            qCWarning(patchmanagerPlugin) << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
+            qCWarning(patchmanagerPluginLog) << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
 
-        qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << reply.value();
+        qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << reply.value();
 
         const bool failure = reply.value();
         onFailureChanged(failure);
@@ -154,11 +154,11 @@ PatchManager::PatchManager(QObject *parent)
         watcher->deleteLater();
         QDBusPendingReply<bool> reply = *watcher;
         if (reply.isError()) {
-            qCWarning(patchmanagerPlugin) << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
+            qCWarning(patchmanagerPluginLog) << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
 
-        qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << reply.value();
+        qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << reply.value();
 
         const bool loaded = reply.value();
         onLoadedChanged(loaded);
@@ -170,11 +170,11 @@ PatchManager::PatchManager(QObject *parent)
         watcher->deleteLater();
         QDBusPendingReply<QString> reply = *watcher;
         if (reply.isError()) {
-            qCWarning(patchmanagerPlugin) << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
+            qCWarning(patchmanagerPluginLog) << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
 
-        qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << reply.value();
+        qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << reply.value();
 
         const QString patchmanagerVersion = reply.value();
         m_patchmanagerVersion = patchmanagerVersion;
@@ -203,13 +203,13 @@ QString PatchManager::serverMediaUrl() const
 
 bool PatchManager::developerMode() const
 {
-    qCWarning(patchmanagerPlugin) << Q_FUNC_INFO << "read from deprecated property developerMode";
+    qCWarning(patchmanagerPluginLog) << Q_FUNC_INFO << "read from deprecated property developerMode";
     return getSettingsSync(QStringLiteral("developerMode"), false).toBool();
 }
 
 void PatchManager::setDeveloperMode(bool developerMode)
 {
-    qCWarning(patchmanagerPlugin) << Q_FUNC_INFO << "write to deprecated property developerMode";
+    qCWarning(patchmanagerPluginLog) << Q_FUNC_INFO << "write to deprecated property developerMode";
     if (putSettingsSync(QStringLiteral("developerMode"), developerMode)) {
         emit developerModeChanged(developerMode);
     }
@@ -256,7 +256,7 @@ QStringList PatchManager::mangleCandidates() const
     QDBusPendingReply<QStringList> reply = m_interface->getMangleCandidates();
     reply.waitForFinished();
     if (reply.isFinished()) {
-        qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << "mangleCandidates() dbus replied:" << reply.value();
+        qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << "mangleCandidates() dbus replied:" << reply.value();
         return reply.value();
     }
     return QStringList();
@@ -356,7 +356,7 @@ QStringList PatchManager::toggleServicesList() const
     QDBusPendingReply<QStringList> reply = m_interface->getToggleServicesList();
     reply.waitForFinished();
     if (reply.isFinished()) {
-        qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << "dbus replied:" << reply.value();
+        qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << "dbus replied:" << reply.value();
         list = reply.value();;
         return list;
     }
@@ -394,7 +394,7 @@ void PatchManager::call(QDBusPendingCallWatcher *call)
 
 void PatchManager::requestListPatches(const QString &patch, bool installed)
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << patch << installed;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << patch << installed;
 
 //    if (!patch.isEmpty() && !installed) {
 //        m_installedModel->removePatch(patch);
@@ -405,7 +405,7 @@ void PatchManager::requestListPatches(const QString &patch, bool installed)
         watcher->deleteLater();
         QDBusPendingReply<QVariantList> reply = *watcher;
         if (reply.isError()) {
-            qCWarning(patchmanagerPlugin) << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
+            qCWarning(patchmanagerPluginLog) << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
             return;
         }
         const QVariantList data = PatchManager::unwind(reply.value()).toList();
@@ -416,7 +416,7 @@ void PatchManager::requestListPatches(const QString &patch, bool installed)
 /*!  Request daemon to apply (activate) the Patch named \a patch */
 QDBusPendingCallWatcher* PatchManager::applyPatch(const QString &patch)
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO;
 
     return new QDBusPendingCallWatcher(m_interface->applyPatch(patch), this);
 }
@@ -424,7 +424,7 @@ QDBusPendingCallWatcher* PatchManager::applyPatch(const QString &patch)
 /*!  Request daemon to unapply (deactivate) the Patch named \a patch */
 QDBusPendingCallWatcher* PatchManager::unapplyPatch(const QString &patch)
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO;
 
     return new QDBusPendingCallWatcher(m_interface->unapplyPatch(patch), this);
 }
@@ -436,7 +436,7 @@ QDBusPendingCallWatcher* PatchManager::unapplyPatch(const QString &patch)
 */
 QDBusPendingCallWatcher *PatchManager::installPatch(const QString &patch, const QString &version, const QString &url)
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO;
 
     return new QDBusPendingCallWatcher(m_interface->installPatch(patch, version, url), this);
 }
@@ -444,7 +444,7 @@ QDBusPendingCallWatcher *PatchManager::installPatch(const QString &patch, const 
 /*!  Request daemon to uninstall the Patch named \a patch */
 QDBusPendingCallWatcher *PatchManager::uninstallPatch(const QString &patch)
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO;
 
     return new QDBusPendingCallWatcher(m_interface->uninstallPatch(patch), this);
 }
@@ -454,7 +454,7 @@ QDBusPendingCallWatcher *PatchManager::uninstallPatch(const QString &patch)
 */
 QDBusPendingCallWatcher *PatchManager::resetState(const QString &patch)
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO;
 
     return new QDBusPendingCallWatcher(m_interface->resetState(patch), this);
 }
@@ -465,7 +465,7 @@ QDBusPendingCallWatcher *PatchManager::resetState(const QString &patch)
 */
 QDBusPendingCallWatcher *PatchManager::downloadCatalog(const QVariantMap &params)
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO;
 
     return new QDBusPendingCallWatcher(m_interface->downloadCatalog(params), this);
 }
@@ -473,7 +473,7 @@ QDBusPendingCallWatcher *PatchManager::downloadCatalog(const QVariantMap &params
 /*!  Request daemon to download patch info for patch \a name */
 QDBusPendingCallWatcher *PatchManager::downloadPatchInfo(const QString &name)
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO;
 
     return new QDBusPendingCallWatcher(m_interface->downloadPatchInfo(name), this);
 }
@@ -485,7 +485,7 @@ QDBusPendingCallWatcher *PatchManager::downloadPatchInfo(const QString &name)
 */
 QDBusPendingCallWatcher *PatchManager::listVersions()
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO;
 
     return new QDBusPendingCallWatcher(m_interface->listVersions(), this);
 }
@@ -493,7 +493,7 @@ QDBusPendingCallWatcher *PatchManager::listVersions()
 /*!  Request daemon to unapply (deactivate) all active patches. */
 QDBusPendingCallWatcher *PatchManager::unapplyAllPatches()
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO;
 
     return new QDBusPendingCallWatcher(m_interface->unapplyAllPatches(), this);
 }
@@ -504,7 +504,7 @@ QDBusPendingCallWatcher *PatchManager::unapplyAllPatches()
 */
 void PatchManager::loadRequest(bool apply)
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO;
 
     m_interface->loadRequest(apply);
 }
@@ -516,7 +516,7 @@ void PatchManager::loadRequest(bool apply)
 */
 void PatchManager::restartServices()
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO;
 
     m_interface->restartServices();
 }
@@ -560,7 +560,7 @@ void PatchManager::watchCall(QDBusPendingCallWatcher *call, QJSValue callback, Q
         watcher->deleteLater();
         QDBusPendingReply<> reply = *watcher;
         if (reply.isError()) {
-            qCWarning(patchmanagerPlugin) << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
+            qCWarning(patchmanagerPluginLog) << Q_FUNC_INFO << "DBus error: " << reply.error().type() << reply.error().name() << reply.error().message();
             if (errorCallback.isCallable()) {
                 QJSValueList callbackArguments;
                 callbackArguments << QJSValue(reply.error().message());
@@ -600,7 +600,7 @@ bool PatchManager::removeTranslator(const QString &patch)
 /*!  Returns the vote count of \a patch from settings. */
 int PatchManager::checkVote(const QString &patch) const
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << patch;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << patch;
 
     return getSettingsSync(QStringLiteral("votes/%1").arg(patch), 0).toInt();
 }
@@ -608,7 +608,7 @@ int PatchManager::checkVote(const QString &patch) const
 /*!  Send a vote got \a patch, and record it (\a action) in settings. */
 void PatchManager::doVote(const QString &patch, int action)
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << patch << action;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << patch << action;
 
     if (checkVote(patch) == action) {
         return;
@@ -625,7 +625,7 @@ void PatchManager::doVote(const QString &patch, int action)
 */
 void PatchManager::checkEaster()
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO;
 
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(m_interface->checkEaster(), this);
     connect(watcher, &QDBusPendingCallWatcher::finished, [this](QDBusPendingCallWatcher *watcher){
@@ -671,7 +671,7 @@ QString PatchManager::valueIfExists(const QString &filename) const
 /*! Request daemon to check for updates. */
 void PatchManager::checkForUpdates()
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO;
 
     m_interface->checkForUpdates();
 }
@@ -764,7 +764,7 @@ void PatchManager::onUpdatesAvailable(const QVariantMap &updates)
         return;
     }
 
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << updates;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << updates;
 
     m_updates = updates;
     emit updatesChanged();
@@ -777,7 +777,7 @@ void PatchManager::onUpdatesAvailable(const QVariantMap &updates)
 */
 void PatchManager::onToggleServicesChanged(bool toggle)
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << toggle;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << toggle;
 
     if (m_toggleServices == toggle) {
         return;
@@ -795,7 +795,7 @@ void PatchManager::onToggleServicesChanged(bool toggle)
 */
 void PatchManager::onFailureChanged(bool failed)
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << failed;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << failed;
 
     if (m_failed == failed) {
         return;
@@ -812,7 +812,7 @@ void PatchManager::onFailureChanged(bool failed)
 */
 void PatchManager::onLoadedChanged(bool loaded)
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << loaded;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << loaded;
 
     if (m_loaded == loaded) {
         return;
@@ -825,7 +825,7 @@ void PatchManager::onLoadedChanged(bool loaded)
 /*! Calls the \e restorePatchList method on D-Bus */
 void PatchManager::restorePatchList()
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO;
 
     m_interface->restorePatchList();
 }
@@ -833,7 +833,7 @@ void PatchManager::restorePatchList()
 /*! Calls the \e backupWorkingPatchList method on D-Bus */
 void PatchManager::backupWorkingPatchList()
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO;
 
     m_interface->backupWorkingPatchList();
 }
@@ -841,7 +841,7 @@ void PatchManager::backupWorkingPatchList()
 /*! Calls the \e resolveFailure method on D-Bus */
 void PatchManager::resolveFailure()
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO;
 
     m_interface->resolveFailure();
 }
@@ -870,7 +870,7 @@ QVariant PatchManager::unwind(const QVariant &val, int depth)
 
     if( ++depth > maximum_dept ) {
         /* Leave result to invalid variant */
-        qCWarning(patchmanagerPlugin) << Q_FUNC_INFO << "Too deep recursion detected at userType: " << type;
+        qCWarning(patchmanagerPluginLog) << Q_FUNC_INFO << "Too deep recursion detected at userType: " << type;
     }
     else if (type == QVariant::List) {
         /* Is built-in type, but does not get correctly converted
@@ -971,14 +971,14 @@ QVariant PatchManager::unwind(const QVariant &val, int depth)
 
         default:
             /* Unhandled types produce invalid QVariant */
-            qCWarning(patchmanagerPlugin) << Q_FUNC_INFO << "Unhandled QDBusArgument element type:" << elem;
+            qCWarning(patchmanagerPluginLog) << Q_FUNC_INFO << "Unhandled QDBusArgument element type:" << elem;
             break;
         }
     } else {
         /* Default to using as is. This should leave for example QDBusError
          * types in a form that does not look like a string to qml code. */
         res = val;
-        qCWarning(patchmanagerPlugin) << Q_FUNC_INFO << "Unhandled QVariant userType:" << type;
+        qCWarning(patchmanagerPluginLog) << Q_FUNC_INFO << "Unhandled QVariant userType:" << type;
     }
 
     return res;
@@ -1011,7 +1011,7 @@ PatchManagerTranslator *PatchManagerTranslator::GetInstance(QObject *parent)
 */
 bool PatchManagerTranslator::installTranslator(const QString &patch)
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << patch << QLocale::system();
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << patch << QLocale::system();
 
     if (!m_translators.contains(patch)) {
         QTranslator * translator = new QTranslator(this);
@@ -1027,10 +1027,10 @@ bool PatchManagerTranslator::installTranslator(const QString &patch)
                          QStringLiteral(".qm")))
         && qGuiApp->installTranslator(translator);
         if (ok) {
-            qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << "success";
+            qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << "success";
             m_translators[patch] = translator;
         } else {
-            qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << "fail";
+            qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << "fail";
         }
         return ok;
     }
@@ -1076,7 +1076,7 @@ bool PatchManager::fileExists(const QString &filename)
 */
 bool PatchManagerTranslator::removeTranslator(const QString &patch)
 {
-    qCDebug(patchmanagerPlugin) << Q_FUNC_INFO << patch;
+    qCDebug(patchmanagerPluginLog) << Q_FUNC_INFO << patch;
 
     if (m_translators.contains(patch)) {
         QTranslator * translator = m_translators.take(patch);
