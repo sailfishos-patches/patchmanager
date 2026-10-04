@@ -1594,7 +1594,8 @@ void PatchManagerObject::restartServices()
             arguments << CATEGORY_EXE_MAP[category];
             QProcess::execute(QStringLiteral("killall"), arguments);
         }
-        if (CATEGORY_BOOSTER_MAP.contains(category)) {
+        if (CATEGORY_BOOSTER_MAP.contains(category)
+                && getSettings(QStringLiteral("restartBoosters"), false).toBool()) {
             restartService(CATEGORY_BOOSTER_MAP.value(category));
         }
     }
