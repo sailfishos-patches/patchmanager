@@ -51,8 +51,6 @@
 
 #include <systemd/sd-journal.h>
 
-#include "logging.h"
-
 #ifndef SERVER_URL
 #define SERVER_URL          "https://coderus.openrepos.net"
 #endif

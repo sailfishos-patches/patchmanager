@@ -8,6 +8,8 @@ PKGCONFIG += libsystemd
 PKGCONFIG += rpm
 PKGCONFIG += popt
 
+INCLUDEPATH += $$_PRO_FILE_PWD_/../../
+
 INCLUDEPATH += /usr/include/rpm
 QMAKE_CXXFLAGS += -Werror
 QMAKE_CFLAGS += -fPIE
@@ -31,7 +33,6 @@ HEADERS += \
     patchmanager_include.h \
     inotifywatcher.h \
     journal.h \
-    logging.h
 
 SOURCES += \
     main.cpp \

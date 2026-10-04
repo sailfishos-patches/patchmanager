@@ -6,13 +6,14 @@ QT = core qml network dbus gui
 CONFIG += qt plugin hide_symbols
 QMAKE_CXXFLAGS += -Werror
 
+INCLUDEPATH += $$_PRO_FILE_PWD_/../
+
 HEADERS += \
     patchmanager.h \
     webcatalog.h \
     webpatchesmodel.h \
     webdownloader.h \
     patchmanagermodel.h \
-    logging.h \
     PatchObject.hpp
 
 SOURCES += \

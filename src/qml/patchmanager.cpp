@@ -50,7 +50,7 @@
 #include "webcatalog.h"
 #include "patchmanager_interface.h"
 
-#include "logging.h"
+#include "common/loggingcategory.h"
 Q_LOGGING_CATEGORY(patchmanagerPlugin, "patchmanager.plugin")
 
 Q_DECL_UNUSED

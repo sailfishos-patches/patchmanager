@@ -37,7 +37,7 @@
 #include <QDBusPendingReply>
 #include <QDebug>
 
-#include "logging.h"
+#include "common/loggingcategory.h"
 Q_LOGGING_CATEGORY(patchmanagerModel, "patchmanager.model")
 
 /*! \qmltype PatchManagerModel

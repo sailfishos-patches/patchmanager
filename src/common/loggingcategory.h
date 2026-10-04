@@ -36,6 +36,14 @@
 
 #include <QLoggingCategory>
 
+// settings/qml plugin:
+Q_DECLARE_LOGGING_CATEGORY(patchmanagerPlugin)
+Q_DECLARE_LOGGING_CATEGORY(patchmanagerModel)
+Q_DECLARE_LOGGING_CATEGORY(patchmanagerPatch)
+Q_DECLARE_LOGGING_CATEGORY(patchmanagerWebPatch)
+// dialog app:
+Q_DECLARE_LOGGING_CATEGORY(patchmanagerDialog)
+// daemon:
 Q_DECLARE_LOGGING_CATEGORY(patchmanagerDaemon)
 Q_DECLARE_LOGGING_CATEGORY(patchmanagerWatcher)
 Q_DECLARE_LOGGING_CATEGORY(patchmanagerJournal)

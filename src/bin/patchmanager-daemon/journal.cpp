@@ -4,7 +4,7 @@
 #include <QDebug>
 #include <stdio.h>
 
-#include "logging.h"
+#include "common/loggingcategory.h"
 
 Q_LOGGING_CATEGORY(patchmanagerJournal, "patchmanager.journal")
 

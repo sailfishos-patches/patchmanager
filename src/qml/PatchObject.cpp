@@ -42,7 +42,7 @@
 #include <QDBusPendingReply>
 #include <QJSEngine>
 
-#include "logging.h"
+#include "common/loggingcategory.h"
 Q_LOGGING_CATEGORY(patchmanagerPatch, "patchmanager.patch")
 
 /*! \qmltype PatchObject

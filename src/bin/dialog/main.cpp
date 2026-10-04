@@ -11,7 +11,7 @@
 #include <QDBusReply>
 #include <QTimer>
 
-#include "logging.h"
+#include "common/loggingcategory.h"
 Q_LOGGING_CATEGORY(patchmanagerDialog, "patchmanager.dialog")
 
 int main(int argc, char *argv[])

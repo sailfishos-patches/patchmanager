@@ -46,7 +46,7 @@
 #include <fcntl.h>
 #include <sys/inotify.h>
 
-#include "logging.h"
+#include "common/loggingcategory.h"
 Q_LOGGING_CATEGORY(patchmanagerWatcher, "patchmanager.watcher")
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)

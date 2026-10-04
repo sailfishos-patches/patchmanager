@@ -23,8 +23,9 @@ gui.files = dialog.qml
 gui.path = /usr/share/patchmanager/data
 INSTALLS += gui
 
+INCLUDEPATH += $$_PRO_FILE_PWD_/../../
+
 HEADERS += \
-    logging.h
 
 SOURCES += \
     main.cpp
