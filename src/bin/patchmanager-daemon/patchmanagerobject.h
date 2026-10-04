@@ -68,6 +68,7 @@
 #define CATALOG_URL         SERVER_URL "/" API_PATH
 #define MEDIA_URL           SERVER_URL "/" MEDIA_PATH
 
+
 class QTimer;
 class QSettings;
 class QNetworkAccessManager;

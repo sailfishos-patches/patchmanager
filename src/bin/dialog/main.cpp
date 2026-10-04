@@ -11,13 +11,16 @@
 #include <QDBusReply>
 #include <QTimer>
 
+#include "common/loggingcategory.h"
+Q_LOGGING_CATEGORY(patchmanagerDialogLog, "patchmanager.dialog")
+
 int main(int argc, char *argv[])
 {
     qputenv("NO_PM_PRELOAD", "1");
 
     QSettings pm(QStringLiteral("/etc/patchmanager2.conf"), QSettings::IniFormat);
     if (pm.value(QStringLiteral("settings/applyOnBoot"), false).toBool()) {
-        qInfo() << "Patchmanager UI: Setting applyOnBoot is active, exiting!";
+        qCInfo(patchmanagerDialogLog) << "Patchmanager UI: Setting applyOnBoot is active, exiting!";
         return 0;
     }
 
@@ -29,10 +32,10 @@ int main(int argc, char *argv[])
                                    QStringLiteral("-"),
                                    QStringLiteral("/usr/share/translations/"),
                                    QStringLiteral(".qm"));
-    qDebug() << Q_FUNC_INFO << "Translator loaded:" << success;
+    qCDebug(patchmanagerDialogLog) << Q_FUNC_INFO << "Translator loaded:" << success;
 
     success = app->installTranslator(&translator);
-    qDebug() << Q_FUNC_INFO << "Translator installed:" << success;
+    qCDebug(patchmanagerDialogLog) << Q_FUNC_INFO << "Translator installed:" << success;
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
     QQuickView *v = view.data();
@@ -44,11 +47,11 @@ int main(int argc, char *argv[])
                                                           QStringLiteral("getLoaded"));
         QDBusReply<bool> reply = QDBusConnection::systemBus().call(msg);
         if (reply.isValid() && !reply.value()) {
-            qInfo() << "Patchmanager UI: Showing dialog window";
+            qCInfo(patchmanagerDialogLog) << "Patchmanager UI: Showing dialog window";
             v->setSource(QUrl::fromLocalFile(QStringLiteral("/usr/share/patchmanager/data/dialog.qml")));
             v->showFullScreen();
         } else {
-            qInfo() << "Patchmanager UI: Exiting!";
+            qCInfo(patchmanagerDialogLog) << "Patchmanager UI: Exiting!";
             qGuiApp->quit();
         }
     });
