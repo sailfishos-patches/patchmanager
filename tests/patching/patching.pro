@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
 SUBDIRS = app \
     add-a-file \
+    add-a-file-git-style \
     patch-too-new \
     patch-too-old \
     patch-a-bit-newer \
