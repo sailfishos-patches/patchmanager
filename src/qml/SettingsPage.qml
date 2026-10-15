@@ -235,6 +235,7 @@ Page {
                 checked: PatchManager.bitnessMangle
                 onClicked: PatchManager.bitnessMangle = !PatchManager.bitnessMangle
                 automaticCheck: false
+                visible: PatchManager.patchDevelMode
             }
 
             TextArea {
@@ -248,6 +249,7 @@ Page {
                 readOnly: true
                 text: PatchManager.mangleCandidates.join("\n")
                 enabled: fixBitSwitch.checked
+                visible: PatchManager.patchDevelMode
             }
         }
     }
