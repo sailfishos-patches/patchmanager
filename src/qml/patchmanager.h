@@ -87,6 +87,7 @@ class PatchManager: public QObject
     Q_PROPERTY(bool notifyOnSuccess READ notifyOnSuccess WRITE setNotifyOnSuccess NOTIFY notifyOnSuccessChanged)
     Q_PROPERTY(bool bitnessMangle READ bitnessMangle WRITE setBitnessMangle NOTIFY bitnessMangleChanged)
     Q_PROPERTY(QStringList mangleCandidates READ mangleCandidates NOTIFY mangleCandidatesChanged)
+    Q_PROPERTY(bool restartBoosters READ restartBoosters WRITE setRestartBoosters NOTIFY restartBoostersChanged)
     Q_PROPERTY(PatchManagerModel *installedModel READ installedModel CONSTANT)
     Q_PROPERTY(QVariantMap updates READ getUpdates NOTIFY updatesChanged)
     Q_PROPERTY(QStringList updatesNames READ getUpdatesNames NOTIFY updatesChanged)
@@ -113,6 +114,8 @@ public:
     void setNotifyOnSuccess(bool notifyOnSuccess);
     bool bitnessMangle() const;
     void setBitnessMangle(bool bitnessMangle);
+    bool restartBoosters() const;
+    void setRestartBoosters(bool restart);
     QStringList mangleCandidates() const;
     PatchManagerModel *installedModel();
     QString trCategory(const QString &category) const;
@@ -195,6 +198,7 @@ signals:
     void notifyOnSuccessChanged(bool notifyOnSuccess);
     void bitnessMangleChanged(bool bitnessMangle);
     void mangleCandidatesChanged(const QStringList &mangleCandidates);
+    void restartBoostersChanged(bool restartBoosters);
     void updatesChanged();
     void toggleServicesChanged(bool toggleServices);
     void failureChanged(bool failed);
