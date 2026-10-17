@@ -136,7 +136,7 @@ public slots:
     void lipstickChanged(const QString &state);
 
     QString getPatchmanagerVersion() const;
-    QString getOsVersion() const;
+    QString osVersion() const;
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
@@ -224,8 +224,6 @@ private:
     void setWorkingPatches(const QSet<QString> &patches);
     void backupWorkingPatchList();
 
-    void getVersion();
-
     void lateInitialize();
     void refreshPatchList();
     void applyAllPatches();
@@ -246,7 +244,7 @@ private:
 
     QVariantMap m_updates;
 
-    QString m_osRelease;
+    const QString m_osVersion;
 
     QStringList m_mangleCandidates;
 

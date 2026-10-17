@@ -264,9 +264,9 @@ bool PatchManagerObject::readPatchData(const QDir &root, const QString &patchPat
         json[COMPATIBLE_KEY] = QStringList();
         json[ISCOMPATIBLE_KEY] = true;
     } else {
-        json[ISCOMPATIBLE_KEY] = json[COMPATIBLE_KEY].toStringList().contains(m_osRelease);
+        json[ISCOMPATIBLE_KEY] = json[COMPATIBLE_KEY].toStringList().contains(m_osVersion);
         // prepare indicator for relaxed checking:
-        const auto osReleaseRelaxed = QVersionNumber::fromString(m_osRelease);
+        const auto osReleaseRelaxed = QVersionNumber::fromString(m_osVersion);
         json[MAYBECOMPATIBLE_KEY] = false;
         for ( const QString& candidate : json[COMPATIBLE_KEY].toStringList()) {
             const auto candver = QVersionNumber::fromString(candidate);
@@ -422,20 +422,6 @@ QStringList PatchManagerObject::getMangleCandidates()
     return m_mangleCandidates;
 }
 
-/*!
-    Reads operating system (\c{VERSION_ID}) version from \c /etc/os-release and sets \c m_osRelease to its value.
-    Calls lateInitialize() afterwards.
-
-    \sa lateInitialize()
-*/
-void PatchManagerObject::getVersion()
-{
-    qCDebug(patchmanagerDaemonLog) << Q_FUNC_INFO;
-    m_osRelease = QSettings("/etc/os-release", QSettings::IniFormat).value("VERSION_ID").toString();
-    qCDebug(patchmanagerDaemonLog) << "Installed SailfishOS release is" << m_osRelease;
-    lateInitialize();
-}
-
 void PatchManagerObject::lateInitialize()
 {
     qCDebug(patchmanagerDaemonLog) << Q_FUNC_INFO;
@@ -533,6 +519,7 @@ QList<QVariantMap> PatchManagerObject::listPatchesFromDir(const QString &dir, QS
 
 PatchManagerObject::PatchManagerObject(QObject *parent)
     : QObject(parent)
+    , m_osVersion(QSettings("/etc/os-release", QSettings::IniFormat).value("VERSION_ID").toString())
     , m_sbus(s_sessionBusConnection)
 {
 }
@@ -815,6 +802,8 @@ void PatchManagerObject::initialize()
     success = qApp->installTranslator(translator);
     qCDebug(patchmanagerDaemonLog) << Q_FUNC_INFO << "Translator installed" << success;
 
+    qCDebug(patchmanagerDaemonLog) << "Installed SailfishOS release is" << m_osVersion;
+
     m_nam = new QNetworkAccessManager(this);
     m_settings = new QSettings(s_configLocation, QSettings::IniFormat, this);
 
@@ -939,7 +928,7 @@ void PatchManagerObject::initialize()
         rpmConfigRead = true;
     }
 
-    getVersion();
+    lateInitialize();
 }
 
 /*!  Returns a pretty name (the \c display_name field) from the metadata of \a patch.  */
@@ -1744,9 +1733,9 @@ QString PatchManagerObject::getPatchmanagerVersion() const
 }
 
 /*!  Returns the internal value for operating system version.  */
-QString PatchManagerObject::getOsVersion() const
+QString PatchManagerObject::osVersion() const
 {
-    return m_osRelease;
+    return m_osVersion;
 }
 
 //void PatchManagerObject::checkPatches()
@@ -2182,7 +2171,7 @@ bool PatchManagerObject::doPatch(const QString &patchName, bool apply, QString *
     arguments.append(patchName);
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    env.insert("OS_VERSION", m_osRelease);
+    env.insert("OS_VERSION", m_osVersion);
     env.insert("PM_VERSION", BUILD_VERSION);
     if (false == getSettings(QStringLiteral("bitnessMangle"), false).toBool()) {
         qCDebug(patchmanagerDaemonLog) << Q_FUNC_INFO << "DISABLE_MANGLING=true";
@@ -2742,7 +2731,7 @@ void PatchManagerObject::requestCheckForUpdates()
 
     QUrl url(QStringLiteral(CATALOG_URL "/" PROJECTS_PATH));
     QUrlQuery query;
-    query.addQueryItem("version", m_osRelease);
+    query.addQueryItem("version", m_osVersion);
     url.setQuery(query);
     QNetworkRequest request(url);
     QNetworkReply *reply = m_nam->get(request);
@@ -2818,7 +2807,7 @@ void PatchManagerObject::requestCheckForUpdates()
                 for (const QVariant &fileVar : files) {
                     const QVariantMap file = fileVar.toMap();
                     const QStringList compatible = file.value("compatible").toStringList();
-                    if (!compatible.contains(m_osRelease)) {
+                    if (!compatible.contains(m_osVersion)) {
                         continue;
                     }
                     const QString version = file.value("version").toString();
