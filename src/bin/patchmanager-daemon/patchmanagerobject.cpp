@@ -154,6 +154,12 @@ static const QString SILICA_CODE      = QStringLiteral("silica");
 static const QString SETTINGS_CODE    = QStringLiteral("settings");
 static const QString KEYBOARD_CODE    = QStringLiteral("keyboard");
 
+static const QString JOLLA_SETTINGS_UI_SERVICE    = QStringLiteral("com.jolla.settings");
+static const QString JOLLA_SETTINGS_UI_PATH       = QStringLiteral("/com/jolla/settings/ui");
+static const QString JOLLA_SETTINGS_UI_IFACE      = QStringLiteral("com.jolla.settings.ui");
+static const QString JOLLA_SETTINGS_UI_METHOD     = QStringLiteral("showPage");
+static const QString JOLLA_SETTINGS_UI_PMPAGENAME = QStringLiteral("system_settings/look_and_feel/patchmanager");
+
 /*!
   \class PatchManagerObject
   \inmodule PatchManagerDaemon
@@ -331,11 +337,9 @@ void PatchManagerObject::notify(const QString &patch, NotifyAction action)
         remoteActions << Notification::remoteAction(
             QStringLiteral("default"),
             QStringLiteral("patchmanager"),
-            QStringLiteral("com.jolla.settings"),
-            QStringLiteral("/com/jolla/settings/ui"),
-            QStringLiteral("com.jolla.settings.ui"),
-            QStringLiteral("showPage"),
-            { QStringLiteral("system_settings/look_and_feel/patchmanager") }
+            JOLLA_SETTINGS_UI_SERVICE, JOLLA_SETTINGS_UI_PATH, JOLLA_SETTINGS_UI_IFACE,
+            JOLLA_SETTINGS_UI_METHOD,
+            { JOLLA_SETTINGS_UI_PMPAGENAME }
         );
         break;
     default:
