@@ -218,7 +218,7 @@ QString getLang()
     return lang;
 }
 
-bool PatchManagerObject::makePatch(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available)
+bool PatchManagerObject::readPatchData(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available)
 {
     QDir patchDir(root);
     if (!patchDir.cd(patchPath)) {
@@ -517,7 +517,7 @@ QList<QVariantMap> PatchManagerObject::listPatchesFromDir(const QString &dir, QS
             continue;
         }
         QVariantMap patch;
-        bool ok = makePatch(root, patchPath, patch, existing);
+        bool ok = readPatchData(root, patchPath, patch, existing);
         if (!ok) {
             continue;
         }

@@ -214,7 +214,7 @@ private:
     void sendMessageError(const QDBusMessage &message, const QString &errorString);
 
     QList<QVariantMap> listPatchesFromDir(const QString &dir, QSet<QString> &existingPatches, bool existing = true);
-    bool makePatch(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available);
+    bool readPatchData(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available);
     void notify(const QString &patch, PatchManagerObject::NotifyAction action);
 
     QSet<QString> getAppliedPatches() const;
