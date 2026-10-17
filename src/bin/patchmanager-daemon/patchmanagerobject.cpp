@@ -1897,7 +1897,7 @@ void PatchManagerObject::onOriginalFileChanged(const QString &path)
     }
 
     QStringList patches = m_fileToPatch[path];
-    for (const QString &patch : QStringList(patches)) {
+    for (const QString &patch : patches) {
         if (!isPatchApplied(patch)) {
             patches.removeAll(patch);
         }
