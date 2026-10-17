@@ -243,7 +243,6 @@ private:
 
     QMap<QString, QStringList> m_patchFiles;
     QMap<QString, QStringList> m_fileToPatch;
-    QStringList m_patchedFiles;
 
     QVariantMap m_updates;
 
