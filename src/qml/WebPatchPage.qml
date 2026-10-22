@@ -402,7 +402,7 @@ Page {
                     property bool isInstalled: !!container.versions && container.versions[modelData.project] == modelData.version
                     property bool isCompatible: (modelData.compatible.indexOf(PatchManager.osVersion) >= 0)
                     property bool forceCompatible: PatchManager.sfosVersionCheck == VersionCheck.NoCheck
-                                                || (PatchManager.sfosVersionCheck == VersionCheck.Relaxed && maybeCompatible)
+                                                || ((PatchManager.sfosVersionCheck == VersionCheck.Relaxed) && maybeCompatible)
                     property bool maybeCompatible: false
                     property bool isInstallable: isCompatible || forceCompatible
                     property bool isReinstallable: isInstalled && isInstallable
