@@ -437,6 +437,7 @@ Page {
                         PatchManager.watchCall(PatchManager.installPatch(modelData.project, modelData.version, modelData.document),
                                                function(ok) {
                                                    if (!ok) {
+                                                       errorMessageComponent.createObject(fileDelegate, {text: qsTranslate("", "The installation failed!")})
                                                        console.warn("Installation failed!")
                                                        return
                                                    }
