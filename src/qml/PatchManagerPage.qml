@@ -408,9 +408,15 @@ Page {
             function doPatch() {
                 view.model.saveLayout()
                 if (!patchObject.details.patched) {
-                    if (patchObject.details.isCompatible || (PatchManager.sfosVersionCheck == VersionCheck.NoCheck)) {
-                        patchObject.apply()
+                    var go = patchObject.details.isCompatible
+                    // force true if user configured it to:
+                    if (PatchManager.sfosVersionCheck == VersionCheck.NoCheck) {
+                        go = true
                     } else if (patchObject.details.maybeCompatible && (PatchManager.sfosVersionCheck == VersionCheck.Relaxed)) {
+                        go = true
+                    }
+
+                    if (go) {
                         patchObject.apply()
                     } else {
                         errorMessageComponent.createObject(background, {text: qsTranslate("", "This Patch is incompatible with the installed SailfishOS version.")})
