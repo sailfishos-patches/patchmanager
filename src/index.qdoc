@@ -253,9 +253,24 @@
 
   \section1 Logging and Debugging
 
-  About the contents of the configuration files, see \l {Patchmanager Configuration Files}.
+  Debug logging of the daemon can be configured using environment files
+  located in \c /var/lib/environment/patchmanager/. Setting the \c
+  QT_LOGGING_RULES variable to e.g. \c{"*.debug=true"} will enable debugging messages.
+
+  More fine-grained control is possible with logging categories, e.g.
+  \c{"*.debug=false;patchmanager.daemon.debug=true"}
+  or \c{"*.debug=false;patchmanager.daemon.debug=false;patchmanager.daemon.warn=true"}
+
+  Currently, these categories are possible:
+  \list
+  \li \c{patchmanager.dialog}
+  \li \c{patchmanager.daemon}
+  \li \c{patchmanager.plugin}
+  \endlist
 
   After changing its configuration, Patchmanager's system service must be restarted.
+
+  About the contents of the configuration files, see \l {Patchmanager Configuration Files}.
 
 */
   /****** Services Documentation page *******/

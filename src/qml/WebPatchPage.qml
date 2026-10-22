@@ -401,9 +401,23 @@ Page {
                     contentHeight: filesContent.height
                     property bool isInstalled: !!container.versions && container.versions[modelData.project] == modelData.version
                     property bool isCompatible: (modelData.compatible.indexOf(PatchManager.osVersion) >= 0)
-                    property bool forceCompatible: PatchManager.sfosVersionCheck !== VersionCheck.Strict
+                    property bool forceCompatible: PatchManager.sfosVersionCheck == VersionCheck.NoCheck
+                                                || (PatchManager.sfosVersionCheck == VersionCheck.Relaxed && maybeCompatible)
+                    property bool maybeCompatible: false
                     property bool isInstallable: isCompatible || forceCompatible
                     property bool isReinstallable: isInstalled && isInstallable
+                    Component.onCompleted: {
+                        if(PatchManager.sfosVersionCheck != VersionCheck.Relaxed) return
+                        const shortOsVer = PatchManager.osVersion.split(".").slice(0,-1).join(".")
+                        for (var i = 0; i < modelData.compatible.length; ++i) {
+                            const cand = modelData.compatible[i]
+                            const shortCand = cand.split(".").slice(0,-1).join(".")
+                            if (shortCand == shortOsVer) {
+                                    fileDelegate.maybeCompatible = true
+                                    break
+                            }
+                        }
+                    }
 
                     onClicked: {
                         if (isReinstallable) {

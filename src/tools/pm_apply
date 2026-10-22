@@ -232,6 +232,12 @@ if [ ! -f "$PM_LOG_FILE" ]; then
   log "*** Patch-log created by pm_apply script $(date -Iseconds) ***"
 fi
 
+if [ ! -z "$PM_VERSION" ] && [ ! -z "$OS_VERSION" ]; then
+  log
+  log "Patchmanger $PM_VERSION running on OS $OS_VERSION"
+  log "=================================================="
+fi
+
 log
 log "----------------------------------"
 log "pm_apply $(date -Iseconds)"

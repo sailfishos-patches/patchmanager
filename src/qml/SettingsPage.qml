@@ -155,19 +155,39 @@ Page {
 
             SectionHeader { text: qsTranslate("", "Startup Activation") }
 
-            TextSwitch {
-                text: qsTranslate("", "Activate Patches on first login")
-                description: qsTranslate("", "Automatically activate all enabled Patches after Home Screen has been started for the first time.")
-                checked: !PatchManager.applyOnBoot
-                onClicked: PatchManager.applyOnBoot = !PatchManager.applyOnBoot
-                automaticCheck: false
-            }
-
-            Slider {
+            ComboBox { id: onBootBox
                 anchors {
                     leftMargin: Theme.paddingLarge*2 // align to TextSwitch labels
                     right: parent.right
                     left: parent.left
+                }
+                label: qsTranslate("", "Activate Patches")
+                description: PatchManager.applyOnBoot
+                    ? qsTranslate("", "Automatically activate all enabled Patches when SailfishOS starts.")
+                    : qsTranslate("", "Automatically activate all enabled Patches after Home Screen has been started for the first time.")
+                currentIndex: -1
+                menu: ContextMenu {
+                    MenuItem {
+                        text: qsTranslate("", "on first login")
+                    }
+                    MenuItem {
+                        text: qsTranslate("", "when booting")
+                    }
+                }
+                Component.onCompleted: {
+                    currentIndex = PatchManager.applyOnBoot ? 1 : 0
+                }
+                onCurrentIndexChanged: {
+                    if (currentIndex != -1) { // guard against initialization
+                        PatchManager.applyOnBoot = (currentIndex == 1)
+                    }
+                }
+            }
+
+            Slider {
+                anchors {
+                    right: onBootBox.right
+                    left: onBootBox.left
                 }
                 enabled: !PatchManager.applyOnBoot
                 opacity: enabled ? 1.0 : Theme.opacityLow
@@ -179,14 +199,6 @@ Page {
                 stepSize: 5
                 value: dialogConf.value
                 onSliderValueChanged: dialogConf.value = sliderValue
-            }
-
-            TextSwitch {
-                text: qsTranslate("", "Activate Patches when booting")
-                description: qsTranslate("", "Automatically activate all enabled Patches when SailfishOS starts.")
-                checked: PatchManager.applyOnBoot
-                onClicked: PatchManager.applyOnBoot = !PatchManager.applyOnBoot
-                automaticCheck: false
             }
 
             SectionHeader { text: qsTranslate("", "Advanced") }
@@ -205,7 +217,7 @@ Page {
                         // FIXME: Use the PatchManager::VersionCheck enum, however, how to map enum to text?
                         MenuItem { text: qsTranslate("", "Strict") }
                         MenuItem { text: qsTranslate("", "No check") }
-                        //MenuItem { text: qsTranslate("", "Relaxed") } // TODO, see `src/qml/patchmanager.h`, line 68
+                        MenuItem { text: qsTranslate("", "Relaxed") }
                 }
             }
 
@@ -235,6 +247,7 @@ Page {
                 checked: PatchManager.bitnessMangle
                 onClicked: PatchManager.bitnessMangle = !PatchManager.bitnessMangle
                 automaticCheck: false
+                visible: PatchManager.patchDevelMode
             }
 
             TextArea {
@@ -248,6 +261,7 @@ Page {
                 readOnly: true
                 text: PatchManager.mangleCandidates.join("\n")
                 enabled: fixBitSwitch.checked
+                visible: PatchManager.patchDevelMode
             }
         }
     }

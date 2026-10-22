@@ -310,7 +310,7 @@ Page {
             /* signals / handlers */
 
             Component.onCompleted: {
-                console.debug("Constructing delegate for:", patchObject.details.patch)
+                //console.debug("Constructing delegate for:", patchObject.details.patch)
                 const qmlFile = "/usr/share/patchmanager/patches/%1/main.qml".arg(patchObject.details.patch)
                 if (PatchManager.fileExists(qmlFile)) {
                     patchSettingsFile = qmlFile
@@ -340,14 +340,14 @@ Page {
                 var deltaX = pressPosition.x - mouse.x
                 if (drag.target) {
                     if (isAboveTop) {
-                        sctollTopTimer.start()
-                        sctollBottomTimer.stop()
+                        scrollToTopTimer.start()
+                        scrollToBottomTimer.stop()
                     } else if (isBelowBottom) {
-                        sctollBottomTimer.start()
-                        sctollTopTimer.stop()
+                        scrollToBottomTimer.start()
+                        scrollToTopTimer.stop()
                     } else {
-                        sctollBottomTimer.stop()
-                        sctollTopTimer.stop()
+                        scrollToBottomTimer.stop()
+                        scrollToTopTimer.stop()
                     }
                 } else {
                     if (deltaX > dragThreshold) {
@@ -388,8 +388,8 @@ Page {
                 } else {
                     view.model.saveLayout()
                 }
-                sctollTopTimer.stop()
-                sctollBottomTimer.stop()
+                scrollToTopTimer.stop()
+                scrollToBottomTimer.stop()
                 drag.target = null
                 var ctod = content.mapToItem(background, content.x, content.y)
                 ctod.x = ctod.x - content.x
@@ -408,7 +408,9 @@ Page {
             function doPatch() {
                 view.model.saveLayout()
                 if (!patchObject.details.patched) {
-                    if ((PatchManager.sfosVersionCheck !== VersionCheck.Strict) || patchObject.details.isCompatible) {
+                    if (patchObject.details.isCompatible || (PatchManager.sfosVersionCheck == VersionCheck.NoCheck)) {
+                        patchObject.apply()
+                    } else if (patchObject.details.maybeCompatible && (PatchManager.sfosVersionCheck == VersionCheck.Relaxed)) {
                         patchObject.apply()
                     } else {
                         errorMessageComponent.createObject(background, {text: qsTranslate("", "This Patch is incompatible with the installed SailfishOS version.")})
@@ -441,6 +443,7 @@ Page {
 
             /* helper components */
 
+            /*
             Connections {
                 target: patchObject.details
                 onPatchedChanged: {
@@ -454,9 +457,10 @@ Page {
                     console.debug("onBusyChanged:", patchObject.details.patch, patchObject.busy)
                 }
             }
+            */
 
             Timer {
-                id: sctollTopTimer
+                id: scrollToTopTimer
                 repeat: true
                 interval: 1
                 onTriggered: {
@@ -471,7 +475,7 @@ Page {
             }
 
             Timer {
-                id: sctollBottomTimer
+                id: scrollToBottomTimer
                 repeat: true
                 interval: 1
                 onTriggered: {
@@ -599,8 +603,14 @@ Page {
                     Label {
                         width: parent.width
                         text: name
-                        color: patchObject.details.isCompatible ? background.down ? Theme.highlightColor : ( patchObject.details.patched ? Theme.primaryColor : Theme.secondaryColor )
-                                                                : background.down ? Theme.highlightBackgroundFromColor(Theme.errorColor, Theme.colorScheme) : ( patchObject.details.patched ? Theme.errorColor : Theme.secondaryHighlightFromColor(Theme.errorColor, Theme.colorScheme) )
+                        color: { if (background.down)  { return Theme.highlightColor
+                               } else if (patchObject.details.isCompatible) {
+                                    return patchObject.details.patched ? Theme.primaryColor : Theme.secondaryColor
+                               } else if (patchObject.details.maybeCompatible && (PatchManager.sfosVersionCheck == VersionCheck.Relaxed) ) {
+                                    return patchObject.details.patched ? Theme.highlightFromColor("orange", Theme.colorScheme) : Theme.highlightBackgroundFromColor("orange", Theme.colorScheme)
+                               }
+                               return patchObject.details.patched ? Theme.errorColor : Theme.secondaryHighlightFromColor(Theme.errorColor, Theme.colorScheme)
+                        }
                         truncationMode: TruncationMode.Fade
                     }
                     Row {

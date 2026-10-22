@@ -18,3 +18,5 @@ src/icons/z*
 src/icons/ss
 *.list
 doc/generated
+
+translations/*.qm

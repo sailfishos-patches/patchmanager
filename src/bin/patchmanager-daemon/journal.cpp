@@ -4,6 +4,10 @@
 #include <QDebug>
 #include <stdio.h>
 
+#include "common/loggingcategory.h"
+
+Q_LOGGING_CATEGORY(patchmanagerJournalLog, "patchmanager.journal")
+
 /*! \class Journal
     \inmodule PatchManagerDaemon
     \brief Interface to the systemd Journal.
@@ -26,7 +30,7 @@ Journal::Journal(QObject *parent)
 
 void Journal::wait()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerJournalLog) << Q_FUNC_INFO;
 
     if (m_jw) {
         QMetaObject::invokeMethod(m_jw, "start", Qt::QueuedConnection);
@@ -56,7 +60,7 @@ void Journal::wait()
 /*! Attaches itself to the Journal, filtering for \e Lipstick and \e jolla-settings executables. */
 void Journal::init()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerJournalLog) << Q_FUNC_INFO;
 
     if (sd_journal_open(&m_sdj, SD_JOURNAL_LOCAL_ONLY) < 0) {
         return;

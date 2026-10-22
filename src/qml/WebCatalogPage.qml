@@ -102,23 +102,9 @@ Page {
                     console.warn(error)
                 }
             )
-//            patchmanagerDbusInterface.listVersions()
             PatchManager.checkForUpdates()
         }
     }
-
-//    DBusInterface {
-//        id: patchmanagerDbusInterface
-//        service: "org.SfietKonstantin.patchmanager"
-//        path: "/org/SfietKonstantin/patchmanager"
-//        iface: "org.SfietKonstantin.patchmanager"
-//        bus: DBus.SystemBus
-//        function listVersions() {
-//            typedCall("listVersions", [], function (patches) {
-//                container.versions = patches
-//            })
-//        }
-//    }
 
     ConfigurationGroup {
         id: uisettings
