@@ -254,6 +254,11 @@ Page {
 
         header: PageHeader {
             title: qsTranslate("", "Installed Patches")
+            description: {
+                if (PatchManager.sfosVersionCheck == VersionCheck.NoCheck) return qsTranslate("", "Check disabled")
+                if (PatchManager.sfosVersionCheck == VersionCheck.Relaxed) return qsTranslate("", "Check relaxed")
+                return ""
+            }
         }
         model: PatchManager.installedModel
 
