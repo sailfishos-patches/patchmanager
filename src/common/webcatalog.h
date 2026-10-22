@@ -33,8 +33,11 @@
 #ifndef WEBCATALOG_H
 #define WEBCATALOG_H
 
+#define SERVER_URL_DEFAULT  "https://coderus.openrepos.net"
 #ifndef SERVER_URL
-#define SERVER_URL          "https://coderus.openrepos.net"
+#define SERVER_URL SERVER_URL_DEFAULT
+#else
+#warning Web Catalog URL overridden: SERVER_URL
 #endif
 
 #ifndef API_PATH
