@@ -31,13 +31,13 @@
  */
 
 #include "webpatchesmodel.h"
-#include "webcatalog.h"
 #include "patchmanager.h"
 #include <QDBusPendingReply>
 #include <QDebug>
 
 #include <algorithm>
 
+#include "common/webcatalog.h"
 #include "common/loggingcategory.h"
 Q_LOGGING_CATEGORY(patchmanagerWebPatchLog, "patchmanager.webpatch")
 

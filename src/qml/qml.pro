@@ -7,6 +7,7 @@ CONFIG += qt plugin hide_symbols
 QMAKE_CXXFLAGS += -Werror
 
 INCLUDEPATH += $$_PRO_FILE_PWD_/../
+               $$_PRO_FILE_PWD_/../common
 
 HEADERS += \
     patchmanager.h \
