@@ -136,7 +136,7 @@ public slots:
     void lipstickChanged(const QString &state);
 
     QString getPatchmanagerVersion() const;
-    QString getOsVersion() const;
+    QString osVersion() const;
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
@@ -214,7 +214,7 @@ private:
     void sendMessageError(const QDBusMessage &message, const QString &errorString);
 
     QList<QVariantMap> listPatchesFromDir(const QString &dir, QSet<QString> &existingPatches, bool existing = true);
-    bool makePatch(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available);
+    bool readPatchData(const QDir &root, const QString &patchPath, QVariantMap &patch, bool available);
     void notify(const QString &patch, PatchManagerObject::NotifyAction action);
 
     QSet<QString> getAppliedPatches() const;
@@ -223,8 +223,6 @@ private:
     QSet<QString> getWorkingPatches() const;
     void setWorkingPatches(const QSet<QString> &patches);
     void backupWorkingPatchList();
-
-    void getVersion();
 
     void lateInitialize();
     void refreshPatchList();
@@ -243,11 +241,10 @@ private:
 
     QMap<QString, QStringList> m_patchFiles;
     QMap<QString, QStringList> m_fileToPatch;
-    QStringList m_patchedFiles;
 
     QVariantMap m_updates;
 
-    QString m_osRelease;
+    const QString m_osVersion;
 
     QStringList m_mangleCandidates;
 
