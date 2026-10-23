@@ -14,7 +14,7 @@
     If the \c patchmanager binary is called from command line, it
     can also serve as a simple CLI to a running daemon.
     See the output of \c{patchmanager --help} and
-    PatchManagerObject::process() for more information.
+    PatchManagerObject::processArgs() for more information.
 
     \section2 Documentation:
     \generatelist {classesbymodule PatchManagerDaemon}

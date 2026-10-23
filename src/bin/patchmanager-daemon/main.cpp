@@ -100,6 +100,6 @@ int main(int argc, char **argv)
 
     PatchManagerObject patchManager;
     app.installEventFilter(&patchManager);
-    QTimer::singleShot(0, &patchManager, &PatchManagerObject::process);
+    QTimer::singleShot(0, &patchManager, &PatchManagerObject::processArgs);
     return app.exec();
 }

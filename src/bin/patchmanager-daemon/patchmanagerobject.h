@@ -91,7 +91,7 @@ public:
     Q_ENUM(NotifyAction)
 
 public slots:
-    void process();
+    void processArgs();
 
     QVariantList listPatches();
     QVariantMap listVersions();
