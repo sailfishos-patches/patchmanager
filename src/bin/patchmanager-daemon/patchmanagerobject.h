@@ -42,6 +42,7 @@
 #include <QtCore/QVariantList>
 #include <QtCore/QVector>
 #include <QtCore/QDir>
+#include <QtCore/QCommandLineParser>
 
 #include <QDBusConnection>
 #include <QDBusContext>
@@ -91,7 +92,7 @@ public:
     Q_ENUM(NotifyAction)
 
 public slots:
-    void processArgs();
+    void processArgs(QCommandLineParser& parser);
 
     QVariantList listPatches();
     QVariantMap listVersions();

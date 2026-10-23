@@ -43,6 +43,8 @@
 #include <QLocale>
 
 #include <QtCore/QCoreApplication>
+#include <QtCore/QCommandLineParser>
+
 #include "patchmanagerobject.h"
 #include <iostream>
 #include <QTimer>
@@ -52,54 +54,46 @@
 #define BUILD_VERSION "99.99.99"
 #endif
 
-static void version()
-{
-    std::cout << "Patchmanager " << BUILD_VERSION << std::endl;
-}
-
-static void help()
-{
-    version();
-    std::cout << "Usage:" << std::endl;
-    std::cout << "  patchmanager [--help]          : Print this help text" << std::endl;
-    std::cout << "  patchmanager -a <Patch>        : Enable and activate a Patch" << std::endl;
-    std::cout << "  patchmanager -u <Patch>        : Deactivate and disable (unapply) a Patch" << std::endl;
-    std::cout << "  patchmanager --unapply-all     : Deactivate and disable (unapply) all Patches" << std::endl;
-    std::cout << "  patchmanager --backup-working  : Save list of enabled Patches as \"working\"" << std::endl;
-    std::cout << "  patchmanager --restore-working : Enable backup list of \"working\" Patches" << std::endl;
-    std::cout << "  patchmanager --daemon          : Start Patchmanager as daemon" << std::endl;
-    std::cout << "  patchmanager --version         : Print the build version and exit." << std::endl;
-    std::cout << std::endl;
-    std::cout << "Patchmanager must be run as root." << std::endl;
-}
-
 int main(int argc, char **argv)
 {
-    // further argument processing in patchmanagerobject.cpp
-    switch (argc) {
-      case 1: // we want arguments.
-        help(); exit(2); break;
-      case 2:
-        if (!strcmp(argv[1], "--help")) {
-            help(); exit(0);
-        } else if (!strcmp(argv[1], "--version")) {
-            version(); exit(0);
-        }
-        break;
-    }
-
-    if (getuid() != 0) {
-        fprintf(stderr, "%s: Not running as root, exiting.\n\n", argv[0]);
-        help();
-        exit(2);
-    }
-
     qputenv("NO_PM_PRELOAD", "1");
     QCoreApplication app(argc, argv);
     app.setApplicationVersion(QStringLiteral(BUILD_VERSION));
 
+    QCommandLineParser parser;
+    parser.addHelpOption();
+    parser.addOptions({
+        {{ "a", "apply"},     QStringLiteral("Enable and activate <Patch>"),
+                              QStringLiteral("Patch")},
+        {{ "u", "unapply"},   QStringLiteral("Deactivate and disable <Patch>"),
+                              QStringLiteral("Patch")},
+    });
+    parser.addVersionOption();
+    parser.addOptions({
+        { QStringLiteral("unapply-all"),      QStringLiteral("Deactivate and disable all Patches")},
+        { QStringLiteral("backup-working"),   QStringLiteral("Save list of enabled Patches as \"working\"")},
+        { QStringLiteral("restore-working"),  QStringLiteral("Enable backup list of \"working\" Patches")},
+#ifdef PM_ENABLE_LEGACY
+        { QStringLiteral("reset-system"),     QStringLiteral("Clean the system of all patches, including uninstallation of RPM files. Using this option is unsupported.")},
+#endif
+        { QStringLiteral("daemon"),           QStringLiteral("Start Patchmanager as daemon")},
+    });
+    parser.setApplicationDescription("If not run with the --daemon option, we will act as a client to an existing Patchmansger daemon.\n\nPatchmanager must be run as root.");
+
+    if (!parser.parse(QCoreApplication::arguments())) {
+        fprintf(stderr, "%s\n", parser.errorText().toLocal8Bit().constData());
+        exit(2);
+    }
+
+    if ((getuid() != 0) && !parser.isSet("version") && !parser.isSet("help") ) {
+
+        fprintf(stderr, "%s: Not running as root, exiting.\n\n", argv[0]);
+        fprintf(stderr, "%s\n", parser.helpText().toLocal8Bit().constData());
+        exit(2);
+    }
+
     PatchManagerObject patchManager;
     app.installEventFilter(&patchManager);
-    QTimer::singleShot(0, &patchManager, &PatchManagerObject::processArgs);
+    QTimer::singleShot(0, &patchManager, [&](){patchManager.processArgs(parser);});
     return app.exec();
 }
