@@ -222,7 +222,7 @@ private:
 
     QSet<QString> getWorkingPatches() const;
     void setWorkingPatches(const QSet<QString> &patches);
-    void setWorking();
+    void backupWorkingPatchList();
 
     void getVersion();
 
