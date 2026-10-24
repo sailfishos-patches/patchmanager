@@ -1227,7 +1227,7 @@ void PatchManagerObject::process()
 QString PatchManagerObject::statistics(bool verbose=false)
 {
     DBUS_GUARD(QString())
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemonLog) << Q_FUNC_INFO;
     setDelayedReply(true);
     QMetaObject::invokeMethod(this, NAME(doStatistics), Qt::QueuedConnection,
                               Q_ARG(QVariantMap, QVariantMap({{QStringLiteral("verbose"), verbose}})),
@@ -2183,7 +2183,7 @@ void PatchManagerObject::doRefreshPatchList()
 
 void PatchManagerObject::doStatistics(const QVariantMap &params, const QDBusMessage &message)
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemonLog) << Q_FUNC_INFO;
 
     bool verbose = params.value(QStringLiteral("verbose")).toBool();
 

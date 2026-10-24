@@ -46,6 +46,7 @@
  */
 
 #include "patchmanagerfilter.h"
+#include "common/loggingcategory.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QStringList>
@@ -89,7 +90,7 @@ PatchManagerFilter::PatchManagerFilter(QObject *parent, int maxCost)
 
 void PatchManagerFilter::setup()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemonLog) << Q_FUNC_INFO;
     // set up cache
     setMaxCost(HOTCACHE_COST_MAX);
 
@@ -137,7 +138,7 @@ bool PatchManagerFilter::contains(const QString &key) const
 
 QString PatchManagerFilter::stats(bool verbose) const
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(patchmanagerDaemonLog) << Q_FUNC_INFO;
     QStringList stats;
     stats << QStringLiteral("Filter Stats:")
           << QStringLiteral("===========================")
