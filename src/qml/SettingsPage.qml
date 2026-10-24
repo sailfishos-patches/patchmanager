@@ -263,6 +263,18 @@ Page {
                 enabled: fixBitSwitch.checked
                 visible: PatchManager.patchDevelMode
             }
+
+            TextSwitch {
+                id: filterSwitch
+                text: qsTranslate("", "Use advanced file existence filtering")
+                description: qsTranslate("", "Cache file existence checks.")
+                       + " " + qsTranslate("", "Depending on many factors like memory, type of device, and others, this may have a positive or detrimental effect on overall performance.")
+                       + "\n" +qsTranslate("", "If unsure, say N.")
+                checked: PatchManager.enableFSFilter
+                onClicked: PatchManager.enableFSFilter = !PatchManager.enableFSFilter
+                automaticCheck: false
+            }
+
         }
     }
 }

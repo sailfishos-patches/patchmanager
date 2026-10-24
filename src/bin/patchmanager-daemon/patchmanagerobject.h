@@ -51,6 +51,8 @@
 
 #include <systemd/sd-journal.h>
 
+#include "patchmanagerfilter.h"
+
 #ifndef SERVER_URL
 #define SERVER_URL          "https://coderus.openrepos.net"
 #endif
@@ -74,6 +76,7 @@ class QSettings;
 class QNetworkAccessManager;
 class PatchManagerAdaptor;
 class QLocalServer;
+
 class PatchManagerObject : public QObject, public QDBusContext
 {
     Q_OBJECT
@@ -95,6 +98,7 @@ public slots:
 
     QVariantList listPatches();
     QVariantMap listVersions();
+    QString statistics(bool verbose);
     bool isPatchApplied(const QString &patch);
     QVariantMap applyPatch(const QString &patch);
     QVariantMap unapplyPatch(const QString &patch);
@@ -159,6 +163,7 @@ private slots:
 
     void doRefreshPatchList();
     void doListPatches(const QDBusMessage &message);
+    void doStatistics(const QVariantMap &params, const QDBusMessage &message);
 
     bool doPatch(const QString &patchName, bool apply, QString *patchLog = nullptr);
     void doPatch(const QVariantMap &params, const QDBusMessage &message, bool apply);
@@ -270,6 +275,9 @@ private:
 
     QTimer *m_sessionBusConnector = nullptr;
     QDBusConnection m_sbus;
+
+    PatchManagerFilter *m_filter = nullptr;
+    void setupFilter();
 };
 
 #endif // PATCHMANAGEROBJECT_H
