@@ -316,6 +316,18 @@ void PatchManager::setBitnessMangle(bool bitnessMangle)
     }
 }
 
+bool PatchManager::restartBoosters() const
+{
+    return getSettingsSync(QStringLiteral("restartBoosters"), false).toBool();
+}
+
+void PatchManager::setRestartBoosters(bool restartBoosters)
+{
+    if (putSettingsSync(QStringLiteral("restartBoosters"), restartBoosters)) {
+        emit restartBoostersChanged(restartBoosters);
+    }
+}
+
 PatchManagerModel *PatchManager::installedModel()
 {
     return m_installedModel;
