@@ -80,20 +80,36 @@ int main(int argc, char **argv)
     });
     parser.setApplicationDescription("If not run with the --daemon option, we will act as a client to an existing Patchmansger daemon.\n\nPatchmanager must be run as root.");
 
+    bool launch = true;
     if (!parser.parse(QCoreApplication::arguments())) {
+        launch = false;
         fprintf(stderr, "%s\n", parser.errorText().toLocal8Bit().constData());
         exit(2);
     }
 
-    if ((getuid() != 0) && !parser.isSet("version") && !parser.isSet("help") ) {
+    if (parser.isSet("version") ) {
+        launch = false;
+        parser.showVersion();
+        exit(0);
+    }
 
+    if (parser.isSet("help") ) {
+        launch = false;
+        fprintf(stderr, "%s\n", parser.helpText().toLocal8Bit().constData());
+        exit(0);
+    }
+
+    if (getuid() != 0) {
+        launch = false;
         fprintf(stderr, "%s: Not running as root, exiting.\n\n", argv[0]);
         fprintf(stderr, "%s\n", parser.helpText().toLocal8Bit().constData());
         exit(2);
     }
 
-    PatchManagerObject patchManager;
-    app.installEventFilter(&patchManager);
-    QTimer::singleShot(0, &patchManager, [&](){patchManager.processArgs(parser);});
+    if (launch) {
+        PatchManagerObject patchManager;
+        app.installEventFilter(&patchManager);
+        QTimer::singleShot(0, &patchManager, [&](){patchManager.processArgs(parser);});
+    }
     return app.exec();
 }
