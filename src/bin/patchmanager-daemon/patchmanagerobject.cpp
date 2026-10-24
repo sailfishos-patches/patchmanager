@@ -44,6 +44,7 @@
 #include <algorithm>
 
 #include <QtCore/QCoreApplication>
+#include <QtCore/QCommandLineParser>
 #include <QtCore/QDateTime>
 #include <QtCore/QDebug>
 #include <QtCore/QEvent>
@@ -527,14 +528,17 @@ QList<QVariantMap> PatchManagerObject::listPatchesFromDir(const QString &dir, QS
     return patches;
 }
 
-PatchManagerObject::PatchManagerObject(QObject *parent)
+PatchManagerObject::PatchManagerObject(QCommandLineParser* parser, QObject *parent)
     : QObject(parent)
     , m_sbus(s_sessionBusConnection)
 {
+    qCDebug(patchmanagerDaemonLog) << Q_FUNC_INFO;
+    m_parser = parser;
 }
 
 PatchManagerObject::~PatchManagerObject()
 {
+    qCDebug(patchmanagerDaemonLog) << Q_FUNC_INFO;
     if (m_dbusRegistered) {
         QDBusConnection connection = QDBusConnection::systemBus();
         connection.unregisterService(DBUS_SERVICE_NAME);
@@ -1156,16 +1160,20 @@ QString PatchManagerObject::getRpmName(const QString &rpm) const
     \note this is called from \c main() via \l{https://doc.qt.io/archives/qt-5.6/qtimer.html#singleShot-prop}{QTimer::singleShot}
 
 */
-void PatchManagerObject::processArgs(QCommandLineParser& parser)
+void PatchManagerObject::processArgs()
 {
-    /* argc == 1 and "--help/--version" should already be handled in main.cpp
-     * Must be "> 1", not "> 2" for "--unapply-all" and other singular arguments.
-     */
-    if (parser.isSet(QStringLiteral("daemon"))) {
+    qCDebug(patchmanagerDaemonLog) << Q_FUNC_INFO;
+    if(m_parser == nullptr) {
+        qCCritical(patchmanagerDaemonLog) << Q_FUNC_INFO << "BUG: Nothing to parse...";
+        QCoreApplication::exit(2);
+        return;
+    }
+    if (m_parser->isSet(QStringLiteral("daemon"))) {
+        qCInfo(patchmanagerDaemonLog) << Q_FUNC_INFO << "Starting as daemon";
         initialize();
         return;
 #ifdef PM_ENABLE_LEGACY
-    } else if (parser.isSet(QStringLiteral("reset-system"))) {
+    } else if (m_parser->isSet(QStringLiteral("reset-system"))) {
         // FIXME: see #204, #278
         qCWarning(patchmanagerDaemonLog) << Q_FUNC_INFO << "This is very likely broken in this version of patchmanager.";
         resetSystem();
@@ -1181,29 +1189,29 @@ void PatchManagerObject::processArgs(QCommandLineParser& parser)
     QString method;
     QVariantList data;
 
-    if (parser.isSet(QStringLiteral("apply"))) {
-        if (parser.value(QStringLiteral("apply")).isEmpty()) {
+    if (m_parser->isSet(QStringLiteral("apply"))) {
+        if (m_parser->value(QStringLiteral("apply")).isEmpty()) {
             qCritical() << "Option requires an argument."; // no category!
             QCoreApplication::exit(2);
             return;
         } else {
-            data.append(parser.value(QStringLiteral("apply")));
+            data.append(m_parser->value(QStringLiteral("apply")));
         }
         method = QStringLiteral("applyPatch");
-    } else if (parser.isSet(QStringLiteral("unapply"))) {
-        if (parser.value(QStringLiteral("unapply")).isEmpty()) {
+    } else if (m_parser->isSet(QStringLiteral("unapply"))) {
+        if (m_parser->value(QStringLiteral("unapply")).isEmpty()) {
             qCritical() << "Option requires an argument."; // no category!
             QCoreApplication::exit(2);
             return;
         } else {
-            data.append(parser.value(QStringLiteral("unapply")));
+            data.append(m_parser->value(QStringLiteral("unapply")));
         }
         method = QStringLiteral("unapplyPatch");
-    } else if (parser.isSet(QStringLiteral("unapply-all"))) {
+    } else if (m_parser->isSet(QStringLiteral("unapply-all"))) {
         method = QStringLiteral("unapplyAllPatches");
-    } else if (parser.isSet(QStringLiteral("backup-working"))) {
+    } else if (m_parser->isSet(QStringLiteral("backup-working"))) {
         method = QStringLiteral("backupWorkingPatchList");
-    } else if (parser.isSet(QStringLiteral("restore-working"))) {
+    } else if (m_parser->isSet(QStringLiteral("restore-working"))) {
         method = QStringLiteral("restorePatchList");
     } else {
         qCritical() << "Something went wrong handling the arguments."; // no category!

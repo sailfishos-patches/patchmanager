@@ -79,7 +79,7 @@ class PatchManagerObject : public QObject, public QDBusContext
 {
     Q_OBJECT
 public:
-    explicit PatchManagerObject(QObject *parent = nullptr);
+    explicit PatchManagerObject(QCommandLineParser* parser, QObject *parent = nullptr);
     virtual ~PatchManagerObject();
 
     enum NotifyAction {
@@ -92,7 +92,7 @@ public:
     Q_ENUM(NotifyAction)
 
 public slots:
-    void processArgs(QCommandLineParser& parser);
+    void processArgs();
 
     QVariantList listPatches();
     QVariantMap listVersions();
@@ -271,6 +271,7 @@ private:
 
     QTimer *m_sessionBusConnector = nullptr;
     QDBusConnection m_sbus;
+    QCommandLineParser* m_parser;
 };
 
 #endif // PATCHMANAGEROBJECT_H

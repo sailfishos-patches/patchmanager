@@ -54,22 +54,23 @@
 #define BUILD_VERSION "99.99.99"
 #endif
 
-int main(int argc, char **argv)
+enum CommandLineParseResult
 {
-    qputenv("NO_PM_PRELOAD", "1");
-    QCoreApplication app(argc, argv);
-    app.setApplicationVersion(QStringLiteral(BUILD_VERSION));
+    Done,     // exit 0
+    Continue, // no exit
+    Error,    // exit 2
+};
 
-    QCommandLineParser parser;
-    parser.addHelpOption();
-    parser.addOptions({
+static CommandLineParseResult handleInitialOptions(QCommandLineParser* parser)
+{
+    parser->setSingleDashWordOptionMode(QCommandLineParser::ParseAsLongOptions);
+    parser->addOptions({
         {{ "a", "apply"},     QStringLiteral("Enable and activate <Patch>"),
                               QStringLiteral("Patch")},
         {{ "u", "unapply"},   QStringLiteral("Deactivate and disable <Patch>"),
                               QStringLiteral("Patch")},
     });
-    parser.addVersionOption();
-    parser.addOptions({
+    parser->addOptions({
         { QStringLiteral("unapply-all"),      QStringLiteral("Deactivate and disable all Patches")},
         { QStringLiteral("backup-working"),   QStringLiteral("Save list of enabled Patches as \"working\"")},
         { QStringLiteral("restore-working"),  QStringLiteral("Enable backup list of \"working\" Patches")},
@@ -78,38 +79,52 @@ int main(int argc, char **argv)
 #endif
         { QStringLiteral("daemon"),           QStringLiteral("Start Patchmanager as daemon")},
     });
-    parser.setApplicationDescription("If not run with the --daemon option, we will act as a client to an existing Patchmansger daemon.\n\nPatchmanager must be run as root.");
+    parser->addVersionOption();
+    parser->addHelpOption();
+    parser->setApplicationDescription(
+          QStringLiteral("If run with the --daemon option, run as the main Patchmanager deamon.\n")
+        + QStringLiteral("If not run with the --daemon option, act as a client to an existing daemon.\n")
+        + QStringLiteral("\nPatchmanager must be run as root.")
+    );
 
-    bool launch = true;
-    if (!parser.parse(QCoreApplication::arguments())) {
-        launch = false;
-        fprintf(stderr, "%s\n", parser.errorText().toLocal8Bit().constData());
-        exit(2);
+    if (!parser->parse(QCoreApplication::arguments())) {
+        fprintf(stderr, "%s\n", parser->errorText().toLocal8Bit().constData());
+        return CommandLineParseResult::Error;
     }
 
-    if (parser.isSet("version") ) {
-        launch = false;
-        parser.showVersion();
-        exit(0);
+    if (parser->isSet("version") ) {
+        parser->showVersion();
+        return CommandLineParseResult::Done;
     }
 
-    if (parser.isSet("help") ) {
-        launch = false;
-        fprintf(stderr, "%s\n", parser.helpText().toLocal8Bit().constData());
-        exit(0);
+    if (parser->isSet("help") ) {
+        fprintf(stderr, "%s\n", parser->helpText().toLocal8Bit().constData());
+        return CommandLineParseResult::Done;
     }
 
     if (getuid() != 0) {
-        launch = false;
-        fprintf(stderr, "%s: Not running as root, exiting.\n\n", argv[0]);
-        fprintf(stderr, "%s\n", parser.helpText().toLocal8Bit().constData());
-        exit(2);
+        fprintf(stderr, "%s\n", parser->helpText().toLocal8Bit().constData());
+        fprintf(stderr, "Not called with root pemissions, exiting.\n");
+        return CommandLineParseResult::Done;
     }
 
-    if (launch) {
-        PatchManagerObject patchManager;
-        app.installEventFilter(&patchManager);
-        QTimer::singleShot(0, &patchManager, [&](){patchManager.processArgs(parser);});
-    }
+    return CommandLineParseResult::Continue;
+}
+
+int main(int argc, char **argv)
+{
+    qputenv("NO_PM_PRELOAD", "1");
+    QCoreApplication app(argc, argv);
+    app.setApplicationVersion(QStringLiteral(BUILD_VERSION));
+
+    QCommandLineParser* parser = new QCommandLineParser();
+    CommandLineParseResult launch = handleInitialOptions(parser);
+    if (launch != CommandLineParseResult::Continue)
+        exit((int) launch);
+
+    PatchManagerObject patchManager(parser);
+    app.installEventFilter(&patchManager);
+    QTimer::singleShot(0, &patchManager, &PatchManagerObject::processArgs);
+
     return app.exec();
 }
