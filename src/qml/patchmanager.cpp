@@ -47,7 +47,7 @@
 #include <QtQuick/QQuickView>
 #include <QLocale>
 #include <QtDBus/QtDBus>
-#include "webcatalog.h"
+#include "common/webcatalog.h"
 #include "patchmanager_interface.h"
 
 #include "common/loggingcategory.h"

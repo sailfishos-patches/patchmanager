@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
  */
 
+#include "common/webcatalog.h"
 #include "webdownloader.h"
-#include "webcatalog.h"
 
 /*! \qmltype WebDownloader
     \instantiates WebDownloader
