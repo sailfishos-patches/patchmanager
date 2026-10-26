@@ -406,8 +406,15 @@ Page {
             }
 
             function openPatchInfo() {
+                var go = patchObject.details.isCompatible
+                // force true if user configured it to:
+                if (PatchManager.sfosVersionCheck == VersionCheck.NoCheck) {
+                    go = true
+                } else if (patchObject.details.maybeCompatible && (PatchManager.sfosVersionCheck == VersionCheck.Relaxed)) {
+                    go = true
+                }
                 pageStack.push(Qt.resolvedUrl("UnifiedPatchPage.qml"),
-                              {modelData: patchObject.details, delegate: background})
+                              {modelData: patchObject.details, delegate: background, canActivate: go})
             }
 
             function doPatch() {

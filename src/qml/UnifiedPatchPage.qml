@@ -65,6 +65,8 @@ Page {
      */
     property bool legacyPatch: !modelData.isNewPatch
 
+    property bool canActivate: true
+
     /*! \qmlsignal doPatch
         This signal is emitted when the user chooses to activate the Patch.
      */
@@ -94,7 +96,7 @@ Page {
                     : (modelData.patched
                         ? qsTranslate("", "Deactivate Patch")
                         : qsTranslate("", "Activate Patch"))
-                enabled: !container.delegate.applying && PatchManager.loaded
+                enabled: !container.delegate.applying && PatchManager.loaded && canActivate
                 onClicked: {
                     container.delegate.doPatch()
                 }
