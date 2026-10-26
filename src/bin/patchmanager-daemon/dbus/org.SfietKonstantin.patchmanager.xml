@@ -65,9 +65,6 @@
         <method name="checkEaster">
             <arg name="easter" type="s" direction="out" />
         </method>
-        <method name="getOsVersion">
-            <arg name="version" type="s" direction="out" />
-        </method>
         <method name="getPatchmanagerVersion">
             <arg name="version" type="s" direction="out" />
         </method>
