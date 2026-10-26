@@ -99,7 +99,7 @@ Dialog {
                             "silica":       "image://theme/icon-m-sailfish",
                             "settings":     "image://theme/icon-m-setting",
                             "keyboard":     "image://theme/icon-m-keyboard",
-                            "other":        "image://theme/icon-m-patchmanager2",
+                            "other":        "image://theme/icon-m-patchmanager",
                         }
                     }
                     Column {
