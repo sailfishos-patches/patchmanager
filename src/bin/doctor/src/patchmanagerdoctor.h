@@ -38,65 +38,23 @@
 #include <QObject>
 #include <QMap>
 #include <QCoreApplication>
-#include <QDBusConnection>
 
-enum Problem {
-        Unknown
-      , PreloadFile
-      , PreloadConfig
-      , JailFile
-      , JailConfig
-      , NoInetGroup
-      , NoInetMember
-
-      , DebugTest = 99
-};
-static const QMap<Problem, QString> Problems = {
-      { Problem::Unknown       , QCoreApplication::translate("SanityCheck", "Unknown problem") }
-    , { Problem::PreloadFile   , QCoreApplication::translate("SanityCheck", "Preload config does not exist.") }
-    , { Problem::PreloadConfig , QCoreApplication::translate("SanityCheck", "Preload config is not correct.") }
-    , { Problem::JailFile      , QCoreApplication::translate("SanityCheck", "Firejail config does not exist.") }
-    , { Problem::JailConfig    , QCoreApplication::translate("SanityCheck", "Firejail config is not correct.") }
-    , { Problem::NoInetGroup   , QCoreApplication::translate("SanityCheck", "The system lacks the `inet` group.") }
-    , { Problem::NoInetMember  , QCoreApplication::translate("SanityCheck", "This user is not a membr of the `inet` group.") }
-
-    , { Problem::DebugTest    , QCoreApplication::translate("SanityCheck", "THIS IS A TEST PROBLEM") }
-};
-enum Solution {
-        None
-      , Reinstall
-      , Restart
-      , Reboot
-};
-/*
-static const QMap<Solution, QString> Solutions = {
-      { Solution::None      , QCoreApplication::translate("SanityCheck", "Suggested Fix: No known solution") }
-    , { Solution::Reinstall , QCoreApplication::translate("SanityCheck", "Suggested fix: Reinstall Patchmanager.") }
-    , { Solution::Restart   , QCoreApplication::translate("SanityCheck", "Suggested fix: Restart Patchmanager daemon.") }
-    , { Solution::Reboot    , QCoreApplication::translate("SanityCheck", "Suggested fix: Reboot the device.") }
-};
-*/
-
-class PatchmanagerDoctorAdaptor;
+#include "problems.h"
 
 class PatchmanagerDoctor : public QObject
 {
     Q_OBJECT
 public:
-//    explicit PatchmanagerDoctor(QObject* parent = nullptr);
-    explicit PatchmanagerDoctor(bool dbus = false, QObject* parent = nullptr);
     static bool applyBandAid();
-    static bool check(bool verbose);
-
-public slots:
-    void checkAndNotify();
-    void heal();
+    static bool check(bool verbose = false);
 
 private:
     static bool fixLDPreload(const QString& file);
     static bool fixFirejail(const QString& systemConfig, const QString& ourConfig);
     static QStringList checkWithReport();
-    PatchmanagerDoctorAdaptor* m_adaptor = nullptr;
+    static bool checkPMDaemon();
+    static bool checkPMFailed();
+    static bool checkPMPatches();
 };
 
 

@@ -289,6 +289,7 @@ exit 0
 
 %attr(0755,root,root) %{_libexecdir}/pm_apply
 %attr(0755,root,root) %{_libexecdir}/pm_unapply
+%attr(0755,root,root) %{_libexecdir}/patchmanagerdoctor
 
 %{_libdir}/qt5/qml/org/SfietKonstantin/%{name}
 %{_datadir}/%{name}/data

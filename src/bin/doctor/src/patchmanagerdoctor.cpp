@@ -33,37 +33,35 @@
  */
 
 #include "patchmanagerdoctor.h"
-#include "patchmanagerdoctor_adaptor.h"
 
 #include <QString>
 #include <QTextStream>
 #include <QFile>
 #include <QSaveFile>
 
-#include <QtDBus/QDBusArgument>
-#include <QtDBus/QDBusMessage>
-#include <QtDBus/QDBusConnection>
-//#include <QtDBus/QDBusInterface>
-//#include <QtDBus/QDBusMetaType>
-//#include <QtDBus/QDBusVariant>
-//#include <QtDBus/QDBusConnectionInterface>
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
+#include <QDBusMessage>
+#include <QDBusReply>
 
 #include "grp.h"
 
 #include "common/loggingcategory.h"
 Q_LOGGING_CATEGORY(patchmanagerDoctorLog, "patchmanager.doctor");
 
-static const QString LD_SO_FILE = QStringLiteral("/etc/ld.so.preload");
+namespace PatchManagerDaemon {
+#include "patchmanager-daemon/patchmanager_include.h"
+}
+
+namespace {
+static const QString LD_SO_FILE               = QStringLiteral("/etc/ld.so.preload");
 static const QString FIREJAIL_OUR_CONFIG_PATH = QStringLiteral("/etc/firejail/whitelist-common-patchmanager.local");
 static const QString FIREJAIL_SYS_CONFIG_PATH = QStringLiteral("/etc/firejail/whitelist-common.local");
 static const QString FIREJAIL_CONFIG_STRING   = QStringLiteral("include whitelist-common-patchmanager.local");
 
-static const QString DBUS_SERVICE_NAME = QStringLiteral("org.SfietKonstantin.patchmanager");
-static const QString DBUS_PATH_NAME    = QStringLiteral("/org/SfietKonstantin/patchmanagerDoctor");
-static const QString DBUS_IFACE_NAME   = QStringLiteral("org.SfietKonstantin.patchmanagerDoctor");
-
 static const char PM_PRELOAD_LIB[]  = "libpreloadpatchmanager.so";
 static const char PM_FIREJAIL_CONFIG[] = "whitelist-common-patchmanager.local";
+}
 
 static QStringList getAllGroups() {
     QStringList out;
@@ -75,16 +73,7 @@ static QStringList getAllGroups() {
     return out;
 }
 
-PatchmanagerDoctor::PatchmanagerDoctor(bool dbus, QObject* parent)
-        : QObject(parent)
-{
-    if(dbus) {
-        qCDebug(patchmanagerDoctorLog) << Q_FUNC_INFO << "Starting with bus";
-        m_adaptor = new PatchmanagerDoctorAdaptor(this);
-    }
-}
-
-bool PatchmanagerDoctor::check(bool verbose = false) { // static
+bool PatchmanagerDoctor::check(bool verbose) { // static
 
     QStringList report = checkWithReport();
     if (verbose) {
@@ -150,10 +139,17 @@ QStringList PatchmanagerDoctor::checkWithReport() { // static
     }
     if(!getAllGroups().contains("inet"))
         report << Problems.value(Problem::NoInetGroup);
-    /*
-    if(!getGroups().contains("inet"))
-        report << Problems.value(Problem::NoInetMember);
-    */
+
+    if (!checkPMDaemon()) {
+        report << Problems.value(Problem::DaemonNotRunning);
+    } else {
+        if (!checkPMFailed()) {
+            report << Problems.value(Problem::DaemonFailed);
+        }
+        //if (!checkPMPatches()) {
+        //    report << Problems.value(Problem::DaemonNoPatches);
+        //}
+    }
 
     return report;
 }
@@ -207,6 +203,7 @@ bool PatchmanagerDoctor::fixLDPreload(const QString& file)
         qCWarning(patchmanagerDoctorLog) << Q_FUNC_INFO << "Could not save" << file << sf.errorString();
         return false;
     }
+    qCDebug(patchmanagerDoctorLog) << Q_FUNC_INFO << "Success!";
     return true;
 }
 
@@ -244,45 +241,55 @@ bool PatchmanagerDoctor::fixFirejail(const QString& systemConfig, const QString&
 
     QTextStream out(&sf);
     out << contents;
-    out << "include " << PM_FIREJAIL_CONFIG << "\n";
+    out << FIREJAIL_CONFIG_STRING << "\n";
     out.flush();
 
     if(!sf.commit()) {
-        //m_error = QStringLiteral("Could not save %1").arg(systemConfig);
+        qCWarning(patchmanagerDoctorLog) << Q_FUNC_INFO << "Could not save" << systemConfig << sf.errorString();
+        return false;
+    }
+    qCDebug(patchmanagerDoctorLog) << Q_FUNC_INFO << "Success!";
+    return true;
+}
+
+bool PatchmanagerDoctor::checkPMDaemon()
+{
+    QDBusConnection conn = QDBusConnection::systemBus();
+    return conn.interface()->isServiceRegistered(PatchManagerDaemon::DBUS_SERVICE_NAME);
+}
+
+bool PatchmanagerDoctor::checkPMFailed()
+{
+    QDBusConnection conn = QDBusConnection::systemBus();
+    QDBusMessage msg = QDBusMessage::createMethodCall(
+                PatchManagerDaemon::DBUS_SERVICE_NAME,
+                PatchManagerDaemon::DBUS_PATH_NAME,
+                PatchManagerDaemon::DBUS_SERVICE_NAME,
+                "getFailure");
+    QDBusReply<bool> pm_failed = conn.call(msg);
+    if (pm_failed.value()) {
+        qCWarning(patchmanagerDoctorLog) << Q_FUNC_INFO << "Patchmanager deamon is is failure mode!";
         return false;
     }
     return true;
 }
 
-void PatchmanagerDoctor::heal()
+/*
+bool PatchmanagerDoctor::checkPMPatches()
 {
-    if(m_adaptor) {
-        bool ok = applyBandAid();
-        emit m_adaptor->healed(ok);
+    QDBusConnection conn = QDBusConnection::systemBus();
+    QDBusMessage msg = QDBusMessage::createMethodCall(
+                PatchManagerDaemon::DBUS_SERVICE_NAME,
+                PatchManagerDaemon::DBUS_PATH_NAME,
+                PatchManagerDaemon::DBUS_SERVICE_NAME,
+                "getSettings");
+    msg.setArguments( { QVariant("applied"), QVariant(QString()) } );
+    QDBusReply<QVariant> pm_applied = conn.call(msg);
+    if (pm_applied.value().toList().isEmpty()) {
+        qCWarning(patchmanagerDoctorLog) << Q_FUNC_INFO << "Patchmanager has no active patches!";
+        return false;
     }
-}
-void PatchmanagerDoctor::checkAndNotify()
-{
-    qCDebug(patchmanagerDoctorLog) << Q_FUNC_INFO;
-
-    QDBusConnection connection = QDBusConnection::systemBus();
-
-    if (!connection.registerObject(DBUS_PATH_NAME, this)) {
-        qCCritical(patchmanagerDoctorLog) << Q_FUNC_INFO
-                << "Could not register DBus object";
-    } else {
-        qCDebug(patchmanagerDoctorLog) << Q_FUNC_INFO << "Bus registered";
-    }
-
-    QStringList rpt = checkWithReport();
-
-    emit m_adaptor->problemsDetected(rpt.count());
-
-    if (rpt.count() > 0) {
-        emit m_adaptor->problemReport(rpt);
-    } else {
-        qCDebug(patchmanagerDoctorLog) << Q_FUNC_INFO << "No problems, quit";
-        QCoreApplication::quit();
-    }
+    return true;
 }
 
+*/

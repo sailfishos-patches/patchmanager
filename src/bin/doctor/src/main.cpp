@@ -41,7 +41,7 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QCommandLineParser>
-#include <QtCore/QTimer>
+//#include <QtCore/QTimer>
 
 int main(int argc, char **argv)
 {
@@ -59,7 +59,6 @@ int main(int argc, char **argv)
         { { "c", "check"},             QStringLiteral("Check for problems. The return code gives the number of problems found.") },
         { { "l", "list"},              QStringLiteral("Check and list problems") },
         { { "F", "fix-problems"},      QStringLiteral("Try to fix the problem that have been found") },
-        { QStringLiteral("dbus"),      QStringLiteral("Notify applicable services of result and problems found. Do not use interactively.") },
     });
     parser.addHelpOption();
 
@@ -73,9 +72,8 @@ int main(int argc, char **argv)
         return 0;
     }
 
-
     if (argc <= 1 || parser.isSet("check") ) {
-        int ok = PatchmanagerDoctor::check(false);
+        int ok = PatchmanagerDoctor::check();
         exit(ok);
     } else if (parser.isSet("list")) {
         int ok = PatchmanagerDoctor::check(true);
@@ -88,14 +86,6 @@ int main(int argc, char **argv)
             exit(2);
         }
     }
-
-    //if (getuid() != 0) {
-    //    fprintf(stderr, "You need to be root for this operation. Exiting.\n");
-    //    exit(2);
-    //}
-
-    PatchmanagerDoctor doctor(true);
-    QTimer::singleShot(0, &doctor, &PatchmanagerDoctor::checkAndNotify);
 
     return app.exec();
 }
