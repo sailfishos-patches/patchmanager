@@ -1,0 +1,15 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+    <interface name="org.SfietKonstantin.patchmanagerDoctor">
+        <method name="heal" />
+        <signal name="problemsDetected">
+            <arg name="count" type="i"/>
+        </signal>
+        <signal name="healed">
+            <arg name="success" type="b"/>
+        </signal>
+        <signal name="problemReport">
+                <arg name="report" type="as"/>
+        </signal>
+    </interface>
+</node>

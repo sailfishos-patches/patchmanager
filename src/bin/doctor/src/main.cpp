@@ -37,6 +37,7 @@
 
 #include "patchmanagerdoctor.h"
 #include <stdio.h>
+#include <unistd.h>
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QCommandLineParser>
@@ -49,10 +50,10 @@ int main(int argc, char **argv)
     QCoreApplication app(argc, argv);
 
     QCommandLineParser parser;
+    parser.setSingleDashWordOptionMode(QCommandLineParser::ParseAsLongOptions);
     parser.setApplicationDescription(
-          QStringLiteral("The doctor checks for and fixes common problems with the Patchmanager installation")
+          QStringLiteral("The doctor checks for and fixes problems with the Patchmanager installation")
     );
-    parser.addHelpOption();
 
     parser.addOptions({
         { { "c", "check"},             QStringLiteral("Check for problems. The return code gives the number of problems found.") },
@@ -60,6 +61,7 @@ int main(int argc, char **argv)
         { { "F", "fix-problems"},      QStringLiteral("Try to fix the problem that have been found") },
         { QStringLiteral("dbus"),      QStringLiteral("Notify applicable services of result and problems found. Do not use interactively.") },
     });
+    parser.addHelpOption();
 
     if (!parser.parse(QCoreApplication::arguments())) {
         fprintf(stderr, "%s\n", parser.errorText().toLocal8Bit().constData());
@@ -71,13 +73,6 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    /*
-    if (getuid() != 0) {
-        fprintf(stderr, "%s: Not running as root, exiting.\n", argv[0]);
-        exit(2);
-    }
-    */
-
 
     if (argc <= 1 || parser.isSet("check") ) {
         int ok = PatchmanagerDoctor::check(false);
@@ -86,12 +81,21 @@ int main(int argc, char **argv)
         int ok = PatchmanagerDoctor::check(true);
         exit(ok);
     } else if (parser.isSet("fix-problems")) {
-        PatchmanagerDoctor doctor;
-        QTimer::singleShot(0, &doctor, &PatchmanagerDoctor::applyBandAid);
-    } else if (parser.isSet("dbus")) {
-        PatchmanagerDoctor doctor;
-        QTimer::singleShot(0, &doctor, &PatchmanagerDoctor::checkAndNotify);
+        if (getuid() == 0) {
+            exit(PatchmanagerDoctor::applyBandAid());
+        } else {
+            fprintf(stderr, "You need to be root for this operation. Exiting.\n");
+            exit(2);
+        }
     }
+
+    //if (getuid() != 0) {
+    //    fprintf(stderr, "You need to be root for this operation. Exiting.\n");
+    //    exit(2);
+    //}
+
+    PatchmanagerDoctor doctor(true);
+    QTimer::singleShot(0, &doctor, &PatchmanagerDoctor::checkAndNotify);
 
     return app.exec();
 }

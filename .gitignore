@@ -20,3 +20,6 @@ src/icons/ss
 doc/generated
 
 translations/*.qm
+src/bin/doctor/patchmanagerdoctor_adaptor.cpp
+src/bin/doctor/patchmanagerdoctor_adaptor.h
+src/bin/doctor/patchmanagerdoctor

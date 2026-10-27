@@ -38,6 +38,7 @@
 #include <QObject>
 #include <QMap>
 #include <QCoreApplication>
+#include <QDBusConnection>
 
 enum Problem {
         Unknown
@@ -76,24 +77,26 @@ static const QMap<Solution, QString> Solutions = {
 };
 */
 
+class PatchmanagerDoctorAdaptor;
 
 class PatchmanagerDoctor : public QObject
 {
-    Q_GADGET
+    Q_OBJECT
 public:
+//    explicit PatchmanagerDoctor(QObject* parent = nullptr);
+    explicit PatchmanagerDoctor(bool dbus = false, QObject* parent = nullptr);
     static bool applyBandAid();
     static bool check(bool verbose);
-    //static QStringList diagnosis();
 
 public slots:
     void checkAndNotify();
+    void heal();
 
-//signals:
-//    void selfHealingSuccessful() const;
-//    void selfHealingFailed() const;
 private:
     static bool fixLDPreload(const QString& file);
     static bool fixFirejail(const QString& systemConfig, const QString& ourConfig);
+    static QStringList checkWithReport();
+    PatchmanagerDoctorAdaptor* m_adaptor = nullptr;
 };
 
 

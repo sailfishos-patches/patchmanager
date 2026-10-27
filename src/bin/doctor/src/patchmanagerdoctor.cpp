@@ -33,6 +33,8 @@
  */
 
 #include "patchmanagerdoctor.h"
+#include "patchmanagerdoctor_adaptor.h"
+
 #include <QString>
 #include <QTextStream>
 #include <QFile>
@@ -60,10 +62,6 @@ static const QString DBUS_SERVICE_NAME = QStringLiteral("org.SfietKonstantin.pat
 static const QString DBUS_PATH_NAME    = QStringLiteral("/org/SfietKonstantin/patchmanagerDoctor");
 static const QString DBUS_IFACE_NAME   = QStringLiteral("org.SfietKonstantin.patchmanagerDoctor");
 
-static const QString DBUS_CHECK_SIGNAL_NAME  = QStringLiteral("checkResult");
-static const QString DBUS_FIX_SIGNAL_NAME    = QStringLiteral("fixResult");
-static const QString DBUS_REPORT_SIGNAL_NAME = QStringLiteral("checkReport");
-
 static const char PM_PRELOAD_LIB[]  = "libpreloadpatchmanager.so";
 static const char PM_FIREJAIL_CONFIG[] = "whitelist-common-patchmanager.local";
 
@@ -77,8 +75,29 @@ static QStringList getAllGroups() {
     return out;
 }
 
+PatchmanagerDoctor::PatchmanagerDoctor(bool dbus, QObject* parent)
+        : QObject(parent)
+{
+    if(dbus) {
+        qCDebug(patchmanagerDoctorLog) << Q_FUNC_INFO << "Starting with bus";
+        m_adaptor = new PatchmanagerDoctorAdaptor(this);
+    }
+}
 
-bool PatchmanagerDoctor::check(bool verbose) { // static
+bool PatchmanagerDoctor::check(bool verbose = false) { // static
+
+    QStringList report = checkWithReport();
+    if (verbose) {
+        if (report.count() == 0) {
+            QTextStream(stdout) << "No problems to report." << endl;
+        } else {
+            QTextStream(stdout) << qPrintable(report.join('\n')) << endl;
+        }
+    }
+    return report.count();
+}
+
+QStringList PatchmanagerDoctor::checkWithReport() { // static
     qCDebug(patchmanagerDoctorLog) << Q_FUNC_INFO;
 
     QStringList report;
@@ -136,19 +155,16 @@ bool PatchmanagerDoctor::check(bool verbose) { // static
         report << Problems.value(Problem::NoInetMember);
     */
 
-    if (verbose) {
-        if (report.count() == 0) {
-            QTextStream(stdout) << "No problems to report." << endl;
-        } else {
-            QTextStream(stdout) << qPrintable(report.join('\n')) << endl;
-        }
-    }
-    return report.count();
+    return report;
 }
 
 bool PatchmanagerDoctor::applyBandAid()
 {
     qCDebug(patchmanagerDoctorLog) << Q_FUNC_INFO;
+    if (check(false) == 0) {
+        QTextStream(stdout) << "No problems to fix." << endl;
+        return 0;
+    }
     bool ok = fixLDPreload(LD_SO_FILE);
     ok = ok && fixFirejail(FIREJAIL_SYS_CONFIG_PATH, PM_FIREJAIL_CONFIG);
     return ok;
@@ -156,10 +172,11 @@ bool PatchmanagerDoctor::applyBandAid()
 
 bool PatchmanagerDoctor::fixLDPreload(const QString& file)
 {
-    qCDebug(patchmanagerDoctorLog) << Q_FUNC_INFO;
+    qCDebug(patchmanagerDoctorLog) << Q_FUNC_INFO << file;
+
     QFile f(file); // QSaveFile can not read!
     if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        //m_error = QStringLiteral("Could not open %1").arg(file);
+        qCWarning(patchmanagerDoctorLog) << Q_FUNC_INFO << "Could not open for reading:" << file << f.errorString();
         return false;
     }
 
@@ -172,7 +189,7 @@ bool PatchmanagerDoctor::fixLDPreload(const QString& file)
 
     QSaveFile sf(file);
     if (!sf.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        //m_error = QStringLiteral("Could not open %1").arg(file);
+        qCWarning(patchmanagerDoctorLog) << Q_FUNC_INFO << "Could not open for writing:" << file << sf.errorString();
         return false;
     }
     QTextStream out(&sf);
@@ -187,7 +204,7 @@ bool PatchmanagerDoctor::fixLDPreload(const QString& file)
     out.flush();
 
     if(!sf.commit()) {
-        //m_error = QStringLiteral("Could not save %1").arg(file);
+        qCWarning(patchmanagerDoctorLog) << Q_FUNC_INFO << "Could not save" << file << sf.errorString();
         return false;
     }
     return true;
@@ -195,19 +212,20 @@ bool PatchmanagerDoctor::fixLDPreload(const QString& file)
 
 bool PatchmanagerDoctor::fixFirejail(const QString& systemConfig, const QString& ourConfig)
 {
-    qCDebug(patchmanagerDoctorLog) << Q_FUNC_INFO;
+    qCDebug(patchmanagerDoctorLog) << Q_FUNC_INFO << systemConfig << ourConfig;
+
     if (!QFile::exists(systemConfig)) {
-        //m_error = QStringLiteral("Does not exist: %1").arg(systemConfig);
+        qCWarning(patchmanagerDoctorLog) << Q_FUNC_INFO << "Does not exist:" << systemConfig;
         return false;
     }
     if (!QFile::exists(FIREJAIL_OUR_CONFIG_PATH)) {
-        //m_error = QStringLiteral("Does not exist: %1").arg(FIREJAIL_OUR_CONFIG_PATH);
+        qCWarning(patchmanagerDoctorLog) << Q_FUNC_INFO << "Does not exist:" << FIREJAIL_OUR_CONFIG_PATH;
         return false;
     }
 
     QFile f(systemConfig); // QSaveFile can not read!
     if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        //m_error = QStringLiteral("Could not open %1").arg(systemConfig);
+        qCWarning(patchmanagerDoctorLog) << Q_FUNC_INFO << "Could not open" << systemConfig << f.errorString();
         return false;
     }
 
@@ -220,7 +238,7 @@ bool PatchmanagerDoctor::fixFirejail(const QString& systemConfig, const QString&
 
     QSaveFile sf(systemConfig);
     if (!sf.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        //m_error = QStringLiteral("Could not open %1").arg(systemConfig);
+        qCWarning(patchmanagerDoctorLog) << Q_FUNC_INFO << "Could not open" << systemConfig << sf.errorString();
         return false;
     }
 
@@ -236,16 +254,35 @@ bool PatchmanagerDoctor::fixFirejail(const QString& systemConfig, const QString&
     return true;
 }
 
+void PatchmanagerDoctor::heal()
+{
+    if(m_adaptor) {
+        bool ok = applyBandAid();
+        emit m_adaptor->healed(ok);
+    }
+}
 void PatchmanagerDoctor::checkAndNotify()
 {
     qCDebug(patchmanagerDoctorLog) << Q_FUNC_INFO;
-    int count = check(false);
-    QDBusConnection connection = QDBusConnection::systemBus();
-    QDBusMessage msg = QDBusMessage::createSignal(
-                    DBUS_PATH_NAME, DBUS_IFACE_NAME, DBUS_CHECK_SIGNAL_NAME
-                    );
-    msg.setArguments ( { QVariant(count) } );
-    connection.send(msg);
-}
 
+    QDBusConnection connection = QDBusConnection::systemBus();
+
+    if (!connection.registerObject(DBUS_PATH_NAME, this)) {
+        qCCritical(patchmanagerDoctorLog) << Q_FUNC_INFO
+                << "Could not register DBus object";
+    } else {
+        qCDebug(patchmanagerDoctorLog) << Q_FUNC_INFO << "Bus registered";
+    }
+
+    QStringList rpt = checkWithReport();
+
+    emit m_adaptor->problemsDetected(rpt.count());
+
+    if (rpt.count() > 0) {
+        emit m_adaptor->problemReport(rpt);
+    } else {
+        qCDebug(patchmanagerDoctorLog) << Q_FUNC_INFO << "No problems, quit";
+        QCoreApplication::quit();
+    }
+}
 
