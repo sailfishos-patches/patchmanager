@@ -11,6 +11,7 @@ BusName=org.SfietKonstantin.patchmanager
 SupplementaryGroups=inet
 User=root
 EnvironmentFile=-/var/lib/environment/patchmanager/*.conf
+ExecStartPre=/usr/sbin/patchmanager --ensure-daemon
 ExecStart=/usr/sbin/patchmanager --daemon
 TimeoutStartSec=600
 Restart=always

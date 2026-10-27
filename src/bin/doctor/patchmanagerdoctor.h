@@ -52,9 +52,11 @@ private:
     static bool fixLDPreload(const QString& file);
     static bool fixFirejail(const QString& systemConfig, const QString& ourConfig);
     static QStringList checkWithReport();
+#ifdef PATCHMANAGERDOCTOR_STANDALONE
     static bool checkPMDaemon();
     static bool checkPMFailed();
     static bool checkPMPatches();
+#endif
 };
 
 

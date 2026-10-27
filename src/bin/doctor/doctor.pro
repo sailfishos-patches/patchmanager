@@ -6,15 +6,17 @@ CONFIG += command_line
 QMAKE_CFLAGS += -Werror
 
 INCLUDEPATH += \
-    $$_PRO_FILE_PWD_/include/ \
+    $$_PRO_FILE_PWD_/../patchmanager-daemon \
     $$_PRO_FILE_PWD_/../../ \
     $$_PRO_FILE_PWD_/..
 
+DEFINES += PATCHMANAGERDOCTOR_STANDALONE
+
 SOURCES += \
-    src/main.cpp \
-    src/patchmanagerdoctor.cpp
+    main.cpp \
+    patchmanagerdoctor.cpp
 HEADERS += \
-    src/patchmanagerdoctor.h
+    patchmanagerdoctor.h
 
 TARGET = patchmanagerdoctor
 target.path = /usr/libexec

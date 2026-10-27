@@ -46,6 +46,8 @@
 #include <QtCore/QCommandLineParser>
 
 #include "patchmanagerobject.h"
+#include "patchmanagerdoctor.h"
+
 #include <iostream>
 #include <QTimer>
 #include <QDebug>
@@ -78,6 +80,7 @@ static CommandLineParseResult handleInitialOptions(QCommandLineParser* parser)
         { QStringLiteral("reset-system"),     QStringLiteral("Clean the system of all patches, including uninstallation of RPM files. Using this option is unsupported.")},
 #endif
         { QStringLiteral("daemon"),           QStringLiteral("Start Patchmanager as daemon")},
+        { QStringLiteral("ensure-daemon"),    QStringLiteral("Check and fix the runtime environment for correct operation")},
     });
     parser->addVersionOption();
     parser->addHelpOption();
@@ -105,6 +108,11 @@ static CommandLineParseResult handleInitialOptions(QCommandLineParser* parser)
     if (getuid() != 0) {
         fprintf(stderr, "%s\n", parser->helpText().toLocal8Bit().constData());
         fprintf(stderr, "Not called with root pemissions, exiting.\n");
+        return CommandLineParseResult::Done;
+    }
+
+    if (parser->isSet("ensure-daemon")) {
+        PatchmanagerDoctor::applyBandAid();
         return CommandLineParseResult::Done;
     }
 

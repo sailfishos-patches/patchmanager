@@ -50,7 +50,7 @@
 Q_LOGGING_CATEGORY(patchmanagerDoctorLog, "patchmanager.doctor");
 
 namespace PatchManagerDaemon {
-#include "patchmanager-daemon/patchmanager_include.h"
+#include "patchmanager_include.h"
 }
 
 namespace {
@@ -140,6 +140,7 @@ QStringList PatchmanagerDoctor::checkWithReport() { // static
     if(!getAllGroups().contains("inet"))
         report << Problems.value(Problem::NoInetGroup);
 
+#ifdef PATCHMANAGERDOCTOR_STANDALONE
     if (!checkPMDaemon()) {
         report << Problems.value(Problem::DaemonNotRunning);
     } else {
@@ -150,6 +151,7 @@ QStringList PatchmanagerDoctor::checkWithReport() { // static
         //    report << Problems.value(Problem::DaemonNoPatches);
         //}
     }
+#endif // PATCHMANAGERDOCTOR_STANDALONE
 
     return report;
 }
@@ -252,6 +254,7 @@ bool PatchmanagerDoctor::fixFirejail(const QString& systemConfig, const QString&
     return true;
 }
 
+#ifdef PATCHMANAGERDOCTOR_STANDALONE
 bool PatchmanagerDoctor::checkPMDaemon()
 {
     QDBusConnection conn = QDBusConnection::systemBus();
@@ -274,7 +277,6 @@ bool PatchmanagerDoctor::checkPMFailed()
     return true;
 }
 
-/*
 bool PatchmanagerDoctor::checkPMPatches()
 {
     QDBusConnection conn = QDBusConnection::systemBus();
@@ -292,4 +294,4 @@ bool PatchmanagerDoctor::checkPMPatches()
     return true;
 }
 
-*/
+#endif // PATCHMANAGERDOCTOR_STANDALONE
