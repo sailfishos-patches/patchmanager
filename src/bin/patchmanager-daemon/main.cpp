@@ -43,6 +43,8 @@
 #include <QLocale>
 
 #include <QtCore/QCoreApplication>
+#include <QtCore/QCommandLineParser>
+
 #include "patchmanagerobject.h"
 #include <iostream>
 #include <QTimer>
@@ -52,39 +54,77 @@
 #define BUILD_VERSION "99.99.99"
 #endif
 
-
-void help()
+enum CommandLineParseResult
 {
-    std::cout << "Patchmanager " << BUILD_VERSION << std::endl;
-    std::cout << "Usage:" << std::endl;
-    std::cout << "  patchmanager [--help]          : Print this help text" << std::endl;
-    std::cout << "  patchmanager -a <Patch>        : Enable and activate a Patch" << std::endl;
-    std::cout << "  patchmanager -u <Patch>        : Deactivate and disable (unapply) a Patch" << std::endl;
-    std::cout << "  patchmanager --unapply-all     : Deactivate and disable (unapply) all Patches" << std::endl;
-    std::cout << "  patchmanager --backup-working  : Save list of enabled Patches as \"working\"" << std::endl;
-    std::cout << "  patchmanager --restore-working : Enable backup list of \"working\" Patches" << std::endl;
-    std::cout << "  patchmanager --daemon          : Start Patchmanager as daemon" << std::endl;
+    Done,     // exit 0
+    Continue, // no exit
+    Error,    // exit 2
+};
+
+static CommandLineParseResult handleInitialOptions(QCommandLineParser* parser)
+{
+    parser->setSingleDashWordOptionMode(QCommandLineParser::ParseAsLongOptions);
+    parser->addOptions({
+        {{ "a", "apply"},     QStringLiteral("Enable and activate <Patch>"),
+                              QStringLiteral("Patch")},
+        {{ "u", "unapply"},   QStringLiteral("Deactivate and disable <Patch>"),
+                              QStringLiteral("Patch")},
+    });
+    parser->addOptions({
+        { QStringLiteral("unapply-all"),      QStringLiteral("Deactivate and disable all Patches")},
+        { QStringLiteral("backup-working"),   QStringLiteral("Save list of enabled Patches as \"working\"")},
+        { QStringLiteral("restore-working"),  QStringLiteral("Enable backup list of \"working\" Patches")},
+#ifdef PM_ENABLE_LEGACY
+        { QStringLiteral("reset-system"),     QStringLiteral("Clean the system of all patches, including uninstallation of RPM files. Using this option is unsupported.")},
+#endif
+        { QStringLiteral("daemon"),           QStringLiteral("Start Patchmanager as daemon")},
+    });
+    parser->addVersionOption();
+    parser->addHelpOption();
+    parser->setApplicationDescription(
+          QStringLiteral("If run with the --daemon option, run as the main Patchmanager deamon.\n")
+        + QStringLiteral("If not run with the --daemon option, act as a client to an existing daemon.\n")
+        + QStringLiteral("\nPatchmanager must be run as root.")
+    );
+
+    if (!parser->parse(QCoreApplication::arguments())) {
+        fprintf(stderr, "%s\n", parser->errorText().toLocal8Bit().constData());
+        return CommandLineParseResult::Error;
+    }
+
+    if (parser->isSet("version") ) {
+        parser->showVersion();
+        return CommandLineParseResult::Done;
+    }
+
+    if (parser->isSet("help") ) {
+        fprintf(stderr, "%s\n", parser->helpText().toLocal8Bit().constData());
+        return CommandLineParseResult::Done;
+    }
+
+    if (getuid() != 0) {
+        fprintf(stderr, "%s\n", parser->helpText().toLocal8Bit().constData());
+        fprintf(stderr, "Not called with root pemissions, exiting.\n");
+        return CommandLineParseResult::Done;
+    }
+
+    return CommandLineParseResult::Continue;
 }
 
 int main(int argc, char **argv)
 {
     qputenv("NO_PM_PRELOAD", "1");
-
-    if (getuid() != 0) {
-        fprintf(stderr, "%s: Not running as root, exiting.\n", argv[0]);
-        exit(2);
-    }
-
     QCoreApplication app(argc, argv);
-    if (app.arguments().length() < 2) {
-        help();
-        return 0;
-    }
-
     app.setApplicationVersion(QStringLiteral(BUILD_VERSION));
 
-    PatchManagerObject patchManager;
+    QCommandLineParser* parser = new QCommandLineParser();
+    CommandLineParseResult launch = handleInitialOptions(parser);
+    if (launch != CommandLineParseResult::Continue)
+        exit((int) launch);
+
+    PatchManagerObject patchManager(parser);
     app.installEventFilter(&patchManager);
-    QTimer::singleShot(0, &patchManager, &PatchManagerObject::process);
+    QTimer::singleShot(0, &patchManager, &PatchManagerObject::processArgs);
+
     return app.exec();
 }

@@ -44,6 +44,7 @@
 #include <algorithm>
 
 #include <QtCore/QCoreApplication>
+#include <QtCore/QCommandLineParser>
 #include <QtCore/QDateTime>
 #include <QtCore/QDebug>
 #include <QtCore/QEvent>
@@ -527,14 +528,17 @@ QList<QVariantMap> PatchManagerObject::listPatchesFromDir(const QString &dir, QS
     return patches;
 }
 
-PatchManagerObject::PatchManagerObject(QObject *parent)
+PatchManagerObject::PatchManagerObject(QCommandLineParser* parser, QObject *parent)
     : QObject(parent)
     , m_sbus(s_sessionBusConnection)
 {
+    qCDebug(patchmanagerDaemonLog) << Q_FUNC_INFO;
+    m_parser = parser;
 }
 
 PatchManagerObject::~PatchManagerObject()
 {
+    qCDebug(patchmanagerDaemonLog) << Q_FUNC_INFO;
     if (m_dbusRegistered) {
         QDBusConnection connection = QDBusConnection::systemBus();
         connection.unregisterService(DBUS_SERVICE_NAME);
@@ -1156,66 +1160,75 @@ QString PatchManagerObject::getRpmName(const QString &rpm) const
     \note this is called from \c main() via \l{https://doc.qt.io/archives/qt-5.6/qtimer.html#singleShot-prop}{QTimer::singleShot}
 
 */
-void PatchManagerObject::process()
+void PatchManagerObject::processArgs()
 {
-    const QStringList args = QCoreApplication::arguments();
-
-    if (args.count() == 1) {
-        return;  // Prints help text.
-    } else if (args.count() == 2) {
-        if (args[1] == QStringLiteral("--help")) {
-            return;  // Also prints help text.
-        } else if (args[1] == QStringLiteral("--daemon")) {
-            initialize();
+    qCDebug(patchmanagerDaemonLog) << Q_FUNC_INFO;
+    if(m_parser == nullptr) {
+        qCCritical(patchmanagerDaemonLog) << Q_FUNC_INFO << "BUG: Nothing to parse...";
+        QCoreApplication::exit(2);
+        return;
+    }
+    if (m_parser->isSet(QStringLiteral("daemon"))) {
+        qCInfo(patchmanagerDaemonLog) << Q_FUNC_INFO << "Starting as daemon";
+        initialize();
+        return;
 #ifdef PM_ENABLE_LEGACY
-        } else if (args[1] == QStringLiteral("--reset-system")) {
-            resetSystem();
+    } else if (m_parser->isSet(QStringLiteral("reset-system"))) {
+        // FIXME: see #204, #278
+        qCWarning(patchmanagerDaemonLog) << Q_FUNC_INFO << "This is very likely broken in this version of patchmanager.";
+        resetSystem();
+        QCoreApplication::exit(2);
+        return;
+#endif
+    }
+
+    /*
+     * "Client mode": from here on, handle options which send dbus messages
+     */
+
+    QString method;
+    QVariantList data;
+
+    if (m_parser->isSet(QStringLiteral("apply"))) {
+        if (m_parser->value(QStringLiteral("apply")).isEmpty()) {
+            qCritical() << "Option requires an argument."; // no category!
             QCoreApplication::exit(2);
             return;
-#endif
-        }
-    } else if (args.count() > 1) {  // Must be "> 1", not "> 2" for "--unapply-all"
-        QDBusConnection connection = QDBusConnection::systemBus();
-        qCDebug(patchmanagerDaemonLog) << Q_FUNC_INFO << "Has arguments, sending D-Bus message and quit.";
-
-        QString method;
-        QVariantList data;
-        if (args[1] == QStringLiteral("-a")) {
-            method = QStringLiteral("applyPatch");
-            if (args.length() < 3) {
-                QCoreApplication::exit(2);
-                return;
-            } else {
-                data.append(args[2]);
-            }
-        } else if (args[1] == QStringLiteral("-u")) {
-            method = QStringLiteral("unapplyPatch");
-            if (args.length() < 3) {
-                QCoreApplication::exit(2);
-                return;
-            } else {
-                data.append(args[2]);
-            }
-        } else if (args[1] == QStringLiteral("--unapply-all")) {
-            method = QStringLiteral("unapplyAllPatches");
-        } else if (args[1] == QStringLiteral("--backup-working")) {
-            method = QStringLiteral("backupWorkingPatchList");
-        } else if (args[1] == QStringLiteral("--restore-working")) {
-            method = QStringLiteral("restorePatchList");
         } else {
+            data.append(m_parser->value(QStringLiteral("apply")));
+        }
+        method = QStringLiteral("applyPatch");
+    } else if (m_parser->isSet(QStringLiteral("unapply"))) {
+        if (m_parser->value(QStringLiteral("unapply")).isEmpty()) {
+            qCritical() << "Option requires an argument."; // no category!
+            QCoreApplication::exit(2);
             return;
+        } else {
+            data.append(m_parser->value(QStringLiteral("unapply")));
         }
-
-        QDBusMessage msg = QDBusMessage::createMethodCall(DBUS_SERVICE_NAME, DBUS_PATH_NAME, DBUS_SERVICE_NAME, method);
-        if (!data.isEmpty()) {
-            msg.setArguments(data);
-        }
-        connection.call(msg);
-
-        QCoreApplication::exit(0);
+        method = QStringLiteral("unapplyPatch");
+    } else if (m_parser->isSet(QStringLiteral("unapply-all"))) {
+        method = QStringLiteral("unapplyAllPatches");
+    } else if (m_parser->isSet(QStringLiteral("backup-working"))) {
+        method = QStringLiteral("backupWorkingPatchList");
+    } else if (m_parser->isSet(QStringLiteral("restore-working"))) {
+        method = QStringLiteral("restorePatchList");
+    } else {
+        qCritical() << "Something went wrong handling the arguments."; // no category!
+        QCoreApplication::exit(2);
         return;
     }
 
+    qInfo() << "Called with arguments, will send a D-Bus message and quit."; // no category!
+    QDBusConnection connection = QDBusConnection::systemBus();
+    QDBusMessage msg = QDBusMessage::createMethodCall(DBUS_SERVICE_NAME, DBUS_PATH_NAME, DBUS_SERVICE_NAME, method);
+    if (!data.isEmpty()) {
+        msg.setArguments(data);
+    }
+    connection.call(msg);
+
+    QCoreApplication::exit(0);
+    return;
 }
 
 
