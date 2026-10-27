@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>
  * Copyright (C) 2016 Andrey Kozhevnikov <coderusinbox@gmail.com>
- * Copyright (c) 2021-2023, Patchmanager for SailfishOS contributors:
+ * Copyright (c) 2021-2026, Patchmanager for SailfishOS contributors:
  *                  - olf "Olf0" <https://github.com/Olf0>
  *                  - Peter G. "nephros" <sailfish@nephros.org>
  *                  - Vlad G. "b100dian" <https://github.com/b100dian>
@@ -35,7 +35,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
  */
 
-import QtQuick 2.0
+import QtQuick 2.6
 import Sailfish.Silica 1.0
 import Nemo.Configuration 1.0
 import org.SfietKonstantin.patchmanager 2.0
@@ -254,6 +254,11 @@ Page {
 
         header: PageHeader {
             title: qsTranslate("", "Installed Patches")
+            description: {
+                if (PatchManager.sfosVersionCheck == VersionCheck.NoCheck) return qsTranslate("", "Check disabled")
+                if (PatchManager.sfosVersionCheck == VersionCheck.Relaxed) return qsTranslate("", "Check relaxed")
+                return ""
+            }
         }
         model: PatchManager.installedModel
 
@@ -401,16 +406,29 @@ Page {
             }
 
             function openPatchInfo() {
+                var go = patchObject.details.isCompatible
+                // force true if user configured it to:
+                if (PatchManager.sfosVersionCheck == VersionCheck.NoCheck) {
+                    go = true
+                } else if (patchObject.details.maybeCompatible && (PatchManager.sfosVersionCheck == VersionCheck.Relaxed)) {
+                    go = true
+                }
                 pageStack.push(Qt.resolvedUrl("UnifiedPatchPage.qml"),
-                              {modelData: patchObject.details, delegate: background})
+                              {modelData: patchObject.details, delegate: background, canActivate: go})
             }
 
             function doPatch() {
                 view.model.saveLayout()
                 if (!patchObject.details.patched) {
-                    if (patchObject.details.isCompatible || (PatchManager.sfosVersionCheck == VersionCheck.NoCheck)) {
-                        patchObject.apply()
+                    var go = patchObject.details.isCompatible
+                    // force true if user configured it to:
+                    if (PatchManager.sfosVersionCheck == VersionCheck.NoCheck) {
+                        go = true
                     } else if (patchObject.details.maybeCompatible && (PatchManager.sfosVersionCheck == VersionCheck.Relaxed)) {
+                        go = true
+                    }
+
+                    if (go) {
                         patchObject.apply()
                     } else {
                         errorMessageComponent.createObject(background, {text: qsTranslate("", "This Patch is incompatible with the installed SailfishOS version.")})
@@ -603,14 +621,12 @@ Page {
                     Label {
                         width: parent.width
                         text: name
-                        color: { if (background.down)  { return Theme.highlightColor
-                               } else if (patchObject.details.isCompatible) {
-                                    return patchObject.details.patched ? Theme.primaryColor : Theme.secondaryColor
-                               } else if (patchObject.details.maybeCompatible && (PatchManager.sfosVersionCheck == VersionCheck.Relaxed) ) {
-                                    return patchObject.details.patched ? Theme.highlightFromColor("orange", Theme.colorScheme) : Theme.highlightBackgroundFromColor("orange", Theme.colorScheme)
-                               }
-                               return patchObject.details.patched ? Theme.errorColor : Theme.secondaryHighlightFromColor(Theme.errorColor, Theme.colorScheme)
-                        }
+                        property color labelColor: patchObject.details.isCompatible || (patchObject.details.maybeCompatible && (PatchManager.sfosVersionCheck == VersionCheck.Relaxed))
+                                                   ? Theme.primaryColor
+                                                   : Theme.errorColor
+                        color: (background.down)
+                            ? Theme.highlightColor
+                            : patchObject.details.patched ? labelColor : Theme.rgba(labelColor, Theme.opacityHigh)
                         truncationMode: TruncationMode.Fade
                     }
                     Row {
