@@ -20,3 +20,4 @@ src/icons/ss
 doc/generated
 
 translations/*.qm
+src/bin/doctor/patchmanagerdoctor

@@ -40,6 +40,9 @@ SOURCES += \
     inotifywatcher.cpp \
     journal.cpp
 
+INCLUDEPATH += $$_PRO_FILE_PWD_/../doctor
+SOURCES += $$_PRO_FILE_PWD_/../doctor/patchmanagerdoctor.cpp
+
 target.path = /usr/sbin
 INSTALLS += target
 

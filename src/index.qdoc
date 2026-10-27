@@ -242,7 +242,7 @@
   Aside of using appropriate tools as \c systemctl, \c busctl, or \c dbus-send
   to invoke Patchmanager's functions, the patchmanager binary can also serve as
   CLI, if called from command line.  See the output of \c{patchmanager --help}
-  and PatchManagerObject::process() for more information.
+  and PatchManagerObject::processArgs() for more information.
 
   There is also a shell script called \c patchmanager-tool, wrapping the
   capabilities of \c patchmanager to generate more useful functions.

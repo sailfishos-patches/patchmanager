@@ -54,6 +54,27 @@ BuildRequires:  qt5-qttools-linguist
 BuildRequires:  pkgconfig(rpm)
 BuildRequires:  pkgconfig(popt)
 
+%package doctor
+Summary:    Standalone environment tool for Patchmanager
+Group:      Development
+Requires:   %{name}
+
+%description doctor
+A standalone diagnostic tool for Patchmanager.
+
+Most of its functionality is already built into patchmanager itself, so you
+shouldn't need to install this.
+
+It may be of use sometimes for PatchManager developers.
+
+%if 0%{?_chum}
+Title: Patchmanager Doctor
+Type: addon
+Categories:
+ - Development
+Custom:
+  Repo: %{url}
+%endif
 
 %package testcases
 Summary:    Provides test cases for Patchmanager
@@ -254,6 +275,9 @@ systemctl daemon-reload
 systemctl-user daemon-reload
 exit 0
 
+%files doctor
+%defattr(-,root,root,-)
+%attr(0755,root,root) %{_libexecdir}/patchmanagerdoctor
 
 %files testcases
 %defattr(-,root,root,-)

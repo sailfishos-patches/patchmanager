@@ -47,3 +47,6 @@ Q_DECLARE_LOGGING_CATEGORY(patchmanagerDialogLog)
 Q_DECLARE_LOGGING_CATEGORY(patchmanagerDaemonLog)
 Q_DECLARE_LOGGING_CATEGORY(patchmanagerWatcherLog)
 Q_DECLARE_LOGGING_CATEGORY(patchmanagerJournalLog)
+// doctor:
+Q_DECLARE_LOGGING_CATEGORY(patchmanagerDoctorLog)
+
