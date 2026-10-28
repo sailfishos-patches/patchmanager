@@ -98,6 +98,8 @@ static const QString PATCHES_ADDITIONAL_DIR = QStringLiteral("%1/%2").arg(PATCHE
 static const QString PATCH_METADATA_FILE    = QStringLiteral("patch.json");
 static const QString MANGLE_CONFIG_FILE     = QStringLiteral("/etc/patchmanager/manglelist.conf");
 
+static const QString SYSTEM_UPDATE_INDICATOR = QStringLiteral("/tmp/os-update-running");
+
 #ifdef PM_ENABLE_LEGACY
 static const QString AUSMT_BACKUP_DIR          = QStringLiteral("/var/lib/patchmanager/ausmt/patches");
 static const QString AUSMT_INSTALLED_LIST_FILE = QStringLiteral("/var/lib/patchmanager/ausmt/packages");
@@ -477,6 +479,9 @@ void PatchManagerObject::lateInitialize()
         clearFakeroot();
     }
 #endif
+
+    QFile osupdatefile (SYSTEM_UPDATE_INDICATOR);
+    m_osUpdating = osupdatefile.exists();
 
     refreshPatchList();
 
@@ -1824,8 +1829,11 @@ void PatchManagerObject::onLipstickChanged(const QString &, const QVariantMap &c
 void PatchManagerObject::onOsUpdateProgress(int progress)
 {
     if (progress <= 0) {
+        m_osUpdating = false;
         return;
     }
+
+    m_osUpdating = true;
 
     qCCritical(patchmanagerDaemonLog) << "Detected SailfishOS update in progress, hence deactivating and disabling all Patches.";
     unapplyAllPatches();
@@ -1863,7 +1871,7 @@ void PatchManagerObject::startReadingLocalServer()
         const QByteArray request = clientConnection->readAll();
         QByteArray payload;
         const QString fakePath = QStringLiteral("%1%2").arg(s_patchmanagerCacheRoot, QString::fromLatin1(request));
-        if (!m_failed && QFileInfo::exists(fakePath)) {
+        if (!m_failed && QFileInfo::exists(fakePath) && !m_osUpdating ) {
             payload = fakePath.toLatin1();
             if (qEnvironmentVariableIsSet("PM_DEBUG_SOCKET")) {
                 qCDebug(patchmanagerDaemonLog) << Q_FUNC_INFO << "Requested:" << request << "Sending:" << payload;
