@@ -263,6 +263,15 @@ Page {
                 enabled: fixBitSwitch.checked
                 visible: PatchManager.patchDevelMode
             }
+
+            TextSwitch {
+                id: boosterSwitch
+                text: qsTranslate("", "Restart Boosters along with services")
+                description: qsTranslate("", "If a patched application has an associated \"Booster\", restart it as well.")
+                checked: PatchManager.restartBoosters
+                onClicked: PatchManager.restartBoosters = !PatchManager.restartBoosters
+                automaticCheck: false
+            }
         }
     }
 }
