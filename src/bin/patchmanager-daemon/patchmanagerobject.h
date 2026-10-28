@@ -268,6 +268,8 @@ private:
     Journal *m_journal = nullptr;
     bool m_failed = false;
 
+    bool m_osUpdating;
+
     QTimer *m_sessionBusConnector = nullptr;
     QDBusConnection m_sbus;
 };
