@@ -572,7 +572,7 @@
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="159"/>
         <source>Activate Patches on first login</source>
-        <translation>Aktivoi muutostiedostot ensimmäisellä kirjaiutumisella</translation>
+        <translation>Aktivoi muutostiedostot ensimmäisellä kirjautumisella</translation>
     </message>
     <message>
         <location filename="../src/qml/SettingsPage.qml" line="160"/>
